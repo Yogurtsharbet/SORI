@@ -4,5 +4,11 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/ParticleManipulator/Demo/Demo01.unity
+    guid: 54c451bcad0c94559895caf63448504e
+  - enabled: 1
+    path: Assets/ParticleManipulator/Demo/Demo02.unity
+    guid: 4dc6922eaf15f4e5c8fc2f049c9a8a31
   m_configObjects: {}
