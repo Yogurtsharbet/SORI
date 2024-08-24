@@ -601,7 +601,7 @@ GameObject:
   - component: {fileID: 4718830024043017568}
   m_Layer: 0
   m_Name: Sori
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -667,7 +667,7 @@ GameObject:
   m_Component:
   - component: {fileID: 767385819740392691}
   m_Layer: 0
-  m_Name: Rigs
+  m_Name: mixamorig:Hips
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
