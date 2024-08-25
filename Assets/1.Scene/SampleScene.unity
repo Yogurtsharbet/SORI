@@ -168,11 +168,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   starCoinPrefab: {fileID: 8650308107867265232, guid: 485ef97ca74e72a47ab83ed8ee4c7576, type: 3}
   debugTrigger: 0
---- !u!4 &336484415 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 5113309177179155559, guid: 16f73fa9a7d0b7e4eac1ad2ea6bd3162, type: 3}
-  m_PrefabInstance: {fileID: 4718830024199162958}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &548978551
 GameObject:
   m_ObjectHideFlags: 0
@@ -539,12 +534,12 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963194225}
-  m_LocalRotation: {x: 0.46174863, y: 0, z: 0, w: 0.8870109}
+  m_LocalRotation: {x: 0.46174863, y: -0, z: -0, w: 0.8870109}
   m_LocalPosition: {x: 0, y: 160, z: -100}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 336484415}
-  m_RootOrder: 2
+  m_Father: {fileID: 0}
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 55, y: 0, z: 0}
 --- !u!114 &963194229
 MonoBehaviour:
@@ -888,6 +883,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: -2046939782748159760, guid: 16f73fa9a7d0b7e4eac1ad2ea6bd3162, type: 3}
+      propertyPath: m_NotificationBehavior
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 1159170365973329437, guid: 16f73fa9a7d0b7e4eac1ad2ea6bd3162, type: 3}
       propertyPath: m_ApplyRootMotion
       value: 0

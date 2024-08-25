@@ -7,7 +7,7 @@
             "actions": [
                 {
                     "name": "Move",
-                    "type": "Value",
+                    "type": "PassThrough",
                     "id": "180ae723-427c-4bdf-a48d-cb9df5944959",
                     "expectedControlType": "Vector2",
                     "processors": "",
@@ -139,7 +139,7 @@
                     "name": "",
                     "id": "2d9f4744-7945-4168-b5bb-a3df93c31bb5",
                     "path": "<Keyboard>/leftShift",
-                    "interactions": "Hold",
+                    "interactions": "Press(behavior=2)",
                     "processors": "",
                     "groups": "Keyboard",
                     "action": "Dash",

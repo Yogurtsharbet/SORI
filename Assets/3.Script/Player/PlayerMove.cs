@@ -5,6 +5,7 @@ using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 
 public class PlayerMove : MonoBehaviour {
+    private PlayerInputActions playerInputAction;
     private Rigidbody playerRigid;
     private Animator playerAnimator;
 
@@ -13,15 +14,28 @@ public class PlayerMove : MonoBehaviour {
 
     private float currentSpeed = 0f;
     private float moveSpeed = 7f;
-    private float dashSpeed = 12f;
-    private float incSpeedRate = 5f;
-    private float decSpeedRate = 8f;
+    private float dashSpeed = 16f;
+    private float incSpeedRate = 7f;
+    private float decSpeedRate = 10f;
 
     private float rotateSpeed = 4f;
 
     private void Awake() {
-        playerRigid = GetComponent<Rigidbody>();
+        playerInputAction = new PlayerInputActions();
         playerAnimator = GetComponent<Animator>();
+        playerRigid = GetComponent<Rigidbody>();
+
+        playerInputAction.PlayerActions.Move.performed += value => OnMove(value.ReadValue<Vector2>());
+        playerInputAction.PlayerActions.Dash.performed += value => OnDash();
+
+    }
+    
+    private void OnEnable() {
+        playerInputAction.Enable();
+    }
+
+    private void OnDisable() {
+        playerInputAction.Disable();
     }
 
     private void FixedUpdate() {
@@ -29,14 +43,12 @@ public class PlayerMove : MonoBehaviour {
         Rotate();
     }
 
-    private void OnMove(InputValue value) {
-        Vector2 inputValue = value.Get<Vector2>();
-        if (inputValue != null) 
-            moveDirection = new Vector3(inputValue.x, 0f, inputValue.y);
+    private void OnMove(Vector2 value) {
+        moveDirection = new Vector3(value.x, 0f, value.y);
     }
 
-    private void OnDash(InputValue value) {
-        isDash = value.isPressed;
+    private void OnDash() {
+        isDash = !isDash;
     }
 
     private void Move() {
