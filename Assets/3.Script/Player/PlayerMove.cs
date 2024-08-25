@@ -104,17 +104,18 @@ public class PlayerMove : MonoBehaviour {
     }
 
     private void OnCollisionExit(Collision collision) {
-        if (Mathf.Abs(playerRigid.velocity.y) > 0.01f)
+        if (Mathf.Abs(playerRigid.velocity.y) > 1.7f)
             isJump = true;
     }
 
     private Vector3 checkRayBoxSize = new Vector3(2f, 0.03f, 2f);
     private void CheckJumpValidity() {
+        playerAnimator.SetBool("isJump", isJump);
         if (Mathf.Abs(playerRigid.velocity.y) < 0.01f) {
             Vector3 rayStartPosition = transform.position;
             rayStartPosition.y += 0.6f;
 
-            if (Physics.BoxCast(rayStartPosition, checkRayBoxSize, Vector3.down, out RaycastHit hit, transform.rotation, 0.7f)) 
+            if (Physics.BoxCast(rayStartPosition, checkRayBoxSize, Vector3.down, transform.rotation, 0.7f)) 
                 isJump = false;
             
         }
