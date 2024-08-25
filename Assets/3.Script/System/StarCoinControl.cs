@@ -59,7 +59,7 @@ public class StarCoinControl : MonoBehaviour {
 
         playerPosition = player.transform.position;
         playerPosition.y += 2f;
-        starCoinRigid.MovePosition(Vector3.Slerp(transform.position, playerPosition, Time.deltaTime));
+        starCoinRigid.MovePosition(Vector3.Slerp(transform.position, playerPosition, Mathf.Pow(existedTime / 3f, 2)));
 
         // 플레이어에 도달했는지 확인
         if (Vector3.Distance(transform.position, playerPosition) < 0.2f) {
