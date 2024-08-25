@@ -16,9 +16,9 @@ public class PlayerMove : MonoBehaviour {
     private float moveSpeed = 7f;
     private float dashSpeed = 16f;
     private float incSpeedRate = 7f;
-    private float decSpeedRate = 10f;
+    private float decSpeedRate = 15f;
 
-    private float rotateSpeed = 4f;
+    private float rotateSpeed = 8f;
 
     private void Awake() {
         playerInputAction = new PlayerInputActions();
@@ -57,10 +57,17 @@ public class PlayerMove : MonoBehaviour {
             currentSpeed -= decSpeedRate * Time.deltaTime;
         else
             currentSpeed += incSpeedRate * Time.deltaTime;
-        currentSpeed = Mathf.Clamp(currentSpeed, 0, isDash ? dashSpeed : moveSpeed);
+        currentSpeed = ClampSpeed(currentSpeed);
 
         Vector3 targetPosition = playerRigid.position + (moveDirection * Time.deltaTime * currentSpeed);
         playerRigid.MovePosition(targetPosition);
+    }
+
+    private float ClampSpeed(float speed) {
+        if (speed > (isDash ? dashSpeed : moveSpeed))
+            speed -= decSpeedRate * Time.deltaTime;
+        else if (speed < 0) speed = 0;
+        return speed;
     }
 
     private void Rotate() {
