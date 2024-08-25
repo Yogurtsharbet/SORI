@@ -1,35 +1,41 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.UI;
 
 public class PlayerMove : MonoBehaviour {
     private PlayerInputActions playerInputAction;
-    private Rigidbody playerRigid;
+    private Collider playerCollider;
     private Animator playerAnimator;
+    private Rigidbody playerRigid;
 
     private Vector3 moveDirection;
     private bool isDash = false;
+    private bool isJump = false;
 
     private float currentSpeed = 0f;
-    private float moveSpeed = 7f;
-    private float dashSpeed = 16f;
+    private float moveSpeed = 8f;
+    private float dashSpeed = 17f;
     private float incSpeedRate = 7f;
     private float decSpeedRate = 15f;
 
     private float rotateSpeed = 8f;
+    private float jumpSpeed = 250f;
 
     private void Awake() {
         playerInputAction = new PlayerInputActions();
+        playerCollider = GetComponentInChildren<Collider>();
         playerAnimator = GetComponent<Animator>();
         playerRigid = GetComponent<Rigidbody>();
 
         playerInputAction.PlayerActions.Move.performed += value => OnMove(value.ReadValue<Vector2>());
         playerInputAction.PlayerActions.Dash.performed += value => OnDash();
-
+        playerInputAction.PlayerActions.Jump.performed += value => OnJump();
     }
-    
+
     private void OnEnable() {
         playerInputAction.Enable();
     }
@@ -41,6 +47,7 @@ public class PlayerMove : MonoBehaviour {
     private void FixedUpdate() {
         Move();
         Rotate();
+        CheckJumpValidity();
     }
 
     private void OnMove(Vector2 value) {
@@ -49,6 +56,12 @@ public class PlayerMove : MonoBehaviour {
 
     private void OnDash() {
         isDash = !isDash;
+    }
+
+    private void OnJump() {
+        if (isJump) return;
+        isJump = true;
+        Jump();
     }
 
     private void Move() {
@@ -75,6 +88,39 @@ public class PlayerMove : MonoBehaviour {
             Quaternion targetRotation = Quaternion.LookRotation(moveDirection.normalized);
             playerRigid.rotation = Quaternion.Lerp(playerRigid.rotation, targetRotation, rotateSpeed * Time.deltaTime);
         }
+    }
 
+    private void Jump() {
+        playerRigid.AddForce(Vector3.up * Mathf.Sqrt(jumpSpeed), ForceMode.Impulse);
+    }
+
+    private float checkJumpTolerance = 0.1f;
+    private void OnCollisionEnter(Collision collision) {
+        float colliderTop = collision.collider.bounds.center.y + (collision.collider.bounds.size.y / 2);
+        float playerBottom = playerCollider.bounds.center.y - (playerCollider.bounds.size.y / 2);
+
+        if (Mathf.Abs(playerBottom - colliderTop) <= checkJumpTolerance)
+            isJump = false;
+    }
+
+    private void OnCollisionExit(Collision collision) {
+        if (Mathf.Abs(playerRigid.velocity.y) > 0.01f)
+            isJump = true;
+    }
+
+    private Vector3 checkRayBoxSize = new Vector3(2f, 0.03f, 2f);
+    private void CheckJumpValidity() {
+        if (Mathf.Abs(playerRigid.velocity.y) < 0.01f) {
+            Vector3 rayStartPosition = transform.position;
+            rayStartPosition.y += 0.6f;
+
+            if (Physics.BoxCast(rayStartPosition, checkRayBoxSize, Vector3.down, out RaycastHit hit, transform.rotation, 0.7f)) 
+                isJump = false;
+            
+        }
+    }
+    private void OnDrawGizmos() {
+        Gizmos.DrawWireCube(transform.position, checkRayBoxSize);
     }
 }
+
