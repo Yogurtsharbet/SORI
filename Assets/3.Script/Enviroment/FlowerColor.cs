@@ -17,7 +17,7 @@ public class FlowerColor : MonoBehaviour
     private Color GetFlowerColor() {
         switch (color) {
             case FlowerColorType.Red:
-                return new Color(0.8f, 0.6f, 0.25f);
+                return new Color(0.85f, 0.3f, 0.3f);
             case FlowerColorType.Blue:
                 return new Color(0.5f, 0.65f, 0.8f);
             case FlowerColorType.Yellow:
