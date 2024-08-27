@@ -1,15 +1,9 @@
-using System.Collections;
 using System.Collections.Generic;
-using System.Runtime.CompilerServices;
-using UnityEditor;
 using UnityEngine;
-using UnityEngine.EventSystems;
-using UnityEngine.InputSystem;
-using UnityEngine.InputSystem.UI;
-using static UnityEditor.ShaderGraph.Internal.KeywordDependentCollection;
 
 public class PlayerMove : MonoBehaviour {
     private PlayerInputActions playerInputAction;
+    private PlayerBehavior playerBehavior;
     private Collider playerCollider;
     private Animator playerAnimator;
     private Rigidbody playerRigid;
@@ -32,6 +26,7 @@ public class PlayerMove : MonoBehaviour {
     private void Awake() {
         playerInputAction = new PlayerInputActions();
         playerCollider = GetComponentInChildren<Collider>();
+        playerBehavior = GetComponent<PlayerBehavior>();
         playerAnimator = GetComponent<Animator>();
         playerRigid = GetComponent<Rigidbody>();
 
@@ -50,14 +45,6 @@ public class PlayerMove : MonoBehaviour {
         playerInputAction.Disable();
     }
 
-    private void FixedUpdate() {
-        Move();
-        Rotate();
-
-        CheckJumpValidity();
-        CheckWallThroughBack();
-    }
-
     private void OnMove(Vector2 value) {
         moveDirection = new Vector3(value.x, 0f, value.y);
     }
@@ -72,6 +59,58 @@ public class PlayerMove : MonoBehaviour {
         Jump();
     }
 
+    private void FixedUpdate() {
+        if (CheckMovementValidity()) {
+            Move();
+            Rotate();
+        }
+
+        CheckJumpValidity();
+        CheckWallThroughBack();
+        CheckIdleAnimation();
+    }
+
+    private bool CheckMovementValidity() {
+        // return true when player is able to move
+        AnimatorStateInfo stateInfo = playerAnimator.GetCurrentAnimatorStateInfo(0);
+        return !stateInfo.IsTag("DisableMovement");
+    }
+
+    private bool isIdle = false;
+    private float idleChangeTerm;
+    private float idleChangeTime = 0;
+    private int idleRepeatTime = 0;
+
+    private void CheckIdleAnimation() {
+        if (currentSpeed != 0) {
+            playerAnimator.SetFloat("IdleState", 0);
+            idleRepeatTime = 0;
+            isIdle = false;
+        }
+        else if (!isIdle) {
+            isIdle = true;
+            idleChangeTime = Time.time;
+            idleChangeTerm = Random.Range(15f, 25f);
+            Debug.Log($"ChangeTerm : {idleChangeTerm}");
+        }
+
+        if(isIdle && (Time.time > idleChangeTime + idleChangeTerm) && idleRepeatTime == 0) {
+            playerAnimator.SetFloat("IdleState", Random.Range(1, 3));
+            idleRepeatTime = Random.Range(2, 4);
+        }
+    }
+
+    private void ResetIdleAnimation() {
+        Debug.Log(idleRepeatTime);
+        idleRepeatTime--;
+        if(idleRepeatTime <= 0) {
+            playerAnimator.SetFloat("IdleState", 0);
+            idleRepeatTime = 0;
+            idleChangeTime = Time.time;
+            idleChangeTerm = Random.Range(15f, 25f);
+        }
+    }
+
     private void Move() {
         playerAnimator.SetFloat("MoveSpeed", currentSpeed);
         if (moveDirection == Vector3.zero)
@@ -83,6 +122,7 @@ public class PlayerMove : MonoBehaviour {
         Vector3 targetPosition = playerRigid.position + (moveDirection * Time.deltaTime * currentSpeed);
         playerRigid.MovePosition(targetPosition);
     }
+
 
     private float ClampSpeed(float speed) {
         if (speed > (isDash ? dashSpeed : moveSpeed))
@@ -99,7 +139,8 @@ public class PlayerMove : MonoBehaviour {
     }
 
     private void Jump() {
-        playerRigid.AddForce(Vector3.up * Mathf.Sqrt(jumpSpeed), ForceMode.Impulse);
+        if (CheckMovementValidity())
+            playerRigid.AddForce(Vector3.up * Mathf.Sqrt(jumpSpeed), ForceMode.Impulse);
     }
 
     private void OnCollisionEnter(Collision collision) {
@@ -135,8 +176,10 @@ public class PlayerMove : MonoBehaviour {
 
         if (Physics.Raycast(rayOrigin, transform.forward, out RaycastHit rayHit, 1f)) {
             if (rayHit.collider.isTrigger) return;
+
             Debug.Log($"Collider {rayHit.collider.name} is in front of player");
             currentSpeed = 0;
+            SetCollideAnimation();
         }
     }
 
@@ -149,6 +192,7 @@ public class PlayerMove : MonoBehaviour {
             if (Vector3.Angle(Vector3.up, rayHit.normal) > 30f) {
                 if (rayHit.collider.isTrigger ||
                     transform.position.y > rayHit.point.y) return;
+
                 Debug.Log("Slope is Collided");
                 currentSpeed = 0f;
             }
@@ -178,10 +222,39 @@ public class PlayerMove : MonoBehaviour {
         if (Physics.Raycast(pastFramePosition, direction, out RaycastHit rayHit, distance)) {
             if (rayHit.collider.isTrigger ||
                 rayHit.collider.CompareTag("Player")) return;
-            currentSpeed = 0;
+
             Debug.Log($"Collider {rayHit.collider.name} is collided at nextFrame");
+            currentSpeed = 0;
+            SetCollideAnimation();
         }
         pastFramePosition = currentFramePosition;
+    }
+
+    private Queue<float> impactTime = new Queue<float>();
+    private void SetCollideAnimation() {
+        playerAnimator.SetTrigger("triggerImpact");
+
+        if (impactTime.Count >= 3) {
+            float impactTerm = Time.time - impactTime.Peek();
+            Debug.Log(impactTerm);
+            if (impactTerm < 1f) {
+                // impact 3 times in 0.8sec will be processed to just one impact
+                impactTime.Clear();
+                playerBehavior.TakeDamage(0.7f);
+            }
+            else if (impactTerm < 7f) {
+                impactTime.Clear();
+                playerBehavior.TakeDamage(3f);
+                playerAnimator.SetTrigger("triggerImpactHard");
+            }
+            else {
+                impactTime.Dequeue();
+                playerBehavior.TakeDamage(0.7f);
+            }
+        }
+    }
+    public void ClearImpactTime() {
+        impactTime.Clear();
     }
 
     private void OnDrawGizmos() {

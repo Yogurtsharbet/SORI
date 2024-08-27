@@ -1,11 +1,11 @@
 fileFormatVersion: 2
-guid: 7b7495c8336d69b4085dd060bc9e16b1
+guid: 872b481298a19d84abeb769e03d2bb87
 ModelImporter:
   serializedVersion: 20200
   internalIDToNameTable:
   - first:
       74: -203655887218126122
-    second: Sad Idle
+    second: CombineEnd
   externalObjects: {}
   materials:
     materialImportMode: 2
@@ -35,18 +35,18 @@ ModelImporter:
     extraUserProperties: []
     clipAnimations:
     - serializedVersion: 16
-      name: Sad Idle
+      name: CombineEnd
       takeName: mixamo.com
       internalID: 0
       firstFrame: 0
-      lastFrame: 84
+      lastFrame: 55
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
       cycleOffset: 0
       loop: 0
       hasAdditiveReferencePose: 0
-      loopTime: 1
+      loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 1
       loopBlendPositionY: 1
@@ -58,14 +58,7 @@ ModelImporter:
       mirror: 0
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
-      events:
-      - time: 0.7781457
-        functionName: ResetIdleAnimation
-        data: 
-        objectReferenceParameter: {fileID: 11500000, guid: e718284df77fd5245bf4b0c63cabbf20, type: 3}
-        floatParameter: 0
-        intParameter: 0
-        messageOptions: 0
+      events: []
       transformMask: []
       maskType: 3
       maskSource: {instanceID: 0}

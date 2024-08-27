@@ -1,13 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 // 항아리, 상자 등에서 코인이 나오게 하기.
 // 사용법 :
 //      FindObjectOfType<CoinDropControl>().SpawnCoin(transform.position);
 
-public class CoinDropControl : MonoBehaviour {
+public class StarCoinManager : MonoBehaviour {
     [SerializeField] private GameObject starCoinPrefab;
+    [SerializeField] private Text starCoinUI;
     private List<GameObject> starCoinPool;
     
     private int minSpawnCount = 3;
@@ -50,5 +52,9 @@ public class CoinDropControl : MonoBehaviour {
             eachCoin.GetComponent<ParticleSystem>().Play();
             spawnCount--;
         }
+    }
+
+    public void UpdateCoinText(int coin) {
+        starCoinUI.text = coin.ToString();
     }
 }
