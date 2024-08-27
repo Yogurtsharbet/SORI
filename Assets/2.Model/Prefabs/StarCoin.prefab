@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 1737457658336982876}
   - component: {fileID: 1522503070418689245}
   - component: {fileID: 3934079205804548601}
-  m_Layer: 0
+  m_Layer: 30
   m_Name: StarCoin
   m_TagString: Untagged
   m_Icon: {fileID: 0}

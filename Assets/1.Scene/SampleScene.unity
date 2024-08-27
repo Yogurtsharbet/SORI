@@ -1066,7 +1066,7 @@ GameObject:
   - component: {fileID: 302644062}
   - component: {fileID: 302644063}
   m_Layer: 0
-  m_Name: CoinDropControl
+  m_Name: StarCoinManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1080,7 +1080,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 302644061}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: -31.61, y: 0, z: -4.88}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -1099,6 +1099,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   starCoinPrefab: {fileID: 3353071419421371037, guid: 1f30cfdb11b6ce2419e2129a4dabe7e7, type: 3}
+  starCoinUI: {fileID: 1312345979}
   debugTrigger: 0
 --- !u!4 &336484415 stripped
 Transform:

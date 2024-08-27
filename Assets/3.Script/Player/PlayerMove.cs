@@ -90,13 +90,13 @@ public class PlayerMove : MonoBehaviour {
         else if (!isIdle) {
             isIdle = true;
             idleChangeTime = Time.time;
-            idleChangeTerm = Random.Range(5f, 15f);
+            idleChangeTerm = Random.Range(15f, 25f);
             Debug.Log($"ChangeTerm : {idleChangeTerm}");
         }
 
         if(isIdle && (Time.time > idleChangeTime + idleChangeTerm) && idleRepeatTime == 0) {
             playerAnimator.SetFloat("IdleState", Random.Range(1, 3));
-            idleRepeatTime = Random.Range(3, 5);
+            idleRepeatTime = Random.Range(2, 4);
         }
     }
 
@@ -107,7 +107,7 @@ public class PlayerMove : MonoBehaviour {
             playerAnimator.SetFloat("IdleState", 0);
             idleRepeatTime = 0;
             idleChangeTime = Time.time;
-            idleChangeTerm = Random.Range(5f, 15f);
+            idleChangeTerm = Random.Range(15f, 25f);
         }
     }
 

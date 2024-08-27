@@ -12,7 +12,7 @@ public class StarCoinControl : MonoBehaviour {
     private Vector3 playerPosition;
 
     private float existedTime = 0f;
-    private float delayedPickTime = 2f;
+    private float delayedPickTime { get { return Random.Range(2f, 3f); } }
     private bool pickCoin = false;
 
     private void Awake() {
