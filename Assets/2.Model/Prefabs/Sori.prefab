@@ -1161,7 +1161,7 @@ GameObject:
   - component: {fileID: 4718830024683978288}
   m_Layer: 0
   m_Name: Sori
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
