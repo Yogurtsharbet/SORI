@@ -67,6 +67,7 @@ public class PlayerMove : MonoBehaviour {
 
         CheckJumpValidity();
         CheckWallThroughBack();
+        CheckIdleAnimation();
     }
 
     private bool CheckMovementValidity() {
@@ -75,7 +76,40 @@ public class PlayerMove : MonoBehaviour {
         return !stateInfo.IsTag("DisableMovement");
     }
 
+    private bool isIdle = false;
+    private float idleChangeTerm;
+    private float idleChangeTime = 0;
+    private int idleRepeatTime = 0;
 
+    private void CheckIdleAnimation() {
+        if (currentSpeed != 0) {
+            playerAnimator.SetFloat("IdleState", 0);
+            idleRepeatTime = 0;
+            isIdle = false;
+        }
+        else if (!isIdle) {
+            isIdle = true;
+            idleChangeTime = Time.time;
+            idleChangeTerm = Random.Range(5f, 15f);
+            Debug.Log($"ChangeTerm : {idleChangeTerm}");
+        }
+
+        if(isIdle && (Time.time > idleChangeTime + idleChangeTerm) && idleRepeatTime == 0) {
+            playerAnimator.SetFloat("IdleState", Random.Range(1, 3));
+            idleRepeatTime = Random.Range(3, 5);
+        }
+    }
+
+    private void ResetIdleAnimation() {
+        Debug.Log(idleRepeatTime);
+        idleRepeatTime--;
+        if(idleRepeatTime <= 0) {
+            playerAnimator.SetFloat("IdleState", 0);
+            idleRepeatTime = 0;
+            idleChangeTime = Time.time;
+            idleChangeTerm = Random.Range(5f, 15f);
+        }
+    }
 
     private void Move() {
         playerAnimator.SetFloat("MoveSpeed", currentSpeed);
@@ -199,8 +233,8 @@ public class PlayerMove : MonoBehaviour {
     private Queue<float> impactTime = new Queue<float>();
     private void SetCollideAnimation() {
         playerAnimator.SetTrigger("triggerImpact");
-        
-        if(impactTime.Count >= 3) {
+
+        if (impactTime.Count >= 3) {
             float impactTerm = Time.time - impactTime.Peek();
             Debug.Log(impactTerm);
             if (impactTerm < 1f) {
