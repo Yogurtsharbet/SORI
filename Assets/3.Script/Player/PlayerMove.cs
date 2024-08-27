@@ -104,7 +104,7 @@ public class PlayerMove : MonoBehaviour {
 
     private void OnCollisionEnter(Collision collision) {
         CheckLandGround(collision);
-        CheckWallThroughFront();
+        if (!collision.collider.isTrigger) CheckWallThroughFront();
     }
 
     private float checkJumpTolerance = 0.1f;
@@ -122,7 +122,8 @@ public class PlayerMove : MonoBehaviour {
     }
 
     private void OnCollisionStay(Collision collision) {
-        if (!(collision.gameObject.layer == LayerMask.NameToLayer("Ground"))) {
+        if (!(collision.gameObject.layer == LayerMask.NameToLayer("Ground")) ||
+            !collision.collider.isTrigger) {
             CheckWallThroughFront();
             CheckSlopeValidity();
         }
@@ -133,6 +134,7 @@ public class PlayerMove : MonoBehaviour {
         rayOrigin.y += 2f;
 
         if (Physics.Raycast(rayOrigin, transform.forward, out RaycastHit rayHit, 1f)) {
+            if (rayHit.collider.isTrigger) return;
             Debug.Log($"Collider {rayHit.collider.name} is in front of player");
             currentSpeed = 0;
         }
@@ -144,7 +146,9 @@ public class PlayerMove : MonoBehaviour {
         rayOrigin += transform.forward * 2f;
 
         if (Physics.Raycast(rayOrigin, Vector3.down, out RaycastHit rayHit, 2f)) {
-            if (Vector3.Angle(Vector3.up, rayHit.normal) > 40f) {
+            if (Vector3.Angle(Vector3.up, rayHit.normal) > 30f) {
+                if (rayHit.collider.isTrigger ||
+                    transform.position.y > rayHit.point.y) return;
                 Debug.Log("Slope is Collided");
                 currentSpeed = 0f;
             }
@@ -172,6 +176,8 @@ public class PlayerMove : MonoBehaviour {
         float distance = direction.magnitude;
 
         if (Physics.Raycast(pastFramePosition, direction, out RaycastHit rayHit, distance)) {
+            if (rayHit.collider.isTrigger ||
+                rayHit.collider.CompareTag("Player")) return;
             currentSpeed = 0;
             Debug.Log($"Collider {rayHit.collider.name} is collided at nextFrame");
         }

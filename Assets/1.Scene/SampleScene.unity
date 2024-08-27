@@ -2276,7 +2276,7 @@ GameObject:
   - component: {fileID: 892095921}
   - component: {fileID: 892095920}
   - component: {fileID: 892095919}
-  m_Layer: 0
+  m_Layer: 31
   m_Name: Plane
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6326,6 +6326,10 @@ PrefabInstance:
     - target: {fileID: 5654733855061677446, guid: 16f73fa9a7d0b7e4eac1ad2ea6bd3162, type: 3}
       propertyPath: m_Name
       value: mixamorig:Hips
+      objectReference: {fileID: 0}
+    - target: {fileID: 8342523350731531323, guid: 16f73fa9a7d0b7e4eac1ad2ea6bd3162, type: 3}
+      propertyPath: m_TagString
+      value: Player
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 16f73fa9a7d0b7e4eac1ad2ea6bd3162, type: 3}
