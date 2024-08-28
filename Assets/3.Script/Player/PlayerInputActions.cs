@@ -53,6 +53,15 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Combine"",
+                    ""type"": ""Button"",
+                    ""id"": ""6941514a-9fa7-4bfa-8afc-b8c31fe3641c"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -187,6 +196,17 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
                     ""action"": ""Jump"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""63a482ca-2b71-4eb1-aeae-9b3c81671877"",
+                    ""path"": ""<Keyboard>/tab"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard"",
+                    ""action"": ""Combine"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -215,6 +235,7 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
         m_PlayerActions_Move = m_PlayerActions.FindAction("Move", throwIfNotFound: true);
         m_PlayerActions_Dash = m_PlayerActions.FindAction("Dash", throwIfNotFound: true);
         m_PlayerActions_Jump = m_PlayerActions.FindAction("Jump", throwIfNotFound: true);
+        m_PlayerActions_Combine = m_PlayerActions.FindAction("Combine", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -277,6 +298,7 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
     private readonly InputAction m_PlayerActions_Move;
     private readonly InputAction m_PlayerActions_Dash;
     private readonly InputAction m_PlayerActions_Jump;
+    private readonly InputAction m_PlayerActions_Combine;
     public struct PlayerActionsActions
     {
         private @PlayerInputActions m_Wrapper;
@@ -284,6 +306,7 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
         public InputAction @Move => m_Wrapper.m_PlayerActions_Move;
         public InputAction @Dash => m_Wrapper.m_PlayerActions_Dash;
         public InputAction @Jump => m_Wrapper.m_PlayerActions_Jump;
+        public InputAction @Combine => m_Wrapper.m_PlayerActions_Combine;
         public InputActionMap Get() { return m_Wrapper.m_PlayerActions; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -302,6 +325,9 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
                 @Jump.started -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnJump;
                 @Jump.performed -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnJump;
                 @Jump.canceled -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnJump;
+                @Combine.started -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnCombine;
+                @Combine.performed -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnCombine;
+                @Combine.canceled -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnCombine;
             }
             m_Wrapper.m_PlayerActionsActionsCallbackInterface = instance;
             if (instance != null)
@@ -315,6 +341,9 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
                 @Jump.started += instance.OnJump;
                 @Jump.performed += instance.OnJump;
                 @Jump.canceled += instance.OnJump;
+                @Combine.started += instance.OnCombine;
+                @Combine.performed += instance.OnCombine;
+                @Combine.canceled += instance.OnCombine;
             }
         }
     }
@@ -333,5 +362,6 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
         void OnMove(InputAction.CallbackContext context);
         void OnDash(InputAction.CallbackContext context);
         void OnJump(InputAction.CallbackContext context);
+        void OnCombine(InputAction.CallbackContext context);
     }
 }
