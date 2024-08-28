@@ -559,7 +559,7 @@ MonoBehaviour:
     name: Mushroom03
   - gameObject: {fileID: 618376182628650096, guid: 632eeb24bc01f1142a1f2e5da4151e63, type: 3}
     settings:
-      m_Strength: 100
+      m_Strength: 82
       m_RotationRangeMin: {x: 0, y: 0, z: 0}
       m_RotationRangeMax: {x: 0, y: 0, z: 0}
       m_ScaleRangeMin: {x: 1, y: 1, z: 1}
@@ -575,7 +575,7 @@ MonoBehaviour:
     name: Flower_AnemonePurple
   - gameObject: {fileID: 6649670755415337635, guid: 6c524497bc53bc14c9c8c29fe7e62ffb, type: 3}
     settings:
-      m_Strength: 100
+      m_Strength: 55
       m_RotationRangeMin: {x: 0, y: 0, z: 0}
       m_RotationRangeMax: {x: 0, y: 0, z: 0}
       m_ScaleRangeMin: {x: 1, y: 1, z: 1}
@@ -591,7 +591,7 @@ MonoBehaviour:
     name: Flower_AnemoneWhite
   - gameObject: {fileID: 7033125458905466819, guid: 235f115d4cd79374a9cd3780315156ad, type: 3}
     settings:
-      m_Strength: 100
+      m_Strength: 7.75
       m_RotationRangeMin: {x: 0, y: 0, z: 0}
       m_RotationRangeMax: {x: 0, y: 0, z: 0}
       m_ScaleRangeMin: {x: 1, y: 1, z: 1}
@@ -607,7 +607,7 @@ MonoBehaviour:
     name: Flower_AnemoneYellow
   - gameObject: {fileID: 8850121628331611106, guid: 51a9ef10f0e3f3a4aacc8b2554610253, type: 3}
     settings:
-      m_Strength: 50
+      m_Strength: 28
       m_RotationRangeMin: {x: 0, y: 0, z: 0}
       m_RotationRangeMax: {x: 0, y: 0, z: 0}
       m_ScaleRangeMin: {x: 1, y: 1, z: 1}
@@ -623,7 +623,7 @@ MonoBehaviour:
     name: Flower_BigFlower
   - gameObject: {fileID: 5008984729542433618, guid: 43999c511a596754fb989ff074c5955d, type: 3}
     settings:
-      m_Strength: 50
+      m_Strength: 23.5
       m_RotationRangeMin: {x: 0, y: 0, z: 0}
       m_RotationRangeMax: {x: 0, y: 0, z: 0}
       m_ScaleRangeMin: {x: 1, y: 1, z: 1}
@@ -637,3 +637,19 @@ MonoBehaviour:
       m_YScaleBool: 0
       m_ZScaleBool: 0
     name: Flower_Liatris
+  - gameObject: {fileID: 183940, guid: 471c1eb32c770a54ea8a1c3ffbda1de6, type: 3}
+    settings:
+      m_Strength: 50
+      m_RotationRangeMin: {x: 0, y: 0, z: 0}
+      m_RotationRangeMax: {x: 0, y: 0, z: 0}
+      m_ScaleRangeMin: {x: 1, y: 1, z: 1}
+      m_ScaleRangeMax: {x: 1, y: 1, z: 1}
+      m_UniformScale: {x: 1, y: 1}
+      m_UniformBool: 0
+      m_XRotationBool: 0
+      m_YRotationBool: 0
+      m_ZRotationBool: 0
+      m_XScaleBool: 0
+      m_YScaleBool: 0
+      m_ZScaleBool: 0
+    name: Wood_Grass
