@@ -1,25 +1,33 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerInven : MonoBehaviour {
+public class PlayerInvenController : MonoBehaviour {
     private List<Word> inven = new List<Word>();
-    private int invenCount;
-    public int InvenCount {  get { return invenCount; } }
+    private List<Word> Inven { get { return inven; } }
+
+    private int invenOpenCount;
+    public int InvenOpenCount { get { return invenOpenCount; } }
+
+    public delegate void OnInvenChanged(List<Word> inven);
+    public event OnInvenChanged InvenChanged;
+
+    public void UpdateInvenInvoke() {
+        InvenChanged?.Invoke(inven);
+    }
 
     private void Awake() {
         initInven();
     }
 
     private void initInven() {
-        invenCount = 12;
-        for (int i = 0; i < invenCount; i++) {
-            inven.Add(null);
+        invenOpenCount  = 12;
+        for (int i = 0; i < invenOpenCount; i++) {
+            AddInvenSlot(); 
         }
     }
 
     //인벤토리 칸 추가
-    private void addInvenSlot() {
+    public void AddInvenSlot() {
         inven.Add(null);
     }
 
@@ -27,21 +35,21 @@ public class PlayerInven : MonoBehaviour {
     // 1. 제일 마지막에 있는 단어 옮기고 인벤 슬롯 삭제
     // 2. 빈 슬롯이 없을 때, 선택한 인덱스의 단어 삭제
     private void getRemoveInvenIndex() {
-        if (inven[invenCount - 1] == null) {
-            inven.RemoveAt(invenCount - 1);
+        if (inven[invenOpenCount - 1] == null) {
+            inven.RemoveAt(invenOpenCount - 1);
             return;
         }
         else {
             int emptyIndex = -1;
-            for (int j = invenCount - 2; j >= 0; j--) {
+            for (int j = invenOpenCount - 2; j >= 0; j--) {
                 if (inven[j] == null) {
                     emptyIndex = j;
                     break;
                 }
             }
             if (emptyIndex != -1) {
-                inven[emptyIndex] = inven[invenCount - 1];
-                inven.RemoveAt(invenCount - 1);
+                inven[emptyIndex] = inven[invenOpenCount - 1];
+                inven.RemoveAt(invenOpenCount - 1);
             }
             else {
                 //inven.RemoveAt(GetRemoveIndex());
@@ -54,7 +62,7 @@ public class PlayerInven : MonoBehaviour {
 
     //새 단어 추가
     public void AddNewItem(Word newWord) {
-        for (int i = 0; i < invenCount; i++) {
+        for (int i = 0; i < invenOpenCount; i++) {
             if (inven[i] == null) {
                 inven[i] = newWord;
                 return;
@@ -84,5 +92,5 @@ public class PlayerInven : MonoBehaviour {
         return inven[index];
     }
 
-    
+
 }
