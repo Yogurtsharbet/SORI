@@ -6,6 +6,7 @@ public class PlayerBehavior : MonoBehaviour {
     private CameraControl cameraControl;
     private Animator playerAnimator;
 
+    private testCombine testCombineObj;
     public delegate void PlayerDie();
     public static event PlayerDie OnPlayerDie;
 
@@ -22,6 +23,8 @@ public class PlayerBehavior : MonoBehaviour {
         starCoinManager = FindObjectOfType<StarCoinManager>();
         playerInputAction = new PlayerInputActions();
         playerAnimator = GetComponent<Animator>();
+
+        testCombineObj = FindObjectOfType<testCombine>();
 
         playerInputAction.PlayerActions.Combine.performed += value => OnCombine();
     }
@@ -52,6 +55,8 @@ public class PlayerBehavior : MonoBehaviour {
 
     private void CombineMode() {
         isCombineMode = !isCombineMode;
+        if (IsCombineMode) testCombineObj.SetCombine();
+        else testCombineObj.UnsetCombine();
         playerAnimator.SetBool("isCombineMode", isCombineMode);
         cameraControl.ChangeCamera();
     }
