@@ -28,12 +28,12 @@ MonoBehaviour:
     depthCompareFunction: 8
     enableWrite: 0
     stencilSettings:
-      overrideStencilState: 0
-      stencilReference: 0
+      overrideStencilState: 1
+      stencilReference: 1
       stencilCompareFunction: 8
-      passOperation: 0
+      passOperation: 2
       failOperation: 0
-      zFailOperation: 0
+      zFailOperation: 2
     cameraSettings:
       overrideCamera: 0
       restoreCamera: 1
@@ -54,7 +54,8 @@ MonoBehaviour:
   m_RendererFeatures:
   - {fileID: 5091711744756270091}
   - {fileID: -4762537811343609139}
-  m_RendererFeatureMap: 0bc4e1d4da64a946cd727ff51711e8bd
+  - {fileID: 4587496915191567371}
+  m_RendererFeatureMap: 0bc4e1d4da64a946cd727ff51711e8bd0b9431862310aa3f
   postProcessData: {fileID: 11400000, guid: 41439944d30ece34e96484bdb6645b55, type: 2}
   xrSystemData: {fileID: 11400000, guid: 60e1133243b97e347b653163a8c01b64, type: 2}
   shaders:
@@ -75,14 +76,53 @@ MonoBehaviour:
     m_Bits: 4294967295
   m_DefaultStencilState:
     overrideStencilState: 0
-    stencilReference: 0
-    stencilCompareFunction: 8
+    stencilReference: 1
+    stencilCompareFunction: 0
     passOperation: 2
     failOperation: 0
     zFailOperation: 0
   m_ShadowTransparentReceive: 1
   m_RenderingMode: 0
   m_AccurateGbufferNormals: 0
+--- !u!114 &4587496915191567371
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6b3d386ba5cd94485973aee1479b272e, type: 3}
+  m_Name: Player Outline
+  m_EditorClassIdentifier: 
+  m_Active: 1
+  settings:
+    passTag: Player Outline
+    Event: 400
+    filterSettings:
+      RenderQueueType: 0
+      LayerMask:
+        serializedVersion: 2
+        m_Bits: 536870912
+      PassNames: []
+    overrideMaterial: {fileID: 2100000, guid: 705f5e8e0bc6636459be9dd68dd428cf, type: 2}
+    overrideMaterialPassIndex: 0
+    overrideDepthState: 1
+    depthCompareFunction: 2
+    enableWrite: 0
+    stencilSettings:
+      overrideStencilState: 1
+      stencilReference: 1
+      stencilCompareFunction: 5
+      passOperation: 0
+      failOperation: 0
+      zFailOperation: 0
+    cameraSettings:
+      overrideCamera: 0
+      restoreCamera: 1
+      offset: {x: 0, y: 0, z: 0, w: 0}
+      cameraFieldOfView: 60
 --- !u!114 &5091711744756270091
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -113,10 +153,10 @@ MonoBehaviour:
     stencilSettings:
       overrideStencilState: 0
       stencilReference: 1
-      stencilCompareFunction: 8
+      stencilCompareFunction: 6
       passOperation: 0
       failOperation: 0
-      zFailOperation: 2
+      zFailOperation: 0
     cameraSettings:
       overrideCamera: 0
       restoreCamera: 1
