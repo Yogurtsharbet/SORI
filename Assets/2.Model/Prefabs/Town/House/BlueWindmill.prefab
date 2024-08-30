@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 1245432390571238890}
   - component: {fileID: 1245432390571247151}
   - component: {fileID: 1245432390571247150}
-  m_Layer: 9
+  m_Layer: 0
   m_Name: Windmill
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -128,7 +128,7 @@ GameObject:
   - component: {fileID: 1245432390571237838}
   - component: {fileID: 1245432390571238929}
   - component: {fileID: 1245432390571247547}
-  m_Layer: 9
+  m_Layer: 0
   m_Name: BlueWindmill
   m_TagString: Untagged
   m_Icon: {fileID: 0}
