@@ -9,6 +9,7 @@ public class MainManager : MonoBehaviour {
 
     private Canvas mainCanvas;
     private Canvas mainMenuCanvas;
+    private Canvas loadCanvas;
 
     private DefaultInputActions action;
     private Animator menuAni;
@@ -24,8 +25,11 @@ public class MainManager : MonoBehaviour {
                 Debug.Log(c.name);
                 mainCanvas = c;
             }
-            else {
+            else if(c.name.Equals("MainMenuCanvas")){
                 mainMenuCanvas = c;
+            }
+            else {
+                loadCanvas = c;
             }
         }
         action = new DefaultInputActions();
@@ -56,12 +60,21 @@ public class MainManager : MonoBehaviour {
     private void openMainMenu() {
         mainCanvas.gameObject.SetActive(false);
         mainMenuCanvas.gameObject.SetActive(true);
+        loadCanvas.gameObject.SetActive(false);
         isOpenMenu = true;
     }
 
     private void openMain() {
         mainCanvas.gameObject.SetActive(true);
         mainMenuCanvas.gameObject.SetActive(false);
+        loadCanvas.gameObject.SetActive(false);
+        isOpenMenu = false;
+    }
+
+    private void openLoad() {
+        mainCanvas.gameObject.SetActive(false);
+        mainMenuCanvas.gameObject.SetActive(false);
+        loadCanvas.gameObject.SetActive(true);
         isOpenMenu = false;
     }
     #endregion
@@ -86,10 +99,10 @@ public class MainManager : MonoBehaviour {
                 StartCoroutine(DelayedCo(true));
             }
             else if (mainMenuButtonManager.SelectMenuKey == 3) {
-                Application.Quit();
+                QuitGame();
             }
             else {
-                //TODO: 새 게임 시작 추가
+                StartNewGame();
             }
         }
 
@@ -126,7 +139,6 @@ public class MainManager : MonoBehaviour {
 
         //옵션 메뉴
         if (isOpenOption) {
-
             isOpenOption = false;
         }
     }
@@ -190,4 +202,12 @@ public class MainManager : MonoBehaviour {
         }
     }
 
+    public void QuitGame() {
+        Application.Quit();
+    }
+
+    public void StartNewGame() {
+        openLoad();
+        loadCanvas.GetComponent<SceneLoader>().LoadSceneAsync();
+    }
 }

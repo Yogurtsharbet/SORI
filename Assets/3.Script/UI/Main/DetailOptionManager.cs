@@ -41,7 +41,7 @@ public class DetailOptionManager : MonoBehaviour {
         }
     }
 
-    private void OnEnable() {
+    private void OnDisEnable() {
         selectOptionKey = 0;
     }
 
