@@ -27,6 +27,11 @@ public class MainMenuButtonManager : MonoBehaviour {
         MenuSelectCheck(selectMenuKey);
     }
 
+    private void OnDisable() {
+        selectMenuKey = 0;
+    }
+
+    //선택 체크
     public void MenuSelectCheck(int key) {
         for (int i = 0; i < buttonControllers.Length; i++) {
             buttonControllers[i].DisActiveSelectImage();
@@ -37,6 +42,12 @@ public class MainMenuButtonManager : MonoBehaviour {
     public void CloseMenuButtons() {
         for(int i = 0; i < menuButtons.Length; i++) {
             menuButtons[i].gameObject.SetActive(false);
+        }
+    }
+
+    public void OpenMenuButtons() {
+        for (int i = 0; i < menuButtons.Length; i++) {
+            menuButtons[i].gameObject.SetActive(true);
         }
     }
 }
