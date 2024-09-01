@@ -7,8 +7,8 @@ using System.Linq;
 
 public class CameraControl : MonoBehaviour {
     public static CameraControl Instance;
+    public bool isDebugging;
 
-    private CinemachineBrain cameraBrain;
     private CinemachineVirtualCamera cameraTopView;
     private CinemachineVirtualCamera cameraCombineView;
 
@@ -27,7 +27,6 @@ public class CameraControl : MonoBehaviour {
         playerMove = FindObjectOfType<PlayerMove>();
         playerAnimator = playerMove.GetComponent<Animator>();
 
-        cameraBrain = GetComponentInChildren<CinemachineBrain>();
         cameraTopView = GetComponentsInChildren<CinemachineVirtualCamera>()[0];
         cameraCombineView = GetComponentsInChildren<CinemachineVirtualCamera>()[1];
 
@@ -38,9 +37,12 @@ public class CameraControl : MonoBehaviour {
         allCamera.Add(cameraTopView);
         allCamera.Add(cameraCombineView);
         allCamera.Add(cinematicIntro);
+        allCamera.Add(cinematicForest);
     }
 
     private void Start() {
+        if (isDebugging) return;
+
         FadeControl.Instance.FadeIn();
         SetCamera(cinematicIntro);
     }
