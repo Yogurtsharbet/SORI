@@ -3,7 +3,6 @@ using UnityEngine;
 public class PlayerBehavior : MonoBehaviour {
     private PlayerInputActions playerInputAction;
     private StarCoinManager starCoinManager;
-    private CameraControl cameraControl;
     private Animator playerAnimator;
 
     private testCombine testCombineObj;
@@ -38,8 +37,6 @@ public class PlayerBehavior : MonoBehaviour {
     }
 
     private void OnEnable() {
-        cameraControl = FindObjectOfType<CameraControl>();
-
         playerInputAction.Enable();
         OnPlayerDie += PlayerDieAnimation;
     }
@@ -58,28 +55,29 @@ public class PlayerBehavior : MonoBehaviour {
         if (IsCombineMode) testCombineObj.SetCombine();
         else testCombineObj.UnsetCombine();
         playerAnimator.SetBool("isCombineMode", isCombineMode);
-        cameraControl.ChangeCamera();
+        CameraControl.Instance.ChangePlayerCamera();
     }
 
     private void PlayerDieAnimation() {
         playerAnimator.SetTrigger("triggerDie");
     }
 
-    public void TakeDamage (float damage) {
+    public void TakeDamage(float damage) {
         playerHP -= damage;
-        if(playerHP < 0) {
+        if (playerHP < 0) {
             OnPlayerDie?.Invoke();
         }
     }
 
     public void Heal(float heal) {
         playerHP += heal;
-        if (playerHP > playerMaxHP) 
+        if (playerHP > playerMaxHP)
             playerHP = playerMaxHP;
     }
 
     private void OnTriggerEnter(Collider other) {
         CheckEarningCoins(other);
+
     }
 
     private void CheckEarningCoins(Collider coin) {
@@ -92,6 +90,13 @@ public class PlayerBehavior : MonoBehaviour {
         starCoin += coins;
         starCoinManager.UpdateCoinText(starCoin);
     }
+
+    private void CheckCinematicZone(Collider zone) {
+        if (zone.gameObject.layer == LayerMask.NameToLayer("CinematicZone")) {
+            if (zone.name == "Forest") CameraControl.Instance.SetCamera("Forest");
+        }
+    }
+
 
     public void UseStarCoin(int coins) {
         starCoin -= coins;

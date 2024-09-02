@@ -19,7 +19,7 @@ public class PlayerMove : MonoBehaviour {
     private float decSpeedRate = 15f;
 
     private float rotateSpeed = 8f;
-    private float jumpSpeed = 250f;
+    private float jumpSpeed = 350f;
 
     private Vector3 pastFramePosition;
     private Vector3 currentFramePosition;
@@ -91,19 +91,17 @@ public class PlayerMove : MonoBehaviour {
             isIdle = true;
             idleChangeTime = Time.time;
             idleChangeTerm = Random.Range(15f, 25f);
-            Debug.Log($"ChangeTerm : {idleChangeTerm}");
         }
 
-        if(isIdle && (Time.time > idleChangeTime + idleChangeTerm) && idleRepeatTime == 0) {
+        if (isIdle && (Time.time > idleChangeTime + idleChangeTerm) && idleRepeatTime == 0) {
             playerAnimator.SetFloat("IdleState", Random.Range(1, 3));
             idleRepeatTime = Random.Range(2, 4);
         }
     }
 
     private void ResetIdleAnimation() {
-        Debug.Log(idleRepeatTime);
         idleRepeatTime--;
-        if(idleRepeatTime <= 0) {
+        if (idleRepeatTime <= 0) {
             playerAnimator.SetFloat("IdleState", 0);
             idleRepeatTime = 0;
             idleChangeTime = Time.time;
@@ -158,15 +156,19 @@ public class PlayerMove : MonoBehaviour {
     }
 
     private void OnCollisionExit(Collision collision) {
-        if (Mathf.Abs(playerRigid.velocity.y) > 1.7f)
+        if (Mathf.Abs(playerRigid.velocity.y) > 2.5f)
             isJump = true;
     }
 
     private void OnCollisionStay(Collision collision) {
-        if (!(collision.gameObject.layer == LayerMask.NameToLayer("Ground")) ||
-            !collision.collider.isTrigger) {
-            CheckWallThroughFront();
-            CheckSlopeValidity();
+        if (!(collision.gameObject.layer == LayerMask.NameToLayer("Ground"))) {
+            if (!collision.collider.isTrigger) {
+                CheckWallThroughFront();
+                CheckSlopeValidity();
+            }
+        }
+        else {
+            isJump = false;
         }
     }
 
@@ -220,8 +222,8 @@ public class PlayerMove : MonoBehaviour {
         float distance = direction.magnitude;
 
         if (Physics.Raycast(pastFramePosition, direction, out RaycastHit rayHit, distance)) {
-            if (rayHit.collider.isTrigger ||
-                rayHit.collider.CompareTag("Player")) return;
+            if (rayHit.collider.isTrigger || rayHit.collider.CompareTag("Player") ||
+                rayHit.collider.gameObject.layer == LayerMask.NameToLayer("Ground")) return;
 
             Debug.Log($"Collider {rayHit.collider.name} is collided at nextFrame");
             currentSpeed = 0;
@@ -233,16 +235,17 @@ public class PlayerMove : MonoBehaviour {
     private Queue<float> impactTime = new Queue<float>();
     private void SetCollideAnimation() {
         playerAnimator.SetTrigger("triggerImpact");
+        impactTime.Enqueue(Time.time);
 
         if (impactTime.Count >= 3) {
             float impactTerm = Time.time - impactTime.Peek();
             Debug.Log(impactTerm);
-            if (impactTerm < 1f) {
+            if (impactTerm < 0.8f) {
                 // impact 3 times in 0.8sec will be processed to just one impact
                 impactTime.Clear();
                 playerBehavior.TakeDamage(0.7f);
             }
-            else if (impactTerm < 7f) {
+            else if (impactTerm < 9f) {
                 impactTime.Clear();
                 playerBehavior.TakeDamage(3f);
                 playerAnimator.SetTrigger("triggerImpactHard");
