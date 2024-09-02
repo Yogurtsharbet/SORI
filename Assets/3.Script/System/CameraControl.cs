@@ -2,8 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Cinemachine;
-using System.Runtime.CompilerServices;
-using System.Linq;
+using DG.Tweening;
 
 public class CameraControl : MonoBehaviour {
     public static CameraControl Instance;
@@ -20,12 +19,16 @@ public class CameraControl : MonoBehaviour {
 
     private PlayerMove playerMove;
     private Animator playerAnimator;
+    private Animator butterflyAnimator;
+
+    [SerializeField] private Transform cinematicForestPosition;
 
     private void Awake() {
         Instance = this;
 
         playerMove = FindObjectOfType<PlayerMove>();
         playerAnimator = playerMove.GetComponent<Animator>();
+        butterflyAnimator = GameObject.FindGameObjectWithTag("Butterfly").GetComponent<Animator>();
 
         cameraTopView = GetComponentsInChildren<CinemachineVirtualCamera>()[0];
         cameraCombineView = GetComponentsInChildren<CinemachineVirtualCamera>()[1];
@@ -54,6 +57,8 @@ public class CameraControl : MonoBehaviour {
     public void SetCamera(CinemachineVirtualCameraBase camera) {
         Debug.Log($"Set to {camera.name}");
         playerMove.enabled = camera == cameraTopView;
+        playerMove.ClearCurretSpeed();
+
         foreach (var eachCamera in allCamera) {
             if (eachCamera == camera) {
                 eachCamera.Priority = 1;
@@ -61,7 +66,25 @@ public class CameraControl : MonoBehaviour {
 
                 if (camera is CinemachineBlendListCamera) {
                     StartCoroutine(WaitForCinematicEnd(camera as CinemachineBlendListCamera));
-                    if (camera == cinematicIntro) playerAnimator.SetTrigger("cinematicIntro");
+
+                    if (camera == cinematicIntro) 
+                        playerAnimator.SetTrigger("cinematicIntro");
+
+                    else if (camera == cinematicForest) {
+                        StartCoroutine(RotateFreeLock());
+                        playerAnimator.SetFloat("MoveSpeed", 7f);
+                        butterflyAnimator.SetTrigger("cinematicForest");
+
+                        Sequence sequence = DOTween.Sequence();
+                        sequence
+                            .AppendCallback(() => playerMove.transform.LookAt(cinematicForestPosition.position))
+                            .Append(playerMove.transform.DOMove(cinematicForestPosition.position, 5f)
+                            .OnComplete(() => playerAnimator.SetFloat("MoveSpeed", 3f)))
+                            .Append(playerMove.transform.DOMove(cinematicForestPosition.position + transform.forward, 0.5f)
+                            .OnComplete(() => playerAnimator.SetTrigger("cinematicForest")))
+                            .OnKill(() => playerAnimator.SetFloat("MoveSpeed", 0f))
+                            .Play();
+                    }
                 }
             }
             else
@@ -76,15 +99,27 @@ public class CameraControl : MonoBehaviour {
     private IEnumerator WaitForCinematicEnd(CinemachineBlendListCamera camera) {
         Debug.Log($"Waiting Cinmatic : {camera.name}");
         int checkCount = 0;
+        var lastChildCamera = camera.ChildCameras[camera.ChildCameras.Length - 1];
 
-        while(checkCount < 50) {
-            if (!camera.IsBlending) {
+        while (checkCount < 30) {
+            if (!camera.IsBlending && camera.IsLiveChild(lastChildCamera)) {
                 checkCount++;
             }
             yield return null;
         }
         Debug.Log($"Complete Cinmatic : {camera.name}");
 
+        playerMove.ClearCurretSpeed();
         SetCamera(cameraTopView);
+    }
+
+    private IEnumerator RotateFreeLock() {
+        var camera = GetComponentInChildren<CinemachineFreeLook>();
+        yield return new WaitForSeconds(2f);
+
+        while(currentCamera != cameraTopView) {
+            camera.m_XAxis.m_InputAxisValue = -0.5f;
+            yield return null;
+        }
     }
 }

@@ -68,6 +68,11 @@ public class PlayerMove : MonoBehaviour {
         CheckJumpValidity();
         CheckWallThroughBack();
         CheckIdleAnimation();
+        CheckResetDash();
+    }
+
+    private void CheckResetDash() {
+        if (moveDirection == Vector3.zero) isDash = false;
     }
 
     private bool CheckMovementValidity() {
@@ -260,8 +265,14 @@ public class PlayerMove : MonoBehaviour {
         impactTime.Clear();
     }
 
+    public void ClearCurretSpeed() {
+        currentSpeed = 0f;
+        moveDirection = Vector3.zero;
+    }
+
     private void OnDrawGizmos() {
         Gizmos.DrawWireCube(transform.position, checkRayBoxSize);
     }
+
 }
 

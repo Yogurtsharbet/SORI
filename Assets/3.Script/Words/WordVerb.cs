@@ -1,2 +1,2 @@
-public class WordVerb : Word {
-}
+//public class WordVerb : Word {
+//}

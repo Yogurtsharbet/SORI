@@ -6,6 +6,8 @@ public class testCombine : MonoBehaviour {
     private GameObject[] targetUI;
     private Animator canvasAnimator;
 
+    //TODO: COMBINE UI LOGIC
+
     private void Awake() {
 
         canvasAnimator = GetComponent<Animator>();
