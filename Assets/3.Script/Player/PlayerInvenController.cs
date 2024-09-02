@@ -92,5 +92,4 @@ public class PlayerInvenController : MonoBehaviour {
         return inven[index];
     }
 
-
 }
