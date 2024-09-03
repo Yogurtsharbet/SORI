@@ -13,12 +13,19 @@ public class BGMController : MonoBehaviour {
     }
 
     private void Start() {
+        slider.value = 1f;
+
         slider.onValueChanged.AddListener(delegate {
             setVolume(slider.value);
         });
     }
 
     private void setVolume(float volume) {
-        audioMixer.SetFloat("BGM", Mathf.Log10(volume) * 20);
+        if (volume <= 0) {
+            audioMixer.SetFloat("BGM", -80);
+        }
+        else {
+            audioMixer.SetFloat("BGM", Mathf.Log10(volume) * 20);
+        }
     }
 }

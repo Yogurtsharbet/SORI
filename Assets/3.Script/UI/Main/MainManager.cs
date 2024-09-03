@@ -22,10 +22,9 @@ public class MainManager : MonoBehaviour {
         Canvas[] canvases = GetComponentsInChildren<Canvas>();
         foreach (Canvas c in canvases) {
             if (c.name.Equals("MainCanvas")) {
-                Debug.Log(c.name);
                 mainCanvas = c;
             }
-            else if(c.name.Equals("MainMenuCanvas")){
+            else if (c.name.Equals("MainMenuCanvas")) {
                 mainMenuCanvas = c;
             }
             else {
@@ -124,7 +123,6 @@ public class MainManager : MonoBehaviour {
 
         //옵션 메뉴
         if (isOpenOption) {
-            detailOptionManager.CloseOptions();
             optionMenuMove(pos);
         }
     }
@@ -135,11 +133,15 @@ public class MainManager : MonoBehaviour {
             menuAni.SetBool("Open", false);
             StartCoroutine(DelayedCo(false));
             isDetailMenu = false;
+            return;
         }
 
         //옵션 메뉴
         if (isOpenOption) {
             isOpenOption = false;
+            mainDetailManager.OpenDetailData(mainMenuButtonManager.SelectMenuKey);
+            detailOptionManager.CloseOptions();
+            return;
         }
     }
     #endregion
@@ -196,6 +198,7 @@ public class MainManager : MonoBehaviour {
         if (isDetailOpen) {
             mainDetailManager.gameObject.SetActive(true);
             mainDetailManager.OpenDetailData(mainMenuButtonManager.SelectMenuKey);
+            isOpenOption = true;
         }
         else {
             mainMenuButtonManager.OpenMenuButtons();
@@ -203,7 +206,11 @@ public class MainManager : MonoBehaviour {
     }
 
     public void QuitGame() {
-        Application.Quit();
+#if UNITY_EDITOR
+        UnityEditor.EditorApplication.isPlaying = false;
+#else
+            Application.Quit(); // 어플리케이션 종료
+#endif
     }
 
     public void StartNewGame() {

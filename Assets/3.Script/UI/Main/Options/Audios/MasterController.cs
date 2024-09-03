@@ -14,12 +14,19 @@ public class MasterController : MonoBehaviour
     }
 
     private void Start() {
+        slider.value = 1f;
+
         slider.onValueChanged.AddListener(delegate {
             setVolume(slider.value);
         });
     }
 
     private void setVolume(float volume) {
-        audioMixer.SetFloat("Master", Mathf.Log10(volume) * 20);
+        if (volume <= 0) {
+            audioMixer.SetFloat("Master", -80); // 최소 볼륨으로 설정 (음소거)
+        }
+        else {
+            audioMixer.SetFloat("Master", Mathf.Log10(volume) * 20);
+        }
     }
 }

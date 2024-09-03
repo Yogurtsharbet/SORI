@@ -18,12 +18,13 @@ public class InterfaceController : MonoBehaviour {
             SetUIScale(slider.value);
         });
         slider.value = canvasScaler[0].scaleFactor;
+
     }
 
     public void SetUIScale(float scaleFactor) {
         if (canvasScaler[0].uiScaleMode == CanvasScaler.ScaleMode.ScaleWithScreenSize) {
             for (int i = 0; i < canvasScaler.Length; i++) {
-                canvasScaler[i].scaleFactor = scaleFactor;
+                canvasScaler[i].matchWidthOrHeight = scaleFactor;
             }
         }
         //TODO: 해상도 scale 캐싱해서 게임 뷰에서도 scale 적용해야함

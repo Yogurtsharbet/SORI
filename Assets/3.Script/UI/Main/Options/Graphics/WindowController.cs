@@ -11,14 +11,14 @@ public class WindowController : MonoBehaviour {
     private void Awake() {
         Text[] texts = GetComponentsInChildren<Text>();
         foreach (Text txt in texts) {
-            if (txt.name == "ChangerText") {
+            if (txt.name.Equals("ChangerText")) {
                 text = txt;
             }
         }
     }
 
     public void ChangeWindowMode() {
-        if (isFullscreen) {
+        if (!isFullscreen) {
             isFullscreen = true;
             text.text = "전체화면";
             Screen.SetResolution(Screen.currentResolution.width, Screen.currentResolution.height, true);

@@ -33,9 +33,8 @@ public class DetailOptionManager : MonoBehaviour {
     }
 
     private void Start() {
-        gameObject.SetActive(false);
         for (int i = 0; i < 2; i++) {
-            graphicSelects[i].enabled = false;
+            graphicSelects[i].enabled = true;
             audioSelects[i].enabled = false;
             controlSelects[i].enabled = false;
         }
