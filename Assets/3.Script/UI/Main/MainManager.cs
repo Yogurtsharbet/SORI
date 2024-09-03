@@ -87,22 +87,11 @@ public class MainManager : MonoBehaviour {
 
         //메인 -> 메인 상세 메뉴
         if (isOpenMenu && !isDetailMenu) {
-            menuAni.SetBool("Open", true);
-            mainMenuButtonManager.CloseMenuButtons();
-            isDetailMenu = true;
+            MainMenuClick();
         }
 
         //메인 상세 메뉴 -> 메뉴 선택
         if (isDetailMenu && !isOpenOption) {
-            if (mainMenuButtonManager.SelectMenuKey == 0 || mainMenuButtonManager.SelectMenuKey == 2) {
-                StartCoroutine(DelayedCo(true));
-            }
-            else if (mainMenuButtonManager.SelectMenuKey == 3) {
-                QuitGame();
-            }
-            else {
-                StartNewGame();
-            }
         }
 
         //옵션 메뉴
@@ -191,6 +180,21 @@ public class MainManager : MonoBehaviour {
         detailOptionManager.CheckSelectOption(key);
     }
     #endregion
+
+    public void MainMenuClick() {
+        menuAni.SetBool("Open", true);
+        mainMenuButtonManager.CloseMenuButtons();
+        if (mainMenuButtonManager.SelectMenuKey == 0 || mainMenuButtonManager.SelectMenuKey == 2) {
+            StartCoroutine(DelayedCo(true));
+        }
+        else if (mainMenuButtonManager.SelectMenuKey == 3) {
+            QuitGame();
+        }
+        else {
+            StartNewGame();
+        }
+        isDetailMenu = true;
+    }
 
     //딜레이 코루틴
     IEnumerator DelayedCo(bool isDetailOpen) {

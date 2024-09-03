@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -31,6 +29,11 @@ public class MainMenuButtonManager : MonoBehaviour {
         selectMenuKey = 0;
     }
 
+    public void SetHoverButton(int num) {
+        MenuSelectCheck(num);
+        selectMenuKey = num;
+    }
+
     //선택 체크
     public void MenuSelectCheck(int key) {
         for (int i = 0; i < buttonControllers.Length; i++) {
@@ -40,7 +43,7 @@ public class MainMenuButtonManager : MonoBehaviour {
     }
 
     public void CloseMenuButtons() {
-        for(int i = 0; i < menuButtons.Length; i++) {
+        for (int i = 0; i < menuButtons.Length; i++) {
             menuButtons[i].gameObject.SetActive(false);
         }
     }
