@@ -56,7 +56,7 @@ public class MainManager : MonoBehaviour {
     }
 
     #region Active 세팅
-    private void openMainMenu() {
+    public void OpenMainMenu() {
         mainCanvas.gameObject.SetActive(false);
         mainMenuCanvas.gameObject.SetActive(true);
         loadCanvas.gameObject.SetActive(false);
@@ -81,7 +81,7 @@ public class MainManager : MonoBehaviour {
     #region 키보드 사용 설정
     private void onSubmit() {
         if (!isOpenMenu) {
-            openMainMenu();
+            OpenMainMenu();
             return;
         }
 
@@ -215,6 +215,13 @@ public class MainManager : MonoBehaviour {
 
     public void StartNewGame() {
         openLoad();
+        FadeControl.Instance.FadeOut();
+        StartCoroutine(NewGameDelayedCo());
+    }
+
+    IEnumerator NewGameDelayedCo() {
+        yield return new WaitForSeconds(1.5f);
+
         loadCanvas.GetComponent<SceneLoader>().LoadSceneAsync();
     }
 }
