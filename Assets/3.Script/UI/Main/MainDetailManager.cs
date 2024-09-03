@@ -38,4 +38,9 @@ public class MainDetailManager : MonoBehaviour {
         detailLoadManager.gameObject.SetActive(false) ;
         detailOptionManager.gameObject.SetActive(true);
     }
+
+    public void CloseDetails() {
+        detailLoadManager.gameObject.SetActive(false);
+        detailOptionManager.gameObject.SetActive(false);
+    }
 }

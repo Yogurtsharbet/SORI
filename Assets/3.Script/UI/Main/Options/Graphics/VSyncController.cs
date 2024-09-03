@@ -10,7 +10,7 @@ public class VSyncController : MonoBehaviour {
     private void Awake() {
         Text[] texts = GetComponentsInChildren<Text>();
         foreach (Text txt in texts) {
-            if (txt.name == "ChangerText") {
+            if (txt.name.Equals("ChangerText")) {
                 text = txt;
             }
         }
