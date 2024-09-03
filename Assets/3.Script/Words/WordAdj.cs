@@ -1,3 +1,3 @@
-//public class WordAdj : Word {
+public class WordAdj : Word {
 
-//}
+}

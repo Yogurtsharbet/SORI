@@ -1,123 +1,67 @@
-/*****************************************************
- *  Word
- *  └   WordNoun
- *      └   WordLiving
- *      └   WordObject
- *          └   WordEnviroment
- *  └   WordVerb
- *  └   WordAdj
- *  
- * 
- * 
- * 
- *****************************************************/
-
 public class WordNoun : Word {              // 명사
-    protected bool isMovable;       // 이동가능
-    protected bool isInteractive;   // 형용사가능
-    protected bool isChangable;     // 변환가능
-
-    public WordNoun(string name, WordRank[] availableRank)
-        : base(name, availableRank) {
-        _type = WordType.NOUN;
-
-        isMovable = true;
-        isInteractive = true;
-        isChangable = true;
+    public WordNoun(string name, WordRank rank)
+        : base(name, rank) {
+        _type |= WordType.NOUN;
     }
 }
 
-public class WordObject : WordNoun {        // 물건
-    protected bool isBreakable;     // 파괴가능
-
-    public WordObject(string name, WordRank[] availableRank)
-        : base(name, availableRank) {
-        isBreakable = true;
-    }
-}
-
-#region Word Object
-public class __Key : WordObject {
+public class __Key : WordNoun {
     public __Key()
-        : base(name: "열쇠",
-        availableRank: new WordRank[] { WordRank.NORMAL, WordRank.EPIC }) {
-        isBreakable = false;
-    }
-}
-#endregion
-
-public class WordEnviroment : WordObject {
-    public WordEnviroment(string name, WordRank[] availableRank)
-        : base(name, availableRank) {
-
+        : base(name: "열쇠", rank: WordRank.NORMAL | WordRank.EPIC) {
+        _type |=
+            WordType.isMovable | WordType.isChangable | WordType.isInteractive;
     }
 }
 
-#region Word Enviroment
-public class __Door : WordEnviroment {
+public class __Door : WordNoun {
     public __Door()
-        : base(name: "문",
-        availableRank: new WordRank[] { WordRank.NORMAL, WordRank.EPIC }) {
+        : base(name: "문", rank: WordRank.NORMAL | WordRank.EPIC) {
+        _type |=
+            WordType.isMovable | WordType.isChangable |
+            WordType.isInteractive | WordType.isBreakable;
     }
 }
 
-public class __Time : WordEnviroment {
+public class __Time : WordNoun {
     public __Time()
-        : base(name: "시간",
-        availableRank: new WordRank[] { WordRank.EPIC }) {
-        isChangable = false;
-        isMovable = false;
-        isBreakable = false;
+        : base(name: "시간", rank: WordRank.EPIC) {
+        _type |= WordType.isInteractive;
     }
 }
 
-public class __Floor : WordEnviroment {
+public class __Floor : WordNoun {
     public __Floor()
-        : base(name: "바닥",
-        availableRank: new WordRank[] { WordRank.NORMAL, WordRank.EPIC }) {
-    }
-}
-#endregion
-
-public class WordLiving : WordNoun {        // 생물
-
-    public WordLiving(string name, WordRank[] availableRank)
-        : base(name, availableRank) {
-
+        : base(name: "바닥", rank: WordRank.NORMAL | WordRank.EPIC) {
+        _type |=
+            WordType.isMovable | WordType.isChangable |
+            WordType.isInteractive | WordType.isBreakable;
     }
 }
 
-#region Word Living
-public class __Bird : WordLiving {
+public class __Bird : WordNoun {
     public __Bird()
-        : base(name: "새",
-        availableRank: new WordRank[] { WordRank.NORMAL }) {
-    }
-}
-#endregion
-
-public class WordPlayer : WordLiving {      // 플레이어
-    public WordPlayer(string name, WordRank[] availableRank)
-        : base(name, availableRank) {
-
+        : base(name: "새", rank: WordRank.NORMAL) {
+        _type |=
+            WordType.isMovable | WordType.isChangable |
+            WordType.isInteractive | WordType.isAnimal | WordType.isLiving;
     }
 }
 
-#region Word Player
-public class __Sori : WordPlayer {
+public class __Sori : WordNoun {
     public __Sori()
-        : base(name: "소리",
-        availableRank: new WordRank[] { WordRank.NORMAL, WordRank.EPIC }) {
+        : base(name: "소리", rank: WordRank.NORMAL | WordRank.EPIC) {
+        _type |=
+            WordType.isMovable | WordType.isChangable |
+            WordType.isInteractive | WordType.isLiving;
     }
 }
 
-public class __HP : WordPlayer {
+public class __HP : WordNoun {
     public __HP()
-        : base(name: "체력",
-        availableRank: new WordRank[] { WordRank.NORMAL, WordRank.EPIC }) {
-        isMovable = false;
+        : base(name: "체력", rank: WordRank.NORMAL | WordRank.EPIC) {
+        _type |=
+            WordType.isChangable | WordType.isInteractive;
     }
 }
 
-#endregion 
 
