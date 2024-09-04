@@ -1,4 +1,9 @@
+using System;
 using UnityEngine;
+
+enum CinematicType {
+    Intro, Forest
+}
 
 public class PlayerBehavior : MonoBehaviour {
     private PlayerInputActions playerInputAction;
@@ -17,6 +22,7 @@ public class PlayerBehavior : MonoBehaviour {
     public int StarCoin { get { return StarCoin; } }
     public bool IsCombineMode { get { return isCombineMode; } }
 
+    private bool[] isWatchedCinematic = new bool[Enum.GetValues(typeof(CinematicType)).Length];
 
     private void Awake() {
         starCoinManager = FindObjectOfType<StarCoinManager>();
@@ -34,6 +40,7 @@ public class PlayerBehavior : MonoBehaviour {
         playerHP = playerMaxHP;
         starCoin = 0;
         starCoinManager.UpdateCoinText(starCoin);
+        isWatchedCinematic[(int)CinematicType.Intro] = true;
     }
 
     private void OnEnable() {
@@ -47,13 +54,19 @@ public class PlayerBehavior : MonoBehaviour {
     }
 
     private void OnCombine() {
-        CombineMode();
+        // *************************************** //
+        // Toggle Combine Mode when Tab is pressed //
+        // *************************************** //
+        ToggleCombineMode();
     }
 
-    private void CombineMode() {
+    private void ToggleCombineMode() {
         isCombineMode = !isCombineMode;
-        if (IsCombineMode) testCombineObj.SetCombine();
-        else testCombineObj.UnsetCombine();
+
+        //Combine UI Set/Unset
+        //if (IsCombineMode) testCombineObj.SetCombine();
+        //else testCombineObj.UnsetCombine();
+
         playerAnimator.SetBool("isCombineMode", isCombineMode);
         CameraControl.Instance.ChangePlayerCamera();
     }
@@ -77,6 +90,7 @@ public class PlayerBehavior : MonoBehaviour {
 
     private void OnTriggerEnter(Collider other) {
         CheckEarningCoins(other);
+        CheckCinematicZone(other);
 
     }
 
@@ -92,8 +106,14 @@ public class PlayerBehavior : MonoBehaviour {
     }
 
     private void CheckCinematicZone(Collider zone) {
+        if (CameraControl.Instance.isDebugging) return; 
+        //TODO: REMOVE THIS LINE WHEN RELEASE
+
         if (zone.gameObject.layer == LayerMask.NameToLayer("CinematicZone")) {
-            if (zone.name == "Forest") CameraControl.Instance.SetCamera("Forest");
+           if (zone.name == "ForestEntrance" && !isWatchedCinematic[(int)CinematicType.Forest]) {
+                isWatchedCinematic[(int)CinematicType.Forest] = true;
+                CameraControl.Instance.SetCamera("Forest");
+            }
         }
     }
 
