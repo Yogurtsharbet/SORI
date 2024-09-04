@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerInvenController : MonoBehaviour {
+public class PlayerInvenController  : MonoBehaviour {
     private List<Word> inven = new List<Word>();
     private List<Word> Inven { get { return inven; } }
 
