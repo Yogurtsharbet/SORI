@@ -2,12 +2,14 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public enum FrameType {
-    AisB, AtoBisC, AandB, NotA
+    _Random, AisB, AtoBisC, AandB, NotA
 }
 
 public class Frame : MonoBehaviour {
+    private static FrameType[] allType = (FrameType[])Enum.GetValues(typeof(FrameType));
     private FrameType _type;
     private int blankCount = 0;
     private Word[] blankWord;
@@ -37,8 +39,8 @@ public class Frame : MonoBehaviour {
         isPersistence = yn;
     }
 
-    public Frame(FrameType type) {
-        _type = type;
+    public Frame(FrameType type = FrameType._Random) {
+        _type = type == FrameType._Random ? (FrameType)Random.Range(1, allType.Length) : type;
         switch (_type) {
             case FrameType.NotA:
                 blankCount = 1; break;
@@ -54,6 +56,7 @@ public class Frame : MonoBehaviour {
     }
 
     public bool CheckValidity() {
+        //TODO: 단어카드를 문장틀에 끌어다 놨을 때마다 호출해서 유효성 검사를 할 것!
         for (int i = 0; i < blankCount; i++)
             if (blankWord[i] == null) return false;
 
@@ -71,13 +74,12 @@ public class Frame : MonoBehaviour {
         return true;
     }
 
-    public bool CheckAisB() {
-
+    private bool CheckAisB() {
         Word wordA = blankWord[0];
         Word wordB = blankWord[1];
 
-        if (wordA is WordNoun noun && wordB is WordVerb verb) {
-            if(CheckNounisVerb(noun, verb)) {
+        if (wordA.Type == WordType.NOUN && wordB.Type == WordType.VERB) {
+            if(CheckNounisVerb(wordA, wordB)) {
                 switch(verb) {
                     case __Move move:
                         //move.Function();
@@ -92,8 +94,8 @@ public class Frame : MonoBehaviour {
 
 
 
-    public bool CheckNounisVerb(WordNoun noun, WordVerb verb) {
-        if (Word.CheckWordType(noun).Contains(Word.CheckWordType(verb))) {
+    private bool CheckNounisVerb(Word noun, Word verb) {
+        if (Word.CheckWordProperty(noun).Contains(Word.CheckWordProperty(verb))) {
 
         }
         return true;
