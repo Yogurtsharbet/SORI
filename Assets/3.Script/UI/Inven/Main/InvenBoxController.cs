@@ -40,8 +40,8 @@ public class InvenBoxController : MonoBehaviour, IPointerClickHandler, IBeginDra
 
     public void SetWordData(Word word) {
         wordText.text = word.Name;
-        typeIcon.color = word.GetTypeColor(word.Type);
-        rankIcon.color = word.GetRankColor(word.Rank);
+        typeIcon.color = word.TypeColor;
+        rankIcon.color = word.RankColor;
     }
 
     public void OnPointerClick(PointerEventData eventData) {

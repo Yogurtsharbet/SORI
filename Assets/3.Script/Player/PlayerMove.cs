@@ -8,6 +8,8 @@ public class PlayerMove : MonoBehaviour {
     private Animator playerAnimator;
     private Rigidbody playerRigid;
 
+    private PlayerRunningParticle Dust;
+
     private Vector3 moveDirection;
     private bool isDash = false;
     private bool isJump = false;
@@ -29,6 +31,8 @@ public class PlayerMove : MonoBehaviour {
         playerBehavior = GetComponent<PlayerBehavior>();
         playerAnimator = GetComponent<Animator>();
         playerRigid = GetComponent<Rigidbody>();
+
+        Dust = GetComponent<PlayerRunningParticle>();
 
         playerInputAction.PlayerActions.Move.performed += value => OnMove(value.ReadValue<Vector2>());
         playerInputAction.PlayerActions.Dash.performed += value => OnDash();
@@ -115,12 +119,14 @@ public class PlayerMove : MonoBehaviour {
     }
 
     private void Move() {
-        playerAnimator.SetFloat("MoveSpeed", currentSpeed);
-        if (moveDirection == Vector3.zero)
+        if (moveDirection == Vector3.zero) 
             currentSpeed -= decSpeedRate * Time.deltaTime;
-        else
+        else 
             currentSpeed += incSpeedRate * Time.deltaTime;
         currentSpeed = ClampSpeed(currentSpeed);
+
+        playerAnimator.SetFloat("MoveSpeed", currentSpeed);
+        Dust.SetDustRate(isJump ? 0 : currentSpeed);
 
         Vector3 targetPosition = playerRigid.position + (moveDirection * Time.deltaTime * currentSpeed);
         playerRigid.MovePosition(targetPosition);
@@ -142,8 +148,10 @@ public class PlayerMove : MonoBehaviour {
     }
 
     private void Jump() {
-        if (CheckMovementValidity())
+        if (CheckMovementValidity()) {
             playerRigid.AddForce(Vector3.up * Mathf.Sqrt(jumpSpeed), ForceMode.Impulse);
+            Dust.Jump();
+        }
     }
 
     private void OnCollisionEnter(Collision collision) {
@@ -156,8 +164,10 @@ public class PlayerMove : MonoBehaviour {
         float colliderTop = collision.collider.bounds.center.y + (collision.collider.bounds.size.y / 2);
         float playerBottom = playerCollider.bounds.center.y - (playerCollider.bounds.size.y / 2);
 
-        if (Mathf.Abs(playerBottom - colliderTop) <= checkJumpTolerance)
+        if (Mathf.Abs(playerBottom - colliderTop) <= checkJumpTolerance) {
             isJump = false;
+            Dust.Jump();
+        }
     }
 
     private void OnCollisionExit(Collision collision) {
@@ -173,6 +183,7 @@ public class PlayerMove : MonoBehaviour {
             }
         }
         else {
+            if (isJump) Dust.Jump();
             isJump = false;
         }
     }
@@ -214,8 +225,10 @@ public class PlayerMove : MonoBehaviour {
             Vector3 rayStartPosition = transform.position;
             rayStartPosition.y += 0.6f;
 
-            if (Physics.BoxCast(rayStartPosition, checkRayBoxSize, Vector3.down, transform.rotation, 0.7f))
+            if (Physics.BoxCast(rayStartPosition, checkRayBoxSize, Vector3.down, transform.rotation, 0.7f)) {
+                if (isJump) Dust.Jump();
                 isJump = false;
+            }
         }
     }
 

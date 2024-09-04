@@ -51,6 +51,7 @@ public class Word {
         new Color(1f, 0.8f, 0.19f)          //Çü¿ë»ç
     };
 
+    public Color RankColor { get { return RankColors[(int)Rank]; } }
     public Color GetRankColor(Word word) { return RankColors[(int)word.Rank]; }
 
     private Color[] RankColors = new Color[] {

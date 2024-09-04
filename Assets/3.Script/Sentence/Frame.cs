@@ -80,7 +80,7 @@ public class Frame : MonoBehaviour {
             if(CheckNounisVerb(noun, verb)) {
                 switch(verb) {
                     case __Move move:
-                        move.Function();
+                        //move.Function();
                         break;
                 }
             }
