@@ -56,7 +56,7 @@ public class MainManager : MonoBehaviour {
     }
 
     #region Active 세팅
-    private void openMainMenu() {
+    public void OpenMainMenu() {
         mainCanvas.gameObject.SetActive(false);
         mainMenuCanvas.gameObject.SetActive(true);
         loadCanvas.gameObject.SetActive(false);
@@ -81,28 +81,17 @@ public class MainManager : MonoBehaviour {
     #region 키보드 사용 설정
     private void onSubmit() {
         if (!isOpenMenu) {
-            openMainMenu();
+            OpenMainMenu();
             return;
         }
 
         //메인 -> 메인 상세 메뉴
         if (isOpenMenu && !isDetailMenu) {
-            menuAni.SetBool("Open", true);
-            mainMenuButtonManager.CloseMenuButtons();
-            isDetailMenu = true;
+            MainMenuClick();
         }
 
         //메인 상세 메뉴 -> 메뉴 선택
         if (isDetailMenu && !isOpenOption) {
-            if (mainMenuButtonManager.SelectMenuKey == 0 || mainMenuButtonManager.SelectMenuKey == 2) {
-                StartCoroutine(DelayedCo(true));
-            }
-            else if (mainMenuButtonManager.SelectMenuKey == 3) {
-                QuitGame();
-            }
-            else {
-                StartNewGame();
-            }
         }
 
         //옵션 메뉴
@@ -192,6 +181,21 @@ public class MainManager : MonoBehaviour {
     }
     #endregion
 
+    public void MainMenuClick() {
+        menuAni.SetBool("Open", true);
+        mainMenuButtonManager.CloseMenuButtons();
+        if (mainMenuButtonManager.SelectMenuKey == 0 || mainMenuButtonManager.SelectMenuKey == 2) {
+            StartCoroutine(DelayedCo(true));
+        }
+        else if (mainMenuButtonManager.SelectMenuKey == 3) {
+            QuitGame();
+        }
+        else {
+            StartNewGame();
+        }
+        isDetailMenu = true;
+    }
+
     //딜레이 코루틴
     IEnumerator DelayedCo(bool isDetailOpen) {
         yield return new WaitForSeconds(0.35f);
@@ -215,6 +219,13 @@ public class MainManager : MonoBehaviour {
 
     public void StartNewGame() {
         openLoad();
+        FadeControl.Instance.FadeOut();
+        StartCoroutine(NewGameDelayedCo());
+    }
+
+    IEnumerator NewGameDelayedCo() {
+        yield return new WaitForSeconds(1.5f);
+
         loadCanvas.GetComponent<SceneLoader>().LoadSceneAsync();
     }
 }
