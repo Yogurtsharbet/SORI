@@ -12,6 +12,8 @@ public class InvenContainerManager : MonoBehaviour {
     }
 
     public void CloseInventory() {
+        //TODO: temp inventory로 inventory 바꾸기
+        //TODO: 합성창 안에 단어 삭제 하기
         gameObject.SetActive(false);
     }
 }

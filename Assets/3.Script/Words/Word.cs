@@ -46,20 +46,20 @@ public class Word {
     public Color GetTypeColor(Word word) { return TypeColors[(int)GetWordType(word)]; }
 
     private Color[] TypeColors = new Color[] {
-        new Color(0.51f, 0.31f, 0.82f),     //명사
-        new Color(0.86f, 0.33f, 0.47f),     //동사
-        new Color(1f, 0.8f, 0.19f)          //형용사
+        new Color(0.61f, 0.49f, 0.78f),     //명사
+        new Color(0.93f, 0.52f, 0.62f),     //동사
+        new Color(0.93f, 0.8f, 0.41f)          //형용사
     };
 
     public Color RankColor { get { return RankColors[(int)Rank]; } }
     public Color GetRankColor(Word word) { return RankColors[(int)word.Rank]; }
 
     private Color[] RankColors = new Color[] {
-        new Color(0.87f, 0.87f,  0.87f),    //일반
-        new Color(0.18f, 0.24f, 0.61f),     //희귀
-        new Color(1f, 0.8f, 0.19f),         //전설
-        new Color(0.51f, 0.31f, 0.82f),     //유일
-        new Color(0.86f, 0.33f, 0.47f)      //특수
+        new Color(0.59f, 0.59f,  0.59f),    //일반
+        new Color(0.38f,0.59f, 0.82f),      //희귀
+        new Color(0.93f, 0.8f, 0.41f),      //전설
+        new Color(0.61f, 0.49f, 0.78f),     //유일
+        new Color(0.85f, 0.53f, 0.75f)      //특수
     };
 
     public string GetRankText() {

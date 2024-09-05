@@ -1,9 +1,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerInvenController  : MonoBehaviour {
+public class PlayerInvenController : MonoBehaviour {
     private List<Word> inven = new List<Word>();
-    private List<Word> Inven { get { return inven; } }
+    public List<Word> Inven { get { return inven; } }
 
     private int invenOpenCount;
     public int InvenOpenCount { get { return invenOpenCount; } }
@@ -18,11 +18,23 @@ public class PlayerInvenController  : MonoBehaviour {
     private void Awake() {
         initInven();
     }
+    private void Start() {
+        testData();
+    }
+
+    private void testData() {
+        inven[0] = new Word("부서지다", WordRank.NORMAL);
+        inven[1] = new Word("상자", WordRank.NORMAL);
+        inven[2] = new Word("새", WordRank.NORMAL);
+        inven[3] = new Word("이동속도", WordRank.NORMAL);
+        inven[4] = new Word("탄다", WordRank.NORMAL);
+        UpdateInvenInvoke();
+    }
 
     private void initInven() {
-        invenOpenCount  = 12;
+        invenOpenCount = 12;
         for (int i = 0; i < invenOpenCount; i++) {
-            AddInvenSlot(); 
+            AddInvenSlot();
         }
     }
 
@@ -58,6 +70,7 @@ public class PlayerInvenController  : MonoBehaviour {
                 return;
             }
         }
+        UpdateInvenInvoke();
     }
 
     //새 단어 추가
@@ -68,11 +81,13 @@ public class PlayerInvenController  : MonoBehaviour {
                 return;
             }
         }
+        UpdateInvenInvoke();
     }
 
     //특정 인덱스에 새 단어 추가
     public void AddItemIndex(Word newWord, int index) {
         inven[index] = newWord;
+        UpdateInvenInvoke();
     }
 
     //특정 인덱스의 단어와 현재 선택한 단어와 인덱스 스위칭
@@ -80,16 +95,22 @@ public class PlayerInvenController  : MonoBehaviour {
         Word tempWord = inven[targetIndex];
         inven[targetIndex] = inven[thisIndex];
         inven[thisIndex] = tempWord;
+        UpdateInvenInvoke();
     }
 
     //특정 인덱스의 단어 삭제
     public void RemoveItemIndex(int index) {
         inven[index] = null;
+        UpdateInvenInvoke();
     }
 
     //특정 인덱스의 단어 getter
     public Word GetWordIndex(int index) {
         return inven[index];
+    }
+
+    public void SetInvenReset(List<Word> list) {
+        inven = list;
     }
 
 }

@@ -12,4 +12,16 @@ public class SynthesisManager : MonoBehaviour {
         return slotControllers[num].GetComponent<RectTransform>();
     }
 
+    public bool GetExistFromIndex(int index) {
+        return slotControllers[index].GetWordExist();
+    }
+
+    public Word GetSlotWordFromIndex(int index) {
+        return slotControllers[index].GetSlotWord();
+    }
+
+    public void SlotItemChangeFromIndex(int index, Word word) {
+        slotControllers[index].RemoveSlotWord();
+        slotControllers[index].SetSlotWord(word);
+    }
 }

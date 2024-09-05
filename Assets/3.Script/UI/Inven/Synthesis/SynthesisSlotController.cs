@@ -4,10 +4,13 @@ using UnityEngine.UI;
 public class SynthesisSlotController : MonoBehaviour {
     private int key;
 
+    private Word thisWord;
+
     private Text wordText;
     private Image typeIcon;
     private Image rankOutIcon;
     private Image rankInnerIcon;
+    private Image continueIcon;
 
     private void Awake() {
         wordText = GetComponentInChildren<Text>();
@@ -22,13 +25,18 @@ public class SynthesisSlotController : MonoBehaviour {
             else if (img.name.Equals("RankColor")) {
                 rankInnerIcon = img;
             }
+            else if (img.name.Equals("Continue")) {
+                continueIcon = img;
+            }
         }
 
-        if(gameObject.name.Contains("0")){
+        if (gameObject.name.Contains("0")) {
             key = 0;
-        }else if (gameObject.name.Contains("1")) {
+        }
+        else if (gameObject.name.Contains("1")) {
             key = 1;
-        }else if (gameObject.name.Contains("2")) {
+        }
+        else if (gameObject.name.Contains("2")) {
             key = 2;
         }
         else {
@@ -45,6 +53,7 @@ public class SynthesisSlotController : MonoBehaviour {
         typeIcon.enabled = true;
         rankInnerIcon.enabled = true;
         rankOutIcon.enabled = true;
+        continueIcon.enabled = true;
     }
 
     public void NotExistWord() {
@@ -52,5 +61,27 @@ public class SynthesisSlotController : MonoBehaviour {
         typeIcon.enabled = false;
         rankInnerIcon.enabled = false;
         rankOutIcon.enabled = false;
+        continueIcon.enabled = false;
+    }
+
+    public Word GetSlotWord() {
+        return thisWord;
+    }
+
+    public void RemoveSlotWord() {
+        thisWord = null;
+    }
+
+    public void SetSlotWord(Word word) {
+        thisWord = word;
+    }
+
+    public bool GetWordExist() {
+        if (thisWord != null) {
+            return true;
+        }
+        else {
+            return false;
+        }
     }
 }

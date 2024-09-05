@@ -9,18 +9,20 @@ public class InvenSlotController : MonoBehaviour, IPointerClickHandler, IBeginDr
 
     private int key;
 
-    private bool isSlotOpen;
     private Text wordText;
     private Image typeIcon;
     private Image rankOutIcon;
     private Image rankInnerIcon;
+    private Image continueIcon;
+
+    private Word thisWord;
 
     private Canvas canvas;
     private RectTransform originalParent;
     private Vector2 originalPosition;
 
     private void Awake() {
-        closeController = FindObjectOfType<InvenSlotCloseController>();
+        closeController = GetComponentInChildren<InvenSlotCloseController>();
         synthesisManager = FindObjectOfType<SynthesisManager>();
         invenSlotManager = FindObjectOfType<InvenSlotManager>();
         Canvas[] canvases = FindObjectsOfType<Canvas>();
@@ -42,6 +44,8 @@ public class InvenSlotController : MonoBehaviour, IPointerClickHandler, IBeginDr
             }
             else if (img.name.Equals("RankColor")) {
                 rankInnerIcon = img;
+            }else if (img.name.Equals("Continue")) {
+                continueIcon = img;
             }
         }
     }
@@ -50,18 +54,52 @@ public class InvenSlotController : MonoBehaviour, IPointerClickHandler, IBeginDr
         this.key = num;
     }
 
+    public void CheckWordExist() {
+        if (thisWord != null) {
+            ExistWord();
+            SetWordData(thisWord);
+        }
+        else {
+            NotExistWord();
+        }
+    }
+
+    public void ExistWord() {
+        wordText.enabled = true;
+        typeIcon.enabled = true;
+        rankInnerIcon.enabled = true;
+        rankOutIcon.enabled = true;
+        continueIcon.enabled = true;
+    }
+
+    public void NotExistWord() {
+        wordText.enabled = false;
+        typeIcon.enabled = false;
+        rankInnerIcon.enabled = false;
+        rankOutIcon.enabled = false;
+        continueIcon.enabled = false;
+    }
+
+    public void SetSlotWord(Word word) {
+        thisWord = word;
+        CheckWordExist();
+    }
+
     public void SetWordData(Word word) {
         wordText.text = word.Name;
         typeIcon.color = word.TypeColor;
         rankInnerIcon.color = word.RankColor;
+        //TODO: 단어에 영구속성 있으면 continue icon enable
     }
 
     public void CloseSlot() {
         closeController.CloseEnable();
+        CheckWordExist();
     }
 
     public void OpenSlot() {
         closeController.OpenDisEnable();
+        CheckWordExist();
     }
 
     #region 마우스 event
@@ -85,14 +123,32 @@ public class InvenSlotController : MonoBehaviour, IPointerClickHandler, IBeginDr
 
     public void OnEndDrag(PointerEventData eventData) {
         int synthesisSlotNum  = checkSynthesisSlot(eventData);
-        if(synthesisSlotNum != -1) {
-            //조합창으로 이동
-            return;
+
+        wordText.transform.SetParent(originalParent, true);
+        wordText.rectTransform.anchoredPosition = originalPosition;
+
+        invenSlotManager.SetInvenSaveTemp();
+
+        if (synthesisSlotNum != -1) {
+            //합성창으로 이동
+            // ! 그전 인벤 가지고있어서 만약 문장 조합 혹은, 단어 합성창을 닫으면 원래 인벤으로 바꾸기
+            //단어 없으면 해당 슬롯으로 단어 이동. 기존 인벤 데이터는 null로 초기화
+            if (synthesisManager.GetExistFromIndex(synthesisSlotNum)) {
+                //합성창에 단어 이미 있으면 해당 단어와 인벤 스위칭
+                invenSlotManager.ChangeInvenToSynthesisSlot(synthesisSlotNum);
+            }
+            else {
+                invenSlotManager.SetWordAdd(synthesisSlotNum);
+            }
         }
         else {
             if(checkAnotherSlot(eventData) != -1) {
                 //인벤 내부 스위칭
-            return;
+
+            }
+            else {
+                //문장 제작창
+
             }
         }
     }
