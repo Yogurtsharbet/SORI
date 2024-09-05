@@ -10,6 +10,7 @@ public class CameraControl : MonoBehaviour {
 
     private CinemachineVirtualCamera cameraTopView;
     private CinemachineVirtualCamera cameraCombineView;
+    private CinemachineVirtualCamera cameraSelectView;
 
     private CinemachineBlendListCamera cinematicIntro;
     private CinemachineBlendListCamera cinematicForest;
@@ -32,6 +33,7 @@ public class CameraControl : MonoBehaviour {
 
         cameraTopView = GetComponentsInChildren<CinemachineVirtualCamera>()[0];
         cameraCombineView = GetComponentsInChildren<CinemachineVirtualCamera>()[1];
+        cameraSelectView = GetComponentsInChildren<CinemachineVirtualCamera>()[2];
 
         var cinematics = GetComponentsInChildren<CinemachineBlendListCamera>();
         cinematicIntro = cinematics[0];
@@ -39,6 +41,7 @@ public class CameraControl : MonoBehaviour {
 
         allCamera.Add(cameraTopView);
         allCamera.Add(cameraCombineView);
+        allCamera.Add(cameraSelectView);
         allCamera.Add(cinematicIntro);
         allCamera.Add(cinematicForest);
     }

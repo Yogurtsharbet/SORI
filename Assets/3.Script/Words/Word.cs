@@ -173,7 +173,6 @@ public class Word {
         _type = newWord.Type;
         _rank = rank == WordRank._Random ? SelectRank(rank) : rank;
     }
-
     public Word(WordKey key, string name, WordRank rank, WordType type) {
         // 단어 데이터 생성 ( 단어 리스트에 저장 )
         _key = key;
@@ -182,4 +181,7 @@ public class Word {
         _type = type;
     }
 
+    public bool IsNoun { get { return Type == WordType.NOUN; } }
+    public bool IsVerb { get { return Type == WordType.VERB; } }
+    public bool IsAdj { get { return Type == WordType.ADJ; } }
 }
