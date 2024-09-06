@@ -16,7 +16,7 @@ public class CameraControl : MonoBehaviour {
     private CinemachineBlendListCamera cinematicForest;
 
     private List<CinemachineVirtualCameraBase> allCamera = new List<CinemachineVirtualCameraBase>();
-    private CinemachineVirtualCameraBase currentCamera;
+    public CinemachineVirtualCameraBase currentCamera { get; private set; }
 
     private PlayerMove playerMove;
     private Animator playerAnimator;
