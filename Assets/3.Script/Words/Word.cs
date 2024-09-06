@@ -3,46 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-public enum WordType {
-    Null = 0
-
-        , NOUN = 1 << 0
-        , VERB = 1 << 1
-        , ADJ = 1 << 2
-        , isMovable = 1 << 3
-        , isChangable = 1 << 4
-        , isInteractive = 1 << 5
-        , isBreakable = 1 << 6
-        , isAnimal = 1 << 7
-        , isLiving = 1 << 8
-
-    , All = int.MaxValue
-}
-
-public enum WordRank {
-    _Random = 0
-
-        , NORMAL = 1 << 0
-        , EPIC = 1 << 1
-        , LEGEND = 1 << 2
-        , UNIQUE = 1 << 3
-        , SPECIAL = 1 << 4
-
-    , All = int.MaxValue
-}
-
-public enum WordKey {
-    _Random,
-    SORI,
-    DOOR,
-    KEY,
-    FLOOR,
-    BIRD,
-    HP,
-    TIME,
-    MOVE
-}
-
 public class Word {
     // Member Variables
     protected readonly WordKey _key;
@@ -111,11 +71,12 @@ public class Word {
 
     public static WordType GetWordType(Word word) {
         // Return Noun, Verb, Adj 
-        foreach (WordType each in allType) 
-            if ((each & word.Type) != 0) return each;
+        foreach (WordType each in allType)
+            if ((each & word._type) != 0) return each;
 
         return WordType.Null;
     }
+
     public static List<WordType> CheckWordProperty(Word word) {
         // Return Word Property
         List<WordType> types = new List<WordType>();
@@ -127,6 +88,7 @@ public class Word {
         }
         return types;
     }
+
     private WordRank SelectRank(WordRank targetRank, bool isRandom = true) {
         List<WordRank> availableRank = new List<WordRank>();
 
@@ -141,20 +103,9 @@ public class Word {
             return availableRank[0];
     }
 
-    // Word List
-    private Word[] words = new Word[] {
-        new Word(WordKey.SORI, "소리", WordRank.NORMAL | WordRank.EPIC,
-                    WordType.NOUN | WordType.isMovable | WordType.isChangable |
-                    WordType.isInteractive | WordType.isLiving),
-        new Word(WordKey.DOOR, "문", WordRank.NORMAL | WordRank.EPIC,
-                    WordType.isMovable | WordType.isChangable |
-                    WordType.isInteractive | WordType.isBreakable),
-        new Word(WordKey.MOVE, "움직인다", WordRank.EPIC | WordRank.LEGEND,
-                    WordType.VERB | WordType.isMovable),
-    };
 
     private Word FindWordByKey(WordKey key) {
-        foreach(Word word in words) 
+        foreach (Word word in WordData.words)
             if (word.Key == key) return word;
         return null;
     }
@@ -171,7 +122,7 @@ public class Word {
         _key = newWord.Key;
         _name = newWord.Name;
         _type = newWord.Type;
-        _rank = rank == WordRank._Random ? SelectRank(rank) : rank;
+        _rank = rank == WordRank._Random ? SelectRank(newWord.Rank) : rank;
     }
     public Word(WordKey key, string name, WordRank rank, WordType type) {
         // 단어 데이터 생성 ( 단어 리스트에 저장 )
