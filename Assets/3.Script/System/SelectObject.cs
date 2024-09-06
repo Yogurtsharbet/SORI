@@ -39,6 +39,8 @@ public class SelectObject : MonoBehaviour {
     private void Update() {
         if (Physics.Raycast(currentCamera.ScreenPointToRay(mousePosition),
             out rayHit, maxDistance: float.MaxValue, layerMask)) {
+            if (rayHit.collider.name.Contains("Flower"))
+                Debug.Log("WOW");
             nowSelected = rayHit.collider.GetComponent<Renderer>();
             if (prevSelected == null) prevSelected = nowSelected;
 
