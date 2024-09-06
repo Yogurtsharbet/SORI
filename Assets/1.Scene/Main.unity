@@ -84146,7 +84146,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: "\uC544\uC57C\uC5B4\uC5EC\uC624\n\uC544\uC57C\uC5B4\uC5EC\uC624"
+  m_Text: Tooltip
 --- !u!222 &1943403715
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -85965,8 +85965,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: "\uB2E8\uC5B4 \uD569\uC131\uC744 \uD560 \uC218 \uC5C6\uC2B5\uB2C8\uB2E4\n\uD569\uC131
-    \uC2AC\uB86F\uC744 \uD655\uC778\uD574\uC8FC\uC138\uC694."
+  m_Text: DIalog
 --- !u!222 &2019528376
 CanvasRenderer:
   m_ObjectHideFlags: 0

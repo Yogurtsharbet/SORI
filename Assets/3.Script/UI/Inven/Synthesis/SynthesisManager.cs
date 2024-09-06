@@ -56,8 +56,7 @@ public class SynthesisManager : MonoBehaviour {
     public void GetNewWord() {
         if (CheckCanSynthesis()) {
             //합성하기 버튼 눌렀을때, 랜덤으로 새 단어 얻음
-            //Word newWord = Word.GetWord();
-            Word newWord = new Word("테스트", WordRank.EPIC);
+            Word newWord = Word.GetWord();
             slotControllers[3].SetSlotWord(newWord);
             //얻은단어 2초 있다가 인벤으로 이동
         }

@@ -23,11 +23,11 @@ public class PlayerInvenController : MonoBehaviour {
     }
 
     private void testData() {
-        inven[0] = new Word("부서지다", WordRank.NORMAL);
-        inven[1] = new Word("상자", WordRank.NORMAL);
-        inven[2] = new Word("새", WordRank.NORMAL);
-        inven[3] = new Word("이동속도", WordRank.NORMAL);
-        inven[4] = new Word("탄다", WordRank.NORMAL);
+        inven[0] = Word.GetWord();
+        inven[1] = Word.GetWord();
+        inven[2] = Word.GetWord();
+        inven[3] = Word.GetWord();
+        inven[4] = Word.GetWord();
         UpdateInvenInvoke();
     }
 
