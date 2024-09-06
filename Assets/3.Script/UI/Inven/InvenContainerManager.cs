@@ -3,37 +3,18 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class InvenContainerManager : MonoBehaviour {
-    private InvenMainController invenMainContainer;
-    private SynthesisController synthesisContainer;
-    private TabsManager tabsManager;
+    private SynthesisManager synthesisManager;
 
     private void Awake() {
-        invenMainContainer = FindObjectOfType<InvenMainController>();
-        synthesisContainer = FindObjectOfType<SynthesisController>();
-        tabsManager = FindObjectOfType<TabsManager>();
+        synthesisManager = FindObjectOfType<SynthesisManager>();
     }
 
-    private void Start() {
-        ClickMainInvenTab();
-    }
-
-    public void ClickMainInvenTab() {
-        invenMainContainer.OpenInvenMainContainer();
-        synthesisContainer.CloseSyntheContianer();
-        tabsManager.MainTabActive();
-    }
-
-    public void ClickSynthesisTab() {
-        invenMainContainer.CloseInvenMainContainer();
-        synthesisContainer.OpenSyntheContainer();
-        tabsManager.SynthesisTabActive();
-    }
-
-    public void ClickInvenContainerClose() {
-        gameObject.SetActive(false);
-    }
-
-    public void InvenContianerOpen() {
+    public void OpenInventory() {
         gameObject.SetActive(true);
+    }
+
+    public void CloseInventory() {
+        synthesisManager.ResetAllSlot();
+        gameObject.SetActive(false);
     }
 }
