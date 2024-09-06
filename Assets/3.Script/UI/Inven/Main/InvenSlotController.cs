@@ -26,7 +26,7 @@ public class InvenSlotController : MonoBehaviour, IPointerClickHandler, IBeginDr
         synthesisManager = FindObjectOfType<SynthesisManager>();
         invenSlotManager = FindObjectOfType<InvenSlotManager>();
         Canvas[] canvases = FindObjectsOfType<Canvas>();
-        foreach(Canvas cn in canvases) {
+        foreach (Canvas cn in canvases) {
             if (cn.name.Equals("GameCanvas")) {
                 canvas = cn;
             }
@@ -44,7 +44,8 @@ public class InvenSlotController : MonoBehaviour, IPointerClickHandler, IBeginDr
             }
             else if (img.name.Equals("RankColor")) {
                 rankInnerIcon = img;
-            }else if (img.name.Equals("Continue")) {
+            }
+            else if (img.name.Equals("Continue")) {
                 continueIcon = img;
             }
         }
@@ -122,12 +123,10 @@ public class InvenSlotController : MonoBehaviour, IPointerClickHandler, IBeginDr
     }
 
     public void OnEndDrag(PointerEventData eventData) {
-        int synthesisSlotNum  = checkSynthesisSlot(eventData);
+        int synthesisSlotNum = checkSynthesisSlot(eventData);
 
         wordText.transform.SetParent(originalParent, true);
         wordText.rectTransform.anchoredPosition = originalPosition;
-
-        invenSlotManager.SetInvenSaveTemp();
 
         if (synthesisSlotNum != -1) {
             //합성창으로 이동
@@ -135,14 +134,14 @@ public class InvenSlotController : MonoBehaviour, IPointerClickHandler, IBeginDr
             //단어 없으면 해당 슬롯으로 단어 이동. 기존 인벤 데이터는 null로 초기화
             if (synthesisManager.GetExistFromIndex(synthesisSlotNum)) {
                 //합성창에 단어 이미 있으면 해당 단어와 인벤 스위칭
-                invenSlotManager.ChangeInvenToSynthesisSlot(synthesisSlotNum);
+                invenSlotManager.SwitchingInvenToSynthesisSlot(key, synthesisSlotNum);
             }
             else {
-                invenSlotManager.SetWordAdd(synthesisSlotNum);
+                invenSlotManager.SetWordAdd(key, synthesisSlotNum);
             }
         }
         else {
-            if(checkAnotherSlot(eventData) != -1) {
+            if (checkAnotherSlot(eventData) != -1) {
                 //인벤 내부 스위칭
 
             }
@@ -154,9 +153,10 @@ public class InvenSlotController : MonoBehaviour, IPointerClickHandler, IBeginDr
     }
 
     private int checkSynthesisSlot(PointerEventData eventData) {
-        if(RectTransformUtility.RectangleContainsScreenPoint(synthesisManager.GetSlotRectTransform(0), eventData.position, eventData.pressEventCamera)) {
+        if (RectTransformUtility.RectangleContainsScreenPoint(synthesisManager.GetSlotRectTransform(0), eventData.position, eventData.pressEventCamera)) {
             return 0;
-        }else if(RectTransformUtility.RectangleContainsScreenPoint(synthesisManager.GetSlotRectTransform(1), eventData.position, eventData.pressEventCamera)) {
+        }
+        else if (RectTransformUtility.RectangleContainsScreenPoint(synthesisManager.GetSlotRectTransform(1), eventData.position, eventData.pressEventCamera)) {
             return 1;
         }
         else if (RectTransformUtility.RectangleContainsScreenPoint(synthesisManager.GetSlotRectTransform(2), eventData.position, eventData.pressEventCamera)) {
@@ -172,8 +172,8 @@ public class InvenSlotController : MonoBehaviour, IPointerClickHandler, IBeginDr
 
     private int checkAnotherSlot(PointerEventData eventData) {
         int slotIndex = -1;
-        for( int i = 0; i < 21; i++) {
-            if(RectTransformUtility.RectangleContainsScreenPoint(synthesisManager.GetSlotRectTransform(i), eventData.position, eventData.pressEventCamera)) {
+        for (int i = 0; i < 21; i++) {
+            if (RectTransformUtility.RectangleContainsScreenPoint(synthesisManager.GetSlotRectTransform(i), eventData.position, eventData.pressEventCamera)) {
                 slotIndex = i;
                 break;
             }

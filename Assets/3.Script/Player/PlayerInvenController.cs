@@ -85,7 +85,7 @@ public class PlayerInvenController : MonoBehaviour {
     }
 
     //특정 인덱스에 새 단어 추가
-    public void AddItemIndex(Word newWord, int index) {
+    public void AddItem(Word newWord, int index) {
         inven[index] = newWord;
         UpdateInvenInvoke();
     }
@@ -111,6 +111,7 @@ public class PlayerInvenController : MonoBehaviour {
 
     public void SetInvenReset(List<Word> list) {
         inven = list;
+        UpdateInvenInvoke();
     }
 
 }

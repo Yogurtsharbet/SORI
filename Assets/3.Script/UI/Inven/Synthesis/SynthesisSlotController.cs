@@ -4,6 +4,7 @@ using UnityEngine.UI;
 public class SynthesisSlotController : MonoBehaviour {
     private int key;
 
+    private int originInvenIndex = -1;
     private Word thisWord;
 
     private Text wordText;
@@ -48,7 +49,7 @@ public class SynthesisSlotController : MonoBehaviour {
         NotExistWord();
     }
 
-    public void ExistWord() {
+    private void ExistWord() {
         wordText.enabled = true;
         typeIcon.enabled = true;
         rankInnerIcon.enabled = true;
@@ -56,24 +57,44 @@ public class SynthesisSlotController : MonoBehaviour {
         continueIcon.enabled = true;
     }
 
-    public void NotExistWord() {
+    private void NotExistWord() {
         wordText.enabled = false;
         typeIcon.enabled = false;
         rankInnerIcon.enabled = false;
         rankOutIcon.enabled = false;
         continueIcon.enabled = false;
+
+        wordText.text = string.Empty;
+        typeIcon.color = new Color(1f, 1f, 1f);
+        rankInnerIcon.color = new Color(1f, 1f, 1f);
     }
 
     public Word GetSlotWord() {
         return thisWord;
     }
 
+    public int GetWordOriginInvenIndex() {
+        return originInvenIndex;
+    }
+
     public void RemoveSlotWord() {
         thisWord = null;
+        originInvenIndex = -1;
+        NotExistWord();
+    }
+
+    //재조합 슬롯에 단어 추가 후 인벤에서 단어 삭제
+    public void SetSlotWord(Word word, int invenIndex) {
+        thisWord = word;
+        originInvenIndex = invenIndex;
+        ExistWord();
+        SetWordData(thisWord);
     }
 
     public void SetSlotWord(Word word) {
         thisWord = word;
+        ExistWord();
+        SetWordData(thisWord);
     }
 
     public bool GetWordExist() {
@@ -83,5 +104,12 @@ public class SynthesisSlotController : MonoBehaviour {
         else {
             return false;
         }
+    }
+
+    public void SetWordData(Word word) {
+        wordText.text = word.Name;
+        typeIcon.color = word.TypeColor;
+        rankInnerIcon.color = word.RankColor;
+        //TODO: 단어에 영구속성 있으면 continue icon enable
     }
 }

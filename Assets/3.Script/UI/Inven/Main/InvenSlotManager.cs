@@ -46,6 +46,8 @@ public class InvenSlotManager : MonoBehaviour {
         for (int i = 0; i < playerInvenController.InvenOpenCount; i++) {
             invenSlotControllers[i].OpenSlot();
         }
+
+        SetInvenSaveTemp();
     }
 
     private void OnDestroy() {
@@ -64,9 +66,11 @@ public class InvenSlotManager : MonoBehaviour {
     }
 
     public void SetInvenSaveTemp() {
-        tempInven = playerInvenController.Inven;
+        List<Word> tempList = playerInvenController.Inven;
+        for (int i = 0; i < tempList.Count; i++) {
+            tempInven.Add(tempList[i]);
+        }
     }
-
 
     //슬롯 번호로 RectTransform return
     private RectTransform GetInvenSlotRectTransfor(int num) {
@@ -91,21 +95,22 @@ public class InvenSlotManager : MonoBehaviour {
         prevSelectInvenIndex = selectInvenIndex;
     }
 
-    public void ChangeInvenToSynthesisSlot(int index) {
-        Word tempWord = playerInvenController.GetWordIndex(selectInvenIndex);
-        playerInvenController.RemoveItemIndex(selectInvenIndex);
-        playerInvenController.AddItemIndex(synthesisManager.GetSlotWordFromIndex(index), selectInvenIndex);
-        synthesisManager.SlotItemChangeFromIndex(index, tempWord);
+    //합성창 index에 있는 단어와 인벤 단어 스위칭
+    public void SwitchingInvenToSynthesisSlot(int invenIndex, int index) {
+        Word tempWord = playerInvenController.GetWordIndex(invenIndex);
+        playerInvenController.RemoveItemIndex(invenIndex);
+        playerInvenController.AddItem(synthesisManager.GetSlotWordFromIndex(index), invenIndex);
+        synthesisManager.SlotItemChangeFromIndex(index, tempWord, invenIndex);
     }
 
     //단어 아이템 소모 하기전 행동 취소로 인벤 초기화
-    public void ResetInvenToTempInven() {
+    public void TempInvenToPlayerInven() {
         playerInvenController.SetInvenReset(tempInven);
     }
 
     //선택한 index슬롯에 단어 추가
-    public void SetWordAdd(int index) {
-        synthesisManager.SlotItemChangeFromIndex(index, playerInvenController.GetWordIndex(selectInvenIndex));
+    public void SetWordAdd(int invenIndex, int index) {
+        synthesisManager.SlotItemChangeFromIndex(index, playerInvenController.GetWordIndex(invenIndex), invenIndex);
+        playerInvenController.RemoveItemIndex(invenIndex);
     }
-
 }
