@@ -209,6 +209,34 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": false
                 }
             ]
+        },
+        {
+            ""name"": ""Camera"",
+            ""id"": ""7eb05334-7a2b-40f6-8c84-137571ecb86b"",
+            ""actions"": [
+                {
+                    ""name"": ""Click"",
+                    ""type"": ""Button"",
+                    ""id"": ""79e8d161-9057-468e-a8bb-5760d01d8345"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""e29d9077-3462-4ae4-adf2-cefd232457ea"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Click"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         }
     ],
     ""controlSchemes"": [
@@ -236,6 +264,9 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
         m_PlayerActions_Dash = m_PlayerActions.FindAction("Dash", throwIfNotFound: true);
         m_PlayerActions_Jump = m_PlayerActions.FindAction("Jump", throwIfNotFound: true);
         m_PlayerActions_Combine = m_PlayerActions.FindAction("Combine", throwIfNotFound: true);
+        // Camera
+        m_Camera = asset.FindActionMap("Camera", throwIfNotFound: true);
+        m_Camera_Click = m_Camera.FindAction("Click", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -348,6 +379,39 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
         }
     }
     public PlayerActionsActions @PlayerActions => new PlayerActionsActions(this);
+
+    // Camera
+    private readonly InputActionMap m_Camera;
+    private ICameraActions m_CameraActionsCallbackInterface;
+    private readonly InputAction m_Camera_Click;
+    public struct CameraActions
+    {
+        private @PlayerInputActions m_Wrapper;
+        public CameraActions(@PlayerInputActions wrapper) { m_Wrapper = wrapper; }
+        public InputAction @Click => m_Wrapper.m_Camera_Click;
+        public InputActionMap Get() { return m_Wrapper.m_Camera; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(CameraActions set) { return set.Get(); }
+        public void SetCallbacks(ICameraActions instance)
+        {
+            if (m_Wrapper.m_CameraActionsCallbackInterface != null)
+            {
+                @Click.started -= m_Wrapper.m_CameraActionsCallbackInterface.OnClick;
+                @Click.performed -= m_Wrapper.m_CameraActionsCallbackInterface.OnClick;
+                @Click.canceled -= m_Wrapper.m_CameraActionsCallbackInterface.OnClick;
+            }
+            m_Wrapper.m_CameraActionsCallbackInterface = instance;
+            if (instance != null)
+            {
+                @Click.started += instance.OnClick;
+                @Click.performed += instance.OnClick;
+                @Click.canceled += instance.OnClick;
+            }
+        }
+    }
+    public CameraActions @Camera => new CameraActions(this);
     private int m_KeyboardSchemeIndex = -1;
     public InputControlScheme KeyboardScheme
     {
@@ -363,5 +427,9 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
         void OnDash(InputAction.CallbackContext context);
         void OnJump(InputAction.CallbackContext context);
         void OnCombine(InputAction.CallbackContext context);
+    }
+    public interface ICameraActions
+    {
+        void OnClick(InputAction.CallbackContext context);
     }
 }

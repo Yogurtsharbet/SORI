@@ -29,7 +29,7 @@ public class WordInfoController : MonoBehaviour {
         if (isViewInfo) {
             Word selectWord = playerInvenController.GetWordIndex(index);
             infoTitle.text = selectWord.Name;
-            infoContent.text = $"→ {selectWord.GetRankText()} 등급\n→ {selectWord.GetTypeText()}";
+            infoContent.text = $"→ {selectWord.RankText} 등급\n→ {selectWord.TypeText}";
         }
         else {
             infoTitle.text = string.Empty;

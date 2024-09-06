@@ -187,6 +187,34 @@
                     "isPartOfComposite": false
                 }
             ]
+        },
+        {
+            "name": "Camera",
+            "id": "7eb05334-7a2b-40f6-8c84-137571ecb86b",
+            "actions": [
+                {
+                    "name": "Click",
+                    "type": "Button",
+                    "id": "79e8d161-9057-468e-a8bb-5760d01d8345",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "e29d9077-3462-4ae4-adf2-cefd232457ea",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Click",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
         }
     ],
     "controlSchemes": [
