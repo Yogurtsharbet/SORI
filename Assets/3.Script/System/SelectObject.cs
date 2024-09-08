@@ -4,6 +4,7 @@ using Cinemachine;
 using System.Collections.Generic;
 
 public class SelectObject : MonoBehaviour {
+    private CameraControl cameraControl;
     private CinemachineBrain cameraBrain;
     private DefaultInputActions inputAction;
 
@@ -20,6 +21,7 @@ public class SelectObject : MonoBehaviour {
     private List<Material> selectedMaterials = new List<Material>();
 
     private void Awake() {
+        cameraControl = FindObjectOfType<CameraControl>();
         cameraBrain = FindObjectOfType<CinemachineBrain>();
         inputAction = new DefaultInputActions();
         inputAction.UI.Point.performed += value => OnPoint(value.ReadValue<Vector2>());
@@ -37,17 +39,33 @@ public class SelectObject : MonoBehaviour {
     }
 
     private void Update() {
-        if (Physics.Raycast(currentCamera.ScreenPointToRay(mousePosition),
-            out rayHit, maxDistance: float.MaxValue, layerMask)) {
-            if (rayHit.collider.name.Contains("Flower"))
-                Debug.Log("WOW");
-            nowSelected = rayHit.collider.GetComponent<Renderer>();
-            if (prevSelected == null) prevSelected = nowSelected;
+        FindObject();
+    }
 
-            if (prevSelected != nowSelected) {
-                ApplyOutline(nowSelected);
+    private void FindObject() {
+        var camera = CameraControl.Instance.cameraStatus;
+        if (camera == CameraControl.CameraStatus.SelectView ||
+            camera == CameraControl.CameraStatus.SelectTopView) {
+            if (Physics.Raycast(currentCamera.ScreenPointToRay(mousePosition),
+                out rayHit, maxDistance: float.MaxValue, layerMask)) {
+                nowSelected = rayHit.collider.GetComponent<Renderer>();
+                if (prevSelected == null) prevSelected = nowSelected;
+
+                if (prevSelected != nowSelected) {
+                    ApplyOutline(nowSelected);
+                    RemoveOutline(prevSelected);
+                    prevSelected = nowSelected;
+                }
+            }
+        }
+        else {
+            if (prevSelected != null) {
                 RemoveOutline(prevSelected);
-                prevSelected = nowSelected;
+                prevSelected = null;
+            }
+            if (nowSelected != null) {
+                RemoveOutline(nowSelected);
+                nowSelected = null;
             }
         }
     }

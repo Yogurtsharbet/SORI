@@ -4,18 +4,25 @@ using UnityEngine;
 using Cinemachine;
 using DG.Tweening;
 
+
 public class CameraControl : MonoBehaviour {
     public static CameraControl Instance;
     public bool isDebugging;
 
+    private List<CinemachineVirtualCameraBase> allCamera = new List<CinemachineVirtualCameraBase>();
+    public enum CameraStatus {
+        TopView, CombineView, SelectView, SelectTopView
+    };
+    public CameraStatus cameraStatus;
+
     private CinemachineVirtualCamera cameraTopView;
     private CinemachineVirtualCamera cameraCombineView;
     private CinemachineVirtualCamera cameraSelectView;
+    private CinemachineVirtualCamera cameraSelectTopView;
 
     private CinemachineBlendListCamera cinematicIntro;
     private CinemachineBlendListCamera cinematicForest;
 
-    private List<CinemachineVirtualCameraBase> allCamera = new List<CinemachineVirtualCameraBase>();
     public CinemachineVirtualCameraBase currentCamera { get; private set; }
 
     private PlayerMove playerMove;
@@ -34,6 +41,7 @@ public class CameraControl : MonoBehaviour {
         cameraTopView = GetComponentsInChildren<CinemachineVirtualCamera>()[0];
         cameraCombineView = GetComponentsInChildren<CinemachineVirtualCamera>()[1];
         cameraSelectView = GetComponentsInChildren<CinemachineVirtualCamera>()[2];
+        cameraSelectTopView = GetComponentsInChildren<CinemachineVirtualCamera>()[3];
 
         var cinematics = GetComponentsInChildren<CinemachineBlendListCamera>();
         cinematicIntro = cinematics[0];
@@ -42,6 +50,7 @@ public class CameraControl : MonoBehaviour {
         allCamera.Add(cameraTopView);
         allCamera.Add(cameraCombineView);
         allCamera.Add(cameraSelectView);
+        allCamera.Add(cameraSelectTopView);
         allCamera.Add(cinematicIntro);
         allCamera.Add(cinematicForest);
     }
@@ -53,12 +62,18 @@ public class CameraControl : MonoBehaviour {
         SetCamera(cinematicIntro);
     }
 
+    private void OnValidate() {
+        if ((int)cameraStatus >= 0 && (int)cameraStatus < allCamera.Count)
+            SetCamera(allCamera[(int)cameraStatus]);
+    }
+
     public void SetCamera(string camera) {
         if (camera == "Forest") SetCamera(cinematicForest);
     }
 
     public void SetCamera(CinemachineVirtualCameraBase camera) {
         Debug.Log($"Set to {camera.name}");
+        cameraStatus = (CameraStatus)allCamera.IndexOf(camera);
         playerMove.enabled = camera == cameraTopView;
         playerMove.ClearCurretSpeed();
 
