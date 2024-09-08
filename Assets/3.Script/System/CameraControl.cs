@@ -64,7 +64,11 @@ public class CameraControl : MonoBehaviour {
 
     private void OnValidate() {
         if ((int)cameraStatus >= 0 && (int)cameraStatus < allCamera.Count)
-            SetCamera(allCamera[(int)cameraStatus]);
+            SetCamera(cameraStatus);
+    }
+
+    public void SetCamera(CameraStatus camera) {
+        SetCamera(allCamera[(int)camera]);
     }
 
     public void SetCamera(string camera) {
@@ -111,7 +115,7 @@ public class CameraControl : MonoBehaviour {
     }
 
     public void ChangePlayerCamera() {
-        SetCamera(currentCamera != cameraCombineView ? cameraCombineView : cameraTopView);
+        SetCamera(currentCamera != cameraTopView ? cameraTopView : cameraCombineView);
     }
 
     private IEnumerator WaitForCinematicEnd(CinemachineBlendListCamera camera) {

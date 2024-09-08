@@ -60,7 +60,7 @@ public class PlayerBehavior : MonoBehaviour {
         ToggleCombineMode();
     }
 
-    private void ToggleCombineMode() {
+    public void ToggleCombineMode() {
         isCombineMode = !isCombineMode;
 
         //Combine UI Set/Unset
@@ -93,7 +93,6 @@ public class PlayerBehavior : MonoBehaviour {
         CheckCinematicZone(other);
 
     }
-
     private void CheckEarningCoins(Collider coin) {
         if (coin.gameObject.layer == LayerMask.NameToLayer("Coin")) {
             EarnStarCoin();
@@ -102,6 +101,11 @@ public class PlayerBehavior : MonoBehaviour {
 
     public void EarnStarCoin(int coins = 1) {
         starCoin += coins;
+        starCoinManager.UpdateCoinText(starCoin);
+    }
+
+    public void UseStarCoin(int coins) {
+        starCoin -= coins;
         starCoinManager.UpdateCoinText(starCoin);
     }
 
@@ -115,11 +119,5 @@ public class PlayerBehavior : MonoBehaviour {
                 CameraControl.Instance.SetCamera("Forest");
             }
         }
-    }
-
-
-    public void UseStarCoin(int coins) {
-        starCoin -= coins;
-        starCoinManager.UpdateCoinText(starCoin);
     }
 }
