@@ -12,6 +12,7 @@ public class InvenSlotController : CommonInvenSlotController, IPointerClickHandl
 
     private void Awake() {
         synthesisManager = FindObjectOfType<SynthesisManager>();
+        //TODO: 게임씬으로 분리시  CANVAS 분리 필요
         Canvas[] canvases = FindObjectsOfType<Canvas>();
         foreach (Canvas cn in canvases) {
             if (cn.name.Equals("GameCanvas")) {
