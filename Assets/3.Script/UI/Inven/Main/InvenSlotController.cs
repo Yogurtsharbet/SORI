@@ -2,108 +2,24 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class InvenSlotController : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IDragHandler, IEndDragHandler {
-    private InvenSlotCloseController closeController;
+public class InvenSlotController : CommonInvenSlotController, IPointerClickHandler, IBeginDragHandler, IDragHandler, IEndDragHandler {
+    
     private SynthesisManager synthesisManager;
-    private InvenSlotManager invenSlotManager;
-
-    private int key;
-
-    private Text wordText;
-    private Image typeIcon;
-    private Image rankOutIcon;
-    private Image rankInnerIcon;
-    private Image continueIcon;
-
-    private Word thisWord;
 
     private Canvas canvas;
     private RectTransform originalParent;
     private Vector2 originalPosition;
 
     private void Awake() {
-        closeController = GetComponentInChildren<InvenSlotCloseController>();
         synthesisManager = FindObjectOfType<SynthesisManager>();
-        invenSlotManager = FindObjectOfType<InvenSlotManager>();
         Canvas[] canvases = FindObjectsOfType<Canvas>();
         foreach (Canvas cn in canvases) {
             if (cn.name.Equals("GameCanvas")) {
                 canvas = cn;
             }
-        }
-
-        wordText = GetComponentInChildren<Text>();
-        wordText.text = string.Empty;
-        Image[] images = GetComponentsInChildren<Image>();
-        foreach (Image img in images) {
-            if (img.name.Equals("Type")) {
-                typeIcon = img;
-            }
-            else if (img.name.Equals("Rank")) {
-                rankOutIcon = img;
-            }
-            else if (img.name.Equals("RankColor")) {
-                rankInnerIcon = img;
-            }
-            else if (img.name.Equals("Continue")) {
-                continueIcon = img;
-            }
-        }
+        }      
     }
 
-    public void SetKey(int num) {
-        this.key = num;
-    }
-
-    public void CheckWordExist() {
-        if (thisWord != null) {
-            ExistWord();
-            SetWordData(thisWord);
-        }
-        else {
-            NotExistWord();
-        }
-    }
-
-    public void ExistWord() {
-        wordText.enabled = true;
-        typeIcon.enabled = true;
-        rankInnerIcon.enabled = true;
-        rankOutIcon.enabled = true;
-        continueIcon.enabled = true;
-    }
-
-    public void NotExistWord() {
-        wordText.enabled = false;
-        typeIcon.enabled = false;
-        rankInnerIcon.enabled = false;
-        rankOutIcon.enabled = false;
-        continueIcon.enabled = false;
-    }
-
-    public void SetSlotWord(Word word) {
-        thisWord = word;
-        CheckWordExist();
-    }
-
-    public void SetWordData(Word word) {
-        wordText.text = word.Name;
-        typeIcon.color = word.TypeColor;
-        rankInnerIcon.color = word.RankColor;
-        //TODO: 단어에 영구속성 있으면 continue icon enable
-    }
-
-    public void CloseSlot() {
-        closeController.CloseEnable();
-        CheckWordExist();
-    }
-
-    public void OpenSlot() {
-        closeController.OpenDisEnable();
-        CheckWordExist();
-    }
-
-    #region 마우스 event
     public void OnPointerClick(PointerEventData eventData) {
         invenSlotManager.SetSelectInvenIndex(key);
         invenSlotManager.SelectSlot();
@@ -180,5 +96,4 @@ public class InvenSlotController : MonoBehaviour, IPointerClickHandler, IBeginDr
         }
         return slotIndex;
     }
-    #endregion
 }

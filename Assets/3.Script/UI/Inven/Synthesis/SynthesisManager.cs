@@ -48,11 +48,6 @@ public class SynthesisManager : MonoBehaviour {
         }
     }
 
-    //새 단어 합성 확정
-    public void SynthesisNewWord() {
-        //playerInvenController.AddNewItem()
-    }
-
     public void GetNewWord() {
         if (CheckCanSynthesis()) {
             //합성하기 버튼 눌렀을때, 랜덤으로 새 단어 얻음
