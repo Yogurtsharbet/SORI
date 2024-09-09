@@ -39,11 +39,29 @@ public class PlayerMove : MonoBehaviour {
         playerInputAction.PlayerActions.Jump.performed += value => OnJump();
 
         pastFramePosition = currentFramePosition = transform.position;
+
+    //    words = new Word[] {
+    //    new Word(WordKey.SORI, "소리", WordRank.NORMAL | WordRank.EPIC,
+    //                WordType.NOUN | WordType.isMovable | WordType.isChangable |
+    //                WordType.isInteractive | WordType.isLiving),
+    //    new Word(WordKey.DOOR, "문", WordRank.NORMAL | WordRank.EPIC,
+    //                WordType.NOUN | WordType.isMovable | WordType.isChangable | // ?
+    //                WordType.isInteractive | WordType.isBreakable),
+    //    new Word(WordKey.MOVE, "움직인다", WordRank.EPIC | WordRank.LEGEND,
+    //                WordType.VERB | WordType.isMovable),
+    //};
     }
 
     private void OnEnable() {
         playerInputAction.Enable();
+        Word newWord = Word.GetWord();
+        Debug.Log(newWord.Name);
     }
+
+    // Word List
+    //public static Word[] words;
+
+
 
     private void OnDisable() {
         playerInputAction.Disable();
@@ -119,9 +137,9 @@ public class PlayerMove : MonoBehaviour {
     }
 
     private void Move() {
-        if (moveDirection == Vector3.zero) 
+        if (moveDirection == Vector3.zero)
             currentSpeed -= decSpeedRate * Time.deltaTime;
-        else 
+        else
             currentSpeed += incSpeedRate * Time.deltaTime;
         currentSpeed = ClampSpeed(currentSpeed);
 
