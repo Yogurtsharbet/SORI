@@ -1,16 +1,29 @@
+using DG.Tweening;
+using DTT.AreaOfEffectRegions;
 using System.Collections;
 using System.Collections.Generic;
+using System.Transactions;
 using UnityEngine;
 
 public class IndicatorControl : MonoBehaviour {
+    private ArcRegion arcArrow;
+
     private Quaternion targetRotation;
+    private float currentY = 0f;
+
+    public float rotateSpeed = 10f;
+
+    private void Awake() {
+        arcArrow = GetComponent<ArcRegion>();
+    }
+
     private void Update() {
-        transform.Rotate(Vector3.up * Time.deltaTime * 50f, Space.World);
+        currentY += Time.deltaTime * rotateSpeed;
+        targetRotation = Quaternion.LookRotation(Camera.main.transform.forward) * Quaternion.Euler(300f, 0, 0)
+            * Quaternion.AngleAxis(currentY, Vector3.up);
 
-        // 카메라를 바라보도록 설정하되, Y축 회전은 유지
-        targetRotation = Quaternion.LookRotation(Camera.main.transform.forward);
+        transform.rotation = targetRotation;
 
-        // 카메라의 X축과 Z축 회전만 적용하고, Y축 회전은 유지 (룰렛처럼 계속 회전)
-        transform.rotation = Quaternion.Euler(targetRotation.eulerAngles.x, transform.rotation.eulerAngles.y, targetRotation.eulerAngles.z);
+        arcArrow.Angle = -currentY;
     }
 }
