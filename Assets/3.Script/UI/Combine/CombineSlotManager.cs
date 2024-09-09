@@ -22,4 +22,10 @@ public class CombineSlotManager : MonoBehaviour {
     public void CloseCombineSlot() {
         gameObject.SetActive(false);
     }
+
+    public RectTransform GetSlotRectTransform(int num) {
+        return combineSlotControllers[num].GetComponent<RectTransform>();
+    }
+
+
 }

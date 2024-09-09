@@ -1,46 +1,25 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class CommonInvenSlotController : MonoBehaviour {
-    private InvenSlotCloseController closeController;
-    protected InvenSlotManager invenSlotManager;
+public class CommonInvenSlotController : MonoBehaviour, IBeginDragHandler, IDragHandler {
+    protected InvenSlotCloseController closeController;
 
     protected int key;
 
-    protected Word thisWord;
+    protected Word thisWord = null;
     protected Text wordText;
     protected Image typeIcon;
     protected Image rankOutIcon;
     protected Image rankInnerIcon;
     protected Image continueIcon;
 
+    protected Canvas canvas;
+    protected RectTransform originalParent;
+    protected Vector2 originalPosition;
+
     public void SetKey(int num) {
         this.key = num;
-    }
-
-    private void Awake() {
-        closeController = GetComponentInChildren<InvenSlotCloseController>();
-        invenSlotManager = FindObjectOfType<InvenSlotManager>();
-
-        wordText = GetComponentInChildren<Text>();
-        wordText.text = string.Empty;
-        Image[] images = GetComponentsInChildren<Image>();
-        foreach (Image img in images) {
-            if (img.name.Equals("Type")) {
-                typeIcon = img;
-            }
-            else if (img.name.Equals("Rank")) {
-                rankOutIcon = img;
-            }
-            else if (img.name.Equals("RankColor")) {
-                rankInnerIcon = img;
-            }
-            else if (img.name.Equals("Continue")) {
-                continueIcon = img;
-            }
-        }
     }
 
     public void CheckWordExist() {
@@ -89,5 +68,18 @@ public class CommonInvenSlotController : MonoBehaviour {
     public void OpenSlot() {
         closeController.OpenDisEnable();
         CheckWordExist();
+    }
+
+    public void OnBeginDrag(PointerEventData eventData) {
+        originalParent = wordText.rectTransform.parent as RectTransform;
+        originalPosition = wordText.rectTransform.anchoredPosition;
+        wordText.transform.SetParent(canvas.transform, true);
+        wordText.transform.SetAsLastSibling();
+    }
+
+    public void OnDrag(PointerEventData eventData) {
+        Vector2 position;
+        RectTransformUtility.ScreenPointToLocalPointInRectangle(canvas.transform as RectTransform, eventData.position, eventData.pressEventCamera, out position);
+        wordText.rectTransform.anchoredPosition = position;
     }
 }

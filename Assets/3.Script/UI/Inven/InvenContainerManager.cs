@@ -9,6 +9,10 @@ public class InvenContainerManager : MonoBehaviour {
         synthesisManager = FindObjectOfType<SynthesisManager>();
     }
 
+    private void Start() {
+        gameObject.SetActive(false);
+    }
+
     public void OpenInventory() {
         gameObject.SetActive(true);
     }

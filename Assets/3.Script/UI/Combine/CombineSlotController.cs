@@ -1,9 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class CombineSlotController : MonoBehaviour {
+public class CombineSlotController : MonoBehaviour, IPointerClickHandler {
+    private CombineInvenContainer combineInvenContainer;
 
     protected Word thisWord;
     protected Text wordText;
@@ -14,6 +16,7 @@ public class CombineSlotController : MonoBehaviour {
 
     private void Awake() {
         wordText = GetComponentInChildren<Text>();
+        combineInvenContainer = FindObjectOfType<CombineInvenContainer>();
         wordText.text = string.Empty;
         Image[] images = GetComponentsInChildren<Image>();
         foreach (Image img in images) {
@@ -31,7 +34,6 @@ public class CombineSlotController : MonoBehaviour {
             }
         }
     }
-
 
     public void CheckWordExist() {
         if (thisWord != null) {
@@ -77,5 +79,9 @@ public class CombineSlotController : MonoBehaviour {
 
     public void OpenSlot() {
         CheckWordExist();
+    }
+
+    public void OnPointerClick(PointerEventData eventData) {
+        combineInvenContainer.OpenCombineInven();
     }
 }

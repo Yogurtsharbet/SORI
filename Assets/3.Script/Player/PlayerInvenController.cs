@@ -78,7 +78,7 @@ public class PlayerInvenController : MonoBehaviour {
         for (int i = 0; i < invenOpenCount; i++) {
             if (inven[i] == null) {
                 inven[i] = newWord;
-                return;
+                break;
             }
         }
         UpdateInvenInvoke();
@@ -110,7 +110,11 @@ public class PlayerInvenController : MonoBehaviour {
     }
 
     public void SetInvenReset(List<Word> list) {
-        inven = list;
+        List<Word> newList = new List<Word>();
+        for (int i = 0; i < list.Count; i++) {
+            newList.Add(list[i]);
+        }
+        inven = newList;
         UpdateInvenInvoke();
     }
 

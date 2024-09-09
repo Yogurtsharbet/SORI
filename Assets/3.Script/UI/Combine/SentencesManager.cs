@@ -14,6 +14,8 @@ public class SentencesManager : MonoBehaviour, IPointerEnterHandler, IPointerExi
         for(int i = 0; i < 10; i++) {
             sentenceSlotControllers[i].CloseSlot();
         }
+
+        sentenceSlotControllers[0].OpenSlot();
     }
 
     public void OnPointerEnter(PointerEventData eventData) {

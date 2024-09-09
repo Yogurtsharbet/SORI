@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class SynthesisManager : MonoBehaviour {
@@ -8,7 +9,7 @@ public class SynthesisManager : MonoBehaviour {
 
     private void Awake() {
         playerInvenController = FindObjectOfType<PlayerInvenController>();
-        slotControllers = FindObjectsOfType<SynthesisSlotController>();
+        slotControllers = GetComponentsInChildren<SynthesisSlotController>();
         invenSlotManager = FindObjectOfType<InvenSlotManager>();
         dialogController = FindObjectOfType<DialogController>();
     }
@@ -54,6 +55,8 @@ public class SynthesisManager : MonoBehaviour {
             Word newWord = Word.GetWord();
             slotControllers[3].SetSlotWord(newWord);
             //얻은단어 2초 있다가 인벤으로 이동
+            StartCoroutine(removeDelay());
+            invenSlotManager.SetInvenSaveTemp();
         }
         else {
             string dialogContents = "단어 합성을 할 수 없습니다\n합성 슬롯을 확인해주세요.";
@@ -67,6 +70,16 @@ public class SynthesisManager : MonoBehaviour {
         }
         else {
             return false;
+        }
+    }
+
+    private IEnumerator removeDelay() {
+        yield return new WaitForSeconds(2f);
+
+        playerInvenController.AddNewItem(slotControllers[3].GetSlotWord());
+
+        for (int i = 0; i < slotControllers.Length; i++) {
+            slotControllers[i].RemoveSlotWord();
         }
     }
 }

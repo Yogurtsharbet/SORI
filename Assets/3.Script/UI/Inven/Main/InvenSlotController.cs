@@ -2,13 +2,9 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class InvenSlotController : CommonInvenSlotController, IPointerClickHandler, IBeginDragHandler, IDragHandler, IEndDragHandler {
-    
+public class InvenSlotController : CommonInvenSlotController, IEndDragHandler, IPointerClickHandler {
     private SynthesisManager synthesisManager;
-
-    private Canvas canvas;
-    private RectTransform originalParent;
-    private Vector2 originalPosition;
+    private InvenSlotManager invenSlotManager;
 
     private void Awake() {
         synthesisManager = FindObjectOfType<SynthesisManager>();
@@ -18,7 +14,28 @@ public class InvenSlotController : CommonInvenSlotController, IPointerClickHandl
             if (cn.name.Equals("GameCanvas")) {
                 canvas = cn;
             }
-        }      
+        }
+
+        closeController = GetComponentInChildren<InvenSlotCloseController>();
+        invenSlotManager = FindObjectOfType<InvenSlotManager>();
+
+        wordText = GetComponentInChildren<Text>();
+        wordText.text = string.Empty;
+        Image[] images = GetComponentsInChildren<Image>();
+        foreach (Image img in images) {
+            if (img.name.Equals("Type")) {
+                typeIcon = img;
+            }
+            else if (img.name.Equals("Rank")) {
+                rankOutIcon = img;
+            }
+            else if (img.name.Equals("RankColor")) {
+                rankInnerIcon = img;
+            }
+            else if (img.name.Equals("Continue")) {
+                continueIcon = img;
+            }
+        }
     }
 
     public void OnPointerClick(PointerEventData eventData) {
@@ -26,25 +43,12 @@ public class InvenSlotController : CommonInvenSlotController, IPointerClickHandl
         invenSlotManager.SelectSlot();
     }
 
-    public void OnBeginDrag(PointerEventData eventData) {
-        originalParent = wordText.rectTransform.parent as RectTransform;
-        originalPosition = wordText.rectTransform.anchoredPosition;
-        wordText.transform.SetParent(canvas.transform, true);
-        wordText.transform.SetAsLastSibling();
-    }
-
-    public void OnDrag(PointerEventData eventData) {
-        Vector2 position;
-        RectTransformUtility.ScreenPointToLocalPointInRectangle(canvas.transform as RectTransform, eventData.position, eventData.pressEventCamera, out position);
-        wordText.rectTransform.anchoredPosition = position;
-    }
-
     public void OnEndDrag(PointerEventData eventData) {
-        int synthesisSlotNum = checkSynthesisSlot(eventData);
 
         wordText.transform.SetParent(originalParent, true);
         wordText.rectTransform.anchoredPosition = originalPosition;
 
+        int synthesisSlotNum = checkSynthesisSlot(eventData);
         if (synthesisSlotNum != -1) {
             //합성창으로 이동
             // ! 그전 인벤 가지고있어서 만약 문장 조합 혹은, 단어 합성창을 닫으면 원래 인벤으로 바꾸기
@@ -58,13 +62,10 @@ public class InvenSlotController : CommonInvenSlotController, IPointerClickHandl
             }
         }
         else {
-            if (checkAnotherSlot(eventData) != -1) {
+            int invenSlotNum = checkAnotherSlot(eventData);
+            if (invenSlotNum != -1) {
                 //인벤 내부 스위칭
-
-            }
-            else {
-                //문장 제작창
-
+                invenSlotManager.SetInvenSwitching(key, invenSlotNum);
             }
         }
     }
@@ -90,7 +91,7 @@ public class InvenSlotController : CommonInvenSlotController, IPointerClickHandl
     private int checkAnotherSlot(PointerEventData eventData) {
         int slotIndex = -1;
         for (int i = 0; i < 21; i++) {
-            if (RectTransformUtility.RectangleContainsScreenPoint(synthesisManager.GetSlotRectTransform(i), eventData.position, eventData.pressEventCamera)) {
+            if (RectTransformUtility.RectangleContainsScreenPoint(invenSlotManager.GetSlotRectTransform(i), eventData.position, eventData.pressEventCamera)) {
                 slotIndex = i;
                 break;
             }

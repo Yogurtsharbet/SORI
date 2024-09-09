@@ -1,12 +1,10 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class SentenceSlotController : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IDragHandler, IEndDragHandler {
-    private CombineFieldController combineFieldController;
-
+    private CombineContainer combineFieldController;
+    private RectTransform combineFieldRectTransform;
     private Canvas canvas;
     private RectTransform originalParent;
     private Vector2 originalPosition;
@@ -14,7 +12,9 @@ public class SentenceSlotController : MonoBehaviour, IPointerClickHandler, IBegi
     RectTransform rectTransform;
 
     private void Awake() {
-        combineFieldController = FindObjectOfType<CombineFieldController>();
+        combineFieldController = FindObjectOfType<CombineContainer>();
+        Image img = combineFieldController.GetComponentInChildren<Image>();
+        combineFieldRectTransform = img.GetComponent<RectTransform>();
         //TODO: 게임씬으로 분리시  CANVAS 분리 필요
         Canvas[] canvases = FindObjectsOfType<Canvas>();
         foreach (Canvas cn in canvases) {
@@ -55,5 +55,8 @@ public class SentenceSlotController : MonoBehaviour, IPointerClickHandler, IBegi
         gameObject.transform.SetParent(originalParent, true);
         rectTransform.anchoredPosition = originalPosition;
 
+        if(RectTransformUtility.RectangleContainsScreenPoint(combineFieldRectTransform, eventData.position, eventData.pressEventCamera)) {
+            combineFieldController.OpenCombineSlot();
+        }
     }
 }
