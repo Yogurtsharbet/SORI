@@ -256,7 +256,6 @@ public class PlayerMove : MonoBehaviour {
 
         if (impactTime.Count >= 3) {
             float impactTerm = Time.time - impactTime.Peek();
-            Debug.Log(impactTerm);
             if (impactTerm < 0.8f) {
                 // impact 3 times in 0.8sec will be processed to just one impact
                 impactTime.Clear();

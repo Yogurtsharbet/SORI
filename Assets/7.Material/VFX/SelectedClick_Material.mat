@@ -95,8 +95,8 @@ Material:
     - _Cutoff: 0.5
     - _DetailAlbedoMapScale: 1
     - _DetailNormalMapScale: 1
-    - _DotSize: 5
-    - _DotSpace: 5
+    - _DotSize: 1
+    - _DotSpace: 3
     - _DstBlend: 0
     - _EnvironmentReflections: 1
     - _GlossMapScale: 0

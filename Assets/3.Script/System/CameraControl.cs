@@ -145,3 +145,5 @@ public class CameraControl : MonoBehaviour {
         }
     }
 }
+
+//TODO: SELECT VIEW 좌우 움직임 방지를 recentering 시간을 짧게하는 방식 말고, 직접 각도 지정으로 변경할 것. (어지러움)

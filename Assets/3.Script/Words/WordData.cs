@@ -30,26 +30,41 @@ public enum WordKey {
     _Random,
     SORI,
     DOOR,
+    TREE,
     //KEY,
     //FLOOR,
     //BIRD,
     //HP,
     //TIME,
-    MOVE
+    MOVE,
 }
 
 class WordData {
     public static readonly Word[] words = new Word[] {
 
-        new Word(WordKey.SORI, "소리", WordRank.NORMAL | WordRank.EPIC,
+        Word.Create(WordKey.SORI, "소리", WordRank.NORMAL | WordRank.EPIC,
                     WordType.NOUN | WordType.isMovable | WordType.isChangable |
                     WordType.isInteractive | WordType.isLiving),
 
-        new Word(WordKey.DOOR, "문", WordRank.NORMAL | WordRank.EPIC,
+        Word.Create(WordKey.DOOR, "문", WordRank.NORMAL | WordRank.EPIC,
                     WordType.NOUN | WordType.isMovable | WordType.isChangable |
                     WordType.isInteractive | WordType.isBreakable),
 
-        new Word(WordKey.MOVE, "움직인다", WordRank.EPIC | WordRank.LEGEND,
+        Word.Create(WordKey.TREE, "나무", WordRank.NORMAL,
+                    WordType.NOUN | WordType.isMovable | WordType.isChangable |
+                    WordType.isInteractive | WordType.isBreakable),
+
+        Word.Create(WordKey.MOVE, "움직인다", WordRank.EPIC | WordRank.LEGEND,
                     WordType.VERB | WordType.isMovable),
     };
+
+    public static string ToTag(Word word) {
+        switch (word.Key) {
+            case WordKey.SORI: return "Player";
+            case WordKey.DOOR: return "Door";
+            case WordKey.TREE: return "Tree";
+        }
+        return string.Empty;
+    }
 }
+

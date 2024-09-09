@@ -63,6 +63,7 @@ public class PlayerBehavior : MonoBehaviour {
     public void ToggleCombineMode() {
         isCombineMode = !isCombineMode;
 
+        //TODO: 단어조합 UI 지우기
         //Combine UI Set/Unset
         //if (IsCombineMode) testCombineObj.SetCombine();
         //else testCombineObj.UnsetCombine();

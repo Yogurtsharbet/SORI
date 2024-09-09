@@ -69,7 +69,7 @@ public class Word {
         { WordRank.SPECIAL, new Color(0.86f, 0.33f, 0.47f) }    //특수
     };
 
-    public static WordType GetWordType(Word word) {
+    private static WordType GetWordType(Word word) {
         // Return Noun, Verb, Adj 
         foreach (WordType each in allType)
             if ((each & word._type) != 0) return each;
@@ -103,7 +103,6 @@ public class Word {
             return availableRank[0];
     }
 
-
     private Word FindWordByKey(WordKey key) {
         foreach (Word word in WordData.words)
             if (word.Key == key) return word;
@@ -115,8 +114,12 @@ public class Word {
         return new Word(
             key == WordKey._Random ? (WordKey)Random.Range(1, allKey.Length) : key, rank);
     }
+    
+    public static Word Create(WordKey key, string name, WordRank rank, WordType type) {
+        return new Word(key, name, rank, type);
+    }
 
-    public Word(WordKey key, WordRank rank = WordRank._Random) {
+    private Word(WordKey key, WordRank rank = WordRank._Random) {
         // 단어 리스트에서 키를 받아와 생성 ( 인게임에서 사용 )
         Word newWord = FindWordByKey(key);
         _key = newWord.Key;
@@ -124,7 +127,7 @@ public class Word {
         _type = newWord.Type;
         _rank = rank == WordRank._Random ? SelectRank(newWord.Rank) : rank;
     }
-    public Word(WordKey key, string name, WordRank rank, WordType type) {
+    private Word(WordKey key, string name, WordRank rank, WordType type) {
         // 단어 데이터 생성 ( 단어 리스트에 저장 )
         _key = key;
         _name = name;
@@ -135,4 +138,8 @@ public class Word {
     public bool IsNoun { get { return Type == WordType.NOUN; } }
     public bool IsVerb { get { return Type == WordType.VERB; } }
     public bool IsAdj { get { return Type == WordType.ADJ; } }
+
+    public string ToTag() {
+        return WordData.ToTag(this);
+    }
 }
