@@ -56,7 +56,6 @@ public class SynthesisManager : MonoBehaviour {
             slotControllers[3].SetSlotWord(newWord);
             //얻은단어 2초 있다가 인벤으로 이동
             StartCoroutine(removeDelay());
-            invenSlotManager.SetInvenSaveTemp();
         }
         else {
             string dialogContents = "단어 합성을 할 수 없습니다\n합성 슬롯을 확인해주세요.";
@@ -81,5 +80,6 @@ public class SynthesisManager : MonoBehaviour {
         for (int i = 0; i < slotControllers.Length; i++) {
             slotControllers[i].RemoveSlotWord();
         }
+        invenSlotManager.SetInvenSaveTemp();
     }
 }

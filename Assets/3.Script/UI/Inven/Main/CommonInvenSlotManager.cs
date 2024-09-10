@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class CommonInvenSlotManager : MonoBehaviour {
     protected GameObject[] slotObjects = new GameObject[20];
@@ -19,8 +18,20 @@ public class CommonInvenSlotManager : MonoBehaviour {
 
     public void SetInvenSaveTemp() {
         List<Word> tempList = playerInvenController.Inven;
+
+        if (tempInven.Count == 0) {
+            for (int i = 0; i < tempList.Count; i++) {
+                tempInven.Add(null);
+            }
+        }
+        else {
+            for (int i = 0; i < tempList.Count; i++) {
+                tempInven[i] = null;
+            }
+        }
+
         for (int i = 0; i < tempList.Count; i++) {
-            tempInven.Add(tempList[i]);
+            tempInven[i] = tempList[i];
         }
     }
 

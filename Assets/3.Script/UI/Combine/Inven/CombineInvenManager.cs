@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -22,6 +21,9 @@ public class CombineInvenManager : CommonInvenSlotManager {
         }
 
         playerInvenController.InvenChanged += updateSlot;
+    }
+
+    private void OnEnable() {
         SetInvenSaveTemp();
     }
 

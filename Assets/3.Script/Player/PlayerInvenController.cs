@@ -18,6 +18,7 @@ public class PlayerInvenController : MonoBehaviour {
     private void Awake() {
         initInven();
     }
+
     private void Start() {
         testData();
     }

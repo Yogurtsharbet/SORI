@@ -24,6 +24,9 @@ public class InvenSlotManager : CommonInvenSlotManager {
         }
 
         playerInvenController.InvenChanged += updateSlot;
+    }
+
+    private void OnEnable() {
         SetInvenSaveTemp();
     }
 
@@ -35,6 +38,7 @@ public class InvenSlotManager : CommonInvenSlotManager {
             invenSlotControllers[i].OpenSlot();
         }
     }
+
     private void OnDestroy() {
         playerInvenController.InvenChanged -= updateSlot;
     }
