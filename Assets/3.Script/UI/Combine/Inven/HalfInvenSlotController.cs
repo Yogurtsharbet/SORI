@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class HalfInvenController : CommonInvenSlotController, IEndDragHandler, IPointerClickHandler {
+public class HalfInvenSlotController : CommonInvenSlotController, IEndDragHandler, IPointerClickHandler {
     private HalfInvenManager halfInvenManager;
     private CombineSlotManager combineSlotManager;
 
