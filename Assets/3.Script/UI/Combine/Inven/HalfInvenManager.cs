@@ -2,12 +2,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class CombineInvenManager : CommonInvenSlotManager {
-    private CombineInvenController[] combineInvenController;
+public class HalfInvenManager : CommonInvenSlotManager {
+    private HalfInvenController[] halfInvenController;
 
     private void Awake() {
         Button[] slotButtons = GetComponentsInChildren<Button>();
-        combineInvenController = new CombineInvenController[slotButtons.Length];
+        halfInvenController = new HalfInvenController[slotButtons.Length];
         invenSelectControllers = new InvenSlotSelectController[slotButtons.Length];
         playerInvenController = FindObjectOfType<PlayerInvenController>();
         slotObjects = new GameObject[slotButtons.Length];
@@ -15,7 +15,7 @@ public class CombineInvenManager : CommonInvenSlotManager {
         int index = 0;
         foreach (Button btn in slotButtons) {
             slotObjects[index] = btn.gameObject;
-            combineInvenController[index] = slotObjects[index].GetComponentInChildren<CombineInvenController>();
+            halfInvenController[index] = slotObjects[index].GetComponentInChildren<HalfInvenController>();
             invenSelectControllers[index] = slotObjects[index].GetComponentInChildren<InvenSlotSelectController>();
             index++;
         }
@@ -29,10 +29,10 @@ public class CombineInvenManager : CommonInvenSlotManager {
 
     private void Start() {
         for (int i = 0; i < 20; i++) {
-            combineInvenController[i].CloseSlot();
+            halfInvenController[i].CloseSlot();
         }
         for (int i = 0; i < playerInvenController.InvenOpenCount; i++) {
-            combineInvenController[i].OpenSlot();
+            halfInvenController[i].OpenSlot();
         }
     }
 
@@ -43,15 +43,15 @@ public class CombineInvenManager : CommonInvenSlotManager {
     private void updateSlot(List<Word> inventory) {
         for (int i = 0; i < inventory.Count; i++) {
             if (inventory[i] != null) {
-                combineInvenController[i].SetSlotWord(inventory[i]);
+                halfInvenController[i].SetSlotWord(inventory[i]);
             }
             else {
-                combineInvenController[i].SetSlotWord(null);
+                halfInvenController[i].SetSlotWord(null);
             }
         }
     }
 
     public RectTransform GetSlotRectTransform(int num) {
-        return combineInvenController[num].GetComponent<RectTransform>();
+        return halfInvenController[num].GetComponent<RectTransform>();
     }
 }

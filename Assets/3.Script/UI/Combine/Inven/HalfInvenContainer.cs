@@ -1,7 +1,7 @@
 using DG.Tweening;
 using UnityEngine;
 
-public class CombineInvenContainer : MonoBehaviour {
+public class HalfInvenContainer : MonoBehaviour {
     
     private Vector3 openPos = new Vector3(353f, -24f, 0);
     private Vector3 closePos = new Vector3(353f, -990f, 0);

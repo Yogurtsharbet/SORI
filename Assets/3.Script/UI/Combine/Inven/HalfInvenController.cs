@@ -2,8 +2,8 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class CombineInvenController : CommonInvenSlotController, IEndDragHandler {
-    private CombineInvenManager combineInvenManager;
+public class HalfInvenController : CommonInvenSlotController, IEndDragHandler, IPointerClickHandler {
+    private HalfInvenManager halfInvenManager;
     private CombineSlotManager combineSlotManager;
 
     private void Awake() {
@@ -16,7 +16,7 @@ public class CombineInvenController : CommonInvenSlotController, IEndDragHandler
         }
 
         closeController = GetComponentInChildren<InvenSlotCloseController>();
-        combineInvenManager = FindObjectOfType<CombineInvenManager>();
+        halfInvenManager = FindObjectOfType<HalfInvenManager>();
         combineSlotManager = FindObjectOfType<CombineSlotManager>();
 
         wordText = GetComponentInChildren<Text>();
@@ -50,7 +50,7 @@ public class CombineInvenController : CommonInvenSlotController, IEndDragHandler
             int invenSlotNum = checkAnotherSlot(eventData);
             if (invenSlotNum != -1) {
                 //인벤 내부 스위칭
-                combineInvenManager.SetInvenSwitching(key, invenSlotNum);
+                halfInvenManager.SetInvenSwitching(key, invenSlotNum);
             }
         }
     }
@@ -69,11 +69,15 @@ public class CombineInvenController : CommonInvenSlotController, IEndDragHandler
     private int checkAnotherSlot(PointerEventData eventData) {
         int slotIndex = -1;
         for (int i = 0; i < 21; i++) {
-            if (RectTransformUtility.RectangleContainsScreenPoint(combineInvenManager.GetSlotRectTransform(i), eventData.position, eventData.pressEventCamera)) {
+            if (RectTransformUtility.RectangleContainsScreenPoint(halfInvenManager.GetSlotRectTransform(i), eventData.position, eventData.pressEventCamera)) {
                 slotIndex = i;
                 break;
             }
         }
         return slotIndex;
+    }
+
+    public void OnPointerClick(PointerEventData eventData) {
+        //TODO: 클릭했을때 상점이 열려있으면 삭제할건지 dialog
     }
 }

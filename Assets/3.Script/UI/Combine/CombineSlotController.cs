@@ -5,7 +5,7 @@ using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class CombineSlotController : MonoBehaviour, IPointerClickHandler {
-    private CombineInvenContainer combineInvenContainer;
+    private HalfInvenContainer halfInvenContainer;
 
     protected Word thisWord;
     protected Text wordText;
@@ -16,7 +16,7 @@ public class CombineSlotController : MonoBehaviour, IPointerClickHandler {
 
     private void Awake() {
         wordText = GetComponentInChildren<Text>();
-        combineInvenContainer = FindObjectOfType<CombineInvenContainer>();
+        halfInvenContainer = FindObjectOfType<HalfInvenContainer>();
         wordText.text = string.Empty;
         Image[] images = GetComponentsInChildren<Image>();
         foreach (Image img in images) {
@@ -82,6 +82,6 @@ public class CombineSlotController : MonoBehaviour, IPointerClickHandler {
     }
 
     public void OnPointerClick(PointerEventData eventData) {
-        combineInvenContainer.OpenCombineInven();
+        halfInvenContainer.OpenCombineInven();
     }
 }
