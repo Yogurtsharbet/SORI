@@ -84,7 +84,7 @@ public class Word {
             if ((each & (WordType.Null | WordType.NOUN | WordType.VERB | WordType.ADJ)) != 0) continue;
             if (each == WordType.All) continue;
 
-            if ((each & word.Type) != 0) types.Add(each);
+            if ((each & word._type) != 0) types.Add(each);
         }
         return types;
     }
@@ -122,10 +122,10 @@ public class Word {
     private Word(WordKey key, WordRank rank = WordRank._Random) {
         // 단어 리스트에서 키를 받아와 생성 ( 인게임에서 사용 )
         Word newWord = FindWordByKey(key);
-        _key = newWord.Key;
-        _name = newWord.Name;
-        _type = newWord.Type;
-        _rank = rank == WordRank._Random ? SelectRank(newWord.Rank) : rank;
+        _key = newWord._key;
+        _name = newWord._name;
+        _type = newWord._type;
+        _rank = rank == WordRank._Random ? SelectRank(newWord._rank) : rank;
     }
     private Word(WordKey key, string name, WordRank rank, WordType type) {
         // 단어 데이터 생성 ( 단어 리스트에 저장 )

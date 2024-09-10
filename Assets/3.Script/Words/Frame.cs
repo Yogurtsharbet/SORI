@@ -2,6 +2,7 @@ using System;
 using UnityEngine;
 using Random = UnityEngine.Random;
 using DG.Tweening;
+using DTT.AreaOfEffectRegions;
 
 public enum FrameType {
     _Random, AisB, AtoBisC, AandB, NotA
@@ -115,10 +116,10 @@ public class Frame {
         return true;
     }
 
-    public void Activate(GameObject target) {
+    public void Activate(GameObject target, GameObject indicator) {
         switch (_type) {
             case FrameType.AisB:
-                Function(target);
+                Function(target, indicator);
 
                 break;
             case FrameType.AtoBisC:
@@ -131,11 +132,34 @@ public class Frame {
         }
     }
 
-    private void Function(GameObject target) {
-        WordType verbProperty = Word.CheckWordProperty(blankWord[1])[0];
+    private Vector3 GetIndicatePosition(GameObject indicator, FrameRank rank) {
+        Vector3 position = indicator.GetComponent<IndicatorControl>().indicatePosition;
+        float distance = 2f;
+        switch (rank) {
+            case FrameRank.EPIC:
+                distance = 4f;
+                break;
+            case FrameRank.LEGEND:
+                distance = 8f;
+                break;
+        }
+        position = position * distance;
+        Debug.Log(position);
+        if (Physics.Raycast(position, Vector3.down, out RaycastHit rayHit, Mathf.Infinity, LayerMask.NameToLayer("Ground")))
+            position = rayHit.point;
+        else if (Physics.Raycast(position, Vector3.up, out rayHit, Mathf.Infinity, LayerMask.NameToLayer("Ground")))
+            position = rayHit.point;
+        Debug.Log(position);
+        return position;
+    }
+
+
+    private void Function(GameObject target, GameObject indicator) {
+        WordType verbProperty = Word.CheckWordProperty(wordB)[0];
         switch (verbProperty) {
             case WordType.isMovable:
-                FunctionMove(target.transform, Vector3.right);
+                FunctionMove(target.transform, target.transform.position +
+                    GetIndicatePosition(indicator, Rank));
                 break;
             case WordType.isChangable:
                 break;
@@ -147,6 +171,8 @@ public class Frame {
     }
 
     private void FunctionMove(Transform origin, Vector3 destiny) {
+        if (origin.CompareTag("Player")) origin = origin.parent;
+        Debug.Log(destiny);
         origin.DOMove(destiny, 2f, true);
     }
 }

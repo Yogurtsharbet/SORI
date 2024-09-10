@@ -49,6 +49,7 @@ public class CombineManager : MonoBehaviour {
         // ( DONE ) 타겟 찾는 도중 ESC로 취소하기 
         // 타겟을 찾은 뒤에는 성공 이펙트를 출력하고 효과 적용하기
 
+        //TODO: 여기서 문장조합창 UI를 끄기
         Debug.Log(frame.wordA.Name);
         selectControl.SetTargetTag(frame.wordA.ToTag());
         CameraControl.Instance.SetCamera(CameraControl.CameraStatus.SelectView);
@@ -57,4 +58,9 @@ public class CombineManager : MonoBehaviour {
         // 찾은 오브젝트 -> Activate (object)
         // frame.Activate();
     }
+
+    public void Activate(GameObject target, GameObject indicator) {
+        frame.Activate(target, indicator);
+    }
+
 }

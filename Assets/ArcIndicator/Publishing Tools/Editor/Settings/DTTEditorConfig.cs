@@ -430,7 +430,7 @@ namespace DTT.PublishingTools
                 if (assetJson.packageName == fullPackageName)
                     return assetJson;
 
-            Debug.LogWarning($"Failed retrieving asset json of {fullPackageName} in the project.");
+            //Debug.LogWarning($"Failed retrieving asset json of {fullPackageName} in the project.");
             return null;
         }
 

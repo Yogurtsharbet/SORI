@@ -1,15 +1,24 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using Cinemachine;
-using System.Collections.Generic;
 
 public class SelectControl : MonoBehaviour {
+    private List<Material> selectedMaterials = new List<Material>();
+    [SerializeField] private Material outlineShader;
+    [SerializeField] private Material clickedShader;
+
     private CinemachineBrain cameraBrain;
     private DefaultInputActions inputAction;
+
+    private PlayerBehavior playerBehavior;
+    private CombineManager combineManager;
 
     private Renderer clickedObject;
     private Renderer prevObject;
     private Renderer nowObject;
+
+    private Transform Indicator;
 
     private Vector3 mousePosition;
     private RaycastHit rayHit;
@@ -18,16 +27,15 @@ public class SelectControl : MonoBehaviour {
     private Camera currentCamera { get { return cameraBrain.OutputCamera; } }
     private CameraControl.CameraStatus cameraStatus;
 
-    private List<Material> selectedMaterials = new List<Material>();
-    [SerializeField] private Material outlineShader;
-    [SerializeField] private Material clickedShader;
 
-    private Transform Indicator;
 
     public void SetTargetTag(string tag) { targetTag = tag; }
     private string targetTag;
 
     private void Awake() {
+        playerBehavior = FindObjectOfType<PlayerBehavior>();
+        combineManager = FindObjectOfType<CombineManager>();
+
         cameraBrain = FindObjectOfType<CinemachineBrain>();
         Indicator = transform.GetChild(0);
 
@@ -57,19 +65,7 @@ public class SelectControl : MonoBehaviour {
             FindObject();
         }
         else {
-            // Clear VFX when camera is not int SelectMode
-            if (prevObject != null) {
-                RemoveMaterial(prevObject, outlineShader);
-                prevObject = null;
-            }
-            if (nowObject != null) {
-                RemoveMaterial(nowObject, outlineShader);
-                nowObject = null;
-            }
-            if (clickedObject != null) {
-                RemoveMaterial(clickedObject, clickedShader);
-                clickedObject = null;
-            }
+            CancelSelected();
         }
     }
 
@@ -104,12 +100,15 @@ public class SelectControl : MonoBehaviour {
     }
 
     private void CancelSelected() {
-        if (clickedObject == null) return;
-
-        RemoveMaterial(clickedObject, clickedShader);
         IndicatorOff();
 
+        if (clickedObject != null) RemoveMaterial(clickedObject, clickedShader);
+        if (nowObject != null) RemoveMaterial(nowObject, outlineShader);
+        if (prevObject != null) RemoveMaterial(prevObject, outlineShader);
+        
         clickedObject = null;
+        nowObject = null;
+        prevObject = null;
     }
 
     private void RepositionAtScreenOut() {
@@ -152,7 +151,8 @@ public class SelectControl : MonoBehaviour {
 
     private void OnEnter() {
         if (clickedObject == null) return;
-        FindObjectOfType<PlayerBehavior>().ToggleCombineMode();
+        playerBehavior.ToggleCombineMode();
+        combineManager.Activate(clickedObject.gameObject, Indicator.gameObject);
         //TODO: Frame에서 메서드를 만들어서, 여기서 clickedSelected를 보내기
     }
 
@@ -161,7 +161,7 @@ public class SelectControl : MonoBehaviour {
             case CameraControl.CameraStatus.TopView: return;
 
             case CameraControl.CameraStatus.CombineView:
-                FindObjectOfType<PlayerBehavior>().ToggleCombineMode();
+                playerBehavior.ToggleCombineMode();
                 break;
 
             case CameraControl.CameraStatus.SelectView:
