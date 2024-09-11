@@ -58,8 +58,10 @@ public class CombineManager : MonoBehaviour {
     //FOR DEBUGGING
     public WordKey key;
     private void OnValidate() {
-        frame.SetWordA_DEBUGGING(key);
-        selectControl.SetTargetTag(frame.wordA.ToTag());
-        Debug.Log("선택가능 오브젝트 : " + frame.wordA.Name);
+        if (frame != null) {
+            frame.SetWordA_DEBUGGING(key);
+            selectControl.SetTargetTag(frame.wordA.ToTag());
+            Debug.Log("선택가능 오브젝트 : " + frame.wordA.Name);
+        }
     }
 }

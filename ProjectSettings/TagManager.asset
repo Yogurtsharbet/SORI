@@ -9,6 +9,10 @@ TagManager:
   - Butterfly
   - Door
   - Tree
+  - Key
+  - Floor
+  - Bird
+  - HP
   layers:
   - Default
   - TransparentFX
