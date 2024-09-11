@@ -17,6 +17,7 @@ public class ShopSlotController : MonoBehaviour , IPointerClickHandler {
     private Image rankInnerIcon;
     private Image continueIcon;
     private Text priceText;
+    private Image selectSlot;
 
     private void Awake() {
         Text[] texts = GetComponentsInChildren<Text>();
@@ -41,23 +42,35 @@ public class ShopSlotController : MonoBehaviour , IPointerClickHandler {
             }
             else if (img.name.Equals("Continue")) {
                 continueIcon = img;
+            }else if (img.name.Equals("SelectSlot")) {
+                selectSlot = img;
             }
         }
+
+        selectSlot.gameObject.SetActive(false);
     }
 
     public void SetKey(int num) {
         this.key = num;
     }
 
-    public void SetWordData(Word word) {
+    private void setWordData(Word word) {
         wordText.text = word.Name;
         typeIcon.color = word.TypeColor;
         rankInnerIcon.color = word.RankColor;
         //TODO: 단어에 영구속성 있으면 continue icon enable
     }
 
+    public void SetWord(Word word) {
+        if(word != null) {
+            thisWord = word;
+            setWordData(word);
+        }
+    }
+
 
     public void OnPointerClick(PointerEventData eventData) {
         //SelectSlot()
     }
+
 }

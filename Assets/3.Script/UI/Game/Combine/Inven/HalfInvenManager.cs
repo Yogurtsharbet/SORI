@@ -5,6 +5,7 @@ using UnityEngine.UI;
 // [UI] 조합 - 인벤토리 매니저
 public class HalfInvenManager : CommonInvenSlotManager {
     private HalfInvenSlotController[] halfInvenSlot;
+    private HalfInvenContainer halfInvenContainer;
 
     private bool isCombineMode = false;     //문장 조합모드
     public bool IsCombineMode => isCombineMode;
@@ -12,6 +13,7 @@ public class HalfInvenManager : CommonInvenSlotManager {
     private void Awake() {
         Button[] slotButtons = GetComponentsInChildren<Button>();
         halfInvenSlot = new HalfInvenSlotController[slotButtons.Length];
+        halfInvenContainer = FindObjectOfType<HalfInvenContainer>();
         invenSelectControllers = new InvenSlotSelectController[slotButtons.Length];
         playerInvenController = FindObjectOfType<PlayerInvenController>();
         slotObjects = new GameObject[slotButtons.Length];
@@ -62,5 +64,10 @@ public class HalfInvenManager : CommonInvenSlotManager {
 
     public RectTransform GetSlotRectTransform(int num) {
         return halfInvenSlot[num].GetComponent<RectTransform>();
+    }
+
+    public void CloseInven() {
+        SetInvenSaveTemp();
+        halfInvenContainer.CloseCombineInven();
     }
 }
