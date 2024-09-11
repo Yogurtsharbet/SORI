@@ -20,6 +20,7 @@ public class ShopContainer : MonoBehaviour {
 
     public void CloseShopContainer() {
         FunctionMove(gameObject.transform, closePos);
+        //TODO: 닫으면 인벤으로 돌아가게 하고 TEMP INVEN 초기화
         gameObject.SetActive(false);
     }
 

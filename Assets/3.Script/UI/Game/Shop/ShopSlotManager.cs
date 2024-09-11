@@ -10,7 +10,33 @@ public class ShopSlotManager : MonoBehaviour {
 
     private void Awake() {
         shopSlot = GetComponentsInChildren<ShopSlotController>();
+        for(int i=0; i < 9; i++) {
+            shopSlot[i].SetKey(i);
+            shopSlot[i].gameObject.SetActive(false);
+        }
     }
 
-  
+    private void Start() {
+        initProduct();
+    }
+
+    private void initProduct() {
+        for(int i = 0; i < 2; i++) {
+            products.Add(Word.GetWord());
+        }
+        CheckProduct();
+    }
+
+    private void CheckProduct() {
+        for(int i =0; i< 9; i++) {
+            if(i < products.Count) {
+                shopSlot[i].gameObject.SetActive(true);
+            }
+            else {
+                shopSlot[i].gameObject.SetActive(false);
+            }
+        }
+    }
+
+    
 }

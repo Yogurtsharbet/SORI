@@ -71,9 +71,9 @@ public class CombineSlotManager : MonoBehaviour {
             //TODO: 조합 가능 여부 추가
             Sentence newSentence = new Sentence(combineSlotControllers[0].SlotWord, combineSlotControllers[1].SlotWord);
             sentencesManager.SetSlotSentence(selectKey, newSentence);
-            selectKey = -1;
             SetSlotWords(0, null);
             SetSlotWords(1, null);
+            selectKey = -1;
         }
         else {
             string dialogContents = "문장을 조합 할 수 없습니다\n단어를 확인해주세요.";
