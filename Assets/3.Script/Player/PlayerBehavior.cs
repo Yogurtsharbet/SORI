@@ -10,7 +10,6 @@ public class PlayerBehavior : MonoBehaviour {
     private StarCoinManager starCoinManager;
     private Animator playerAnimator;
 
-    private testCombine testCombineObj;
     public delegate void PlayerDie();
     public static event PlayerDie OnPlayerDie;
 
@@ -28,8 +27,6 @@ public class PlayerBehavior : MonoBehaviour {
         starCoinManager = FindObjectOfType<StarCoinManager>();
         playerInputAction = new PlayerInputActions();
         playerAnimator = GetComponent<Animator>();
-
-        testCombineObj = FindObjectOfType<testCombine>();
 
         playerInputAction.PlayerActions.Combine.performed += value => OnCombine();
     }
