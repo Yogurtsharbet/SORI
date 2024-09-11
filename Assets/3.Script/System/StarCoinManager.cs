@@ -56,4 +56,6 @@ public class StarCoinManager : MonoBehaviour {
     public void UpdateCoinText(int coin) {
         starCoinUI.text = coin.ToString();
     }
+
+
 }

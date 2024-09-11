@@ -2,6 +2,7 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
+// [UI] 메인 - 메인 화면 매니저
 public class MainManager : MonoBehaviour {
     private bool isOpenMenu = false;
     private bool isDetailMenu = false;

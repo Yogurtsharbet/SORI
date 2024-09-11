@@ -18,6 +18,7 @@ public class PlayerInvenController : MonoBehaviour {
     private void Awake() {
         initInven();
     }
+
     private void Start() {
         testData();
     }
@@ -78,7 +79,7 @@ public class PlayerInvenController : MonoBehaviour {
         for (int i = 0; i < invenOpenCount; i++) {
             if (inven[i] == null) {
                 inven[i] = newWord;
-                return;
+                break;
             }
         }
         UpdateInvenInvoke();
@@ -92,9 +93,15 @@ public class PlayerInvenController : MonoBehaviour {
 
     //특정 인덱스의 단어와 현재 선택한 단어와 인덱스 스위칭
     public void SwitchingItem(int thisIndex, int targetIndex) {
-        Word tempWord = inven[targetIndex];
-        inven[targetIndex] = inven[thisIndex];
-        inven[thisIndex] = tempWord;
+        if (inven[targetIndex] == null) {
+            inven[targetIndex] = inven[thisIndex];
+            inven[thisIndex] = null;
+        }
+        else {
+            Word tempWord = inven[targetIndex];
+            inven[targetIndex] = inven[thisIndex];
+            inven[thisIndex] = tempWord;
+        }
         UpdateInvenInvoke();
     }
 
@@ -110,7 +117,11 @@ public class PlayerInvenController : MonoBehaviour {
     }
 
     public void SetInvenReset(List<Word> list) {
-        inven = list;
+        List<Word> newList = new List<Word>();
+        for (int i = 0; i < list.Count; i++) {
+            newList.Add(list[i]);
+        }
+        inven = newList;
         UpdateInvenInvoke();
     }
 
