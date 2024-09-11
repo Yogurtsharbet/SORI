@@ -12,10 +12,10 @@ public class SentencesManager : MonoBehaviour, IPointerEnterHandler, IPointerExi
     }
 
     private void Start() {
+        //TODO: 10개가 아니라 동적 무한 생성 필요
         for(int i = 0; i < 10; i++) {
             sentenceSlotControllers[i].CloseSlot();
         }
-
         sentenceSlotControllers[0].OpenSlot();
     }
 

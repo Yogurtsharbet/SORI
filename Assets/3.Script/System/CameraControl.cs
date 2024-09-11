@@ -56,6 +56,7 @@ public class CameraControl : MonoBehaviour {
     }
 
     private void Start() {
+        SetCamera(cameraTopView);
         if (isDebugging) return;
 
         FadeControl.Instance.FadeIn();

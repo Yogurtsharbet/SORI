@@ -25,13 +25,16 @@ public class CombineSlotManager : MonoBehaviour {
         combineSlotControllers[1].CloseSlot();
     }
 
-    public void OpenCombineSlot(int key, Sentence sentence) {
+    public void OpenCombineSlot(int key, Frame sentence) {
         gameObject.SetActive(true);
         selectKey = key;
         if (sentence != null) {
             canCombine = false;
-            SetSlotWords(0, sentence.SentenceWords.Item1);
-            SetSlotWords(1, sentence.SentenceWords.Item2);
+            for(int i = 0; i < sentence.BlankCount; i++) { 
+                SetSlotWords(i < sentence.)
+            SetSlotWords(0, sentence.wordA);
+            SetSlotWords(1, sentence.wordB);
+            if(sentence)
         }
         else {
             canCombine = true;
@@ -67,17 +70,25 @@ public class CombineSlotManager : MonoBehaviour {
 
     //문장 조합
     public void CombineSubmit() {
+        string dialogContents = string.Empty;
+        // 확정하기
         if (combineSlotControllers[0].SlotWord != null && combineSlotControllers[1].SlotWord != null) {
-            //TODO: 조합 가능 여부 추가
             Sentence newSentence = new Sentence(combineSlotControllers[0].SlotWord, combineSlotControllers[1].SlotWord);
+            
+            //TODO: 조합 가능 여부 추가
+
+            /* if 조합가능
+            selectControl.SetTargetTag(frame.wordA.ToTag());
+            CameraControl.Instance.SetCamera(CameraControl.CameraStatus.SelectView);
+            */
+
             sentencesManager.SetSlotSentence(selectKey, newSentence);
             selectKey = -1;
             SetSlotWords(0, null);
             SetSlotWords(1, null);
         }
-        else {
-            string dialogContents = "문장을 조합 할 수 없습니다\n단어를 확인해주세요.";
-            dialogController.OpenDialog(dialogContents, DialogType.FAIL);
-        }
+        else 
+            dialogContents = "문장을 조합 할 수 없습니다\n단어를 확인해주세요.";
+        dialogController.OpenDialog(dialogContents, DialogType.FAIL);
     }
 }
