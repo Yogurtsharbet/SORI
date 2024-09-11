@@ -3,6 +3,7 @@ using UnityEngine.InputSystem;
 using DTT.AreaOfEffectRegions;
 
 public class IndicatorControl : MonoBehaviour {
+    private Transform playerTransform;
     private DefaultInputActions inputAction;
     private ArcRegion arcArrow;
 
@@ -15,6 +16,7 @@ public class IndicatorControl : MonoBehaviour {
     public Vector3 indicatePosition;
 
     private void Awake() {
+        playerTransform = GameObject.FindGameObjectWithTag("Player").transform;
         arcArrow = GetComponent<ArcRegion>();
 
         inputAction = new DefaultInputActions();
@@ -48,8 +50,17 @@ public class IndicatorControl : MonoBehaviour {
             directionToMouse = (mouseWorldPos - transform.position).normalized;
 
             float angleToMouse = Mathf.Atan2(directionToMouse.x, directionToMouse.z) * Mathf.Rad2Deg;
-            arcArrow.Angle = angleToMouse - currentY + 150;
+            arcArrow.Angle = angleToMouse - currentY + 180 - playerTransform.eulerAngles.y;
         }
+        
+        indicatePosition = transform.position + 
+            Quaternion.LookRotation(directionToMouse == Vector3.zero ? Vector3.one : directionToMouse) 
+            * Quaternion.AngleAxis(10f, Vector3.up) * Vector3.forward * 20f;
+        if (Physics.Raycast(indicatePosition, Vector3.down, out RaycastHit rayHit, Mathf.Infinity, LayerMask.GetMask("Ground")))
+            indicatePosition = rayHit.point;
+        else if (Physics.Raycast(indicatePosition, Vector3.up, out rayHit, Mathf.Infinity, LayerMask.GetMask("Ground")))
+            indicatePosition = rayHit.point;
+
     }
 
     private void OnPoint(Vector2 value) {
@@ -58,11 +69,6 @@ public class IndicatorControl : MonoBehaviour {
 
     private void OnDrawGizmos() {
         Gizmos.color = Color.red;
-
-        indicatePosition = Quaternion.LookRotation(directionToMouse) * Quaternion.AngleAxis(10f, Vector3.up) * Vector3.forward;
-        if (Physics.Raycast(indicatePosition, Vector3.down, out RaycastHit rayHit, Mathf.Infinity, LayerMask.NameToLayer("Ground"))) {
-            indicatePosition = rayHit.point;
-        }
 
         // 해당 방향으로 Gizmo 그리기
         Vector3 gizmoPosition = transform.position + indicatePosition * 20f;

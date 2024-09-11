@@ -11,6 +11,7 @@
         , isAnimal = 1 << 7
         , isLiving = 1 << 8
 
+        , isPersist = 1 << 20
     , All = int.MaxValue
 }
 

@@ -45,22 +45,21 @@ public class CombineManager : MonoBehaviour {
     }
 
     public void SelectMode() {
-        // UI를 끄고 카메라를 전환해서 타겟 찾기   
-        // ( DONE ) 타겟 찾는 도중 ESC로 취소하기 
-        // 타겟을 찾은 뒤에는 성공 이펙트를 출력하고 효과 적용하기
-
         //TODO: 여기서 문장조합창 UI를 끄기
-        Debug.Log(frame.wordA.Name);
+        Debug.Log("선택가능 오브젝트 : " + frame.wordA.Name);
         selectControl.SetTargetTag(frame.wordA.ToTag());
         CameraControl.Instance.SetCamera(CameraControl.CameraStatus.SelectView);
-
-        // 오브젝트를 찾는 로직 (외곽선)
-        // 찾은 오브젝트 -> Activate (object)
-        // frame.Activate();
     }
 
     public void Activate(GameObject target, GameObject indicator) {
         frame.Activate(target, indicator);
     }
 
+    //FOR DEBUGGING
+    public WordKey key;
+    private void OnValidate() {
+        frame.SetWordA_DEBUGGING(key);
+        selectControl.SetTargetTag(frame.wordA.ToTag());
+        Debug.Log("선택가능 오브젝트 : " + frame.wordA.Name);
+    }
 }

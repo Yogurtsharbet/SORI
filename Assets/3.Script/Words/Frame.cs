@@ -132,34 +132,26 @@ public class Frame {
         }
     }
 
-    private Vector3 GetIndicatePosition(GameObject indicator, FrameRank rank) {
+    private Vector3 GetIndicatePosition(GameObject target, GameObject indicator, FrameRank rank) {
         Vector3 position = indicator.GetComponent<IndicatorControl>().indicatePosition;
-        float distance = 2f;
+
+        float distance = 1f;
         switch (rank) {
             case FrameRank.EPIC:
-                distance = 4f;
-                break;
+                distance = 2f; break;
             case FrameRank.LEGEND:
-                distance = 8f;
-                break;
+                distance = 4f; break;
         }
         position = position * distance;
         Debug.Log(position);
-        if (Physics.Raycast(position, Vector3.down, out RaycastHit rayHit, Mathf.Infinity, LayerMask.NameToLayer("Ground")))
-            position = rayHit.point;
-        else if (Physics.Raycast(position, Vector3.up, out rayHit, Mathf.Infinity, LayerMask.NameToLayer("Ground")))
-            position = rayHit.point;
-        Debug.Log(position);
         return position;
     }
-
 
     private void Function(GameObject target, GameObject indicator) {
         WordType verbProperty = Word.CheckWordProperty(wordB)[0];
         switch (verbProperty) {
             case WordType.isMovable:
-                FunctionMove(target.transform, target.transform.position +
-                    GetIndicatePosition(indicator, Rank));
+                FunctionMove(target.transform, GetIndicatePosition(target, indicator, Rank));
                 break;
             case WordType.isChangable:
                 break;
@@ -172,7 +164,23 @@ public class Frame {
 
     private void FunctionMove(Transform origin, Vector3 destiny) {
         if (origin.CompareTag("Player")) origin = origin.parent;
-        Debug.Log(destiny);
-        origin.DOMove(destiny, 2f, true);
+        Rigidbody rigid = origin.GetComponent<Rigidbody>();
+        if(rigid == null) {
+            rigid = origin.gameObject.AddComponent<Rigidbody>();
+            rigid.freezeRotation = true;
+        }
+
+        Vector3 direction = destiny - origin.position;
+        direction.y = 0;
+
+        Sequence sequence = DOTween.Sequence();
+        sequence.Append(rigid.DOMove(destiny, 2f))
+                .Join(origin.DOLookAt(origin.position + direction, 2f))
+                .Play();
+        //TODO: 일부 rigid가 뚫고 지나가는 문제 (파악못함)
     }
+
+    public void SetWordA_DEBUGGING(WordKey key) {
+        blankWord[0] = Word.GetWord(key);
+    } 
 }

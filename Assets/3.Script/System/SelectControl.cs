@@ -46,7 +46,7 @@ public class SelectControl : MonoBehaviour {
         inputAction.UI.Cancel.performed += value => OnCancel();
         inputAction.UI.RightClick.performed += value => OnClickRight();
 
-        layerMask = 1 << LayerMask.NameToLayer("Ground");
+        layerMask = (1 << LayerMask.NameToLayer("Ground")) | (1 << LayerMask.NameToLayer("Water"));
         layerMask = ~layerMask;
     }
 
@@ -153,7 +153,6 @@ public class SelectControl : MonoBehaviour {
         if (clickedObject == null) return;
         playerBehavior.ToggleCombineMode();
         combineManager.Activate(clickedObject.gameObject, Indicator.gameObject);
-        //TODO: Frame에서 메서드를 만들어서, 여기서 clickedSelected를 보내기
     }
 
     private void OnCancel() {

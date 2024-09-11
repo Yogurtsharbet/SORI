@@ -19,6 +19,7 @@ public class Word {
     public string Name { get { return _name; } }
     public WordRank Rank { get { return _rank; } }
     public WordType Type { get { return GetWordType(this); } }
+    public bool IsPersist { get { return (_type & WordType.isPersist) != 0; } }
 
     public Color RankColor { get { return RankColors[Rank]; } }
     public Color TypeColor { get { return TypeColors[Type]; } }
@@ -56,17 +57,17 @@ public class Word {
         }
     }
 
-    private Dictionary<WordType, Color> TypeColors = new Dictionary<WordType, Color>() {
-        { WordType.NOUN, new Color(0.51f, 0.31f, 0.82f) },      //명사
-        { WordType.VERB,  new Color(0.86f, 0.33f, 0.47f) },     //동사
-        { WordType.ADJ, new Color(1f, 0.8f, 0.19f) }            //형용사
-    };
     private Dictionary<WordRank, Color> RankColors = new Dictionary<WordRank, Color>() {
         { WordRank.NORMAL, new Color(0.87f, 0.87f,  0.87f) },   //일반
         { WordRank.EPIC, new Color(0.18f, 0.24f, 0.61f) },      //희귀
         { WordRank.LEGEND, new Color(1f, 0.8f, 0.19f) },        //전설
         { WordRank.UNIQUE, new Color(0.51f, 0.31f, 0.82f) },    //유일
         { WordRank.SPECIAL, new Color(0.86f, 0.33f, 0.47f) }    //특수
+    };
+    private Dictionary<WordType, Color> TypeColors = new Dictionary<WordType, Color>() {
+        { WordType.NOUN, new Color(0.51f, 0.31f, 0.82f) },      //명사
+        { WordType.VERB,  new Color(0.86f, 0.33f, 0.47f) },     //동사
+        { WordType.ADJ, new Color(1f, 0.8f, 0.19f) }            //형용사
     };
 
     private static WordType GetWordType(Word word) {
@@ -141,5 +142,16 @@ public class Word {
 
     public string ToTag() {
         return WordData.ToTag(this);
+    }
+
+    public int GetPrice() {
+        switch (Rank) {
+            case WordRank.NORMAL:   return 150;
+            case WordRank.EPIC:     return 400;
+            case WordRank.LEGEND:   return 750;
+            case WordRank.UNIQUE:   return 1000;
+            case WordRank.SPECIAL:  return 1500;
+            default: return 0;
+        }
     }
 }
