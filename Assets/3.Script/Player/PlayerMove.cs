@@ -279,6 +279,7 @@ public class PlayerMove : MonoBehaviour {
     public void ClearCurretSpeed() {
         currentSpeed = 0f;
         moveDirection = Vector3.zero;
+        Dust.SetDustRate(0);
     }
 
     private void OnDrawGizmos() {

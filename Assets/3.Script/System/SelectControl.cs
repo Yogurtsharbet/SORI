@@ -27,8 +27,6 @@ public class SelectControl : MonoBehaviour {
     private Camera currentCamera { get { return cameraBrain.OutputCamera; } }
     private CameraControl.CameraStatus cameraStatus;
 
-
-
     public void SetTargetTag(string tag) { targetTag = tag; }
     private string targetTag;
 

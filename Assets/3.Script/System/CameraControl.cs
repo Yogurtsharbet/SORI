@@ -88,6 +88,7 @@ public class CameraControl : MonoBehaviour {
 
                 if (camera is CinemachineBlendListCamera) {
                     StartCoroutine(WaitForCinematicEnd(camera as CinemachineBlendListCamera));
+                    CursorControl.SetCursor(CursorType.Loading);
 
                     if (camera == cinematicIntro) 
                         playerAnimator.SetTrigger("cinematicIntro");
@@ -120,6 +121,7 @@ public class CameraControl : MonoBehaviour {
 
     private IEnumerator WaitForCinematicEnd(CinemachineBlendListCamera camera) {
         Debug.Log($"Waiting Cinmatic : {camera.name}");
+        playerMove.ClearCurretSpeed();
         int checkCount = 0;
         var lastChildCamera = camera.ChildCameras[camera.ChildCameras.Length - 1];
 
@@ -131,7 +133,7 @@ public class CameraControl : MonoBehaviour {
         }
         Debug.Log($"Complete Cinmatic : {camera.name}");
 
-        playerMove.ClearCurretSpeed();
+        CursorControl.SetCursor(CursorType.Default);
         SetCamera(cameraTopView);
     }
 
