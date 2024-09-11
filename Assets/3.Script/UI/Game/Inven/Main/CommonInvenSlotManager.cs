@@ -17,7 +17,8 @@ public class CommonInvenSlotManager : MonoBehaviour {
 
     private int prevSelectInvenIndex = -1;
 
-    public void SetInvenSaveTemp() {
+    //temp inven에 player inven 적용
+    public void SetTempInvenToPlayerInven() {
         List<Word> tempList = playerInvenController.Inven;
 
         if (tempInven.Count == 0) {
@@ -37,7 +38,7 @@ public class CommonInvenSlotManager : MonoBehaviour {
     }
 
     //슬롯 번호로 RectTransform return
-    private RectTransform GetInvenSlotRectTransfor(int num) {
+    public RectTransform GetInvenSlotRectTransfor(int num) {
         return slotObjects[num].GetComponent<RectTransform>();
     }
 

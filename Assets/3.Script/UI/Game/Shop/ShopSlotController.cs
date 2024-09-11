@@ -58,7 +58,12 @@ public class ShopSlotController : MonoBehaviour , IPointerClickHandler {
         wordText.text = word.Name;
         typeIcon.color = word.TypeColor;
         rankInnerIcon.color = word.RankColor;
-        //TODO: 단어에 영구속성 있으면 continue icon enable
+        if (word.IsPersist) {
+            continueIcon.enabled = true;
+        }
+        else {
+            continueIcon.enabled = false;
+        }
     }
 
     public void SetWord(Word word) {

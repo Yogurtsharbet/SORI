@@ -28,7 +28,7 @@ public class InvenSlotManager : CommonInvenSlotManager {
     }
 
     private void OnEnable() {
-        SetInvenSaveTemp();
+        SetTempInvenToPlayerInven();
     }
 
     private void Start() {

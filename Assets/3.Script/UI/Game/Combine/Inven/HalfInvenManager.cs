@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-// [UI] 조합 - 인벤토리 매니저
+// [UI] 조합 - 반쪽 인벤토리 매니저
 public class HalfInvenManager : CommonInvenSlotManager {
     private HalfInvenSlotController[] halfInvenSlot;
     private HalfInvenContainer halfInvenContainer;
@@ -35,7 +35,7 @@ public class HalfInvenManager : CommonInvenSlotManager {
     }
 
     private void OnEnable() {
-        SetInvenSaveTemp();
+        SetTempInvenToPlayerInven();
     }
 
     private void Start() {
@@ -62,12 +62,8 @@ public class HalfInvenManager : CommonInvenSlotManager {
         }
     }
 
-    public RectTransform GetSlotRectTransform(int num) {
-        return halfInvenSlot[num].GetComponent<RectTransform>();
-    }
-
     public void CloseInven() {
-        SetInvenSaveTemp();
+        SetTempInvenToPlayerInven();
         halfInvenContainer.CloseCombineInven();
     }
 }

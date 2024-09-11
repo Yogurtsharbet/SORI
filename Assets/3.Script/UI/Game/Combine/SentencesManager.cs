@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-// [UI] 조합 - 문장 목록 매니저
+// [UI] 문장 목록 - 문장 목록 매니저
 public class SentencesManager : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler {
     private ActiveSentenceController activeSentenceController;
     private SentenceSlotController[] sentenceSlotControllers;
@@ -15,7 +15,6 @@ public class SentencesManager : MonoBehaviour, IPointerEnterHandler, IPointerExi
         for(int i = 0; i < 10; i++) {
             sentenceSlotControllers[i].CloseSlot();
         }
-
         sentenceSlotControllers[0].OpenSlot();
     }
 

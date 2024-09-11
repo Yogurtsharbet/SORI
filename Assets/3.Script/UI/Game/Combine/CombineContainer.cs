@@ -26,6 +26,7 @@ public class CombineContainer : MonoBehaviour {
 
     public void CloseCombineField() {
         FunctionMove(gameObject.transform, closePos);
+        combineSlotManager.CloseCombineSlot();
         halfInvenManager.SetCombineMode(false);
         halfInvenManager.CloseInven();
         gameObject.SetActive(false);

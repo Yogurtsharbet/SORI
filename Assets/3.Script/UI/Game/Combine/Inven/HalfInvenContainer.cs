@@ -1,7 +1,7 @@
 using DG.Tweening;
 using UnityEngine;
 
-// [UI] 조합 - 인벤토리 컨테이너
+// [UI] 조합 - 인벤토리 컨테이너, 반쪽 인벤토리 전체 컨테이너
 public class HalfInvenContainer : MonoBehaviour {
     
     private Vector3 openPos = new Vector3(353f, -24f, 0);

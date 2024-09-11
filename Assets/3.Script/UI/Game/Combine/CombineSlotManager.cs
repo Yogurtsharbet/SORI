@@ -39,8 +39,12 @@ public class CombineSlotManager : MonoBehaviour {
     }
 
     public void CloseCombineSlot() {
+        for(int i = 0; i < combineSlotControllers.Length; i++) {
+            SetSlotWords(i, null);
+        }
         gameObject.SetActive(false);
     }
+
 
     public RectTransform GetSlotRectTransform(int num) {
         return combineSlotControllers[num].GetComponent<RectTransform>();

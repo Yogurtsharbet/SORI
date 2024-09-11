@@ -1,9 +1,11 @@
 using UnityEngine;
 using UnityEngine.UI;
 
+// [UI] 조합 - 조합창 단어 슬롯 공통
 public class CombineWord : MonoBehaviour {
     protected Word thisWord;
     public Word SlotWord => thisWord;
+
     protected Text wordText;
     protected Image typeIcon;
     protected Image rankOutIcon;
@@ -48,7 +50,12 @@ public class CombineWord : MonoBehaviour {
         wordText.text = word.Name;
         typeIcon.color = word.TypeColor;
         rankInnerIcon.color = word.RankColor;
-        //TODO: 단어에 영구속성 있으면 continue icon enable
+        if (word.IsPersist) {
+            continueIcon.enabled = true;
+        }
+        else {
+            continueIcon.enabled = false;
+        }
     }
 
     public void CloseSlot() {

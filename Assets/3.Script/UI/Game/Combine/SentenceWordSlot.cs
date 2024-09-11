@@ -1,5 +1,6 @@
 using UnityEngine.UI;
 
+// [UI] 문장 목록 - 문장 목록에 띄워줄 단어 슬롯
 public class SentenceWordSlot : CombineWord {
     private void Awake() {
         wordText = GetComponentInChildren<Text>();

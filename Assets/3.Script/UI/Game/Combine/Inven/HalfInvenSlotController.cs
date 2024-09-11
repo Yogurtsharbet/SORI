@@ -97,7 +97,7 @@ public class HalfInvenSlotController : CommonInvenSlotController, IEndDragHandle
     private int checkAnotherSlot(PointerEventData eventData) {
         int slotIndex = -1;
         for (int i = 0; i < 21; i++) {
-            if (RectTransformUtility.RectangleContainsScreenPoint(halfInvenManager.GetSlotRectTransform(i), eventData.position, eventData.pressEventCamera)) {
+            if (RectTransformUtility.RectangleContainsScreenPoint(halfInvenManager.GetInvenSlotRectTransfor(i), eventData.position, eventData.pressEventCamera)) {
                 slotIndex = i;
                 break;
             }

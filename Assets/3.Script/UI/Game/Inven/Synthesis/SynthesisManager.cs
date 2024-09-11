@@ -81,6 +81,6 @@ public class SynthesisManager : MonoBehaviour {
         for (int i = 0; i < slotControllers.Length; i++) {
             slotControllers[i].RemoveSlotWord();
         }
-        invenSlotManager.SetInvenSaveTemp();
+        invenSlotManager.SetTempInvenToPlayerInven();
     }
 }
