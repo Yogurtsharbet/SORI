@@ -1,0 +1,23 @@
+using UnityEngine;
+
+// [UI] 인벤토리 - 인벤토리 컨테이너 관리
+public class InvenContainer : MonoBehaviour {
+    private SynthesisManager synthesisManager;
+
+    private void Awake() {
+        synthesisManager = FindObjectOfType<SynthesisManager>();
+    }
+
+    private void Start() {
+        gameObject.SetActive(false);
+    }
+
+    public void OpenInventory() {
+        gameObject.SetActive(true);
+    }
+
+    public void CloseInventory() {
+        synthesisManager.ResetAllSlot();
+        gameObject.SetActive(false);
+    }
+}

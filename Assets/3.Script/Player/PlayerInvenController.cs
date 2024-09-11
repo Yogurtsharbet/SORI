@@ -93,9 +93,15 @@ public class PlayerInvenController : MonoBehaviour {
 
     //특정 인덱스의 단어와 현재 선택한 단어와 인덱스 스위칭
     public void SwitchingItem(int thisIndex, int targetIndex) {
-        Word tempWord = inven[targetIndex];
-        inven[targetIndex] = inven[thisIndex];
-        inven[thisIndex] = tempWord;
+        if (inven[targetIndex] == null) {
+            inven[targetIndex] = inven[thisIndex];
+            inven[thisIndex] = null;
+        }
+        else {
+            Word tempWord = inven[targetIndex];
+            inven[targetIndex] = inven[thisIndex];
+            inven[thisIndex] = tempWord;
+        }
         UpdateInvenInvoke();
     }
 

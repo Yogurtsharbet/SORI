@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
+// [Word] 단어 - 단어 기본 클래스
 public class Word {
     // Member Variables
     protected readonly WordKey _key;
