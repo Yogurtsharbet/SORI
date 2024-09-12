@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-// [UI] ¹®Àå ¸ñ·Ï - ¹®Àå ¸ñ·Ï ¸Å´ÏÀú
+// [UI] ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ - ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½Å´ï¿½ï¿½ï¿½
 public class SentencesManager : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler {
     private ActiveSentenceController activeSentenceController;
     private SentenceSlotController[] sentenceSlotControllers;
@@ -12,9 +12,11 @@ public class SentencesManager : MonoBehaviour, IPointerEnterHandler, IPointerExi
     }
 
     private void Start() {
+        //TODO: 10ï¿½ï¿½ï¿½ï¿½ ï¿½Æ´Ï¶ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ê¿ï¿½
         for(int i = 0; i < 10; i++) {
             sentenceSlotControllers[i].CloseSlot();
         }
+        sentenceSlotControllers[0].SetSlotSentence(new Frame(FrameType.AisB));
         sentenceSlotControllers[0].OpenSlot();
     }
 
@@ -26,7 +28,13 @@ public class SentencesManager : MonoBehaviour, IPointerEnterHandler, IPointerExi
         activeSentenceController.OnTargetPointerExit();
     }
 
-    public void SetSlotSentence(int index, Sentence sentence) {
-        sentenceSlotControllers[index].SetSlotSentence(sentence);
+    public void SetSlotSentence(int index, Frame frame) {
+        //TODO: Frame ï¿½Å±ï¿½ È¹ï¿½ï¿½
+        sentenceSlotControllers[index].SetSlotSentence(frame);
+        sentenceSlotControllers[index].OpenSlot();
+    }
+
+    public Frame GetSlotSentence(int index) {
+        return sentenceSlotControllers[index].thisFrame;
     }
 }

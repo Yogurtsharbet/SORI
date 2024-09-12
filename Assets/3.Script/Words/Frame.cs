@@ -33,9 +33,20 @@ public class Frame {
     public bool IsCompelete { get { return isCompelete; } }
     public bool IsPersistence { get { return isPersistence; } }
 
-    public Word wordA { get { return blankWord[0] == null ? null : blankWord[0]; } }
-    public Word wordB { get { return blankWord[1] == null ? null : blankWord[1]; } }
-    public Word wordC { get { return blankWord[2] == null ? null : blankWord[2]; } }
+    public Word wordA { get { return blankCount > 0 ? blankWord[0] : null; } }
+    public Word wordB { get { return blankCount > 1 ? blankWord[1] : null; } }
+    public Word wordC { get { return blankCount > 2 ? blankWord[2] : null; } }
+    
+    public void SetWord(int index, Word word) {
+        if (index < 0 || index >= blankCount) return;
+        blankWord[index] = word;
+    }
+
+    public Word GetWord(int index) {
+        if (index < 0 || index >= blankCount) return null;
+        return blankWord[index];
+    }
+
 
     public void SetBlankCount(int count) {
         blankCount = count;
@@ -66,16 +77,6 @@ public class Frame {
                 blankCount = 3; break;
         }
         blankWord = new Word[blankCount];
-    }
-
-    public bool SetWord(Word word) {
-        for (int i = 0; i < blankCount; i++) {
-            if (blankWord[i] == null) {
-                blankWord[i] = word;
-                return true;
-            }
-        }
-        return false;
     }
 
     public bool CheckSentenceValidity() {

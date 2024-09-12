@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using UnityEngine.UI;
 
 enum CinematicType {
     Intro, Forest
@@ -18,17 +19,30 @@ public class PlayerBehavior : MonoBehaviour {
     private int starCoin;
     private bool isCombineMode;
 
+    [SerializeField] private Image playerHPSlider;
+
     public int StarCoin { get { return StarCoin; } }
     public bool IsCombineMode { get { return isCombineMode; } }
 
     private bool[] isWatchedCinematic = new bool[Enum.GetValues(typeof(CinematicType)).Length];
+
+    //TODO: 하나로 합쳐지면 바꾸기
+    private CombineContainer combineContainer;
+    private HalfInvenContainer halfInvenContainer;
+    private InvenContainer invenContainer;
 
     private void Awake() {
         starCoinManager = FindObjectOfType<StarCoinManager>();
         playerInputAction = new PlayerInputActions();
         playerAnimator = GetComponent<Animator>();
 
+        //TODO: 하나로 합쳐지면 바꾸기
+        combineContainer = FindObjectOfType<CombineContainer>();
+        halfInvenContainer = FindObjectOfType<HalfInvenContainer>();
+        invenContainer = FindObjectOfType<InvenContainer>();
+
         playerInputAction.PlayerActions.Combine.performed += value => OnCombine();
+        playerInputAction.PlayerActions.Inventory.performed += value => OnInventory();
     }
 
     private void Start() {
@@ -57,13 +71,24 @@ public class PlayerBehavior : MonoBehaviour {
         ToggleCombineMode();
     }
 
+    private void OnInventory() {
+        if (invenContainer.gameObject.activeSelf) invenContainer.CloseInventory();
+        else invenContainer.OpenInventory();
+    }
+
     public void ToggleCombineMode() {
         isCombineMode = !isCombineMode;
 
         //TODO: 단어조합 UI 지우기
         //Combine UI Set/Unset
-        //if (IsCombineMode) testCombineObj.SetCombine();
-        //else testCombineObj.UnsetCombine();
+        if (IsCombineMode) {
+            combineContainer.OpenCombineField();
+            halfInvenContainer.OpenCombineInven();
+        }
+        else {
+            combineContainer.CloseCombineField();
+            halfInvenContainer.CloseCombineInven();
+        }
 
         playerAnimator.SetBool("isCombineMode", isCombineMode);
         CameraControl.Instance.ChangePlayerCamera();
@@ -78,12 +103,19 @@ public class PlayerBehavior : MonoBehaviour {
         if (playerHP < 0) {
             OnPlayerDie?.Invoke();
         }
+        SetSlider(playerHP);
     }
 
     public void Heal(float heal) {
         playerHP += heal;
         if (playerHP > playerMaxHP)
             playerHP = playerMaxHP;
+        SetSlider(playerHP);
+    }
+
+    private void SetSlider(float hp) {
+        //TODO: Lerp 로 부드럽게 닳는 효과
+        playerHPSlider.fillAmount = hp / playerMaxHP;
     }
 
     private void OnTriggerEnter(Collider other) {
