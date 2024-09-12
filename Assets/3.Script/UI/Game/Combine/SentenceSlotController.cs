@@ -13,7 +13,7 @@ public class SentenceSlotController : MonoBehaviour, IPointerClickHandler, IBegi
     private RectTransform rectTransform;            //해당 gameobject transform
 
     private int key;
-    private Sentence thisSentence = null;                  //조합 문장 정보
+    public Frame thisFrame { get; private set; }                  //조합 문장 정보
 
     private void Awake() {
         combineFieldController = FindObjectOfType<CombineContainer>();
@@ -60,11 +60,11 @@ public class SentenceSlotController : MonoBehaviour, IPointerClickHandler, IBegi
         rectTransform.anchoredPosition = originalPosition;
 
         if (RectTransformUtility.RectangleContainsScreenPoint(combineFieldRectTransform, eventData.position, eventData.pressEventCamera)) {
-            combineFieldController.OpenCombineSlot(key, thisSentence);
+            combineFieldController.OpenCombineSlot(key, thisFrame);
         }
     }
 
-    public void SetSlotSentence(Sentence sentence) {
-        thisSentence = sentence;
+    public void SetSlotSentence(Frame frame) {
+        thisFrame = frame;
     }
 }

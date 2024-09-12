@@ -39,7 +39,7 @@ public class SynthesisManager : MonoBehaviour {
         for (int i = 0; i < slotControllers.Length; i++) {
             slotControllers[i].RemoveSlotWord();
         }
-        invenSlotManager.TempInvenToPlayerInven();
+        //invenSlotManager.TempInvenToPlayerInven();
     }
 
     //합성창 슬롯의 단어 인벤으로 이동 

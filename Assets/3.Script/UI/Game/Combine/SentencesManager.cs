@@ -16,6 +16,7 @@ public class SentencesManager : MonoBehaviour, IPointerEnterHandler, IPointerExi
         for(int i = 0; i < 10; i++) {
             sentenceSlotControllers[i].CloseSlot();
         }
+        sentenceSlotControllers[0].SetSlotSentence(new Frame(FrameType.AisB));
         sentenceSlotControllers[0].OpenSlot();
     }
 
@@ -27,7 +28,13 @@ public class SentencesManager : MonoBehaviour, IPointerEnterHandler, IPointerExi
         activeSentenceController.OnTargetPointerExit();
     }
 
-    public void SetSlotSentence(int index, Sentence sentence) {
-        sentenceSlotControllers[index].SetSlotSentence(sentence);
+    public void SetSlotSentence(int index, Frame frame) {
+        //TODO: Frame ½Å±Ô È¹µæ
+        sentenceSlotControllers[index].SetSlotSentence(frame);
+        sentenceSlotControllers[index].OpenSlot();
+    }
+
+    public Frame GetSlotSentence(int index) {
+        return sentenceSlotControllers[index].thisFrame;
     }
 }
