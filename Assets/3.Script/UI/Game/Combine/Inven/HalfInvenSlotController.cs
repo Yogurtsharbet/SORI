@@ -5,7 +5,7 @@ using UnityEngine.UI;
 // [UI] 상점, 조합창 - 인벤토리 슬롯 컨트롤러
 public class HalfInvenSlotController : CommonInvenSlotController, IEndDragHandler, IPointerClickHandler, IBeginDragHandler, IDragHandler {
     private HalfInvenManager halfInvenManager;
-    private CombineSlotManager combineSlotManager;
+    private CombineManager combineSlotManager;
     private PlayerInvenController playerInven;
 
     private void Awake() {
@@ -19,7 +19,7 @@ public class HalfInvenSlotController : CommonInvenSlotController, IEndDragHandle
 
         closeController = GetComponentInChildren<InvenSlotCloseController>();
         halfInvenManager = FindObjectOfType<HalfInvenManager>();
-        combineSlotManager = FindObjectOfType<CombineSlotManager>();
+        combineSlotManager = FindObjectOfType<CombineManager>();
         playerInven = FindObjectOfType<PlayerInvenController>();
 
         wordText = GetComponentInChildren<Text>();

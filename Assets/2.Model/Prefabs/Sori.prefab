@@ -10269,6 +10269,7 @@ GameObject:
   - component: {fileID: 4107807695389814069}
   - component: {fileID: 9007887306139987402}
   - component: {fileID: 1200588428861290799}
+  - component: {fileID: 7157275969865958393}
   m_Layer: 29
   m_Name: Sori
   m_TagString: Player
@@ -10393,6 +10394,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9939991ea1f505345aab90b6dc659260, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &7157275969865958393
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5601861344336967389}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7e7fa5808e21a904f8e91ba9a1127782, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &5654733855061677446

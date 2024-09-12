@@ -31,11 +31,11 @@ public enum WordKey {
     _Random,
     SORI,
     DOOR,
-    TREE,
-    KEY,
-    FLOOR,
-    BIRD,
-    HP,
+    //TREE,
+    //KEY,
+    //FLOOR,
+    //BIRD,
+    //HP,
     //TIME,
     MOVE,
 }
@@ -52,23 +52,23 @@ class WordData {
         Word.Create(WordKey.DOOR, "문", WordRank.NORMAL | WordRank.EPIC,
                     WordType.NOUN | DefaultType | WordType.isBreakable),
 
-        Word.Create(WordKey.TREE, "나무", WordRank.NORMAL,
-                    WordType.NOUN | DefaultType | WordType.isBreakable),
-
-        Word.Create(WordKey.KEY, "열쇠", WordRank.NORMAL | WordRank.EPIC,
-                    WordType.NOUN | DefaultType),
-
-        Word.Create(WordKey.FLOOR, "바닥", WordRank.NORMAL | WordRank.EPIC,
-                    WordType.NOUN | DefaultType | WordType.isBreakable),
-
-        Word.Create(WordKey.BIRD, "새", WordRank.NORMAL,
-                    WordType.NOUN | DefaultType | WordType.isAnimal | WordType.isLiving),
-
-        Word.Create(WordKey.HP, "체력", WordRank.NORMAL | WordRank.EPIC,
-                    WordType.NOUN | WordType.isChangable | WordType.isInteractive),
-
-        Word.Create(WordKey.HP, "시간", WordRank.EPIC,
-                    WordType.NOUN | WordType.isInteractive),
+        //Word.Create(WordKey.TREE, "나무", WordRank.NORMAL,
+        //            WordType.NOUN | DefaultType | WordType.isBreakable),
+        //
+        //Word.Create(WordKey.KEY, "열쇠", WordRank.NORMAL | WordRank.EPIC,
+        //            WordType.NOUN | DefaultType),
+        //
+        //Word.Create(WordKey.FLOOR, "바닥", WordRank.NORMAL | WordRank.EPIC,
+        //            WordType.NOUN | DefaultType | WordType.isBreakable),
+        //
+        //Word.Create(WordKey.BIRD, "새", WordRank.NORMAL,
+        //            WordType.NOUN | DefaultType | WordType.isAnimal | WordType.isLiving),
+        //
+        //Word.Create(WordKey.HP, "체력", WordRank.NORMAL | WordRank.EPIC,
+        //            WordType.NOUN | WordType.isChangable | WordType.isInteractive),
+        //
+        //Word.Create(WordKey.HP, "시간", WordRank.EPIC,
+        //            WordType.NOUN | WordType.isInteractive),
 
         Word.Create(WordKey.MOVE, "움직인다", WordRank.EPIC | WordRank.LEGEND,
                     WordType.VERB | WordType.isMovable),
@@ -78,11 +78,11 @@ class WordData {
         switch (word.Key) {
             case WordKey.SORI: return "Player";
             case WordKey.DOOR: return "Door";
-            case WordKey.TREE: return "Tree";
-            case WordKey.KEY: return "Key";
-            case WordKey.FLOOR: return "Floor";
-            case WordKey.BIRD: return "Bird";
-            case WordKey.HP: return "HP";
+            //case WordKey.TREE: return "Tree";
+            //case WordKey.KEY: return "Key";
+            //case WordKey.FLOOR: return "Floor";
+            //case WordKey.BIRD: return "Bird";
+            //case WordKey.HP: return "HP";
         }
         return string.Empty;
     }

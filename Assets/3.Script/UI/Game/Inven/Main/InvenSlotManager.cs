@@ -53,25 +53,25 @@ public class InvenSlotManager : CommonInvenSlotManager {
     }
 
     //단어 아이템 소모 하기전 행동 취소로 인벤 초기화
-    public void TempInvenToPlayerInven() {
-        List<Word> playerInven = playerInvenController.Inven;
-        int playerInvenCount = 0;
-        int tempInvenCount = 0;
-        for (int i = 0; i < 20; i ++) {
-            if(playerInven[i] != null) {
-                playerInvenCount++;
-            }
-        }
-        for(int i = 0; i <20; i++) {
-            if(tempInven[i] != null) {
-                tempInvenCount++;
-            }
-        }
+    //public void TempInvenToPlayerInven() {
+    //    List<Word> playerInven = playerInvenController.Inven;
+    //    int playerInvenCount = 0;
+    //    int tempInvenCount = 0;
+    //    for (int i = 0; i < 20; i ++) {
+    //        if(playerInven[i] != null) {
+    //            playerInvenCount++;
+    //        }
+    //    }
+    //    for(int i = 0; i <20; i++) {
+    //        if(tempInven[i] != null) {
+    //            tempInvenCount++;
+    //        }
+    //    }
 
-        if(tempInvenCount != playerInvenCount) {
-            playerInvenController.SetInvenReset(TempInven);
-        }
-    }
+    //    if(tempInvenCount != playerInvenCount) {
+    //        playerInvenController.SetInvenReset(TempInven);
+    //    }
+    //}
 
     //선택한 index슬롯에 단어 추가
     public void SetWordAdd(int invenIndex, int index) {

@@ -24,11 +24,9 @@ public class PlayerInvenController : MonoBehaviour {
     }
 
     private void testData() {
-        inven[0] = Word.GetWord();
-        inven[1] = Word.GetWord();
-        inven[2] = Word.GetWord();
-        inven[3] = Word.GetWord();
-        inven[4] = Word.GetWord();
+        for(int i = 0; i < 12; i++) {
+            inven[i] = Word.GetWord();
+        }
         UpdateInvenInvoke();
     }
 
