@@ -180,8 +180,4 @@ public class Frame {
                 .Play();
         //TODO: 일부 rigid가 뚫고 지나가는 문제 (파악못함)
     }
-
-    public void SetWordA_DEBUGGING(WordKey key) {
-        blankWord[0] = Word.GetWord(key);
-    } 
 }

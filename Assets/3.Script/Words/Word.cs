@@ -4,12 +4,13 @@ using UnityEngine;
 using Random = UnityEngine.Random;
 
 // [Word] 단어 - 단어 기본 클래스
+[System.Serializable]
 public class Word {
     // Member Variables
-    protected readonly WordKey _key;
-    protected readonly string _name;
-    protected readonly WordRank _rank;
-    protected WordType _type;
+    public WordKey _key;
+    public string _name;
+    public WordRank _rank;
+    public WordType _type;
 
     private static WordType[] allType = (WordType[])Enum.GetValues(typeof(WordType));
     private static WordRank[] allRank = (WordRank[])Enum.GetValues(typeof(WordRank));

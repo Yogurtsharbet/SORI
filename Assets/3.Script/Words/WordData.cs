@@ -29,6 +29,7 @@ public enum WordRank {
     , All = int.MaxValue
 }
 
+[System.Serializable]
 public enum WordKey {
     _Random,
     SORI,
@@ -72,18 +73,51 @@ public enum WordKey {
 /// </summary>
 
 [System.Serializable]
-class WordData {
-    private const WordType DefaultType = 
-        WordType.isMovable | WordType.isChangable | WordType.isInteractive;
+public class WordDataStruct {
+    public Word[] words;
+    public WordKey[] isMovable;
+};
 
-    public static readonly Word[] words = new Word[] {
+public class WordData : MonoBehaviour {
+    private WordDataStruct Data;
+    public static Word[] words;
 
-        Word.Create(WordKey.SORI, "소리", WordRank.NORMAL | WordRank.EPIC,
-                    WordType.NOUN | DefaultType | WordType.isLiving),
+    private WordKey[] isMovable;
 
-        Word.Create(WordKey.DOOR, "문", WordRank.NORMAL | WordRank.EPIC,
-                    WordType.NOUN | DefaultType | WordType.isBreakable),
+    private void Awake() {
+        TextAsset dataFile = Resources.Load<TextAsset>("WordData");
+        if(dataFile == null) {
+            Debug.Log("Word Data File is not exist");
+            Application.Quit();
+            return;
+        }
 
+        Data = JsonUtility.FromJson<WordDataStruct>(dataFile.text);
+        words = Data.words;
+        isMovable = Data.isMovable;
+    }
+    public static string ToTag(Word word) {
+        switch (word.Key) {
+            case WordKey.SORI: return "Player";
+            case WordKey.DOOR: return "Door";
+                //case WordKey.TREE: return "Tree";
+                //case WordKey.KEY: return "Key";
+                //case WordKey.FLOOR: return "Floor";
+                //case WordKey.BIRD: return "Bird";
+                //case WordKey.HP: return "HP";
+        }
+        return string.Empty;
+    }
+}
+
+    //= new Word[] {
+    //
+    //    Word.Create(WordKey.SORI, "소리", WordRank.NORMAL | WordRank.EPIC,
+    //                WordType.NOUN | DefaultType | WordType.isLiving),
+    //
+    //    Word.Create(WordKey.DOOR, "문", WordRank.NORMAL | WordRank.EPIC,
+    //                WordType.NOUN | DefaultType | WordType.isBreakable),
+    //
         //Word.Create(WordKey.TREE, "나무", WordRank.NORMAL,
         //            WordType.NOUN | DefaultType | WordType.isBreakable),
         //
@@ -101,29 +135,27 @@ class WordData {
         //
         //Word.Create(WordKey.HP, "시간", WordRank.EPIC,
         //            WordType.NOUN | WordType.isInteractive),
-
-        Word.Create(WordKey.MOVE, "움직인다", WordRank.EPIC | WordRank.LEGEND,
-                    WordType.VERB | WordType.isMovable),
-
-        Word.Create( "소리지른다");
-
-    };
-
-dictonry<WordKey, WordKey[] > dic 
-    public WordKey[] isMovable = { WordKey.DOOR , WordKey.MOVE , 넘어진다 날아간다 };
-public WordKey[] isSelecatble = { };
-
-    public static string ToTag(Word word) {
-        switch (word.Key) {
-            case WordKey.SORI: return "Player";
-            case WordKey.DOOR: return "Door";
-            //case WordKey.TREE: return "Tree";
-            //case WordKey.KEY: return "Key";
-            //case WordKey.FLOOR: return "Floor";
-            //case WordKey.BIRD: return "Bird";
-            //case WordKey.HP: return "HP";
-        }
-        return string.Empty;
-    }
-}
-
+    //
+    //Word.Create(WordKey.MOVE, "움직인다", WordRank.EPIC | WordRank.LEGEND,
+    //            WordType.VERB | WordType.isMovable),
+    //
+//
+//dictonry<WordKey, WordKey[] > dic 
+//    public WordKey[] isMovable = { WordKey.DOOR , WordKey.MOVE , 넘어진다 날아간다 };
+//public WordKey[] isSelecatble = { };
+//
+//    
+//    
+//    
+//    
+//    
+//    
+//    
+//    
+//    
+//    
+//    
+//    
+//}
+//
+//
