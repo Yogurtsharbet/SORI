@@ -5,7 +5,7 @@ using UnityEngine;
 // [UI] 조합 - 조합 슬롯 매니저. 조합 창의 한 문장 틀
 public class CombineManager : MonoBehaviour {
     private CombineSlotController[] combineSlotControllers;
-    private SentencesManager sentencesManager;
+    private FrameListContainer sentencesManager;
     private DialogController dialogController;
 
     //TODO: 하나로 합쳐지면 바꾸기
@@ -22,7 +22,7 @@ public class CombineManager : MonoBehaviour {
 
     private void Awake() {
         combineSlotControllers = GetComponentsInChildren<CombineSlotController>();
-        sentencesManager = FindObjectOfType<SentencesManager>();
+        sentencesManager = FindObjectOfType<FrameListContainer>();
         dialogController = FindObjectOfType<DialogController>();
         selectControl = FindObjectOfType<SelectControl>();
 
@@ -33,8 +33,8 @@ public class CombineManager : MonoBehaviour {
 
     private void Start() {
         CloseCombineSlot();
-        combineSlotControllers[0].CloseSlot();
-        combineSlotControllers[1].CloseSlot();
+        //combineSlotControllers[0].CloseSlot();
+        //combineSlotControllers[1].CloseSlot();
     }
 
     public void OpenCombineSlot(int key, Frame frame) {
@@ -89,7 +89,7 @@ public class CombineManager : MonoBehaviour {
             selectedFrame.SetWord(i, combineSlotControllers[i].SlotWord);
 
         if(selectedFrame.CheckSentenceValidity()) {
-            sentencesManager.SetSlotSentence(selectKey, selectedFrame);
+            //sentencesManager.SetSlotSentence(selectKey, selectedFrame);
             selectKey = -1; //TODO: ESC로 돌아올 수 있으므로 selectKey가 저장되어야 할 필요 있음
             for (int i = 0; i < selectedFrame.BlankCount; i++)
                 SetSlotWords(i, null);

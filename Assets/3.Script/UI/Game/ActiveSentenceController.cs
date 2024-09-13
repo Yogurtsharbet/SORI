@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 public class ActiveSentenceController : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler {
     Text activeCount;
-    SentencesManager sentenceManager;
+    FrameListContainer sentenceManager;
 
     private Vector3 openPosition = new Vector3(-750f, 0, 0);
     private Vector3 closedPosition = new Vector3(-1200f, 0, 0);
@@ -19,7 +19,7 @@ public class ActiveSentenceController : MonoBehaviour, IPointerEnterHandler, IPo
 
     private void Awake() {
         Text[] texts = GetComponentsInChildren<Text>();
-        sentenceManager = FindObjectOfType<SentencesManager>();
+        sentenceManager = FindObjectOfType<FrameListContainer>();
         foreach (Text txt in texts) {
             if (txt.name.Equals("Count"))
                 activeCount = txt;

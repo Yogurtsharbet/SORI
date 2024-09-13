@@ -3,6 +3,7 @@ using UnityEngine.UI;
 
 // [UI] 조합 - 조합창 단어 슬롯 공통
 public class CombineWord : MonoBehaviour {
+
     protected Word thisWord;
     public Word SlotWord => thisWord;
 
