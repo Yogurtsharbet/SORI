@@ -27,7 +27,7 @@ public class Frame {
 
     public FrameType Type { get { return _type; } }
     public FrameRank Rank { get { return _rank; } }
-
+    
     public int BlankCount { get { return blankCount; } }
     public bool IsActive { get { return isActive; } }
     public bool IsCompelete { get { return isCompelete; } }

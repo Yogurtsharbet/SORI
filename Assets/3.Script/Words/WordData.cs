@@ -1,4 +1,6 @@
-﻿public enum WordType {
+﻿using UnityEngine;
+
+public enum WordType {
     Null = 0
 
         , NOUN = 1 << 0
@@ -38,14 +40,44 @@ public enum WordKey {
     //HP,
     //TIME,
     MOVE,
+    DISAPPEAR,
 }
 
+
+
+/// <summary>
+/// 
+/// 동사 속성을 단일 속성이 아니라 비트 + 비트로 속성을 설정하면
+/// 있는 속성가지고도 여러가지 조합의 속성을 만들 수 있꼬
+/// 예를들어서
+/// wordtype newVerbType = typeA | typeB
+/// 
+/// 그러면 명사에서도 typeA 와 typeB를 다
+/// 
+/// 
+/// 
+/// 1. 선택가능한 상호작용인가?
+///     선택가능 : 선택불가 외 전부
+///     선택불가 : HP, 소리, 하늘, 가방, 단어 등. 단일객체 또는 추상객체
+///     
+/// 2. 방향 지정 필요 상호작용인가?
+///     방향지정필요 : 움직임 부류 상호작용
+///     방향지정불필요 : 그 외 전부
+///     
+/// 3. 
+/// 
+/// 속성별 리스트를 만들고 ㅅ속성에 명사 ,동사를 집어넣ㅇ면?????????????????
+/// 
+/// 
+/// </summary>
+
+[System.Serializable]
 class WordData {
     private const WordType DefaultType = 
         WordType.isMovable | WordType.isChangable | WordType.isInteractive;
 
     public static readonly Word[] words = new Word[] {
-        
+
         Word.Create(WordKey.SORI, "소리", WordRank.NORMAL | WordRank.EPIC,
                     WordType.NOUN | DefaultType | WordType.isLiving),
 
@@ -72,7 +104,14 @@ class WordData {
 
         Word.Create(WordKey.MOVE, "움직인다", WordRank.EPIC | WordRank.LEGEND,
                     WordType.VERB | WordType.isMovable),
+
+        Word.Create( "소리지른다");
+
     };
+
+dictonry<WordKey, WordKey[] > dic 
+    public WordKey[] isMovable = { WordKey.DOOR , WordKey.MOVE , 넘어진다 날아간다 };
+public WordKey[] isSelecatble = { };
 
     public static string ToTag(Word word) {
         switch (word.Key) {

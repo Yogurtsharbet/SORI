@@ -287,6 +287,7 @@ SkinnedMeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -379,6 +380,7 @@ SkinnedMeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -439,7 +441,7 @@ GameObject:
   - component: {fileID: 6788538757290762320}
   m_Layer: 0
   m_Name: Sparrow
-  m_TagString: Untagged
+  m_TagString: Bird
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -453,7 +455,7 @@ Transform:
   m_GameObject: {fileID: 6788538757290762323}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 5, y: 5, z: 5}
   m_Children:
   - {fileID: 6983618525852185880}
   - {fileID: 6788538757856321319}
@@ -471,28 +473,28 @@ LODGroup:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6788538757290762323}
   serializedVersion: 2
-  m_LocalReferencePoint: {x: 0.000000029802322, y: 0.38319656, z: -0.044521928}
-  m_Size: 0.76724046
+  m_LocalReferencePoint: {x: 0, y: 0, z: 0}
+  m_Size: 1
   m_FadeMode: 0
   m_AnimateCrossFading: 0
   m_LastLODIsBillboard: 0
   m_LODs:
-  - screenRelativeHeight: 0.95
+  - screenRelativeHeight: 0.047847413
     fadeTransitionWidth: 0
     renderers:
-    - renderer: {fileID: 6788538757856321318}
-  - screenRelativeHeight: 0.7
+    - renderer: {fileID: 0}
+  - screenRelativeHeight: 0.023272734
     fadeTransitionWidth: 0
     renderers:
-    - renderer: {fileID: 6788538757959556192}
-  - screenRelativeHeight: 0.35
+    - renderer: {fileID: 0}
+  - screenRelativeHeight: 0.0053537074
     fadeTransitionWidth: 0
     renderers:
-    - renderer: {fileID: 6788538756691347373}
-  - screenRelativeHeight: 0.05
+    - renderer: {fileID: 0}
+  - screenRelativeHeight: 0.0012185465
     fadeTransitionWidth: 0
     renderers:
-    - renderer: {fileID: 6788538756395232118}
+    - renderer: {fileID: 0}
   m_Enabled: 1
 --- !u!95 &6788538757290762327
 Animator:
@@ -573,6 +575,7 @@ SkinnedMeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -665,6 +668,7 @@ SkinnedMeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
