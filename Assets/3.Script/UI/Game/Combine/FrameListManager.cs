@@ -57,7 +57,6 @@ public class FrameListManager : MonoBehaviour {
     private void testData() {
         for (int i = 0; i < 20; i++) {
             frameList.Add(new Frame());
-            Debug.Log($"{i} : {frameList[i].Type}");
         }
     }
 

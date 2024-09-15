@@ -11,31 +11,41 @@ public class HalfInvenManager : CommonInvenSlotManager {
     public bool IsCombineMode => isCombineMode;
 
     private void Awake() {
-        Button[] slotButtons = GetComponentsInChildren<Button>();
-        halfInvenSlot = new HalfInvenSlotController[slotButtons.Length];
         halfInvenContainer = FindObjectOfType<HalfInvenContainer>();
-        invenSelectControllers = new InvenSlotSelectController[slotButtons.Length];
-        playerInvenController = FindObjectOfType<PlayerInvenController>();
-        slotObjects = new GameObject[slotButtons.Length];
+        halfInvenSlot = new HalfInvenSlotController[20];
+        invenSelectControllers = new InvenSlotSelectController[20];
 
-        int index = 0;
-        foreach (Button btn in slotButtons) {
-            slotObjects[index] = btn.gameObject;
-            halfInvenSlot[index] = slotObjects[index].GetComponentInChildren<HalfInvenSlotController>();
-            invenSelectControllers[index] = slotObjects[index].GetComponentInChildren<InvenSlotSelectController>();
-            halfInvenSlot[index].SetKey(index);
-            index++;
+        for (int i = 0; i < 20; i++) {
+            Vector3 position;
+            if (i < 4) {
+                position = new Vector3(1395f + (i * 140f), -222f, 0);
+            }
+            else if (i < 8) {
+                position = new Vector3(1395f + (i - 4) * 140f, -342f, 0);
+            }
+            else if (i < 12) {
+                position = new Vector3(1395f + (i - 8) * 140f, -462f, 0);
+            }
+            else if (i < 16) {
+                position = new Vector3(1395f + (i - 12) * 140f, -582f, 0);
+            }
+            else {
+                position = new Vector3(1395f + (i - 16) * 140f, -702f, 0);
+            }
+            GameObject newSlotObject = Instantiate(invenSlotPrefab, position, Quaternion.identity, gameObject.transform);
+            newSlotObject.name = $"slot{i}";
+            slotList.Add(newSlotObject);
+            halfInvenSlot[i] = newSlotObject.GetComponentInChildren<HalfInvenSlotController>();
+            invenSelectControllers[i] = newSlotObject.GetComponentInChildren<InvenSlotSelectController>();
+            halfInvenSlot[i].SetKey(i);
         }
 
+        playerInvenController = FindObjectOfType<PlayerInvenController>();
         playerInvenController.InvenChanged += updateSlot;
     }
 
     public void SetCombineMode(bool yn) {
         isCombineMode = yn;
-    }
-
-    private void OnEnable() {
-        SetTempInvenToPlayerInven();
     }
 
     private void Start() {
@@ -63,7 +73,6 @@ public class HalfInvenManager : CommonInvenSlotManager {
     }
 
     public void CloseInven() {
-        SetTempInvenToPlayerInven();
         halfInvenContainer.CloseCombineInven();
     }
 }
