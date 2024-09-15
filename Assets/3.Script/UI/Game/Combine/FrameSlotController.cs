@@ -15,7 +15,7 @@ public class FrameSlotController : MonoBehaviour, IPointerClickHandler, IBeginDr
     private RectTransform rectTransform;            //해당 gameobject transform
 
     //TODO: 프레임 타입별로 끄고 키기
-    private GameObject[] frameByType;
+    private GameObject[] frameByType = new GameObject[4];
 
     private int key;
     public Frame thisFrame { get; private set; }                  //조합 문장 정보
@@ -73,42 +73,25 @@ public class FrameSlotController : MonoBehaviour, IPointerClickHandler, IBeginDr
     }
 
     public void SetFrameData(Frame frame) {
+        for (int i = 0; i < 4; i++)
+            frameByType[i].SetActive(false);
+
         thisFrame = frame;
         frameType = frame.Type;
         switch (frameType) {
             case FrameType._Random:
                 break;
             case FrameType.AisB:
-                for (int i = 0; i < 4; i++) {
-                    frameByType[i].SetActive(false);
-                    if (i == 0) {
-                        frameByType[i].SetActive(true);
-                    }
-                }
+                frameByType[0].SetActive(true);
                 break;
             case FrameType.AtoBisC:
-                for (int i = 0; i < 4; i++) {
-                    frameByType[i].SetActive(false);
-                    if (i == 1) {
-                        frameByType[i].SetActive(true);
-                    }
-                }
+                frameByType[1].SetActive(true);
                 break;
             case FrameType.AandB:
-                for (int i = 0; i < 4; i++) {
-                    frameByType[i].SetActive(false);
-                    if (i == 2) {
-                        frameByType[i].SetActive(true);
-                    }
-                }
+                frameByType[2].SetActive(true);
                 break;
             case FrameType.NotA:
-                for (int i = 0; i < 4; i++) {
-                    frameByType[i].SetActive(false);
-                    if (i == 3) {
-                        frameByType[i].SetActive(true);
-                    }
-                }
+                frameByType[3].SetActive(true);
                 break;
         }
     }
