@@ -1,20 +1,21 @@
 ﻿using UnityEngine;
 
 public enum WordType {
-    Null = 0
+    All, NOUN, VERB, ADJ
+    //Null = 0
 
-        , NOUN = 1 << 0
-        , VERB = 1 << 1
-        , ADJ = 1 << 2
-        , isMovable = 1 << 3
-        , isChangable = 1 << 4
-        , isInteractive = 1 << 5
-        , isBreakable = 1 << 6
-        , isAnimal = 1 << 7
-        , isLiving = 1 << 8
+    //    , NOUN = 1 << 0
+    //    , VERB = 1 << 1
+    //    , ADJ = 1 << 2
+    //    , isMovable = 1 << 3
+    //    , isChangable = 1 << 4
+    //    , isInteractive = 1 << 5
+    //    , isBreakable = 1 << 6
+    //    , isAnimal = 1 << 7
+    //    , isLiving = 1 << 8
 
-        , isPersist = 1 << 20
-    , All = int.MaxValue
+    //    , isPersist = 1 << 20
+    //, All = int.MaxValue
 }
 
 public enum WordRank {
@@ -41,7 +42,7 @@ public enum WordKey {
     //HP,
     //TIME,
     MOVE,
-    DISAPPEAR,
+    //DISAPPEAR,
 }
 
 

@@ -151,15 +151,15 @@ public class Frame {
     private void Function(GameObject target, GameObject indicator) {
         WordType verbProperty = Word.CheckWordProperty(wordB)[0];
         switch (verbProperty) {
-            case WordType.isMovable:
-                FunctionMove(target.transform, GetIndicatePosition(target, indicator, Rank));
-                break;
-            case WordType.isChangable:
-                break;
-            case WordType.isInteractive:
-                break;
-            case WordType.isBreakable:
-                break;
+            //case WordType.isMovable:
+            //    FunctionMove(target.transform, GetIndicatePosition(target, indicator, Rank));
+            //    break;
+            //case WordType.isChangable:
+            //    break;
+            //case WordType.isInteractive:
+            //    break;
+            //case WordType.isBreakable:
+            //    break;
         }
     }
 

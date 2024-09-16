@@ -2,12 +2,354 @@
   "words": [
     {
       "_key": 1,
-      "_name": "문",
-      "_rank": 1,
+      "_name": "소리",
+      "_rank": 3,
       "_type": 1
     },
     {
       "_key": 2,
+      "_name": "문",
+      "_rank": 3,
+      "_type": 1
+    },
+    {
+      "_key": 2,
+      "_name": "문1",
+      "_rank": 3,
+      "_type": 1
+    },
+    {
+      "_key": 2,
+      "_name": "문2",
+      "_rank": 3,
+      "_type": 1
+    },
+    {
+      "_key": 2,
+      "_name": "문3",
+      "_rank": 3,
+      "_type": 1
+    },
+    {
+      "_key": 2,
+      "_name": "문4",
+      "_rank": 3,
+      "_type": 1
+    },
+    {
+      "_key": 2,
+      "_name": "문5",
+      "_rank": 3,
+      "_type": 1
+    },
+    {
+      "_key": 2,
+      "_name": "문6",
+      "_rank": 3,
+      "_type": 1
+    },
+    {
+      "_key": 2,
+      "_name": "문7",
+      "_rank": 3,
+      "_type": 1
+    },
+    {
+      "_key": 2,
+      "_name": "문8",
+      "_rank": 3,
+      "_type": 1
+    },
+    {
+      "_key": 2,
+      "_name": "9",
+      "_rank": 3,
+      "_type": 1
+    },
+    {
+      "_key": 2,
+      "_name": "문0",
+      "_rank": 3,
+      "_type": 1
+    },
+    {
+      "_key": 2,
+      "_name": "문99",
+      "_rank": 3,
+      "_type": 1
+    },
+    {
+      "_key": 2,
+      "_name": "문999",
+      "_rank": 3,
+      "_type": 1
+    },
+    {
+      "_key": 2,
+      "_name": "문9996",
+      "_rank": 3,
+      "_type": 1
+    },
+    {
+      "_key": 2,
+      "_name": "659문",
+      "_rank": 3,
+      "_type": 1
+    },
+    {
+      "_key": 2,
+      "_name": "569문",
+      "_rank": 3,
+      "_type": 1
+    },
+    {
+      "_key": 2,
+      "_name": "5637문",
+      "_rank": 3,
+      "_type": 1
+    },
+    {
+      "_key": 2,
+      "_name": "123421",
+      "_rank": 3,
+      "_type": 1
+    },
+    {
+      "_key": 2,
+      "_name": "4356354",
+      "_rank": 3,
+      "_type": 1
+    },
+    {
+      "_key": 2,
+      "_name": "43563456",
+      "_rank": 3,
+      "_type": 1
+    },
+    {
+      "_key": 2,
+      "_name": "2341234",
+      "_rank": 3,
+      "_type": 1
+    },
+    {
+      "_key": 2,
+      "_name": "43734",
+      "_rank": 3,
+      "_type": 1
+    },
+    {
+      "_key": 2,
+      "_name": "4352623",
+      "_rank": 3,
+      "_type": 1
+    },
+    {
+      "_key": 2,
+      "_name": "46824",
+      "_rank": 3,
+      "_type": 1
+    },
+    {
+      "_key": 2,
+      "_name": "342tewr",
+      "_rank": 3,
+      "_type": 1
+    },
+    {
+      "_key": 2,
+      "_name": "4t32",
+      "_rank": 3,
+      "_type": 1
+    },
+    {
+      "_key": 2,
+      "_name": "y4635h",
+      "_rank": 3,
+      "_type": 1
+    },
+    {
+      "_key": 2,
+      "_name": "4gt23",
+      "_rank": 3,
+      "_type": 1
+    },
+    {
+      "_key": 2,
+      "_name": "n6h354j",
+      "_rank": 3,
+      "_type": 1
+    },
+    {
+      "_key": 2,
+      "_name": "v2fe1",
+      "_rank": 3,
+      "_type": 1
+    },
+    {
+      "_key": 2,
+      "_name": "v2fe1",
+      "_rank": 3,
+      "_type": 1
+    },
+    {
+      "_key": 2,
+      "_name": "v2fe1",
+      "_rank": 3,
+      "_type": 1
+    },
+    {
+      "_key": 2,
+      "_name": "v2fe1",
+      "_rank": 3,
+      "_type": 1
+    },
+    {
+      "_key": 2,
+      "_name": "v2fe1",
+      "_rank": 3,
+      "_type": 1
+    },
+    {
+      "_key": 2,
+      "_name": "34n56234n",
+      "_rank": 3,
+      "_type": 1
+    },
+    {
+      "_key": 2,
+      "_name": "34rv234",
+      "_rank": 3,
+      "_type": 1
+    },
+    {
+      "_key": 2,
+      "_name": "231v412",
+      "_rank": 3,
+      "_type": 1
+    },
+    {
+      "_key": 2,
+      "_name": "35426b234",
+      "_rank": 3,
+      "_type": 1
+    },
+    {
+      "_key": 2,
+      "_name": "2145b1",
+      "_rank": 3,
+      "_type": 1
+    },
+    {
+      "_key": 2,
+      "_name": "rtfsnr7y",
+      "_rank": 3,
+      "_type": 1
+    },
+    {
+      "_key": 2,
+      "_name": "zertn",
+      "_rank": 3,
+      "_type": 1
+    },
+    {
+      "_key": 2,
+      "_name": "zw4v rt42",
+      "_rank": 3,
+      "_type": 1
+    },
+    {
+      "_key": 2,
+      "_name": "tzv343",
+      "_rank": 3,
+      "_type": 1
+    },
+    {
+      "_key": 2,
+      "_name": "2r3c",
+      "_rank": 3,
+      "_type": 1
+    },
+    {
+      "_key": 2,
+      "_name": "4cf3526",
+      "_rank": 3,
+      "_type": 1
+    },
+    {
+      "_key": 2,
+      "_name": "451",
+      "_rank": 3,
+      "_type": 1
+    },
+    {
+      "_key": 2,
+      "_name": "1v24g35",
+      "_rank": 3,
+      "_type": 1
+    },
+    {
+      "_key": 2,
+      "_name": "bt3245",
+      "_rank": 3,
+      "_type": 1
+    },
+    {
+      "_key": 2,
+      "_name": "45",
+      "_rank": 3,
+      "_type": 1
+    },
+    {
+      "_key": 2,
+      "_name": "28",
+      "_rank": 3,
+      "_type": 1
+    },
+    {
+      "_key": 2,
+      "_name": "4cf35637n526",
+      "_rank": 3,
+      "_type": 1
+    },
+    {
+      "_key": 2,
+      "_name": "4cfb42573526",
+      "_rank": 3,
+      "_type": 1
+    },
+    {
+      "_key": 2,
+      "_name": "4cf34b5672526",
+      "_rank": 3,
+      "_type": 1
+    },
+    {
+      "_key": 2,
+      "_name": "4cf3123c4526",
+      "_rank": 3,
+      "_type": 1
+    },
+    {
+      "_key": 2,
+      "_name": "4cf3wdfxq526",
+      "_rank": 3,
+      "_type": 1
+    },
+    {
+      "_key": 2,
+      "_name": "4cfd323526",
+      "_rank": 3,
+      "_type": 1
+    },
+    {
+      "_key": 2,
+      "_name": "r32c1",
+      "_rank": 3,
+      "_type": 1
+    },
+    {
+      "_key": 3,
       "_name": "움직이다",
       "_rank": 2,
       "_type": 2

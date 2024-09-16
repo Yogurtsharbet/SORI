@@ -54,6 +54,7 @@ public class CombineManager : MonoBehaviour {
     }
 
     public void CloseCombineSlot() {
+        //²¨Áú¶§ ¤·´Ü¾î »©ÁÖ±â 
         gameObject.SetActive(false);
     }
 
@@ -62,6 +63,7 @@ public class CombineManager : MonoBehaviour {
     }
 
     public void SetSlotWords(int index, Word word) {
+        selectedFrame.SetWord(index, word);
         combineSlotControllers[index].SetSlotWord(word);
     }
 

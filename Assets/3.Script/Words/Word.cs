@@ -21,7 +21,7 @@ public class Word {
     public string Name { get { return _name; } }
     public WordRank Rank { get { return _rank; } }
     public WordType Type { get { return GetWordType(this); } }
-    public bool IsPersist { get { return (_type & WordType.isPersist) != 0; } }
+    public bool IsPersist { get { return (_type/* & WordType.isPersist*/) != 0; } }
 
     public Color RankColor { get { return RankColors[Rank]; } }
     public Color TypeColor { get { return TypeColors[Type]; } }
@@ -77,15 +77,15 @@ public class Word {
         foreach (WordType each in allType)
             if ((each & word._type) != 0) return each;
 
-        return WordType.Null;
+        return WordType.VERB;
     }
 
     public static List<WordType> CheckWordProperty(Word word) {
         // Return Word Property
         List<WordType> types = new List<WordType>();
         foreach (WordType each in allType) {
-            if ((each & (WordType.Null | WordType.NOUN | WordType.VERB | WordType.ADJ)) != 0) continue;
-            if (each == WordType.All) continue;
+           // if ((each & (WordType.Null | WordType.NOUN | WordType.VERB | WordType.ADJ)) != 0) continue;
+           // if (each == WordType.All) continue;
 
             if ((each & word._type) != 0) types.Add(each);
         }
@@ -124,6 +124,7 @@ public class Word {
 
     private Word(WordKey key, WordRank rank = WordRank._Random) {
         // 단어 리스트에서 키를 받아와 생성 ( 인게임에서 사용 )
+        Debug.Log(key);
         Word newWord = FindWordByKey(key);
         _key = newWord._key;
         _name = newWord._name;
