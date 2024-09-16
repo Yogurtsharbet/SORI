@@ -10,19 +10,45 @@ public enum DialogType {
     DEFAULT
 }
 
-public class DialogController : MonoBehaviour {
+public class DialogManager :MonoBehaviour {
+    private static DialogManager instance = null;
+
     private Text text;
     private RectTransform rectTransform;
+    private Button confirmButton;
+
+    private int isConfirmed = -1;
+
+    public static DialogManager Instance {
+        get {
+            if (instance == null) {
+                return null;
+            }
+            return instance;
+        }
+    }
 
     private void Awake() {
+        if (instance == null) {
+            instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else {
+            Destroy(gameObject);
+        }
         text = GetComponentInChildren<Text>();
         rectTransform = gameObject.GetComponentInChildren<RectTransform>();
+
+        //TODO: CONFIRM 버튼 추가하기
+        //confirmButton = GetComponentInChildren<Button>();
+        //confirmButton.enabled = false;
     }
+
     private void Start() {
         CloseDialog();
     }
 
-    public void OpenDialog(string contents, DialogType type) {
+    public void OpenDefaultDialog(string contents, DialogType type) {
         setDialogText(contents);
         Vector2 resize = getDialogSize(contents);
         rectTransform.sizeDelta = resize;
@@ -33,12 +59,40 @@ public class DialogController : MonoBehaviour {
         StartCoroutine(closeDelay());
     }
 
+    public int GetIsConfirmed() {
+        return isConfirmed;
+    }
+
+    public void OpenConfirmDialog(string contents, DialogType type) {
+        setDialogText(contents);
+        Vector2 calSize = getDialogSize(contents);
+        Vector2 resize = new Vector2(calSize.x, calSize.y + 100f);
+        rectTransform.sizeDelta = resize;
+        text.rectTransform.sizeDelta = resize;
+        text.color = getDialogTextColor(type);
+        gameObject.SetActive(true);
+        confirmButton.enabled = true;
+    }
+
+    public void ReturnIsConfirm(bool yn) {
+        isConfirmed = yn == true ? 1 : 0;
+        CloseDialog();
+    }
+
+    public void ResetIsConfirm() {
+        isConfirmed = -1;
+    }
+
+    #region 다이얼로그 설정
+
     public void CloseDialog() {
         text.text = string.Empty;
         text.color = new Color(0.219f, 0.219f, 0.219f);
         gameObject.SetActive(false);
+        confirmButton.enabled = false;
     }
 
+    //사이즈 계산
     private Vector2 getDialogSize(string contents) {
         (int, int) sentenceCountes = sentenceCount(contents);
 
@@ -95,5 +149,5 @@ public class DialogController : MonoBehaviour {
         yield return new WaitForSeconds(1.5f);
         CloseDialog();
     }
-
+    #endregion
 }

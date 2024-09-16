@@ -95,4 +95,9 @@ public class FrameSlotController : MonoBehaviour, IPointerClickHandler, IBeginDr
                 break;
         }
     }
+
+    public bool IsActive()
+    {
+        return thisFrame.IsActive;
+    }
 }

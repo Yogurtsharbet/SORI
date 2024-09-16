@@ -97,4 +97,14 @@ public class FrameListManager : MonoBehaviour {
             frameSlotControllers[i].SetFrameData(frameList[i + scrollValue]);
         }
     }
+
+    public void SortingToActive()
+    {
+        frameList.Sort((x, y) => x.IsActive.CompareTo(x.IsActive == true));
+    }
+
+    public void SortingIsEmpty()
+    {
+        frameList.Sort((x, y) => x.IsActive.CompareTo(x.IsActive == false));
+    }
 }

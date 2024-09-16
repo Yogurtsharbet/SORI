@@ -1305,7 +1305,6 @@ GameObject:
   - component: {fileID: 537770250559686118}
   - component: {fileID: 537770250559686119}
   - component: {fileID: 537770250559686112}
-  - component: {fileID: 537770250559686113}
   m_Layer: 5
   m_Name: WordSlot
   m_TagString: Untagged
@@ -1419,18 +1418,6 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
---- !u!114 &537770250559686113
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 537770250559686115}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2c6cbff999b0a8949b2875b5acd7c5e9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &537770250560396608
 GameObject:
   m_ObjectHideFlags: 0
@@ -1745,7 +1732,6 @@ GameObject:
   - component: {fileID: 537770250617206245}
   - component: {fileID: 537770250617206246}
   - component: {fileID: 537770250617206247}
-  - component: {fileID: 537770250617206240}
   m_Layer: 5
   m_Name: WordSlot
   m_TagString: Untagged
@@ -1859,18 +1845,6 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
---- !u!114 &537770250617206240
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 537770250617206242}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2c6cbff999b0a8949b2875b5acd7c5e9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &537770250624167600
 GameObject:
   m_ObjectHideFlags: 0
@@ -3346,7 +3320,6 @@ GameObject:
   - component: {fileID: 537770250798125493}
   - component: {fileID: 537770250798125494}
   - component: {fileID: 537770250798125495}
-  - component: {fileID: 537770250798125488}
   m_Layer: 5
   m_Name: WordSlot (2)
   m_TagString: Untagged
@@ -3460,18 +3433,6 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
---- !u!114 &537770250798125488
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 537770250798125490}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2c6cbff999b0a8949b2875b5acd7c5e9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &537770250837919596
 GameObject:
   m_ObjectHideFlags: 0
@@ -3563,7 +3524,6 @@ GameObject:
   - component: {fileID: 537770250839583785}
   - component: {fileID: 537770250839583786}
   - component: {fileID: 537770250839583787}
-  - component: {fileID: 537770250839583780}
   m_Layer: 5
   m_Name: WordSlot (1)
   m_TagString: Untagged
@@ -3677,18 +3637,6 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
---- !u!114 &537770250839583780
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 537770250839583782}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2c6cbff999b0a8949b2875b5acd7c5e9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &537770250857210668
 GameObject:
   m_ObjectHideFlags: 0
@@ -5762,7 +5710,6 @@ GameObject:
   - component: {fileID: 537770251303492268}
   - component: {fileID: 537770251303492269}
   - component: {fileID: 537770251303492270}
-  - component: {fileID: 537770251303492271}
   m_Layer: 5
   m_Name: WordSlot (1)
   m_TagString: Untagged
@@ -5876,18 +5823,6 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
---- !u!114 &537770251303492271
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 537770251303492265}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2c6cbff999b0a8949b2875b5acd7c5e9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &537770251309260285
 GameObject:
   m_ObjectHideFlags: 0
@@ -5900,7 +5835,6 @@ GameObject:
   - component: {fileID: 537770251309260224}
   - component: {fileID: 537770251309260225}
   - component: {fileID: 537770251309260226}
-  - component: {fileID: 537770251309260227}
   m_Layer: 5
   m_Name: WordSlot (1)
   m_TagString: Untagged
@@ -6014,18 +5948,6 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
---- !u!114 &537770251309260227
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 537770251309260285}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2c6cbff999b0a8949b2875b5acd7c5e9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &537770251319482170
 GameObject:
   m_ObjectHideFlags: 0
@@ -6414,7 +6336,6 @@ GameObject:
   - component: {fileID: 537770251410594683}
   - component: {fileID: 537770251410594676}
   - component: {fileID: 537770251410594677}
-  - component: {fileID: 537770251410594678}
   m_Layer: 5
   m_Name: WordSlot
   m_TagString: Untagged
@@ -6528,18 +6449,6 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
---- !u!114 &537770251410594678
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 537770251410594672}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2c6cbff999b0a8949b2875b5acd7c5e9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &537770251419128424
 GameObject:
   m_ObjectHideFlags: 0
@@ -7538,7 +7447,6 @@ GameObject:
   - component: {fileID: 537770251610919654}
   - component: {fileID: 537770251610919655}
   - component: {fileID: 537770251610919648}
-  - component: {fileID: 537770251610919649}
   m_Layer: 5
   m_Name: WordSlot (1)
   m_TagString: Untagged
@@ -7652,18 +7560,6 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
---- !u!114 &537770251610919649
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 537770251610919651}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2c6cbff999b0a8949b2875b5acd7c5e9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &537770251613810556
 GameObject:
   m_ObjectHideFlags: 0
@@ -8395,7 +8291,6 @@ GameObject:
   - component: {fileID: 537770251710835019}
   - component: {fileID: 537770251710835012}
   - component: {fileID: 537770251710835013}
-  - component: {fileID: 537770251710835014}
   m_Layer: 5
   m_Name: WordSlot
   m_TagString: Untagged
@@ -8509,18 +8404,6 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
---- !u!114 &537770251710835014
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 537770251710835008}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2c6cbff999b0a8949b2875b5acd7c5e9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &537770251723641218
 GameObject:
   m_ObjectHideFlags: 0
@@ -8797,7 +8680,6 @@ GameObject:
   - component: {fileID: 537770251783770104}
   - component: {fileID: 537770251783770105}
   - component: {fileID: 537770251783770106}
-  - component: {fileID: 537770251783770107}
   m_Layer: 5
   m_Name: WordSlot
   m_TagString: Untagged
@@ -8911,18 +8793,6 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
---- !u!114 &537770251783770107
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 537770251783770101}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2c6cbff999b0a8949b2875b5acd7c5e9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &537770251793159600
 GameObject:
   m_ObjectHideFlags: 0
@@ -8935,7 +8805,6 @@ GameObject:
   - component: {fileID: 537770251793159611}
   - component: {fileID: 537770251793159604}
   - component: {fileID: 537770251793159605}
-  - component: {fileID: 537770251793159606}
   m_Layer: 5
   m_Name: WordSlot
   m_TagString: Untagged
@@ -9049,18 +8918,6 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
---- !u!114 &537770251793159606
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 537770251793159600}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2c6cbff999b0a8949b2875b5acd7c5e9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &537770251821680382
 GameObject:
   m_ObjectHideFlags: 0
@@ -9225,7 +9082,6 @@ GameObject:
   - component: {fileID: 537770251839618664}
   - component: {fileID: 537770251839618665}
   - component: {fileID: 537770251839618666}
-  - component: {fileID: 537770251839618667}
   m_Layer: 5
   m_Name: WordSlot (2)
   m_TagString: Untagged
@@ -9339,18 +9195,6 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
---- !u!114 &537770251839618667
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 537770251839618661}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2c6cbff999b0a8949b2875b5acd7c5e9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &537770251867519348
 GameObject:
   m_ObjectHideFlags: 0
@@ -9747,7 +9591,6 @@ GameObject:
   - component: {fileID: 537770251909531651}
   - component: {fileID: 537770251909531708}
   - component: {fileID: 537770251909531709}
-  - component: {fileID: 537770251909531710}
   m_Layer: 5
   m_Name: WordSlot
   m_TagString: Untagged
@@ -9861,18 +9704,6 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
---- !u!114 &537770251909531710
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 537770251909531704}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2c6cbff999b0a8949b2875b5acd7c5e9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &537770251910535040
 GameObject:
   m_ObjectHideFlags: 0
@@ -10491,7 +10322,6 @@ GameObject:
   - component: {fileID: 537770252028041709}
   - component: {fileID: 537770252028041710}
   - component: {fileID: 537770252028041711}
-  - component: {fileID: 537770252028041704}
   m_Layer: 5
   m_Name: WordSlot (1)
   m_TagString: Untagged
@@ -10605,18 +10435,6 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
---- !u!114 &537770252028041704
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 537770252028041706}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2c6cbff999b0a8949b2875b5acd7c5e9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &537770252055255844
 GameObject:
   m_ObjectHideFlags: 0
@@ -11895,7 +11713,6 @@ GameObject:
   - component: {fileID: 537770252292210519}
   - component: {fileID: 537770252292210512}
   - component: {fileID: 537770252292210513}
-  - component: {fileID: 537770252292210514}
   m_Layer: 5
   m_Name: WordSlot (2)
   m_TagString: Untagged
@@ -12009,18 +11826,6 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
---- !u!114 &537770252292210514
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 537770252292210508}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2c6cbff999b0a8949b2875b5acd7c5e9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &537770252306019883
 GameObject:
   m_ObjectHideFlags: 0
@@ -12187,7 +11992,6 @@ GameObject:
   - component: {fileID: 537770252327449444}
   - component: {fileID: 537770252327449445}
   - component: {fileID: 537770252327449446}
-  - component: {fileID: 537770252327449447}
   m_Layer: 5
   m_Name: WordSlot (1)
   m_TagString: Untagged
@@ -12301,18 +12105,6 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
---- !u!114 &537770252327449447
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 537770252327449441}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2c6cbff999b0a8949b2875b5acd7c5e9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &537770252354082458
 GameObject:
   m_ObjectHideFlags: 0

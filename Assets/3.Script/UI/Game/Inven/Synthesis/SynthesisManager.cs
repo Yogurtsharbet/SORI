@@ -6,13 +6,11 @@ public class SynthesisManager : MonoBehaviour {
     private SynthesisSlotController[] slotControllers;
     private InvenSlotManager invenSlotManager;
     private PlayerInvenController playerInvenController;
-    private DialogController dialogController;
 
     private void Awake() {
         playerInvenController = FindObjectOfType<PlayerInvenController>();
         slotControllers = GetComponentsInChildren<SynthesisSlotController>();
         invenSlotManager = FindObjectOfType<InvenSlotManager>();
-        dialogController = FindObjectOfType<DialogController>();
     }
 
     public RectTransform GetSlotRectTransform(int num) {
@@ -37,6 +35,7 @@ public class SynthesisManager : MonoBehaviour {
     //단어 전체 삭제후 원래 인벤으로 이동
     public void ResetAllSlot() {
         for (int i = 0; i < slotControllers.Length; i++) {
+            playerInvenController.AddNewItem(slotControllers[i].GetSlotWord());
             slotControllers[i].RemoveSlotWord();
         }
     }
@@ -59,7 +58,7 @@ public class SynthesisManager : MonoBehaviour {
         }
         else {
             string dialogContents = "단어 합성을 할 수 없습니다\n합성 슬롯을 확인해주세요.";
-            dialogController.OpenDialog(dialogContents, DialogType.FAIL);
+            DialogManager.Instance.OpenDefaultDialog(dialogContents, DialogType.FAIL);
         }
     }
 

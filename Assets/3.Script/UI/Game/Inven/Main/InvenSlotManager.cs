@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 // [UI] 인벤토리 - 인벤 슬롯 목록 매니저
-public class InvenSlotManager : CommonInvenSlotManager {
+public class InvenSlotManager :CommonInvenSlotManager {
     private SynthesisManager synthesisManager;
     private InvenSlotController[] invenSlotControllers;
 
@@ -47,6 +47,19 @@ public class InvenSlotManager : CommonInvenSlotManager {
         }
         for (int i = 0; i < playerInvenController.InvenOpenCount; i++) {
             invenSlotControllers[i].OpenSlot();
+        }
+    }
+
+    private void Update() {
+        //삭제 confirm 체크
+        if (waitConfirm) {
+            if (DialogManager.Instance.GetIsConfirmed() == 1) {
+                RemoveWord();
+                waitConfirm = false;
+            }else if(DialogManager.Instance.GetIsConfirmed() == 0) {
+                DialogManager.Instance.ResetIsConfirm();
+                waitConfirm = false;
+            }
         }
     }
 

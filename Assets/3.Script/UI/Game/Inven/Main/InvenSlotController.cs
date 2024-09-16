@@ -40,8 +40,7 @@ public class InvenSlotController : CommonInvenSlotController, IEndDragHandler, I
     }
 
     public void OnPointerClick(PointerEventData eventData) {
-        invenSlotManager.SetSelectInvenIndex(key);
-        invenSlotManager.SelectSlot();
+        invenSlotManager.SelectSlot(key);
     }
 
     public void OnBeginDrag(PointerEventData eventData) {
