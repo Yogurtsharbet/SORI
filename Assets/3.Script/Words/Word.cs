@@ -20,7 +20,7 @@ public class Word {
     public WordKey Key { get { return _key; } }
     public string Name { get { return _name; } }
     public WordRank Rank { get { return _rank; } }
-    public WordType Type { get { return GetWordType(this); } }
+    public WordType Type { get { return _type; } }
     public bool IsPersist { get { return (_type/* & WordType.isPersist*/) != 0; } }
 
     public Color RankColor { get { return RankColors[Rank]; } }
@@ -72,13 +72,14 @@ public class Word {
         { WordType.ADJ, new Color(1f, 0.8f, 0.19f) }            //형용사
     };
 
-    private static WordType GetWordType(Word word) {
-        // Return Noun, Verb, Adj 
-        foreach (WordType each in allType)
-            if ((each & word._type) != 0) return each;
+    // Propetry 구조 변경으로 인한 메서드 삭제. 240917.
+    //private static WordType GetWordType(Word word) {
+    //    // Return Noun, Verb, Adj 
+    //    foreach (WordType each in allType)
+    //        if ((each & word._type) != 0) return each;
 
-        return WordType.VERB;
-    }
+    //    return WordType.VERB;
+    //}
 
     public static List<WordType> CheckWordProperty(Word word) {
         // Return Word Property

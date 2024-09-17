@@ -30,12 +30,11 @@ public enum WordRank {
     , All = int.MaxValue
 }
 
-[System.Serializable]
 public enum WordKey {
     _Random,
     SORI,
     DOOR,
-    //TREE,
+    TREE,
     //KEY,
     //FLOOR,
     //BIRD,
@@ -44,6 +43,7 @@ public enum WordKey {
     MOVE,
     //DISAPPEAR,
 }
+//TODO: ENUM Key 삭제 후 String 관리
 
 
 
