@@ -48,15 +48,17 @@ public class CommonInvenSlotManager :MonoBehaviour {
 
     //인벤 삭제 컨펌 open
     public void RemoveSelecConfirm() {
-        waitConfirm = true;
-        string contents = "정말 삭제하시겠습니까?";
-        DialogManager.Instance.OpenConfirmDialog(contents, DialogType.WARNING);
+        if (selectInvens.Count > 0) {
+            waitConfirm = true;
+            string contents = "정말 삭제하시겠습니까?";
+            DialogManager.Instance.OpenConfirmDialog(contents, DialogType.WARNING);
+        }
     }
 
     //인벤 삭제 확정
     public void RemoveWord() {
         for (int i = 0; i < selectInvens.Count; i++) {
-            playerInvenController.RemoveItemIndex(i);
+            playerInvenController.RemoveItemIndex(selectInvens[i]);
         }
     }
 }

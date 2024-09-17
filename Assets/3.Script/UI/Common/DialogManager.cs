@@ -10,12 +10,12 @@ public enum DialogType {
     DEFAULT
 }
 
-public class DialogManager :MonoBehaviour {
+public class DialogManager : MonoBehaviour {
     private static DialogManager instance = null;
 
     private Text text;
     private RectTransform rectTransform;
-    private Button confirmButton;
+    private Button[] buttons;
 
     private int isConfirmed = -1;
 
@@ -40,8 +40,8 @@ public class DialogManager :MonoBehaviour {
         rectTransform = gameObject.GetComponentInChildren<RectTransform>();
 
         //TODO: CONFIRM 버튼 추가하기
-        //confirmButton = GetComponentInChildren<Button>();
-        //confirmButton.enabled = false;
+        buttons = GetComponentsInChildren<Button>();
+        buttonActive(false);
     }
 
     private void Start() {
@@ -55,7 +55,6 @@ public class DialogManager :MonoBehaviour {
         text.rectTransform.sizeDelta = resize;
         text.color = getDialogTextColor(type);
         gameObject.SetActive(true);
-
         StartCoroutine(closeDelay());
     }
 
@@ -63,15 +62,30 @@ public class DialogManager :MonoBehaviour {
         return isConfirmed;
     }
 
+    private void buttonActive(bool yn) {
+        buttons[0].gameObject.SetActive(yn);
+        buttons[1].gameObject.SetActive(yn);
+    }
+
+    private void buttonLocSetting(float calY) {
+        Debug.Log(calY);
+        buttons[0].gameObject.transform.localPosition = new Vector3(-60f, -calY + 53f, 0f);
+        buttons[1].gameObject.transform.localPosition = new Vector3(+60f, -calY + 53f, 0f);
+    }
+
     public void OpenConfirmDialog(string contents, DialogType type) {
         setDialogText(contents);
         Vector2 calSize = getDialogSize(contents);
-        Vector2 resize = new Vector2(calSize.x, calSize.y + 100f);
-        rectTransform.sizeDelta = resize;
-        text.rectTransform.sizeDelta = resize;
+        Vector2 containerResize = new Vector2(calSize.x, calSize.y + 70f);
+        Vector2 textResize = new Vector2(calSize.x, calSize.y);
+        rectTransform.sizeDelta = containerResize;
+        text.rectTransform.sizeDelta = textResize;
+        Vector3 textPosition = text.transform.localPosition;
+        text.transform.localPosition = new Vector3(textPosition.x, textPosition.y + 20f, 0f);
         text.color = getDialogTextColor(type);
+        buttonLocSetting(calSize.y);
+        buttonActive(true);
         gameObject.SetActive(true);
-        confirmButton.enabled = true;
     }
 
     public void ReturnIsConfirm(bool yn) {
@@ -88,8 +102,8 @@ public class DialogManager :MonoBehaviour {
     public void CloseDialog() {
         text.text = string.Empty;
         text.color = new Color(0.219f, 0.219f, 0.219f);
+        buttonActive(false);
         gameObject.SetActive(false);
-        confirmButton.enabled = false;
     }
 
     //사이즈 계산
