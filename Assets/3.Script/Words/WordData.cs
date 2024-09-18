@@ -44,6 +44,20 @@ public enum WordKey {
     //DISAPPEAR,
 }
 //TODO: ENUM Key 삭제 후 String 관리
+// WordKey가 Enum일 경우
+//      JSON 저장 불러오기 시에 상수로 저장됨
+//      상수 - string 변환 시 박싱 언박싱 코스트
+//      새로운 Key 추가 시 코드 수정 불가피
+// WordKey가 string일 경우
+//      Property 지정 시 string 사용하면 오타 찾기 어려움
+//      Enum 상수 값 비교보다 string 비교가 속도 더 느릴 것
+//      Key가 string이면 굳이 Key를 안쓰고 wordName으로 대체가능
+
+
+
+
+
+
 
 
 

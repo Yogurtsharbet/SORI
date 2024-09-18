@@ -255,12 +255,14 @@ public class WordDataEditor : EditorWindow {
     }
 
     private void OnSaveButtonClicked() {
+        // ADD, Modify 기능
         if (isNewAdd) {
             words.Add(Word.Create(
-                (WordKey)Enum.Parse(typeof(WordKey), _key), _name, RankAvailableToWordRank(), _type));
+                Convert<WordKey>.ToEnum(_key), _name, RankAvailableToWordRank(), _type));
         }
         else {
-            //words[wordIndexList[selectedWord]]._key = _key;
+            // enum 할거면 string으로 저장할 필요도 없지
+            words[wordIndexList[selectedWord]]._key = Convert<WordKey>.ToEnum(_key);
             words[wordIndexList[selectedWord]]._name = _name;
             words[wordIndexList[selectedWord]]._type = _type;
             words[wordIndexList[selectedWord]]._rank = RankAvailableToWordRank();
@@ -288,3 +290,18 @@ public class WordDataEditor : EditorWindow {
     }
 }
 #endif
+
+public class Convert<T> where T : Enum {
+    private static Dictionary<string, T> _cachedDictionary;
+
+    static Convert() {
+        _cachedDictionary = new Dictionary<string, T>();
+        foreach (T enumValue in Enum.GetValues(typeof(T))) 
+            _cachedDictionary[enumValue.ToString()] = enumValue;
+    }
+
+    public static T ToEnum(string value) {
+        if (_cachedDictionary.TryGetValue(value, out T result)) return result;
+        throw new ArgumentException($"'{value}' is not a valid value for enum {typeof(T).Name}");
+    }
+}
