@@ -2,22 +2,45 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-// [UI] Á¶ÇÕ - Á¶ÇÕ ¸Å´ÏÀú. Á¶ÇÕ Ã¢ÀÇ ÇÑ ¹®Àå Æ²
+//SlotType 01 > [ word , sentence03, sentence04 ] , [ word, sentence03, sentence04 ]
+//SlotType 02 > [ word , sentence03, sentence04 ] , [ word, sentence03, sentence04 ]
+//SlotType 03 > [ word ] , [ word ] / [ sentence01 , sentence02 ] , [ sentence01, sentence02 ]
+//SlotType 04 > [ word ]
+
+/*  
+ *  1. sentence typeì— ë”°ë¼ ë¨¼ì € ì–´ë–¤ í‹€ì„ ì—´ê±´ì§€ ì²´í¬
+ *  2. í‹€ì„ ì—° í›„ ë“œë˜ê·¸í•´ ì˜¨ê²ƒì´ sentenceì¸ì§€ wordì¸ì§€ ì²´í¬í•´ì„œ ì—´ê¸°
+ *  3. ì¤‘ê°„ì— ë°”ë€Œë©´ ê·¸ì „ê²ƒ ë˜ëŒë¦¬ê¸°
+ * 
+ */
+
+// [UI] ì¡°í•© - ì¡°í•© ë§¤ë‹ˆì €. ì¡°í•© ì°½ì˜ í•œ ë¬¸ì¥ í‹€
 public class CombineManager :MonoBehaviour {
+    //ê¸°ë³¸ í”„ë ˆì„ open ì—¬ë¶€
+    private bool baseFrameOpen = false;
+    public bool BaseFrameOpen => baseFrameOpen;
+
+    //ê¸°ë³¸ í”„ë ˆì„
+    private Frame baseFrame;
+    public Frame BaseFrame => baseFrame;
+
+    //ìµœëŒ€ ë“¤ì–´ê°ˆìˆ˜ ìˆëŠ” ê°’
+    //Frame [ Frame [word, word, word] , word ] , [ Frame [word, word, word] , word ] , [ Frame [word, word, word] , word ]
+
     private FrameListContainer sentencesManager;
     private SubmitButtonController submitButton;
 
-    //TODO: ÇÏ³ª·Î ÇÕÃÄÁö¸é ¹Ù²Ù±â
+    //TODO: í•˜ë‚˜ë¡œ í•©ì³ì§€ë©´ ë°”ê¾¸ê¸°
     private CombineContainer combineContainer;
     private HalfInvenContainer halfInvenContainer;
 
     private SelectControl selectControl;
 
-    private Frame selectedFrame;
     private bool canCombine;
 
     private GameObject[] frameObjects = new GameObject[4];
 
+    //ì¡°í•© ê°€ëŠ¥ì—¬ë¶€
     public bool CanCombine => canCombine;
 
     private void Awake() {
@@ -25,7 +48,7 @@ public class CombineManager :MonoBehaviour {
         selectControl = FindObjectOfType<SelectControl>();
         submitButton = FindObjectOfType<SubmitButtonController>();
 
-        //TODO: ÇÏ³ª·Î ÇÕÃÄÁö¸é ¹Ù²Ù±â
+        //TODO: í•˜ë‚˜ë¡œ í•©ì³ì§€ë©´ ë°”ê¾¸ê¸°
         combineContainer = FindObjectOfType<CombineContainer>();
         halfInvenContainer = FindObjectOfType<HalfInvenContainer>();
 
@@ -40,17 +63,19 @@ public class CombineManager :MonoBehaviour {
     }
 
     public void OpenCombineSlot(int key, Frame frame) {
+        baseFrameOpen = true;
         gameObject.SetActive(true);
 
-        selectedFrame = frame;
+        baseFrame = frame;
+        //TODO: base frame ì•ˆì— setBase(true) ì¶”ê°€, ë‹¤ë¥¸ í”„ë ˆì„ switching í• ë•Œ falseë¡œ êº¼ì¤˜ì•¼í•¨
         activeFrameType((int)frame.Type - 1);
 
-        if (selectedFrame.IsActive) {       //¹®ÀåÆ²¿¡ ¹®ÀåÀÌ µé¾î°¡ÀÖ´Â »óÅÂ
-            canCombine = false;             //Á¶ÇÕÀÌ ¿Ï·áµÈ »óÅÂ
+        if (baseFrame.IsActive) {       //ë¬¸ì¥í‹€ì— ë¬¸ì¥ì´ ë“¤ì–´ê°€ìˆëŠ” ìƒíƒœ
+            canCombine = false;             //ì¡°í•©ì´ ì™„ë£Œëœ ìƒíƒœ
             submitButton.ButtonToRemove();
         }
         else {
-            canCombine = true;              //Á¶ÇÕÇÏ±â¸¦ ´­·¯¾ß ÇÏ´Â »óÅÂ
+            canCombine = true;              //ì¡°í•©í•˜ê¸°ë¥¼ ëˆŒëŸ¬ì•¼ í•˜ëŠ” ìƒíƒœ
             submitButton.ButtonToSubmit();
         }
     }
@@ -67,14 +92,15 @@ public class CombineManager :MonoBehaviour {
     }
 
     public void CloseCombineSlot() {
-        //TODO: ½½·Ô¿¡ ÀÖ´Â ¿öµå ¿ø·¡´ë·Î µ¹¸®±â -> Ãë¼Ò
-        selectedFrame = null;
+        //TODO: ìŠ¬ë¡¯ì— ìˆëŠ” ì›Œë“œ ì›ë˜ëŒ€ë¡œ ëŒë¦¬ê¸° -> ì·¨ì†Œ
+        baseFrame = null;
         gameObject.SetActive(false);
     }
 
     public void CancelCombineTemp() {
         gameObject.SetActive(false);
     }
+
 
     //public RectTransform GetSlotRectTransform(int num) {
     //    return combineSlotControllers[num].GetComponent<RectTransform>();
@@ -99,31 +125,31 @@ public class CombineManager :MonoBehaviour {
     //    return slotWord;
     //}
 
-    //¹®Àå Á¶ÇÕ
+    //ë¬¸ì¥ ì¡°í•©
     public void CombineSubmit() {
-        if (selectedFrame == null) return;
+        if (baseFrame == null) return;
         string dialogContents = string.Empty;
 
-        if (selectedFrame.CheckSentenceValidity()) {
+        if (baseFrame.CheckSentenceValidity()) {
             //sentencesManager.SetSlotSentence(selectKey, selectedFrame);
-            //selectKey = -1; //TODO: ESC·Î µ¹¾Æ¿Ã ¼ö ÀÖÀ¸¹Ç·Î selectKey°¡ ÀúÀåµÇ¾î¾ß ÇÒ ÇÊ¿ä ÀÖÀ½
+            //selectKey = -1; //TODO: ESCë¡œ ëŒì•„ì˜¬ ìˆ˜ ìˆìœ¼ë¯€ë¡œ selectKeyê°€ ì €ì¥ë˜ì–´ì•¼ í•  í•„ìš” ìˆìŒ
 
-            //TODO: ¼±ÅÃ´ë»ó ¿©·¯°³ÀÏ °æ¿ì SetTargetTag ¼öÁ¤ ÇÊ¿ä
-            selectControl.SetTargetTag(selectedFrame.wordA.ToTag());
+            //TODO: ì„ íƒëŒ€ìƒ ì—¬ëŸ¬ê°œì¼ ê²½ìš° SetTargetTag ìˆ˜ì • í•„ìš”
+            selectControl.SetTargetTag(baseFrame.wordA.ToTag());
             CameraControl.Instance.SetCamera(CameraControl.CameraStatus.SelectView);
             combineContainer.CloseCombineField();
             halfInvenContainer.CloseCombineInven();
 
-            //TODO: È®Á¤ÇÏ´õ¶óµµ ¼±ÅÃÇØ¼­ »ç¿ëÇÏ´Â °æ¿ì¿¡´Â ¼±ÅÃÇÑ ÈÄ¿¡ ¼Ò¸ğÇØ¾ßÇÔ
+            //TODO: í™•ì •í•˜ë”ë¼ë„ ì„ íƒí•´ì„œ ì‚¬ìš©í•˜ëŠ” ê²½ìš°ì—ëŠ” ì„ íƒí•œ í›„ì— ì†Œëª¨í•´ì•¼í•¨
         }
         else
-            dialogContents = "¹®ÀåÀ» Á¶ÇÕ ÇÒ ¼ö ¾ø½À´Ï´Ù\n´Ü¾î¸¦ È®ÀÎÇØÁÖ¼¼¿ä.";
+            dialogContents = "ë¬¸ì¥ì„ ì¡°í•© í•  ìˆ˜ ì—†ìŠµë‹ˆë‹¤\në‹¨ì–´ë¥¼ í™•ì¸í•´ì£¼ì„¸ìš”.";
 
         if (dialogContents != string.Empty)
             DialogManager.Instance.OpenDefaultDialog(dialogContents, DialogType.FAIL);
     }
 
     public void Activate(GameObject target, GameObject indicator) {
-        selectedFrame.Activate(target, indicator);
+        baseFrame.Activate(target, indicator);
     }
 }

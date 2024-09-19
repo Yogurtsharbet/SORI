@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-// [UI] 문장 목록 - 문장목록
+// [UI] 문장 목록 - 문장목록 컨테이너 마우스  hover 이벤트
 public class FrameListContainer : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler {
     private ActiveSentenceController activeSentenceController;
 

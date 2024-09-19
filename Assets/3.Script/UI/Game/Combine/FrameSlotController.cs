@@ -2,33 +2,34 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-// [UI] Á¶ÇÕ - ¹®Àå ½½·Ô ÄÁÆ®·Ñ·¯. ¹®Àå ¸®½ºÆ® Áß ÇÑ ¹®Àå Æ²
+// [UI] ì¡°í•© - ë¬¸ì¥ ìŠ¬ë¡¯ ì»¨íŠ¸ë¡¤ëŸ¬. ë¬¸ì¥ ë¦¬ìŠ¤íŠ¸ ì¤‘ í•œ ë¬¸ì¥ í‹€
 public class FrameSlotController : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IDragHandler, IEndDragHandler {
-    private FrameType frameType;
-
-    private CombineContainer combineFieldController;
-    private RectTransform combineFieldRectTransform;    //¹®Àå ½½·Ô ¿µ¿ª
+    private CombineManager combineManager;
+    private CombineContainer combineContainer;
+    private RectTransform combineFieldRectTransform;    //ë¬¸ì¥ ìŠ¬ë¡¯ ì˜ì—­
 
     private Canvas canvas;
     private RectTransform originalParent;
     private Vector2 originalPosition;
-    private RectTransform rectTransform;            //ÇØ´ç gameobject transform
+    private RectTransform rectTransform;            //í•´ë‹¹ gameobject transform
 
-    //TODO: ÇÁ·¹ÀÓ Å¸ÀÔº°·Î ²ô°í Å°±â
+    //TODO: í”„ë ˆì„ íƒ€ì…ë³„ë¡œ ë„ê³  í‚¤ê¸°
     private GameObject[] frameByType = new GameObject[4];
 
     private int key;
-    public Frame thisFrame { get; private set; }                  //Á¶ÇÕ ¹®Àå Á¤º¸
+    public Frame thisFrame { get; private set; }        //ì¡°í•© ë¬¸ì¥ ì •ë³´
+    private FrameType thisFrameType;                        //í˜„ì¬ í”„ë ˆì„ íƒ€ì…
 
     private void Awake() {
-        combineFieldController = FindObjectOfType<CombineContainer>();
-        Image img = combineFieldController.GetComponentInChildren<Image>();
+        combineManager = FindObjectOfType<CombineManager>();
+        combineContainer = FindObjectOfType<CombineContainer>();
+        Image img = combineContainer.GetComponentInChildren<Image>();
         combineFieldRectTransform = img.GetComponent<RectTransform>();
         for (int i = 0; i < 4; i++) {
             frameByType[i] = gameObject.transform.GetChild(i).gameObject;
         }
 
-        //TODO: °ÔÀÓ¾ÀÀ¸·Î ºĞ¸®½Ã  CANVAS ºĞ¸® ÇÊ¿ä
+        //TODO: ê²Œì„ì”¬ìœ¼ë¡œ ë¶„ë¦¬ì‹œ  CANVAS ë¶„ë¦¬ í•„ìš”
         Canvas[] canvases = FindObjectsOfType<Canvas>();
         foreach (Canvas cn in canvases) {
             if (cn.name.Equals("GameCanvas")) {
@@ -47,7 +48,7 @@ public class FrameSlotController : MonoBehaviour, IPointerClickHandler, IBeginDr
     }
 
     public void OnPointerClick(PointerEventData eventData) {
-        combineFieldController.OpenCombineField();
+        combineContainer.OpenCombineField();
     }
 
     public void OnBeginDrag(PointerEventData eventData) {
@@ -67,9 +68,30 @@ public class FrameSlotController : MonoBehaviour, IPointerClickHandler, IBeginDr
         gameObject.transform.SetParent(originalParent, true);
         rectTransform.anchoredPosition = originalPosition;
 
-        if (RectTransformUtility.RectangleContainsScreenPoint(combineFieldRectTransform, eventData.position, eventData.pressEventCamera)) {
-            combineFieldController.OpenCombineSlot(key, thisFrame);
+        //ê¸°ë³¸ ë² ì´ìŠ¤ Frame Open ì²´í¬
+        if (combineManager.BaseFrameOpen) {
+            FrameType baseFrameType = combineManager.BaseFrame.Type;
+            if(baseFrameType == FrameType.AisB || baseFrameType == FrameType.AtoBisC) {
+            //1,2ë²ˆ í”„ë ˆì„ > 3,4ë²ˆ í”„ë ˆì„ë§Œ ì¶”ê°€ ê°€ëŠ¥
+                if (thisFrameType != FrameType.AisB && thisFrameType != FrameType.AtoBisC) {
+                    //1ë²ˆ, 2ë²ˆ í”„ë ˆì„ì˜ ìŠ¬ë¡¯ rectTransform ê°€ì ¸ì™€ì„œ ë¹„êµ
+
+                }
+            }else if(baseFrameType == FrameType.AandB) {
+            //3ë²ˆ í”„ë ˆì„ > 1,2ë²ˆ í”„ë ˆì„ë§Œ ì¶”ê°€ê°€ëŠ¥
+                if(thisFrameType !=FrameType.AandB && thisFrameType != FrameType.NotA) {
+                    //3ë²ˆ í”„ë ˆì„ ìŠ¬ë¡¯ rectTransform ê°€ì ¸ì™€ì„œ ë¹„êµ
+                }
+            }
+            
         }
+        else {
+            if (RectTransformUtility.RectangleContainsScreenPoint(combineFieldRectTransform, eventData.position, eventData.pressEventCamera)) {
+                combineManager.OpenCombineSlot(key, thisFrame);
+            }
+        }
+
+
     }
 
     public void SetFrameData(Frame frame) {
@@ -77,8 +99,8 @@ public class FrameSlotController : MonoBehaviour, IPointerClickHandler, IBeginDr
             frameByType[i].SetActive(false);
 
         thisFrame = frame;
-        frameType = frame.Type;
-        switch (frameType) {
+        thisFrameType = frame.Type;
+        switch (thisFrameType) {
             case FrameType._Random:
                 break;
             case FrameType.AisB:
@@ -96,8 +118,7 @@ public class FrameSlotController : MonoBehaviour, IPointerClickHandler, IBeginDr
         }
     }
 
-    public bool IsActive()
-    {
+    public bool IsActive() {
         return thisFrame.IsActive;
     }
 }

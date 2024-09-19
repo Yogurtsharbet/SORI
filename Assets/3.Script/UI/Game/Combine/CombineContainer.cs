@@ -1,7 +1,7 @@
 using DG.Tweening;
 using UnityEngine;
 
-// [UI] Á¶ÇÕ - Á¶ÇÕÃ¢ ÄÁÅ×ÀÌ³Ê
+// [UI] ì¡°í•© - ì¡°í•©ì°½ ì»¨í…Œì´ë„ˆ
 public class CombineContainer : MonoBehaviour {
     private CombineManager combineSlotManager;
     private HalfInvenManager halfInvenManager;
@@ -30,10 +30,6 @@ public class CombineContainer : MonoBehaviour {
         halfInvenManager.SetCombineMode(false);
         halfInvenManager.CloseInven();
         gameObject.SetActive(false);
-    }
-
-    public void OpenCombineSlot(int key, Frame frame) {
-        combineSlotManager.OpenCombineSlot(key, frame);
     }
 
     private void FunctionMove(Transform origin, Vector3 destiny) {
