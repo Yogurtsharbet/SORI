@@ -7,12 +7,12 @@ TagManager:
   - Damge
   - Enemy
   - Butterfly
-  - Door
-  - Tree
-  - Key
-  - Floor
-  - Bird
   - HP
+  - DOOR
+  - TREE
+  - KEY
+  - FLOOR
+  - BIRD
   layers:
   - Default
   - TransparentFX
