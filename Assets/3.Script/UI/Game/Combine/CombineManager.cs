@@ -147,15 +147,10 @@ public class CombineManager : MonoBehaviour {
             combineContainer.CloseCombineField();
             halfInvenContainer.CloseCombineInven();
 
-            //TODO: 확정하더라도 선택해서 사용하는 경우에는 선택한 후에 소모해야함
+            if (dialogContents != string.Empty)
+                DialogManager.Instance.OpenDefaultDialog(dialogContents, DialogType.FAIL);
         }
-        else
-            dialogContents = "문장을 조합 할 수 없습니다\n단어를 확인해주세요.";
-
-        if (dialogContents != string.Empty)
-            DialogManager.Instance.OpenDefaultDialog(dialogContents, DialogType.FAIL);
     }
-
     public void Activate(GameObject target, GameObject indicator) {
         baseFrame.Activate(target, indicator);
     }

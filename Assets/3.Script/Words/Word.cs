@@ -5,12 +5,12 @@ using Random = UnityEngine.Random;
 using WordKey = System.UInt16;
 using WordTag = System.String;
 
-// [Word] ´Ü¾î - ´Ü¾î ±âº» Å¬·¡½º
+// [Word] ë‹¨ì–´ - ë‹¨ì–´ ê¸°ë³¸ í´ë˜ìŠ¤
 [System.Serializable]
 public class Word {
     // Member Variables
-    public WordKey _key;
-    public WordTag _tag;
+    public int _key;
+    public string _tag;
     public string _name;
     public WordRank _rank;
     public WordType _type;
@@ -20,7 +20,7 @@ public class Word {
     //private static WordKey[] allKey = (WordKey[])Enum.GetValues(typeof(WordKey));
 
     // Properties
-    public WordKey Key { get { return _key; } }
+    public WordKey Key { get { return (WordKey)_key; } }
     public WordTag Tag { get { return _tag; } }
     public string Name { get { return _name; } }
     public WordRank Rank { get { return _rank; } }
@@ -34,15 +34,15 @@ public class Word {
         get {
             switch (_rank) {
                 case WordRank.NORMAL:
-                    return "ÀÏ¹İ";
+                    return "ì¼ë°˜";
                 case WordRank.EPIC:
-                    return "Èñ±Í";
+                    return "í¬ê·€";
                 case WordRank.LEGEND:
-                    return "Àü¼³";
+                    return "ì „ì„¤";
                 case WordRank.UNIQUE:
-                    return "À¯ÀÏ";
+                    return "ìœ ì¼";
                 case WordRank.SPECIAL:
-                    return "Æ¯¼ö";
+                    return "íŠ¹ìˆ˜";
                 default:
                     return "";
             }
@@ -52,11 +52,11 @@ public class Word {
         get {
             switch (_type) {
                 case WordType.NOUN:
-                    return "¸í»ç";
+                    return "ëª…ì‚¬";
                 case WordType.VERB:
-                    return "µ¿»ç";
+                    return "ë™ì‚¬";
                 case WordType.ADJ:
-                    return "Çü¿ë»ç";
+                    return "í˜•ìš©ì‚¬";
                 default:
                     return "";
             }
@@ -64,19 +64,19 @@ public class Word {
     }
 
     private Dictionary<WordRank, Color> RankColors = new Dictionary<WordRank, Color>() {
-        { WordRank.NORMAL, new Color(0.87f, 0.87f,  0.87f) },   //ÀÏ¹İ
-        { WordRank.EPIC, new Color(0.18f, 0.24f, 0.61f) },      //Èñ±Í
-        { WordRank.LEGEND, new Color(1f, 0.8f, 0.19f) },        //Àü¼³
-        { WordRank.UNIQUE, new Color(0.51f, 0.31f, 0.82f) },    //À¯ÀÏ
-        { WordRank.SPECIAL, new Color(0.86f, 0.33f, 0.47f) }    //Æ¯¼ö
+        { WordRank.NORMAL, new Color(0.87f, 0.87f,  0.87f) },   //ì¼ë°˜
+        { WordRank.EPIC, new Color(0.18f, 0.24f, 0.61f) },      //í¬ê·€
+        { WordRank.LEGEND, new Color(1f, 0.8f, 0.19f) },        //ì „ì„¤
+        { WordRank.UNIQUE, new Color(0.51f, 0.31f, 0.82f) },    //ìœ ì¼
+        { WordRank.SPECIAL, new Color(0.86f, 0.33f, 0.47f) }    //íŠ¹ìˆ˜
     };
     private Dictionary<WordType, Color> TypeColors = new Dictionary<WordType, Color>() {
-        { WordType.NOUN, new Color(0.51f, 0.31f, 0.82f) },      //¸í»ç
-        { WordType.VERB,  new Color(0.86f, 0.33f, 0.47f) },     //µ¿»ç
-        { WordType.ADJ, new Color(1f, 0.8f, 0.19f) }            //Çü¿ë»ç
+        { WordType.NOUN, new Color(0.51f, 0.31f, 0.82f) },      //ëª…ì‚¬
+        { WordType.VERB,  new Color(0.86f, 0.33f, 0.47f) },     //ë™ì‚¬
+        { WordType.ADJ, new Color(1f, 0.8f, 0.19f) }            //í˜•ìš©ì‚¬
     };
 
-    // Propetry ±¸Á¶ º¯°æÀ¸·Î ÀÎÇÑ ¸Ş¼­µå »èÁ¦. 240917.
+    // Propetry êµ¬ì¡° ë³€ê²½ìœ¼ë¡œ ì¸í•œ ë©”ì„œë“œ ì‚­ì œ. 240917.
     //private static WordType GetWordType(Word word) {
     //    // Return Noun, Verb, Adj 
     //    foreach (WordType each in allType)
@@ -126,21 +126,23 @@ public class Word {
         return new Word(key, rank);
     }
     
-    public static Word Create(WordKey key, string name, WordRank rank, WordType type) {
-        return new Word(key, name, rank, type);
+    public static Word Create(WordKey key, WordTag tag, string name, WordRank rank, WordType type) {
+        return new Word(key, tag, name, rank, type);
     }
 
     private Word(WordKey key, WordRank rank = WordRank._Random) {
-        // ´Ü¾î ¸®½ºÆ®¿¡¼­ Å°¸¦ ¹Ş¾Æ¿Í »ı¼º ( ÀÎ°ÔÀÓ¿¡¼­ »ç¿ë )
+        // ë‹¨ì–´ ë¦¬ìŠ¤íŠ¸ì—ì„œ í‚¤ë¥¼ ë°›ì•„ì™€ ìƒì„± ( ì¸ê²Œì„ì—ì„œ ì‚¬ìš© )
         Word newWord = FindWordByKey(key);
         _key = newWord._key;
+        _tag = newWord._tag;
         _name = newWord._name;
         _type = newWord._type;
         _rank = rank == WordRank._Random ? SelectRank(newWord._rank) : rank;
     }
-    private Word(WordKey key, string name, WordRank rank, WordType type) {
-        // ´Ü¾î µ¥ÀÌÅÍ »ı¼º ( ´Ü¾î ¸®½ºÆ®¿¡ ÀúÀå )
+    private Word(WordKey key, WordTag tag, string name, WordRank rank, WordType type) {
+        // ë‹¨ì–´ ë°ì´í„° ìƒì„± ( ë‹¨ì–´ ë¦¬ìŠ¤íŠ¸ì— ì €ì¥ )
         _key = key;
+        _tag = tag;
         _name = name;
         _rank = rank;
         _type = type;
@@ -149,10 +151,6 @@ public class Word {
     public bool IsNoun { get { return Type == WordType.NOUN; } }
     public bool IsVerb { get { return Type == WordType.VERB; } }
     public bool IsAdj { get { return Type == WordType.ADJ; } }
-
-    //public string ToTag() {
-    //    return WordData.ToTag(this);
-    //}
 
     public int GetPrice() {
         switch (Rank) {

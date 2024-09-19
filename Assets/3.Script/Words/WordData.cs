@@ -1,22 +1,11 @@
-﻿using UnityEngine;
+using System.IO;
+using UnityEditor;
+using UnityEngine;
 using WordKey = System.UInt16;
+using WordTag = System.String;
 
 public enum WordType {
     All, NOUN, VERB, ADJ
-    //Null = 0
-
-    //    , NOUN = 1 << 0
-    //    , VERB = 1 << 1
-    //    , ADJ = 1 << 2
-    //    , isMovable = 1 << 3
-    //    , isChangable = 1 << 4
-    //    , isInteractive = 1 << 5
-    //    , isBreakable = 1 << 6
-    //    , isAnimal = 1 << 7
-    //    , isLiving = 1 << 8
-
-    //    , isPersist = 1 << 20
-    //, All = int.MaxValue
 }
 
 public enum WordRank {
@@ -31,45 +20,47 @@ public enum WordRank {
     , All = int.MaxValue
 }
 
-//public enum WordKey {
-//    _Random,
-//    SORI,
-//    DOOR,
-//    TREE,
-//    //KEY,
-//    //FLOOR,
-//    //BIRD,
-//    //HP,
-//    //TIME,
-//    MOVE,
-//    //DISAPPEAR,
-//}
-
-//TODO: ENUM Key 삭제 후 String 관리
-// WordKey가 Enum일 경우
-//      JSON 저장 불러오기 시에 상수로 저장됨
-//      상수 - string 변환 시 박싱 언박싱 코스트
-//      새로운 Key 추가 시 코드 수정 불가피
-// WordKey가 string일 경우
-//      Property 지정 시 string 사용하면 오타 찾기 어려움
-//      Enum 상수 값 비교보다 string 비교가 속도 더 느릴 것
-//      Key가 string이면 굳이 Key를 안쓰고 wordName으로 대체가능
-
 [System.Serializable]
 public class WordDataStruct {
+    //TODO: 신규 동사 property 추가 시 반드시 우선 작성
     public Word[] words;
-    public WordKey[] isMovable;
+    public WordTag[] isMovable;
+    public WordTag[] isDisappearable;
+    public WordTag[] isTest;
 };
 
 public class WordData : MonoBehaviour {
     private WordDataStruct Data;
     public static Word[] words;
 
-    private WordKey[] isMovable;
+    private WordTag[] isMovable;
 
     public const WordKey RandomKey = 0;
+    private string filePath = "Resources/WordData";
 
     private void Awake() {
+
+        // FOR DEBUGGING : Make a new JSON
+        //Data = new WordDataStruct();
+        //words = new Word[3];
+        //words[0] = Word.Create(0, "Player", "소리", WordRank.EPIC, WordType.NOUN);
+        //words[1] = Word.Create(1, "Door", "문", WordRank.NORMAL | WordRank.EPIC, WordType.NOUN);
+        //words[2] = Word.Create(2, "Move", "움직이다", WordRank.EPIC, WordType.VERB);
+        //isMovable = new WordKey[] { 0, 1, 2 };
+        //Data.words = words;
+        //Data.isMovable = isMovable;
+
+        //string jsonData = JsonUtility.ToJson(Data, true);
+        //string path = Path.Combine(Application.dataPath, filePath + ".json");
+        //try {
+        //    File.WriteAllText(path, jsonData);
+        //    AssetDatabase.Refresh();
+        //}
+        //catch (IOException e) {
+        //    Debug.LogError($"Error saving data: {e.Message}");
+        //}
+
+
         TextAsset dataFile = Resources.Load<TextAsset>("WordData");
         if(dataFile == null) {
             Debug.Log("Word Data File is not exist");
@@ -81,19 +72,6 @@ public class WordData : MonoBehaviour {
         words = Data.words;
         isMovable = Data.isMovable;
     }
-
-    //public static string ToTag(Word word) {
-    //    switch (word.Key) {
-    //        case WordKey.SORI: return "Player";
-    //        case WordKey.DOOR: return "Door";
-    //            //case WordKey.TREE: return "Tree";
-    //            //case WordKey.KEY: return "Key";
-    //            //case WordKey.FLOOR: return "Floor";
-    //            //case WordKey.BIRD: return "Bird";
-    //            //case WordKey.HP: return "HP";
-    //    }
-    //    return string.Empty;
-    //}
 }
 
     //= new Word[] {

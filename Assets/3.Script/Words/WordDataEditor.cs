@@ -5,7 +5,7 @@ using System.IO;
 using System.Linq;
 using UnityEditor;
 using UnityEngine;
-using WordKey = System.Int16;
+using WordKey = System.UInt16;
 
 public class WordDataEditor : EditorWindow {
     private string filePath = "Resources/WordData";
@@ -22,12 +22,14 @@ public class WordDataEditor : EditorWindow {
     private bool showDropdown;
     private Vector2 scrollPosition;
 
-    private string _keyOrig;
+    private WordKey _keyOrig;
+    private string _tagOrig;
     private string _nameOrig;
     private WordType _typeOrig;
     private WordRank _rankOrig;
 
-    private string _key;
+    private WordKey _key;
+    private string _tag;
     private string _name;
     private WordType _type;
     private bool[] rankAvailable;
@@ -52,21 +54,21 @@ public class WordDataEditor : EditorWindow {
     private void OnGUI() {
         EditorGUILayout.Space(20f);
 
-        #region ±‚∫ª GUI region
-        // GUI ≈∏¿Ã∆≤
+        #region Í∏∞Î≥∏ GUI region
+        // GUI ÌÉÄÏù¥ÌãÄ
         EditorGUILayout.BeginHorizontal(); GUILayout.FlexibleSpace();
         EditorGUILayout.LabelField("WORD DATA", EditorStyles.whiteLargeLabel, GUILayout.Width(100f));
         GUILayout.FlexibleSpace(); EditorGUILayout.EndHorizontal();
         EditorGUILayout.Space(10f);
 
-        // Resources ¿˙¿Â ∞Ê∑Œ √‚∑¬ « µÂ
+        // Resources Ï†ÄÏû• Í≤ΩÎ°ú Ï∂úÎ†• ÌïÑÎìú
         EditorGUILayout.BeginHorizontal(); GUILayout.FlexibleSpace();
         EditorGUILayout.LabelField("Data Path", GUILayout.Width(EditorGUIUtility.labelWidth));
         EditorGUILayout.SelectableLabel(filePath, EditorStyles.textField, GUILayout.Height(EditorGUIUtility.singleLineHeight));
         GUILayout.FlexibleSpace(); EditorGUILayout.EndHorizontal();
         EditorGUILayout.Space(30f);
 
-        // WordType ∫∞ ∞Àªˆ « ≈Õ µÂ∑”¥ŸøÓ
+        // WordType Î≥Ñ Í≤ÄÏÉâ ÌïÑÌÑ∞ ÎìúÎ°≠Îã§Ïö¥
         EditorGUILayout.BeginHorizontal(); GUILayout.FlexibleSpace();
         EditorGUILayout.LabelField("Word Type", GUILayout.Width(EditorGUIUtility.labelWidth));
         wordType = (WordType)EditorGUILayout.EnumPopup(wordType);
@@ -74,7 +76,7 @@ public class WordDataEditor : EditorWindow {
         GUILayout.FlexibleSpace(); EditorGUILayout.EndHorizontal();
         EditorGUILayout.Space(10f);
 
-        // Edit ¥ÎªÛ ¥‹æÓ º±≈√ µÂ∑”¥ŸøÓ
+        // Edit ÎåÄÏÉÅ Îã®Ïñ¥ ÏÑ†ÌÉù ÎìúÎ°≠Îã§Ïö¥
         EditorGUILayout.BeginHorizontal(); GUILayout.FlexibleSpace();
         EditorGUILayout.LabelField("SELECT WORD", GUILayout.Width(EditorGUIUtility.labelWidth));
         if (GUILayout.Button(wordIndexList.Count > 0 ? words[wordIndexList[selectedWord]].Name : "",
@@ -84,7 +86,7 @@ public class WordDataEditor : EditorWindow {
         Rect dropdownArea = new Rect(buttonRect.x, buttonRect.y + buttonRect.height, buttonRect.width, 100);
         GUILayout.FlexibleSpace(); EditorGUILayout.EndHorizontal();
 
-        // µÂ∑”¥ŸøÓ πˆ∆∞ ≈¨∏ØΩ√ ∏ﬁ¥∫ √‚∑¬
+        // ÎìúÎ°≠Îã§Ïö¥ Î≤ÑÌäº ÌÅ¥Î¶≠Ïãú Î©îÎâ¥ Ï∂úÎ†•
         if (showDropdown) DrawDropdown(dropdownArea);
         else {
             EditorGUILayout.BeginHorizontal(); GUILayout.FlexibleSpace();
@@ -95,26 +97,33 @@ public class WordDataEditor : EditorWindow {
             Mathf.Min(wordIndexList.Count * EditorGUIUtility.singleLineHeight + 50, 150) : 50f);
         #endregion
 
-        #region ¥‹æÓ ºº∫Œ º≥¡§ region
-        // Select Word ¿Ã»ƒ ¥‹æÓ ºº∫Œ º≥¡§ √¢
+        #region Îã®Ïñ¥ ÏÑ∏Î∂Ä ÏÑ§Ï†ï region
+        // Select Word Ïù¥ÌõÑ Îã®Ïñ¥ ÏÑ∏Î∂Ä ÏÑ§Ï†ï Ï∞Ω
         if (isSelected) {
             isModified = false;
 
-            // Key ¿‘∑¬ « µÂ
+            // Key ÏûÖÎ†• ÌïÑÎìú
             EditorGUILayout.BeginHorizontal(); GUILayout.FlexibleSpace();
             GUI.contentColor = _key != _keyOrig ? Color.yellow : Color.white;
             EditorGUILayout.LabelField("KEY", GUILayout.Width(150f));
-            _key = EditorGUILayout.TextField(_key, GUILayout.Width(150f)); GUI.contentColor = Color.white;
+            _key = (WordKey)EditorGUILayout.IntField(_key, GUILayout.Width(150f)); GUI.contentColor = Color.white;
             GUILayout.FlexibleSpace(); EditorGUILayout.EndHorizontal();
 
-            // Name ¿‘∑¬ « µÂ
+            // Tag ÏûÖÎ†• ÌïÑÎìú
+            EditorGUILayout.BeginHorizontal(); GUILayout.FlexibleSpace();
+            GUI.contentColor = _tag != _tagOrig ? Color.yellow : Color.white;
+            EditorGUILayout.LabelField("Tag", GUILayout.Width(150f));
+            _tag = EditorGUILayout.TagField(_tag, GUILayout.Width(150f)); GUI.contentColor = Color.white;
+            GUILayout.FlexibleSpace(); EditorGUILayout.EndHorizontal();
+
+            // Name ÏûÖÎ†• ÌïÑÎìú
             EditorGUILayout.BeginHorizontal(); GUILayout.FlexibleSpace();
             GUI.contentColor = _name != _nameOrig ? Color.yellow : Color.white;
             EditorGUILayout.LabelField("Name", GUILayout.Width(150f));
             _name = EditorGUILayout.TextField(_name, GUILayout.Width(150f)); GUI.contentColor = Color.white;
             GUILayout.FlexibleSpace(); EditorGUILayout.EndHorizontal();
 
-            // Rank ¿‘∑¬ √º≈©π⁄Ω∫
+            // Rank ÏûÖÎ†• Ï≤¥ÌÅ¨Î∞ïÏä§
             for (int i = 0; i < 5; i++) {
                 EditorGUILayout.BeginHorizontal(); GUILayout.FlexibleSpace();
                 isModified |= (((int)_rankOrig & (1 << i)) != 0) != rankAvailable[i];
@@ -124,7 +133,7 @@ public class WordDataEditor : EditorWindow {
                 GUILayout.FlexibleSpace(); EditorGUILayout.EndHorizontal();
             }
 
-            // Type ¿‘∑¬ µÂ∑”¥ŸøÓ
+            // Type ÏûÖÎ†• ÎìúÎ°≠Îã§Ïö¥
             EditorGUILayout.BeginHorizontal(); GUILayout.FlexibleSpace();
             GUI.contentColor = _type != _typeOrig ? Color.yellow : Color.white;
             EditorGUILayout.LabelField("Word Type", GUILayout.Width(150f));
@@ -132,11 +141,11 @@ public class WordDataEditor : EditorWindow {
             GUILayout.FlexibleSpace(); EditorGUILayout.EndHorizontal();
             EditorGUILayout.Space(20f);
 
-            if (isNewAdd) 
+            if (isNewAdd)
                 isModified &= _key != _keyOrig & _name != _nameOrig & _type != _typeOrig;
             else isModified |= _key != _keyOrig | _name != _nameOrig | _type != _typeOrig;
 
-            // ºˆ¡§ & ªË¡¶ πˆ∆∞
+            // ÏàòÏ†ï & ÏÇ≠Ï†ú Î≤ÑÌäº
             EditorGUILayout.BeginHorizontal(); GUILayout.FlexibleSpace();
             GUI.enabled = isModified; GUI.contentColor = Color.green;
             if (GUILayout.Button(isNewAdd ? "Add" : "Modify", GUILayout.Width(100f), GUILayout.Height(30f))) OnSaveButtonClicked();
@@ -146,7 +155,6 @@ public class WordDataEditor : EditorWindow {
                 if (GUILayout.Button("DELETE", GUILayout.Width(100f), GUILayout.Height(30f))) OnDeleteButtonClicked();
             GUILayout.FlexibleSpace(); EditorGUILayout.EndHorizontal();
             EditorGUILayout.Space(50f);
-
         }
         #endregion
 
@@ -218,7 +226,8 @@ public class WordDataEditor : EditorWindow {
                 isDelete = false;
                 statusLog = string.Empty;
 
-                _keyOrig = _key = words[wordIndexList[i]].Key.ToString();
+                _keyOrig = _key = words[wordIndexList[i]].Key;
+                _tagOrig = _tag = words[wordIndexList[i]].Tag;
                 _nameOrig = _name = words[wordIndexList[i]].Name;
                 _typeOrig = _type = words[wordIndexList[i]].Type;
                 _rankOrig = words[wordIndexList[i]].Rank;
@@ -232,10 +241,16 @@ public class WordDataEditor : EditorWindow {
 
     private WordRank RankAvailableToWordRank() {
         int wordRank = 0;
-        for(int i = 0; i < rankAvailable.Length; i++) {
+        for (int i = 0; i < rankAvailable.Length; i++) {
             if (rankAvailable[i]) wordRank = wordRank | (1 << i);
         }
         return (WordRank)wordRank;
+    }
+
+    private bool CheckUsedKey(WordKey key) {
+        foreach (var each in words)
+            if (each.Key == key) return true;
+        return false;
     }
 
     private void OnAddNewButtonClicked() {
@@ -245,7 +260,8 @@ public class WordDataEditor : EditorWindow {
         statusLog = string.Empty;
         selectedWord = 0;
 
-        _keyOrig = _key = string.Empty;
+        _keyOrig = _key = 0;
+        _tagOrig = _tag = string.Empty;
         _nameOrig = _name = string.Empty;
         _typeOrig = _type = WordType.All;
         _rankOrig = 0;
@@ -255,22 +271,27 @@ public class WordDataEditor : EditorWindow {
     }
 
     private void OnSaveButtonClicked() {
-        // ADD, Modify ±‚¥…
-        if (isNewAdd) {
-            words.Add(Word.Create(
-                Convert<WordKey>.ToEnum(_key), _name, RankAvailableToWordRank(), _type));
+        // ADD, Modify Í∏∞Îä•
+        if (CheckUsedKey(_key)) {
+            statusLog = "Key is already used";
+            return;
         }
+
+        if (isNewAdd)
+            words.Add(Word.Create(_key, _tag, _name, RankAvailableToWordRank(), _type));
         else {
-            // enum «“∞≈∏È string¿∏∑Œ ¿˙¿Â«“ « ø‰µµ æ¯¡ˆ
-            words[wordIndexList[selectedWord]]._key = Convert<WordKey>.ToEnum(_key);
+            words[wordIndexList[selectedWord]]._key = _key;
+            words[wordIndexList[selectedWord]]._tag = _tag;
             words[wordIndexList[selectedWord]]._name = _name;
             words[wordIndexList[selectedWord]]._type = _type;
             words[wordIndexList[selectedWord]]._rank = RankAvailableToWordRank();
         }
+
         Data.words = words.ToArray();
         Save();
         Load();
         statusLog = "Modify Complete";
+
     }
 
     private void OnDeleteButtonClicked() {
@@ -278,7 +299,7 @@ public class WordDataEditor : EditorWindow {
     }
 
     private void Delete() {
-        if (words[wordIndexList[selectedWord]]._key.ToString() != _key)
+        if (words[wordIndexList[selectedWord]]._key != _key)
             statusLog = "Remove Failed! Data Crashed.";
         else {
             words.RemoveAt(wordIndexList[selectedWord]);
@@ -290,18 +311,3 @@ public class WordDataEditor : EditorWindow {
     }
 }
 #endif
-
-public class Convert<T> where T : Enum {
-    private static Dictionary<string, T> _cachedDictionary;
-
-    static Convert() {
-        _cachedDictionary = new Dictionary<string, T>();
-        foreach (T enumValue in Enum.GetValues(typeof(T))) 
-            _cachedDictionary[enumValue.ToString()] = enumValue;
-    }
-
-    public static T ToEnum(string value) {
-        if (_cachedDictionary.TryGetValue(value, out T result)) return result;
-        throw new ArgumentException($"'{value}' is not a valid value for enum {typeof(T).Name}");
-    }
-}
