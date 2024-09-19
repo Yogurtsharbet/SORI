@@ -42,7 +42,8 @@ public class ReceiptContainer : MonoBehaviour {
     }
 
     private void OnEnable() {
-        SetCurrentAmount(playerBehavior.StarCoin);
+        //TODO: player behavior 연결하기
+        //SetCurrentAmount(playerBehavior.StarCoin);
     }
 
     public void SetCurrentAmount(int num) {

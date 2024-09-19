@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 // [UI] 상점 - 구매가능한 단어 슬롯 컨트롤러
 public class ShopSlotController : MonoBehaviour , IPointerClickHandler {
-
+    ShopSlotManager shopSlotManager;
     private int key;
     
     private Word thisWord = null;
@@ -20,6 +20,7 @@ public class ShopSlotController : MonoBehaviour , IPointerClickHandler {
     private Image selectSlot;
 
     private void Awake() {
+        shopSlotManager = FindObjectOfType<ShopSlotManager>();
         Text[] texts = GetComponentsInChildren<Text>();
         foreach(Text txt in texts) {
             if (txt.name.Equals("Word")) {
@@ -73,9 +74,12 @@ public class ShopSlotController : MonoBehaviour , IPointerClickHandler {
         }
     }
 
-
     public void OnPointerClick(PointerEventData eventData) {
-        //SelectSlot()
+        shopSlotManager.SelectShopItem(key);
+    }
+
+    public bool IsExistWord() {
+        return thisWord != null ? true : false;
     }
 
 }

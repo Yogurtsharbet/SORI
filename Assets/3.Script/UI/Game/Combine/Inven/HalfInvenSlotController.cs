@@ -59,40 +59,42 @@ public class HalfInvenSlotController : CommonInvenSlotController, IEndDragHandle
         wordText.rectTransform.anchoredPosition = originalPosition;
         if (halfInvenManager.IsCombineMode) {
             if (combineSlotManager.CanCombine) {
-                int sentenceSlotNum = checkSentenceSlot(eventData);
-                if (sentenceSlotNum != -1) {
-                    //조합창으로 드래그
-                    Word invenWord = playerInven.GetWordIndex(key);
-                    if (combineSlotManager.CheckIsSlotExist(sentenceSlotNum)) {
-                        combineSlotManager.SwitchingWordToInven(sentenceSlotNum, invenWord);
-                    }
-                    else {
-                        combineSlotManager.SetSlotWords(sentenceSlotNum, invenWord);
-                        playerInven.RemoveItemIndex(key);
-                    }
-                }
-                else {
-                    int invenSlotNum = checkAnotherSlot(eventData);
-                    if (invenSlotNum != -1) {
-                        //인벤 내부 스위칭
-                        halfInvenManager.SetInvenSwitching(key, invenSlotNum);
-                    }
-                }
+                //int sentenceSlotNum = checkSentenceSlot(eventData);
+                //if (sentenceSlotNum != -1) {
+                //    //조합창으로 드래그
+                //    Word invenWord = playerInven.GetWordIndex(key);
+                //    if (combineSlotManager.CheckIsSlotExist(sentenceSlotNum))
+                //    {
+                //        combineSlotManager.SwitchingWordToInven(sentenceSlotNum, invenWord);
+                //    }
+                //    else
+                //    {
+                //        combineSlotManager.SetSlotWords(sentenceSlotNum, invenWord);
+                //        playerInven.RemoveItemIndex(key);
+                //    }
+                //}
+                //else {
+                //    int invenSlotNum = checkAnotherSlot(eventData);
+                //    if (invenSlotNum != -1) {
+                //        //인벤 내부 스위칭
+                //        halfInvenManager.SetInvenSwitching(key, invenSlotNum);
+                //    }
+                //}
             }
         }
     }
 
-    private int checkSentenceSlot(PointerEventData eventData) {
-        if (RectTransformUtility.RectangleContainsScreenPoint(combineSlotManager.GetSlotRectTransform(0), eventData.position, eventData.pressEventCamera)) {
-            return 0;
-        }
-        else if (RectTransformUtility.RectangleContainsScreenPoint(combineSlotManager.GetSlotRectTransform(1), eventData.position, eventData.pressEventCamera)) {
-            return 1;
-        }
-        else {
-            return -1;
-        }
-    }
+    //private int checkSentenceSlot(PointerEventData eventData) {
+    //    if (RectTransformUtility.RectangleContainsScreenPoint(combineSlotManager.GetSlotRectTransform(0), eventData.position, eventData.pressEventCamera)) {
+    //        return 0;
+    //    }
+    //    else if (RectTransformUtility.RectangleContainsScreenPoint(combineSlotManager.GetSlotRectTransform(1), eventData.position, eventData.pressEventCamera)) {
+    //        return 1;
+    //    }
+    //    else {
+    //        return -1;
+    //    }
+    //}
 
     private int checkAnotherSlot(PointerEventData eventData) {
         int slotIndex = -1;

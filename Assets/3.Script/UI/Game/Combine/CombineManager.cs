@@ -2,63 +2,103 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-// [UI] ¡∂«’ - ¡∂«’ ΩΩ∑‘ ∏≈¥œ¿˙. ¡∂«’ √¢¿« «— πÆ¿Â ∆≤
-public class CombineManager : MonoBehaviour {
-    private CombineSlotController[] combineSlotControllers;
-    private SentencesManager sentencesManager;
-    private DialogController dialogController;
+//SlotType 01 > [ word , sentence03, sentence04 ] , [ word, sentence03, sentence04 ]
+//SlotType 02 > [ word , sentence03, sentence04 ] , [ word, sentence03, sentence04 ]
+//SlotType 03 > [ word ] , [ word ] / [ sentence01 , sentence02 ] , [ sentence01, sentence02 ]
+//SlotType 04 > [ word ]
 
-    //TODO: «œ≥™∑Œ «’√ƒ¡ˆ∏È πŸ≤Ÿ±‚
+/*  
+ *  1. sentence typeÏóê Îî∞Îùº Î®ºÏ†Ä Ïñ¥Îñ§ ÌãÄÏùÑ Ïó¥Í±¥ÏßÄ Ï≤¥ÌÅ¨
+ *  2. ÌãÄÏùÑ Ïó∞ ÌõÑ ÎìúÎûòÍ∑∏Ìï¥ Ïò®Í≤ÉÏù¥ sentenceÏù∏ÏßÄ wordÏù∏ÏßÄ Ï≤¥ÌÅ¨Ìï¥ÏÑú Ïó¥Í∏∞
+ *  3. Ï§ëÍ∞ÑÏóê Î∞îÎÄåÎ©¥ Í∑∏Ï†ÑÍ≤É ÎêòÎèåÎ¶¨Í∏∞
+ * 
+ */
+
+// [UI] Ï°∞Ìï© - Ï°∞Ìï© Îß§ÎãàÏ†Ä. Ï°∞Ìï© Ï∞ΩÏùò Ìïú Î¨∏Ïû• ÌãÄ
+public class CombineManager :MonoBehaviour {
+    //Í∏∞Î≥∏ ÌîÑÎ†àÏûÑ open Ïó¨Î∂Ä
+    private bool baseFrameOpen = false;
+    public bool BaseFrameOpen => baseFrameOpen;
+
+    //Í∏∞Î≥∏ ÌîÑÎ†àÏûÑ
+    private Frame baseFrame;
+    public Frame BaseFrame => baseFrame;
+
+    //ÏµúÎåÄ Îì§Ïñ¥Í∞àÏàò ÏûàÎäî Í∞í
+    //Frame [ Frame [word, word, word] , word ] , [ Frame [word, word, word] , word ] , [ Frame [word, word, word] , word ]
+
+    private FrameListContainer sentencesManager;
+    private SubmitButtonController submitButton;
+
+    //TODO: ÌïòÎÇòÎ°ú Ìï©Ï≥êÏßÄÎ©¥ Î∞îÍæ∏Í∏∞
     private CombineContainer combineContainer;
     private HalfInvenContainer halfInvenContainer;
 
     private SelectControl selectControl;
 
-    private Frame selectedFrame;
-    private int selectKey;
     private bool canCombine;
 
+    private GameObject[] frameObjects = new GameObject[4];
+
+    //Ï°∞Ìï© Í∞ÄÎä•Ïó¨Î∂Ä
     public bool CanCombine => canCombine;
 
     private void Awake() {
-        combineSlotControllers = GetComponentsInChildren<CombineSlotController>();
-        sentencesManager = FindObjectOfType<SentencesManager>();
-        dialogController = FindObjectOfType<DialogController>();
+        sentencesManager = FindObjectOfType<FrameListContainer>();
         selectControl = FindObjectOfType<SelectControl>();
+        submitButton = FindObjectOfType<SubmitButtonController>();
 
-        //TODO: «œ≥™∑Œ «’√ƒ¡ˆ∏È πŸ≤Ÿ±‚
+        //TODO: ÌïòÎÇòÎ°ú Ìï©Ï≥êÏßÄÎ©¥ Î∞îÍæ∏Í∏∞
         combineContainer = FindObjectOfType<CombineContainer>();
         halfInvenContainer = FindObjectOfType<HalfInvenContainer>();
+
+        for (int i = 0; i < 4; i++) {
+            frameObjects[i] = gameObject.transform.GetChild(i).gameObject;
+            frameObjects[i].SetActive(false);
+        }
     }
 
     private void Start() {
         CloseCombineSlot();
-        combineSlotControllers[0].CloseSlot();
-        combineSlotControllers[1].CloseSlot();
     }
 
     public void OpenCombineSlot(int key, Frame frame) {
+        baseFrameOpen = true;
         gameObject.SetActive(true);
 
-        selectKey = key;
-        selectedFrame = frame;
+        baseFrame = frame;
+        //TODO: base frame ÏïàÏóê setBase(true) Ï∂îÍ∞Ä, Îã§Î•∏ ÌîÑÎ†àÏûÑ switching Ìï†Îïå falseÎ°ú Í∫ºÏ§òÏïºÌï®
+        activeFrameType((int)frame.Type - 1);
 
-        if (selectedFrame.IsActive) {       //πÆ¿Â∆≤ø° πÆ¿Â¿Ã µÈæÓ∞°¿÷¥¬ ªÛ≈¬
-            canCombine = false;             //¡∂«’¿Ã øœ∑·µ» ªÛ≈¬
-            for (int i = 0; i < selectedFrame.BlankCount; i++)
-                SetSlotWords(i, selectedFrame.GetWord(i));
+        if (baseFrame.IsActive) {       //Î¨∏Ïû•ÌãÄÏóê Î¨∏Ïû•Ïù¥ Îì§Ïñ¥Í∞ÄÏûàÎäî ÏÉÅÌÉú
+            canCombine = false;             //Ï°∞Ìï©Ïù¥ ÏôÑÎ£åÎêú ÏÉÅÌÉú
+            submitButton.ButtonToRemove();
         }
         else {
-            canCombine = true;              //¡∂«’«œ±‚∏¶ ¥≠∑Øæﬂ «œ¥¬ ªÛ≈¬
+            canCombine = true;              //Ï°∞Ìï©ÌïòÍ∏∞Î•º ÎàåÎü¨Ïïº ÌïòÎäî ÏÉÅÌÉú
+            submitButton.ButtonToSubmit();
+        }
+    }
+
+    private void activeFrameType(int num) {
+        for (int i = 0; i < 4; i++) {
+            if (i == num) {
+                frameObjects[i].SetActive(true);
+            }
+            else {
+                frameObjects[i].SetActive(false);
+            }
         }
     }
 
     public void CloseCombineSlot() {
+        //TODO: Ïä¨Î°ØÏóê ÏûàÎäî ÏõåÎìú ÏõêÎûòÎåÄÎ°ú ÎèåÎ¶¨Í∏∞ -> Ï∑®ÏÜå
+        baseFrame = null;
         gameObject.SetActive(false);
     }
 
-    public RectTransform GetSlotRectTransform(int num) {
-        return combineSlotControllers[num].GetComponent<RectTransform>();
+    public void CancelCombineTemp() {
+        gameObject.SetActive(false);
     }
 
     public void SetSlotWords(int index, Word word) {
@@ -66,49 +106,60 @@ public class CombineManager : MonoBehaviour {
         combineSlotControllers[index].SetSlotWord(word);
     }
 
-    public bool CheckIsSlotExist(int index) {
-        if (combineSlotControllers[index].SlotWord != null) {
-            return true;
-        }
-        else {
-            return false;
-        }
-    }
+    //public RectTransform GetSlotRectTransform(int num) {
+    //    return combineSlotControllers[num].GetComponent<RectTransform>();
+    //}
 
-    public Word SwitchingWordToInven(int index, Word word) {
-        Word slotWord = combineSlotControllers[index].SlotWord;
-        combineSlotControllers[index].SetSlotWord(word);
-        return slotWord;
-    }
+    //public void SetSlotWords(int index, Word word) {
+    //    combineSlotControllers[index].SetSlotWord(word);
+    //}
 
-    //πÆ¿Â ¡∂«’
+    //public bool CheckIsSlotExist(int index) {
+    //    if (combineSlotControllers[index].SlotWord != null) {
+    //        return true;
+    //    }
+    //    else {
+    //        return false;
+    //    }
+    //}
+
+    //public Word SwitchingWordToInven(int index, Word word) {
+    //    Word slotWord = combineSlotControllers[index].SlotWord;
+    //    combineSlotControllers[index].SetSlotWord(word);
+    //    return slotWord;
+    //}
+
+    //Î¨∏Ïû• Ï°∞Ìï©
     public void CombineSubmit() {
-        if (selectedFrame == null) return;
+        if (baseFrame == null) return;
         string dialogContents = string.Empty;
 
-        for (int i = 0; i < selectedFrame.BlankCount; i++)
-            selectedFrame.SetWord(i, combineSlotControllers[i].SlotWord);
+        if (baseFrame.CheckSentenceValidity()) {
+            //sentencesManager.SetSlotSentence(selectKey, selectedFrame);
+            //selectKey = -1; //TODO: ESCÎ°ú ÎèåÏïÑÏò¨ Ïàò ÏûàÏúºÎØÄÎ°ú selectKeyÍ∞Ä Ï†ÄÏû•ÎêòÏñ¥Ïïº Ìï† ÌïÑÏöî ÏûàÏùå
 
         if(selectedFrame.CheckSentenceValidity()) {
             sentencesManager.SetSlotSentence(selectKey, selectedFrame);
-            selectKey = -1; //TODO: ESC∑Œ µπæ∆ø√ ºˆ ¿÷¿∏π«∑Œ selectKey∞° ¿˙¿Âµ«æÓæﬂ «“ « ø‰ ¿÷¿Ω
+            selectKey = -1; //TODO: ESCÔøΩÔøΩ ÔøΩÔøΩÔøΩ∆øÔøΩ ÔøΩÔøΩ ÔøΩÔøΩÔøΩÔøΩÔøΩ«∑ÔøΩ selectKeyÔøΩÔøΩ ÔøΩÔøΩÔøΩÔøΩ«æÔøΩÔøΩ ÔøΩÔøΩ ÔøΩ øÔøΩ ÔøΩÔøΩÔøΩÔøΩ
             for (int i = 0; i < selectedFrame.BlankCount; i++)
                 SetSlotWords(i, null);
 
-            //TODO: º±≈√¥ÎªÛ ø©∑Ø∞≥¿œ ∞ÊøÏ SetTargetTag ºˆ¡§ « ø‰
+            //TODO: ÔøΩÔøΩÔøΩ√¥ÔøΩÔøΩ ÔøΩÔøΩÔøΩÔøΩÔøΩÔøΩÔøΩÔøΩ ÔøΩÔøΩÔøΩ SetTargetTag ÔøΩÔøΩÔøΩÔøΩ ÔøΩ øÔøΩ
             selectControl.SetTargetTag(selectedFrame.wordA.Tag);
             CameraControl.Instance.SetCamera(CameraControl.CameraStatus.SelectView);
             combineContainer.CloseCombineField();
             halfInvenContainer.CloseCombineInven();
-        }
-        else 
-            dialogContents = "πÆ¿Â¿ª ¡∂«’ «“ ºˆ æ¯Ω¿¥œ¥Ÿ\n¥‹æÓ∏¶ »Æ¿Œ«ÿ¡÷ººø‰.";
 
-        if(dialogContents != string.Empty) 
-            dialogController.OpenDialog(dialogContents, DialogType.FAIL);
+            //TODO: ÌôïÏ†ïÌïòÎçîÎùºÎèÑ ÏÑ†ÌÉùÌï¥ÏÑú ÏÇ¨Ïö©ÌïòÎäî Í≤ΩÏö∞ÏóêÎäî ÏÑ†ÌÉùÌïú ÌõÑÏóê ÏÜåÎ™®Ìï¥ÏïºÌï®
+        }
+        else
+            dialogContents = "Î¨∏Ïû•ÏùÑ Ï°∞Ìï© Ìï† Ïàò ÏóÜÏäµÎãàÎã§\nÎã®Ïñ¥Î•º ÌôïÏù∏Ìï¥Ï£ºÏÑ∏Ïöî.";
+
+        if (dialogContents != string.Empty)
+            DialogManager.Instance.OpenDefaultDialog(dialogContents, DialogType.FAIL);
     }
 
     public void Activate(GameObject target, GameObject indicator) {
-        selectedFrame.Activate(target, indicator);
+        baseFrame.Activate(target, indicator);
     }
 }
