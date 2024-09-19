@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class SubmitButtonController :MonoBehaviour {
+// [UI] ì¡°í•© - í™•ì • ë²„íŠ¼ ê´€ë¦¬
+public class SubmitButtonController : MonoBehaviour {
     private Image buttonImage;
     private Text buttonText;
     private Outline outline;
@@ -11,18 +12,18 @@ public class SubmitButtonController :MonoBehaviour {
     private void Awake() {
         buttonImage = GetComponentInChildren<Image>();
         buttonText = GetComponentInChildren<Text>();
-        outline= buttonText.gameObject.GetComponentInChildren<Outline>();
+        outline = buttonText.gameObject.GetComponentInChildren<Outline>();
     }
 
     public void ButtonToSubmit() {
         buttonImage.color = new Color(126f, 201f, 186f);
-        buttonText.text = "È®Á¤ÇÏ±â";
+        buttonText.text = "í™•ì •í•˜ê¸°";
         outline.effectColor = new Color(84f, 173f, 182f);
     }
 
     public void ButtonToRemove() {
         buttonImage.color = new Color(161f, 34f, 51f);
-        buttonText.text = "»èÁ¦ÇÏ±â";
+        buttonText.text = "ì‚­ì œí•˜ê¸°";
         outline.effectColor = new Color(209f, 78f, 96f);
     }
 }

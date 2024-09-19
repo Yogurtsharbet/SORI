@@ -3,14 +3,14 @@ using UnityEngine;
 
 // [UI] 조합 - 조합창 컨테이너
 public class CombineContainer : MonoBehaviour {
-    private CombineManager combineSlotManager;
+    private CombineManager combineManager;
     private HalfInvenManager halfInvenManager;
 
     private Vector3 openPos = new Vector3(-246f, 27f, 0);
     private Vector3 closePos = new Vector3(-246f, -864f, 0);
 
     private void Awake() {
-        combineSlotManager = FindObjectOfType<CombineManager>();
+        combineManager = FindObjectOfType<CombineManager>();
         halfInvenManager = FindObjectOfType<HalfInvenManager>();
     }
 
@@ -25,8 +25,8 @@ public class CombineContainer : MonoBehaviour {
     }
 
     public void CloseCombineField() {
+        combineManager.CloseCombineSlot();
         FunctionMove(gameObject.transform, closePos);
-        combineSlotManager.CloseCombineSlot();
         halfInvenManager.SetCombineMode(false);
         halfInvenManager.CloseInven();
         gameObject.SetActive(false);

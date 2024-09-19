@@ -2,8 +2,8 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-// [UI] 조합 - 문장 슬롯 컨트롤러. 문장 리스트 중 한 문장 틀
-public class FrameSlotController : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IDragHandler, IEndDragHandler {
+// [UI] 문장 목록 - 문장 슬롯 컨트롤러. 문장 리스트 중 한 문장 틀
+public class FrameListSlotController : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IDragHandler, IEndDragHandler {
     private CombineManager combineManager;
     private CombineContainer combineContainer;
     private RectTransform combineFieldRectTransform;    //문장 슬롯 영역
@@ -69,29 +69,42 @@ public class FrameSlotController : MonoBehaviour, IPointerClickHandler, IBeginDr
         rectTransform.anchoredPosition = originalPosition;
 
         //기본 베이스 Frame Open 체크
-        if (combineManager.BaseFrameOpen) {
+        if (combineManager.BaseFrameOpen && combineManager.CanCombine) {
             FrameType baseFrameType = combineManager.BaseFrame.Type;
-            if(baseFrameType == FrameType.AisB || baseFrameType == FrameType.AtoBisC) {
-            //1,2번 프레임 > 3,4번 프레임만 추가 가능
+            if (baseFrameType == FrameType.AisB || baseFrameType == FrameType.AtoBisC) {
+                //1,2번 프레임 > 3,4번 프레임만 추가 가능
+                //1번, 2번 프레임의 슬롯 rectTransform 가져와서 비교
                 if (thisFrameType != FrameType.AisB && thisFrameType != FrameType.AtoBisC) {
-                    //1번, 2번 프레임의 슬롯 rectTransform 가져와서 비교
+                    //해당 슬롯에 프레임 추가
 
                 }
-            }else if(baseFrameType == FrameType.AandB) {
-            //3번 프레임 > 1,2번 프레임만 추가가능
-                if(thisFrameType !=FrameType.AandB && thisFrameType != FrameType.NotA) {
-                    //3번 프레임 슬롯 rectTransform 가져와서 비교
+                else {
+                    //dialog open
+
                 }
             }
-            
+            else if (baseFrameType == FrameType.AandB) {
+                //3번 프레임 > 1,2번 프레임만 추가가능
+                //3번 프레임 슬롯 rectTransform 가져와서 비교
+                if (thisFrameType != FrameType.AandB && thisFrameType != FrameType.NotA) {
+                    //해당 슬롯에 프레임 추가
+                }
+                else {
+                    //dialog open
+                }
+            }
+            else if (baseFrameType == FrameType.NotA) {
+                //dialog open
+            }
+            else if (RectTransformUtility.RectangleContainsScreenPoint(combineFieldRectTransform, eventData.position, eventData.pressEventCamera)) {
+                //switching
+            }
         }
         else {
             if (RectTransformUtility.RectangleContainsScreenPoint(combineFieldRectTransform, eventData.position, eventData.pressEventCamera)) {
                 combineManager.OpenCombineSlot(key, thisFrame);
             }
         }
-
-
     }
 
     public void SetFrameData(Frame frame) {

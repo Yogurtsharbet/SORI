@@ -4,25 +4,25 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-// [UI] πÆ¿Â ∏Ò∑œ - πÆ¿Â ∏Ò∑œ ∞¸∏Æ ∏≈¥œ¿˙
+// [UI] Î¨∏Ïû• Î™©Î°ù - Î¨∏Ïû• Î™©Î°ù Í¥ÄÎ¶¨ Îß§ÎãàÏ†Ä
 public class FrameListManager : MonoBehaviour {
     [SerializeField] private GameObject slotPrefab;
     private int poolingCount = 10;
     private Slider slider;
     private List<GameObject> slotList = new List<GameObject>();
-    private FrameSlotController[] frameSlotControllers;
+    private FrameListSlotController[] frameListSlotControllers;
 
     private List<Frame> frameList = new List<Frame>();
 
     private Vector3[] initialPositions = new Vector3[10];
 
-    private float previousValue = 0; // ¿Ã¿¸ Ω∫≈©∑—πŸ ∞™
+    private float previousValue = 0; // Ïù¥Ï†Ñ Ïä§ÌÅ¨Î°§Î∞î Í∞í
 
     private void Awake() {
         slider = GetComponentInChildren<Slider>();
         slider.minValue = 0;
         slider.onValueChanged.AddListener(OnSliding);
-        frameSlotControllers = new FrameSlotController[poolingCount];
+        frameListSlotControllers = new FrameListSlotController[poolingCount];
 
         for (int i = 0; i < poolingCount; i++) {
             initialPositions[i] = new Vector3(-20f, 305f - 145f * i, 0f);
@@ -31,14 +31,14 @@ public class FrameListManager : MonoBehaviour {
             newSlotObject.name = $"SentenceSlot{i}";
             newSlotObject.SetActive(false);
             slotList.Add(newSlotObject);
-            frameSlotControllers[i] = newSlotObject.GetComponent<FrameSlotController>();
+            frameListSlotControllers[i] = newSlotObject.GetComponent<FrameListSlotController>();
         }
     }
 
     private void Start() {
         testData();
         for (int i = 0; i < poolingCount; i++) {
-            frameSlotControllers[i].SetFrameData(frameList[i]);
+            frameListSlotControllers[i].SetFrameData(frameList[i]);
         }
 
         CheckScrollbar();
@@ -55,9 +55,12 @@ public class FrameListManager : MonoBehaviour {
     }
 
     private void testData() {
-        for (int i = 0; i < 20; i++) {
+        for (int i = 0; i < 15; i++) {
             frameList.Add(new Frame());
         }
+
+        frameList[5].SetActive(true);
+        frameList[2].SetActive(true);
     }
 
     private void CheckScrollbar() {
@@ -92,19 +95,20 @@ public class FrameListManager : MonoBehaviour {
         previousValue = value;
     }
 
-    private void UpdateSlotData(int scrollValue) {
+    private void UpdateSlotData(float scrollValue) {
+        int value = (int)scrollValue;
         for (int i = 0; i < poolingCount; i++) {
-            frameSlotControllers[i].SetFrameData(frameList[i + scrollValue]);
+            frameListSlotControllers[i].SetFrameData(frameList[i + value]);
         }
     }
 
-    public void SortingToActive()
-    {
-        frameList.Sort((x, y) => x.IsActive.CompareTo(x.IsActive == true));
+    public void SortingToActive() {
+        frameList.Sort((x, y) => y.IsActive.CompareTo(x.IsActive));
+        UpdateSlotData(previousValue);
     }
 
-    public void SortingIsEmpty()
-    {
-        frameList.Sort((x, y) => x.IsActive.CompareTo(x.IsActive == false));
+    public void SortingIsEmpty() {
+        frameList.Sort((x, y) => x.IsActive.CompareTo(y.IsActive));
+        UpdateSlotData(previousValue);
     }
 }

@@ -15,7 +15,7 @@ using UnityEngine;
  */
 
 // [UI] 조합 - 조합 매니저. 조합 창의 한 문장 틀
-public class CombineManager :MonoBehaviour {
+public class CombineManager : MonoBehaviour {
     //기본 프레임 open 여부
     private bool baseFrameOpen = false;
     public bool BaseFrameOpen => baseFrameOpen;
@@ -23,6 +23,10 @@ public class CombineManager :MonoBehaviour {
     //기본 프레임
     private Frame baseFrame;
     public Frame BaseFrame => baseFrame;
+
+    //조합 가능여부
+    private bool canCombine;
+    public bool CanCombine => canCombine;
 
     //최대 들어갈수 있는 값
     //Frame [ Frame [word, word, word] , word ] , [ Frame [word, word, word] , word ] , [ Frame [word, word, word] , word ]
@@ -36,12 +40,7 @@ public class CombineManager :MonoBehaviour {
 
     private SelectControl selectControl;
 
-    private bool canCombine;
-
     private GameObject[] frameObjects = new GameObject[4];
-
-    //조합 가능여부
-    public bool CanCombine => canCombine;
 
     private void Awake() {
         sentencesManager = FindObjectOfType<FrameListContainer>();
@@ -94,6 +93,7 @@ public class CombineManager :MonoBehaviour {
     public void CloseCombineSlot() {
         //TODO: 슬롯에 있는 워드 원래대로 돌리기 -> 취소
         baseFrame = null;
+        baseFrameOpen = false;
         gameObject.SetActive(false);
     }
 
@@ -101,10 +101,10 @@ public class CombineManager :MonoBehaviour {
         gameObject.SetActive(false);
     }
 
-    public void SetSlotWords(int index, Word word) {
-        selectedFrame.SetWord(index, word);
-        combineSlotControllers[index].SetSlotWord(word);
-    }
+    //public void SetSlotWords(int index, Word word) {
+    //    selectedFrame.SetWord(index, word);
+    //    combineSlotControllers[index].SetSlotWord(word);
+    //}
 
     //public RectTransform GetSlotRectTransform(int num) {
     //    return combineSlotControllers[num].GetComponent<RectTransform>();
@@ -138,14 +138,11 @@ public class CombineManager :MonoBehaviour {
             //sentencesManager.SetSlotSentence(selectKey, selectedFrame);
             //selectKey = -1; //TODO: ESC로 돌아올 수 있으므로 selectKey가 저장되어야 할 필요 있음
 
-        if(selectedFrame.CheckSentenceValidity()) {
-            sentencesManager.SetSlotSentence(selectKey, selectedFrame);
-            selectKey = -1; //TODO: ESC�� ���ƿ� �� �����Ƿ� selectKey�� ����Ǿ�� �� �ʿ� ����
-            for (int i = 0; i < selectedFrame.BlankCount; i++)
-                SetSlotWords(i, null);
+            // for (int i = 0; i < selectedFrame.BlankCount; i++)
+            //   SetSlotWords(i, null);
 
             //TODO: ���ô�� �������� ��� SetTargetTag ���� �ʿ�
-            selectControl.SetTargetTag(selectedFrame.wordA.Tag);
+            // selectControl.SetTargetTag(selectedFrame.wordA.Tag);
             CameraControl.Instance.SetCamera(CameraControl.CameraStatus.SelectView);
             combineContainer.CloseCombineField();
             halfInvenContainer.CloseCombineInven();
@@ -161,5 +158,9 @@ public class CombineManager :MonoBehaviour {
 
     public void Activate(GameObject target, GameObject indicator) {
         baseFrame.Activate(target, indicator);
+    }
+
+    public void GetSlotRectTransform() {
+
     }
 }

@@ -2,14 +2,14 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-// [UI] ÀÎº¥Åä¸® - ÀÎº¥Åä¸® ½½·Ô ÄÁÆ®·Ñ·¯
+// [UI] ì¸ë²¤í† ë¦¬ - ì¸ë²¤í† ë¦¬ ìŠ¬ë¡¯ ì»¨íŠ¸ë¡¤ëŸ¬
 public class InvenSlotController : CommonInvenSlotController, IEndDragHandler, IPointerClickHandler, IBeginDragHandler, IDragHandler {
     private SynthesisManager synthesisManager;
     private InvenSlotManager invenSlotManager;
 
     private void Awake() {
         synthesisManager = FindObjectOfType<SynthesisManager>();
-        //TODO: °ÔÀÓ¾ÀÀ¸·Î ºĞ¸®½Ã  CANVAS ºĞ¸® ÇÊ¿ä
+        //TODO: ê²Œì„ì”¬ìœ¼ë¡œ ë¶„ë¦¬ì‹œ  CANVAS ë¶„ë¦¬ í•„ìš”
         Canvas[] canvases = FindObjectsOfType<Canvas>();
         foreach (Canvas cn in canvases) {
             if (cn.name.Equals("GameCanvas")) {
@@ -40,6 +40,9 @@ public class InvenSlotController : CommonInvenSlotController, IEndDragHandler, I
     }
 
     public void OnPointerClick(PointerEventData eventData) {
+        if(thisWord == null) {
+            return;
+        }
         invenSlotManager.SelectSlot(key);
     }
 
@@ -63,11 +66,11 @@ public class InvenSlotController : CommonInvenSlotController, IEndDragHandler, I
 
         int synthesisSlotNum = checkSynthesisSlot(eventData);
         if (synthesisSlotNum != -1) {
-            //ÇÕ¼ºÃ¢À¸·Î ÀÌµ¿
-            // ! ±×Àü ÀÎº¥ °¡Áö°íÀÖ¾î¼­ ¸¸¾à ¹®Àå Á¶ÇÕ È¤Àº, ´Ü¾î ÇÕ¼ºÃ¢À» ´İÀ¸¸é ¿ø·¡ ÀÎº¥À¸·Î ¹Ù²Ù±â
-            //´Ü¾î ¾øÀ¸¸é ÇØ´ç ½½·ÔÀ¸·Î ´Ü¾î ÀÌµ¿. ±âÁ¸ ÀÎº¥ µ¥ÀÌÅÍ´Â null·Î ÃÊ±âÈ­
+            //í•©ì„±ì°½ìœ¼ë¡œ ì´ë™
+            // ! ê·¸ì „ ì¸ë²¤ ê°€ì§€ê³ ìˆì–´ì„œ ë§Œì•½ ë¬¸ì¥ ì¡°í•© í˜¹ì€, ë‹¨ì–´ í•©ì„±ì°½ì„ ë‹«ìœ¼ë©´ ì›ë˜ ì¸ë²¤ìœ¼ë¡œ ë°”ê¾¸ê¸°
+            //ë‹¨ì–´ ì—†ìœ¼ë©´ í•´ë‹¹ ìŠ¬ë¡¯ìœ¼ë¡œ ë‹¨ì–´ ì´ë™. ê¸°ì¡´ ì¸ë²¤ ë°ì´í„°ëŠ” nullë¡œ ì´ˆê¸°í™”
             if (synthesisManager.GetExistFromIndex(synthesisSlotNum)) {
-                //ÇÕ¼ºÃ¢¿¡ ´Ü¾î ÀÌ¹Ì ÀÖÀ¸¸é ÇØ´ç ´Ü¾î¿Í ÀÎº¥ ½ºÀ§Äª
+                //í•©ì„±ì°½ì— ë‹¨ì–´ ì´ë¯¸ ìˆìœ¼ë©´ í•´ë‹¹ ë‹¨ì–´ì™€ ì¸ë²¤ ìŠ¤ìœ„ì¹­
                 invenSlotManager.SwitchingInvenToSynthesisSlot(key, synthesisSlotNum);
             }
             else {
@@ -77,7 +80,7 @@ public class InvenSlotController : CommonInvenSlotController, IEndDragHandler, I
         else {
             int invenSlotNum = checkAnotherSlot(eventData);
             if (invenSlotNum != -1) {
-                //ÀÎº¥ ³»ºÎ ½ºÀ§Äª
+                //ì¸ë²¤ ë‚´ë¶€ ìŠ¤ìœ„ì¹­
                 invenSlotManager.SetInvenSwitching(key, invenSlotNum);
             }
         }

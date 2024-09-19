@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-// [UI] ÀÎº¥Åä¸® - ½½·Ô ¸ñ·Ï °ü¸® °øÅë ¸Å´ÏÀú
+// [UI] ì¸ë²¤í† ë¦¬ - ìŠ¬ë¡¯ ëª©ë¡ ê´€ë¦¬ ê³µí†µ ë§¤ë‹ˆì €
 public class CommonInvenSlotManager :MonoBehaviour {
 
     [SerializeField] protected GameObject invenSlotPrefab;
@@ -12,18 +12,18 @@ public class CommonInvenSlotManager :MonoBehaviour {
     protected PlayerInvenController playerInvenController;
     protected InvenSlotSelectController[] invenSelectControllers;
 
-    private List<int> selectInvens = new List<int>();       //¼±ÅÃÇÑ ÀÎº¥ index
+    private List<int> selectInvens = new List<int>();       //ì„ íƒí•œ ì¸ë²¤ index
 
     private int prevSelectInvenIndex = -1;
 
     protected bool waitConfirm = false;
 
-    //½½·Ô ¹øÈ£·Î RectTransform return
+    //ìŠ¬ë¡¯ ë²ˆí˜¸ë¡œ RectTransform return
     public RectTransform GetInvenSlotRectTransfor(int num) {
         return slotList[num].GetComponent<RectTransform>();
     }
 
-    //½½·Ô ¼±ÅÃ
+    //ìŠ¬ë¡¯ ì„ íƒ
     public void SelectSlot(int num) {
         bool isExist = false;
         for (int i = 0; i < selectInvens.Count; i++) {
@@ -41,21 +41,21 @@ public class CommonInvenSlotManager :MonoBehaviour {
         }
     }
 
-    //ÀÎº¥³¢¸® ½ºÀ§Äª
+    //ì¸ë²¤ë¼ë¦¬ ìŠ¤ìœ„ì¹­
     public void SetInvenSwitching(int index, int targetIndex) {
         playerInvenController.SwitchingItem(index, targetIndex);
     }
 
-    //ÀÎº¥ »èÁ¦ ÄÁÆß open
+    //ì¸ë²¤ ì‚­ì œ ì»¨íŒ open
     public void RemoveSelecConfirm() {
         if (selectInvens.Count > 0) {
             waitConfirm = true;
-            string contents = "Á¤¸» »èÁ¦ÇÏ½Ã°Ú½À´Ï±î?";
+            string contents = "ì •ë§ ì‚­ì œí•˜ì‹œê² ìŠµë‹ˆê¹Œ?";
             DialogManager.Instance.OpenConfirmDialog(contents, DialogType.WARNING);
         }
     }
 
-    //ÀÎº¥ »èÁ¦ È®Á¤
+    //ì¸ë²¤ ì‚­ì œ í™•ì •
     public void RemoveWord() {
         for (int i = 0; i < selectInvens.Count; i++) {
             playerInvenController.RemoveItemIndex(selectInvens[i]);

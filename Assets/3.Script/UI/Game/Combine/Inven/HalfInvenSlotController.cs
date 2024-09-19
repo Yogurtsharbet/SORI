@@ -2,14 +2,14 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-// [UI] »óÁ¡, Á¶ÇÕÃ¢ - ÀÎº¥Åä¸® ½½·Ô ÄÁÆ®·Ñ·¯
+// [UI] ìƒì , ì¡°í•©ì°½ - ì¸ë²¤í† ë¦¬ ìŠ¬ë¡¯ ì»¨íŠ¸ë¡¤ëŸ¬
 public class HalfInvenSlotController : CommonInvenSlotController, IEndDragHandler, IPointerClickHandler, IBeginDragHandler, IDragHandler {
     private HalfInvenManager halfInvenManager;
     private CombineManager combineSlotManager;
     private PlayerInvenController playerInven;
 
     private void Awake() {
-        //TODO: °ÔÀÓ¾ÀÀ¸·Î ºĞ¸®½Ã  CANVAS ºĞ¸® ÇÊ¿ä
+        //TODO: ê²Œì„ì”¬ìœ¼ë¡œ ë¶„ë¦¬ì‹œ  CANVAS ë¶„ë¦¬ í•„ìš”
         Canvas[] canvases = FindObjectsOfType<Canvas>();
         foreach (Canvas cn in canvases) {
             if (cn.name.Equals("GameCanvas")) {
@@ -61,7 +61,7 @@ public class HalfInvenSlotController : CommonInvenSlotController, IEndDragHandle
             if (combineSlotManager.CanCombine) {
                 //int sentenceSlotNum = checkSentenceSlot(eventData);
                 //if (sentenceSlotNum != -1) {
-                //    //Á¶ÇÕÃ¢À¸·Î µå·¡±×
+                //    //ì¡°í•©ì°½ìœ¼ë¡œ ë“œë˜ê·¸
                 //    Word invenWord = playerInven.GetWordIndex(key);
                 //    if (combineSlotManager.CheckIsSlotExist(sentenceSlotNum))
                 //    {
@@ -76,7 +76,7 @@ public class HalfInvenSlotController : CommonInvenSlotController, IEndDragHandle
                 //else {
                 //    int invenSlotNum = checkAnotherSlot(eventData);
                 //    if (invenSlotNum != -1) {
-                //        //ÀÎº¥ ³»ºÎ ½ºÀ§Äª
+                //        //ì¸ë²¤ ë‚´ë¶€ ìŠ¤ìœ„ì¹­
                 //        halfInvenManager.SetInvenSwitching(key, invenSlotNum);
                 //    }
                 //}
@@ -108,6 +108,6 @@ public class HalfInvenSlotController : CommonInvenSlotController, IEndDragHandle
     }
 
     public void OnPointerClick(PointerEventData eventData) {
-        //TODO: Å¬¸¯ÇßÀ»¶§ »óÁ¡ÀÌ ¿­·ÁÀÖÀ¸¸é »èÁ¦ÇÒ°ÇÁö dialog
+        //TODO: í´ë¦­í–ˆì„ë•Œ ìƒì ì´ ì—´ë ¤ìˆìœ¼ë©´ ì‚­ì œí• ê±´ì§€ dialog
     }
 }
