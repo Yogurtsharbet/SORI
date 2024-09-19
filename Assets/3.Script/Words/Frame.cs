@@ -11,9 +11,9 @@ public enum FrameRank {
     _Random, NORMAL, EPIC, LEGEND
 }
 
-// 1. ÇÁ·¹ÀÓ À§¿¡ ÇÁ·¹ÀÓÀÌ ¿Ã¶ó°¡µµ·Ï
-// 2. ÇÁ·¹ÀÓ À§¿¡ ¿Ã¶ó°£ ÇÁ·¹ÀÓ (ÁßÃ¸ÇÁ·¹ÀÓ) Àº ´õÀÌ»ó ÇÁ·¹ÀÓÀÌ ¿Ã¶ó°¡¸é ¾ÈµÊ (ÇÃ·¡±× µî)
-// µ¿ÀÏ ÀÎµ¦½º ³»¿¡ Word ¶û FrameÀÌ Áßº¹ Á¸ÀçÇÏ¸é ¾ÈµÈ´Ù
+// 1. í”„ë ˆì„ ìœ„ì— í”„ë ˆì„ì´ ì˜¬ë¼ê°€ë„ë¡
+// 2. í”„ë ˆì„ ìœ„ì— ì˜¬ë¼ê°„ í”„ë ˆì„ (ì¤‘ì²©í”„ë ˆì„) ì€ ë”ì´ìƒ í”„ë ˆì„ì´ ì˜¬ë¼ê°€ë©´ ì•ˆë¨ (í”Œë˜ê·¸ ë“±)
+// ë™ì¼ ì¸ë±ìŠ¤ ë‚´ì— Word ë‘ Frameì´ ì¤‘ë³µ ì¡´ì¬í•˜ë©´ ì•ˆëœë‹¤
 // 
 
 public class Frame {
@@ -27,10 +27,10 @@ public class Frame {
     private Word[] blankWord;
     private Frame[] blankFrame;
 
-    private bool isBase;                    //º£ÀÌ½ºÇÁ·¹ÀÓ ¿©ºÎ
-    private bool isActive = false;          //È°¼ºÈ­ ¿©ºÎ
-    private bool isCompelete = false;       //¹®Àå ¿Ï¼º ¿©ºÎ
-    private bool isPersistence = false;     //¿µ±¸¼º
+    private bool isBase;                    //ë² ì´ìŠ¤í”„ë ˆì„ ì—¬ë¶€
+    private bool isActive = false;          //í™œì„±í™” ì—¬ë¶€
+    private bool isCompelete = false;       //ë¬¸ì¥ ì™„ì„± ì—¬ë¶€
+    private bool isPersistence = false;     //ì˜êµ¬ì„±
 
     public FrameType Type { get { return _type; } }
     public FrameRank Rank { get { return _rank; } }
@@ -98,6 +98,7 @@ public class Frame {
                 blankCount = 3; break;
         }
         blankWord = new Word[blankCount];
+        blankFrame = new Frame[blankCount];
     }
 
     public bool CheckSentenceValidity() {
@@ -198,6 +199,6 @@ public class Frame {
         sequence.Append(rigid.DOMove(destiny, 2f))
                 .Join(origin.DOLookAt(origin.position + direction, 2f))
                 .Play();
-        //TODO: ÀÏºÎ rigid°¡ ¶Õ°í Áö³ª°¡´Â ¹®Á¦ (ÆÄ¾Ç¸øÇÔ)
+        //TODO: ì¼ë¶€ rigidê°€ ëš«ê³  ì§€ë‚˜ê°€ëŠ” ë¬¸ì œ (íŒŒì•…ëª»í•¨)
     }
 }
