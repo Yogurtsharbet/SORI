@@ -3,9 +3,9 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
 using UnityEditor;
 using UnityEngine;
+using WordKey = System.Int16;
 
 public class WordDataEditor : EditorWindow {
     private string filePath = "Resources/WordData";

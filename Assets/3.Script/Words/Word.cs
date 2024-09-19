@@ -2,22 +2,26 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using Random = UnityEngine.Random;
+using WordKey = System.UInt16;
+using WordTag = System.String;
 
 // [Word] 단어 - 단어 기본 클래스
 [System.Serializable]
 public class Word {
     // Member Variables
     public WordKey _key;
+    public WordTag _tag;
     public string _name;
     public WordRank _rank;
     public WordType _type;
 
     private static WordType[] allType = (WordType[])Enum.GetValues(typeof(WordType));
     private static WordRank[] allRank = (WordRank[])Enum.GetValues(typeof(WordRank));
-    private static WordKey[] allKey = (WordKey[])Enum.GetValues(typeof(WordKey));
+    //private static WordKey[] allKey = (WordKey[])Enum.GetValues(typeof(WordKey));
 
     // Properties
     public WordKey Key { get { return _key; } }
+    public WordTag Tag { get { return _tag; } }
     public string Name { get { return _name; } }
     public WordRank Rank { get { return _rank; } }
     public WordType Type { get { return _type; } }
@@ -108,15 +112,18 @@ public class Word {
     }
 
     private Word FindWordByKey(WordKey key) {
+        if (key == WordData.RandomKey) 
+            return WordData.words[Random.Range(0, WordData.words.Length)];
+
         foreach (Word word in WordData.words)
             if (word.Key == key) return word;
-        return null;
+
+        throw new ArgumentException($"Key {key} is not valid key.");
     }
 
     // Create
-    public static Word GetWord(WordKey key = WordKey._Random, WordRank rank = WordRank._Random) {
-        return new Word(
-            key == WordKey._Random ? (WordKey)Random.Range(1, allKey.Length) : key, rank);
+    public static Word GetWord(WordKey key = WordData.RandomKey, WordRank rank = WordRank._Random) {
+        return new Word(key, rank);
     }
     
     public static Word Create(WordKey key, string name, WordRank rank, WordType type) {
@@ -125,7 +132,6 @@ public class Word {
 
     private Word(WordKey key, WordRank rank = WordRank._Random) {
         // 단어 리스트에서 키를 받아와 생성 ( 인게임에서 사용 )
-        Debug.Log(key);
         Word newWord = FindWordByKey(key);
         _key = newWord._key;
         _name = newWord._name;
@@ -144,9 +150,9 @@ public class Word {
     public bool IsVerb { get { return Type == WordType.VERB; } }
     public bool IsAdj { get { return Type == WordType.ADJ; } }
 
-    public string ToTag() {
-        return WordData.ToTag(this);
-    }
+    //public string ToTag() {
+    //    return WordData.ToTag(this);
+    //}
 
     public int GetPrice() {
         switch (Rank) {

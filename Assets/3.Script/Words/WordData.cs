@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using WordKey = System.UInt16;
 
 public enum WordType {
     All, NOUN, VERB, ADJ
@@ -30,19 +31,20 @@ public enum WordRank {
     , All = int.MaxValue
 }
 
-public enum WordKey {
-    _Random,
-    SORI,
-    DOOR,
-    TREE,
-    //KEY,
-    //FLOOR,
-    //BIRD,
-    //HP,
-    //TIME,
-    MOVE,
-    //DISAPPEAR,
-}
+//public enum WordKey {
+//    _Random,
+//    SORI,
+//    DOOR,
+//    TREE,
+//    //KEY,
+//    //FLOOR,
+//    //BIRD,
+//    //HP,
+//    //TIME,
+//    MOVE,
+//    //DISAPPEAR,
+//}
+
 //TODO: ENUM Key 삭제 후 String 관리
 // WordKey가 Enum일 경우
 //      JSON 저장 불러오기 시에 상수로 저장됨
@@ -52,40 +54,6 @@ public enum WordKey {
 //      Property 지정 시 string 사용하면 오타 찾기 어려움
 //      Enum 상수 값 비교보다 string 비교가 속도 더 느릴 것
 //      Key가 string이면 굳이 Key를 안쓰고 wordName으로 대체가능
-
-
-
-
-
-
-
-
-
-/// <summary>
-/// 
-/// 동사 속성을 단일 속성이 아니라 비트 + 비트로 속성을 설정하면
-/// 있는 속성가지고도 여러가지 조합의 속성을 만들 수 있꼬
-/// 예를들어서
-/// wordtype newVerbType = typeA | typeB
-/// 
-/// 그러면 명사에서도 typeA 와 typeB를 다
-/// 
-/// 
-/// 
-/// 1. 선택가능한 상호작용인가?
-///     선택가능 : 선택불가 외 전부
-///     선택불가 : HP, 소리, 하늘, 가방, 단어 등. 단일객체 또는 추상객체
-///     
-/// 2. 방향 지정 필요 상호작용인가?
-///     방향지정필요 : 움직임 부류 상호작용
-///     방향지정불필요 : 그 외 전부
-///     
-/// 3. 
-/// 
-/// 속성별 리스트를 만들고 ㅅ속성에 명사 ,동사를 집어넣ㅇ면?????????????????
-/// 
-/// 
-/// </summary>
 
 [System.Serializable]
 public class WordDataStruct {
@@ -99,6 +67,8 @@ public class WordData : MonoBehaviour {
 
     private WordKey[] isMovable;
 
+    public const WordKey RandomKey = 0;
+
     private void Awake() {
         TextAsset dataFile = Resources.Load<TextAsset>("WordData");
         if(dataFile == null) {
@@ -111,18 +81,19 @@ public class WordData : MonoBehaviour {
         words = Data.words;
         isMovable = Data.isMovable;
     }
-    public static string ToTag(Word word) {
-        switch (word.Key) {
-            case WordKey.SORI: return "Player";
-            case WordKey.DOOR: return "Door";
-                //case WordKey.TREE: return "Tree";
-                //case WordKey.KEY: return "Key";
-                //case WordKey.FLOOR: return "Floor";
-                //case WordKey.BIRD: return "Bird";
-                //case WordKey.HP: return "HP";
-        }
-        return string.Empty;
-    }
+
+    //public static string ToTag(Word word) {
+    //    switch (word.Key) {
+    //        case WordKey.SORI: return "Player";
+    //        case WordKey.DOOR: return "Door";
+    //            //case WordKey.TREE: return "Tree";
+    //            //case WordKey.KEY: return "Key";
+    //            //case WordKey.FLOOR: return "Floor";
+    //            //case WordKey.BIRD: return "Bird";
+    //            //case WordKey.HP: return "HP";
+    //    }
+    //    return string.Empty;
+    //}
 }
 
     //= new Word[] {
@@ -161,16 +132,7 @@ public class WordData : MonoBehaviour {
 //
 //    
 //    
-//    
-//    
-//    
-//    
-//    
-//    
-//    
-//    
-//    
-//    
+//     키 리스트
 //}
 //
 //

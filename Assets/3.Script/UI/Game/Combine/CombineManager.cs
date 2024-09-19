@@ -54,7 +54,6 @@ public class CombineManager : MonoBehaviour {
     }
 
     public void CloseCombineSlot() {
-        //꺼질때 ㅇ단어 빼주기 
         gameObject.SetActive(false);
     }
 
@@ -97,7 +96,7 @@ public class CombineManager : MonoBehaviour {
                 SetSlotWords(i, null);
 
             //TODO: 선택대상 여러개일 경우 SetTargetTag 수정 필요
-            selectControl.SetTargetTag(selectedFrame.wordA.ToTag());
+            selectControl.SetTargetTag(selectedFrame.wordA.Tag);
             CameraControl.Instance.SetCamera(CameraControl.CameraStatus.SelectView);
             combineContainer.CloseCombineField();
             halfInvenContainer.CloseCombineInven();
