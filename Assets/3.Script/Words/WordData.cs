@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.IO;
 using UnityEditor;
 using UnityEngine;
@@ -25,22 +26,40 @@ public class WordDataStruct {
     //TODO: 신규 동사 property 추가 시 반드시 우선 작성
     public Word[] words;
     public WordTag[] isMovable;
-    public WordTag[] isDisappearable;
-    public WordTag[] isTest;
+    public WordTag[] isChangable;
 };
 
 public class WordData : MonoBehaviour {
     private WordDataStruct Data;
     public static Word[] words;
 
+    public static Dictionary<WordTag, WordTag[]> wordProperty;
     private WordTag[] isMovable;
+    private WordTag[] isChangable;
 
     public const WordKey RandomKey = 0;
-    private string filePath = "Resources/WordData";
 
     private void Awake() {
+        TextAsset dataFile = Resources.Load<TextAsset>("WordData");
+        if(dataFile == null) {
+            Debug.Log("Word Data File is not exist");
+            Application.Quit();
+            return;
+        }
 
+        Data = JsonUtility.FromJson<WordDataStruct>(dataFile.text);
+        words = Data.words;
+        isMovable = Data.isMovable;
+        isChangable = Data.isChangable;
+
+        //TODO: 신규 동사 property 추가 시 반드시 우선 작성
+        wordProperty = new Dictionary<WordTag, WordTag[]>();
+        wordProperty.Add("MOVE", isMovable);
+        wordProperty.Add("CHANGE", isChangable);
+
+        #region DEBUGGING
         // FOR DEBUGGING : Make a new JSON
+        //string filePath = "Resources/WordData";
         //Data = new WordDataStruct();
         //words = new Word[3];
         //words[0] = Word.Create(0, "Player", "소리", WordRank.EPIC, WordType.NOUN);
@@ -59,18 +78,7 @@ public class WordData : MonoBehaviour {
         //catch (IOException e) {
         //    Debug.LogError($"Error saving data: {e.Message}");
         //}
-
-
-        TextAsset dataFile = Resources.Load<TextAsset>("WordData");
-        if(dataFile == null) {
-            Debug.Log("Word Data File is not exist");
-            Application.Quit();
-            return;
-        }
-
-        Data = JsonUtility.FromJson<WordDataStruct>(dataFile.text);
-        words = Data.words;
-        isMovable = Data.isMovable;
+        #endregion
     }
 }
 

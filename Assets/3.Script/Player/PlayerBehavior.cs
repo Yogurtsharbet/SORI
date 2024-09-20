@@ -26,7 +26,7 @@ public class PlayerBehavior : MonoBehaviour {
 
     private bool[] isWatchedCinematic = new bool[Enum.GetValues(typeof(CinematicType)).Length];
 
-    //TODO: ÇÏ³ª·Î ÇÕÃÄÁö¸é ¹Ù²Ù±â
+    //TODO: í•˜ë‚˜ë¡œ í•©ì³ì§€ë©´ ë°”ê¾¸ê¸°
     private CombineContainer combineContainer;
     private HalfInvenContainer halfInvenContainer;
     private InvenContainer invenContainer;
@@ -36,7 +36,7 @@ public class PlayerBehavior : MonoBehaviour {
         playerInputAction = new PlayerInputActions();
         playerAnimator = GetComponent<Animator>();
 
-        //TODO: ÇÏ³ª·Î ÇÕÃÄÁö¸é ¹Ù²Ù±â
+        //TODO: í•˜ë‚˜ë¡œ í•©ì³ì§€ë©´ ë°”ê¾¸ê¸°
         combineContainer = FindObjectOfType<CombineContainer>();
         halfInvenContainer = FindObjectOfType<HalfInvenContainer>();
         invenContainer = FindObjectOfType<InvenContainer>();
@@ -46,7 +46,7 @@ public class PlayerBehavior : MonoBehaviour {
     }
 
     private void Start() {
-        //TODO: Save ±¸Çö½Ã ¿¬µ¿
+        //TODO: Save êµ¬í˜„ì‹œ ì—°ë™
         playerMaxHP = 100f;
         playerHP = playerMaxHP;
         starCoin = 0;
@@ -79,7 +79,7 @@ public class PlayerBehavior : MonoBehaviour {
     public void ToggleCombineMode() {
         isCombineMode = !isCombineMode;
 
-        //TODO: ´Ü¾îÁ¶ÇÕ UI Áö¿ì±â
+        //TODO: ë‹¨ì–´ì¡°í•© UI ì§€ìš°ê¸°
         //Combine UI Set/Unset
         if (IsCombineMode) {
             combineContainer.OpenCombineField();
@@ -114,7 +114,7 @@ public class PlayerBehavior : MonoBehaviour {
     }
 
     private void SetSlider(float hp) {
-        //TODO: Lerp ·Î ºÎµå·´°Ô ´â´Â È¿°ú
+        //TODO: Lerp ë¡œ ë¶€ë“œëŸ½ê²Œ ë‹³ëŠ” íš¨ê³¼
         playerHPSlider.fillAmount = hp / playerMaxHP;
     }
 

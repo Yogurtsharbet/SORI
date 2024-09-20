@@ -1,56 +1,56 @@
 {
-  "words": [
-    {
-      "_key": 100,
-      "_tag": "PLAYER",
-      "_name": "소리",
-      "_rank": 3,
-      "_type": 1
-    },
-    {
-      "_key": 101,
-      "_tag": "DOOR",
-      "_name": "문",
-      "_rank": 3,
-      "_type": 1
-    },
-    {
-      "_key": 2,
-      "_tag": "MOVE",
-      "_name": "움직이다",
-      "_rank": 2,
-      "_type": 2
-    },
-    {
-      "_key": 102,
-      "_tag": "WOOD",
-      "_name": "나무",
-      "_rank": 1,
-      "_type": 1
-    },
-    {
-      "_key": 103,
-      "_tag": "KEY",
-      "_name": "열쇠",
-      "_rank": 3,
-      "_type": 1
-    },
-    {
-      "_key": 104,
-      "_tag": "BIRD",
-      "_name": "새",
-      "_rank": 1,
-      "_type": 1
-    }
-  ],
-  "isMovable": [
-    "Player",
-    "DOOR",
-    "WOOD",
-    "KEY"
-  ],
-  "isDisappearable": [
-    "DOOR"
-  ],
-  "isTest": []
+    "words": [
+        {
+            "_key": 100,
+            "_tag": "PLAYER",
+            "_name": "소리",
+            "_rank": 3,
+            "_type": 1
+        },
+        {
+            "_key": 101,
+            "_tag": "DOOR",
+            "_name": "문",
+            "_rank": 3,
+            "_type": 1
+        },
+        {
+            "_key": 2,
+            "_tag": "MOVE",
+            "_name": "움직이다",
+            "_rank": 2,
+            "_type": 2
+        },
+        {
+            "_key": 102,
+            "_tag": "WOOD",
+            "_name": "나무",
+            "_rank": 1,
+            "_type": 1
+        },
+        {
+            "_key": 103,
+            "_tag": "KEY",
+            "_name": "열쇠",
+            "_rank": 3,
+            "_type": 1
+        },
+        {
+            "_key": 104,
+            "_tag": "BIRD",
+            "_name": "새",
+            "_rank": 1,
+            "_type": 1
+        }
+    ],
+    "isMovable": [
+        "Player",
+        "DOOR",
+        "WOOD",
+        "KEY"
+    ],
+    "isDisappearable": [
+        "DOOR"
+    ],
+    "isTest": []
 }

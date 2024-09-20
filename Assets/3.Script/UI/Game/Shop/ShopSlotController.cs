@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-// [UI] »óÁ¡ - ±¸¸Å°¡´ÉÇÑ ´Ü¾î ½½·Ô ÄÁÆ®·Ñ·¯
+// [UI] ìƒì  - êµ¬ë§¤ê°€ëŠ¥í•œ ë‹¨ì–´ ìŠ¬ë¡¯ ì»¨íŠ¸ë¡¤ëŸ¬
 public class ShopSlotController : MonoBehaviour , IPointerClickHandler {
     ShopSlotManager shopSlotManager;
     private int key;

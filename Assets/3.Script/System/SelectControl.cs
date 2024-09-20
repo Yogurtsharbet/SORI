@@ -86,7 +86,7 @@ public class SelectControl : MonoBehaviour {
     }
 
     private void Select() {
-        //TODO: nowSelected °¡ WordÀÇ ¼Ó¼º°ú ÀÏÄ¡ÇÏ´ÂÁö
+        //TODO: nowSelected ê°€ Wordì˜ ì†ì„±ê³¼ ì¼ì¹˜í•˜ëŠ”ì§€
         if (nowObject == null || clickedObject != null) return;
 
         ApplyMaterial(nowObject, clickedShader);
@@ -112,14 +112,14 @@ public class SelectControl : MonoBehaviour {
     private void RepositionAtScreenOut() {
         Vector3 screenPos = currentCamera.WorldToScreenPoint(Indicator.position);
 
-        // È­¸é °æ°è Ã¼Å© (X: 0 ~ Screen.width, Y: 0 ~ Screen.height)
+        // í™”ë©´ ê²½ê³„ ì²´í¬ (X: 0 ~ Screen.width, Y: 0 ~ Screen.height)
         screenPos.x = Mathf.Clamp(screenPos.x, 0, Screen.width);
         screenPos.y = Mathf.Clamp(screenPos.y, 0, Screen.height);
 
-        // ´Ù½Ã È­¸é ÁÂÇ¥¸¦ ¿ùµå ÁÂÇ¥·Î º¯È¯
+        // ë‹¤ì‹œ í™”ë©´ ì¢Œí‘œë¥¼ ì›”ë“œ ì¢Œí‘œë¡œ ë³€í™˜
         Vector3 worldPos = currentCamera.ScreenToWorldPoint(screenPos);
 
-        // Indicator À§Ä¡ ¼³Á¤
+        // Indicator ìœ„ì¹˜ ì„¤ì •
         Indicator.position = worldPos;
     }
 
@@ -128,7 +128,7 @@ public class SelectControl : MonoBehaviour {
         Indicator.position = target.GetComponent<Collider>().bounds.center;
         // RepositionAtScreenOut();
 
-        //TODO: À§Ä¡°ª Á¶Á¤. rotation È­¸é ¹Ù¶óº¸µµ·Ï
+        //TODO: ìœ„ì¹˜ê°’ ì¡°ì •. rotation í™”ë©´ ë°”ë¼ë³´ë„ë¡
     }
 
     private void IndicatorOff() {
@@ -163,7 +163,7 @@ public class SelectControl : MonoBehaviour {
 
             case CameraControl.CameraStatus.SelectView:
             case CameraControl.CameraStatus.SelectTopView:
-                //TODO: ´Ü¾îÁ¶ÇÕÃ¢ UI ´Ù½Ã ¶ç¿ì±â
+                //TODO: ë‹¨ì–´ì¡°í•©ì°½ UI ë‹¤ì‹œ ë„ìš°ê¸°
                 CameraControl.Instance.SetCamera(CameraControl.CameraStatus.CombineView);
                 break;
         }
@@ -190,7 +190,7 @@ public class SelectControl : MonoBehaviour {
     }
 }
 
-//TODO: clicked Shader dot Á¶±İ¾¿ À§·Î ¿Ã¶ó°¡´Â ¿¬Ãâ
-//TODO: Outline woodbine ÀÌ³ª bigflower¿¡ ¾Èº¸ÀÌ´Â°Å
+//TODO: clicked Shader dot ì¡°ê¸ˆì”© ìœ„ë¡œ ì˜¬ë¼ê°€ëŠ” ì—°ì¶œ
+//TODO: Outline woodbine ì´ë‚˜ bigflowerì— ì•ˆë³´ì´ëŠ”ê±°
 
-//TODO: clicked »óÅÂ¿¡¼­ ¹æÇâ µîÀ» ¼³Á¤ÇÒ ¼ö ÀÖ°Ô ÇÏ°í, ¿ìÅ¬¸¯À» ÇÏ¸é clicked°¡ ÇØÁ¦µÇµµ·Ï
+//TODO: clicked ìƒíƒœì—ì„œ ë°©í–¥ ë“±ì„ ì„¤ì •í•  ìˆ˜ ìˆê²Œ í•˜ê³ , ìš°í´ë¦­ì„ í•˜ë©´ clickedê°€ í•´ì œë˜ë„ë¡
