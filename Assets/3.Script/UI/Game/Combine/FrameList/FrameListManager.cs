@@ -36,31 +36,37 @@ public class FrameListManager : MonoBehaviour {
     }
 
     private void Start() {
-        testData();
-        for (int i = 0; i < poolingCount; i++) {
-            frameListSlotControllers[i].SetFrameData(frameList[i]);
-        }
+        testData(); //TODO: 테스트 데이터 지우기
 
         CheckScrollbar();
         slider.maxValue = frameList.Count;
 
-        for (int i = 0; i < slotList.Count; i++) {
-            if (slotList[i].transform.localPosition.y > 450f || slotList[i].transform.localPosition.y < -420f) {
-                slotList[i].SetActive(false);
+        if (frameList.Count >= 6) {
+            for (int i = 0; i < poolingCount; i++) {
+                if(i < frameList.Count) { 
+                    frameListSlotControllers[i].SetFrameData(frameList[i]);
+                    frameListSlotControllers[i].SetKey(i);
+                }
             }
-            else {
-                slotList[i].SetActive(true);
+
+            for (int i = 0; i < slotList.Count; i++) {
+                if (slotList[i].transform.localPosition.y > 450f || slotList[i].transform.localPosition.y < -420f) {
+                    slotList[i].SetActive(false);
+                }
+                else {
+                    slotList[i].SetActive(true);
+                }
             }
+        }
+        else {
+            frameListMinSetting();
         }
     }
 
     private void testData() {
-        for (int i = 0; i < 15; i++) {
+        for (int i = 0; i < 8; i++) {
             frameList.Add(new Frame());
         }
-
-        frameList[5].SetActive(true);
-        frameList[2].SetActive(true);
     }
 
     private void CheckScrollbar() {
@@ -95,10 +101,32 @@ public class FrameListManager : MonoBehaviour {
         previousValue = value;
     }
 
+    //프레임 전체 개수가 6 미만일때 세팅
+    private void frameListMinSetting() {
+        for (int i = 0; i < frameList.Count; i++) {
+            frameListSlotControllers[i].SetFrameData(frameList[i]);
+            frameListSlotControllers[i].SetKey(i);
+        }
+        for (int i = 0; i < slotList.Count; i++) {
+            if (i < frameList.Count) {
+                slotList[i].SetActive(true);
+            }
+            else {
+                slotList[i].SetActive(false);
+            }
+        }
+    }
+
     private void UpdateSlotData(float scrollValue) {
-        int value = (int)scrollValue;
-        for (int i = 0; i < poolingCount; i++) {
-            frameListSlotControllers[i].SetFrameData(frameList[i + value]);
+        if(frameList.Count < 6) {
+            frameListMinSetting();
+        }
+        else {
+            int value = (int)scrollValue;
+            for (int i = 0; i < poolingCount; i++) {
+                frameListSlotControllers[i].SetFrameData(frameList[i + value]);
+                frameListSlotControllers[i].SetKey(i + value);
+            }
         }
     }
 
@@ -109,6 +137,21 @@ public class FrameListManager : MonoBehaviour {
 
     public void SortingIsEmpty() {
         frameList.Sort((x, y) => x.IsActive.CompareTo(y.IsActive));
+        UpdateSlotData(previousValue);
+    }
+
+    public void DeleteFrame(int index) {
+        frameList.RemoveAt(index);
+        UpdateSlotData(previousValue);
+    }
+
+    public void AddFrame(Frame frame = null) {
+        if (frame != null) {
+            frameList.Add(frame);
+        }
+        else {
+            frameList.Add(new Frame());
+        }
         UpdateSlotData(previousValue);
     }
 }

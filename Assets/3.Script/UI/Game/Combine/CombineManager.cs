@@ -31,7 +31,7 @@ public class CombineManager : MonoBehaviour {
     //최대 들어갈수 있는 값
     //Frame [ Frame [word, word, word] , word ] , [ Frame [word, word, word] , word ] , [ Frame [word, word, word] , word ]
 
-    private FrameListContainer sentencesManager;
+    private FrameListManager frameListManager;
     private SubmitButtonController submitButton;
 
     //TODO: 하나로 합쳐지면 바꾸기
@@ -43,7 +43,7 @@ public class CombineManager : MonoBehaviour {
     private GameObject[] frameObjects = new GameObject[4];
 
     private void Awake() {
-        sentencesManager = FindObjectOfType<FrameListContainer>();
+        frameListManager = FindObjectOfType<FrameListManager>();
         selectControl = FindObjectOfType<SelectControl>();
         submitButton = FindObjectOfType<SubmitButtonController>();
 
@@ -61,10 +61,18 @@ public class CombineManager : MonoBehaviour {
         CloseCombineSlot();
     }
 
-    public void OpenCombineSlot(int key, Frame frame) {
-        baseFrameOpen = true;
-        gameObject.SetActive(true);
+    public void OpenBaseFrameSlot(int key, Frame frame) {
+        if (baseFrameOpen) {
+            //이미 baseFrame이 open 되어있는 상태
+            baseFrame.SetBase(false);
+            frameListManager.AddFrame(baseFrame);
+        }
+        else {
+            baseFrameOpen = true;
+            gameObject.SetActive(true);
+        }
 
+        frame.SetBase(true);
         baseFrame = frame;
         //TODO: base frame 안에 setBase(true) 추가, 다른 프레임 switching 할때 false로 꺼줘야함
         activeFrameType((int)frame.Type - 1);
@@ -76,6 +84,7 @@ public class CombineManager : MonoBehaviour {
         else {
             canCombine = true;              //조합하기를 눌러야 하는 상태
             submitButton.ButtonToSubmit();
+            //TODO: 하위 슬롯 끄기
         }
     }
 
@@ -90,8 +99,20 @@ public class CombineManager : MonoBehaviour {
         }
     }
 
+    //슬롯 닫을 때 초기화
     public void CloseCombineSlot() {
-        //TODO: 슬롯에 있는 워드 원래대로 돌리기 -> 취소
+        if (baseFrameOpen) {
+            baseFrame.SetBase(false);
+            frameListManager.AddFrame(baseFrame);
+            if (!baseFrame.IsActive) {
+                for (int i = 0; i < 3; i++) {
+                    if (baseFrame.GetFrame(i) != null) {
+                        frameListManager.AddFrame(baseFrame.GetFrame(i));
+                    }
+                }
+            }
+            //TODO: 슬롯에 있는 워드 원래대로 돌리기
+        }
         baseFrame = null;
         baseFrameOpen = false;
         gameObject.SetActive(false);
@@ -101,33 +122,13 @@ public class CombineManager : MonoBehaviour {
         gameObject.SetActive(false);
     }
 
-    //public void SetSlotWords(int index, Word word) {
-    //    selectedFrame.SetWord(index, word);
-    //    combineSlotControllers[index].SetSlotWord(word);
-    //}
+    public void SetSubFrame(int index, Frame frame) {
+        baseFrame.SetFrame(index, frame);
+    }
 
-    //public RectTransform GetSlotRectTransform(int num) {
-    //    return combineSlotControllers[num].GetComponent<RectTransform>();
-    //}
-
-    //public void SetSlotWords(int index, Word word) {
-    //    combineSlotControllers[index].SetSlotWord(word);
-    //}
-
-    //public bool CheckIsSlotExist(int index) {
-    //    if (combineSlotControllers[index].SlotWord != null) {
-    //        return true;
-    //    }
-    //    else {
-    //        return false;
-    //    }
-    //}
-
-    //public Word SwitchingWordToInven(int index, Word word) {
-    //    Word slotWord = combineSlotControllers[index].SlotWord;
-    //    combineSlotControllers[index].SetSlotWord(word);
-    //    return slotWord;
-    //}
+    public void SetWord(int index, Word word) {
+        baseFrame.SetWord(index, word);
+    }
 
     //문장 조합
     public void CombineSubmit() {
@@ -140,9 +141,6 @@ public class CombineManager : MonoBehaviour {
 
             // for (int i = 0; i < selectedFrame.BlankCount; i++)
             //   SetSlotWords(i, null);
-
-            //TODO: ���ô�� �������� ��� SetTargetTag ���� �ʿ�
-            // selectControl.SetTargetTag(selectedFrame.wordA.Tag);
             CameraControl.Instance.SetCamera(CameraControl.CameraStatus.SelectView);
             combineContainer.CloseCombineField();
             halfInvenContainer.CloseCombineInven();
@@ -153,9 +151,5 @@ public class CombineManager : MonoBehaviour {
     }
     public void Activate(GameObject target, GameObject indicator) {
         baseFrame.Activate(target, indicator);
-    }
-
-    public void GetSlotRectTransform() {
-
     }
 }
