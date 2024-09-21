@@ -7,15 +7,16 @@ using UnityEngine.UI;
 public class ActiveSentenceController : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler {
     Text activeCount;
     FrameListContainer sentenceManager;
+    public static bool IsOpenFrameList = false;
 
     private Vector3 openPosition = new Vector3(-750f, 0, 0);
     private Vector3 closedPosition = new Vector3(-1200f, 0, 0);
 
-    private bool isHoveringButton = false;  // ¹öÆ° À§¿¡ ¸¶¿ì½º°¡ ÀÖ´ÂÁö
-    private bool isHoveringTarget = false;  // ÆĞ³Î À§¿¡ ¸¶¿ì½º°¡ ÀÖ´ÂÁö
-    private Coroutine moveCoroutine = null; // ÇöÀç ½ÇÇà ÁßÀÎ ÀÌµ¿ ÄÚ·çÆ¾
+    private bool isHoveringButton = false;  // ë²„íŠ¼ ìœ„ì— ë§ˆìš°ìŠ¤ê°€ ìˆëŠ”ì§€
+    private bool isHoveringTarget = false;  // íŒ¨ë„ ìœ„ì— ë§ˆìš°ìŠ¤ê°€ ìˆëŠ”ì§€
+    private Coroutine moveCoroutine = null; // í˜„ì¬ ì‹¤í–‰ ì¤‘ì¸ ì´ë™ ì½”ë£¨í‹´
 
-    private float moveSpeed = 5f;    // ÀÌµ¿ ¼Óµµ
+    private float moveSpeed = 5f;    // ì´ë™ ì†ë„
 
     private void Awake() {
         Text[] texts = GetComponentsInChildren<Text>();
@@ -34,6 +35,7 @@ public class ActiveSentenceController : MonoBehaviour, IPointerEnterHandler, IPo
     public void OnPointerExit(PointerEventData eventData) {
         isHoveringButton = false;
         StartCoroutine(CheckForReturn());
+        IsOpenFrameList = false;
     }
 
     public void OnTargetPointerEnter() {
@@ -44,6 +46,7 @@ public class ActiveSentenceController : MonoBehaviour, IPointerEnterHandler, IPo
     public void OnTargetPointerExit() {
         isHoveringTarget = false;
         StartCoroutine(CheckForReturn());
+        IsOpenFrameList = false;
     }
 
     private void OpenTarget() {
@@ -51,6 +54,7 @@ public class ActiveSentenceController : MonoBehaviour, IPointerEnterHandler, IPo
             StopCoroutine(moveCoroutine);
         }
         moveCoroutine = StartCoroutine(MoveObject(openPosition));
+        IsOpenFrameList = true;
     }
 
     private IEnumerator CheckForReturn() {

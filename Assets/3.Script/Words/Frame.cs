@@ -141,7 +141,7 @@ public class Frame {
     public void Activate(GameObject target, GameObject indicator) {
         switch (_type) {
             case FrameType.AisB:
-                Function(target, indicator);
+              //  Function(target, indicator);
 
                 break;
             case FrameType.AtoBisC:
@@ -169,20 +169,20 @@ public class Frame {
         return position;
     }
 
-    private void Function(GameObject target, GameObject indicator) {
-        WordType verbProperty = Word.CheckWordProperty(wordB)[0];
-        switch (verbProperty) {
-            case WordType.isMovable:
-                FunctionMove(target.transform, GetIndicatePosition(target, indicator, Rank));
-                break;
-            case WordType.isChangable:
-                break;
-            case WordType.isInteractive:
-                break;
-            case WordType.isBreakable:
-                break;
-        }
-    }
+    //private void Function(GameObject target, GameObject indicator) {
+    //    WordType verbProperty = Word.CheckWordProperty(wordB)[0];
+    //    switch (verbProperty) {
+    //        case WordType.isMovable:
+    //            FunctionMove(target.transform, GetIndicatePosition(target, indicator, Rank));
+    //            break;
+    //        case WordType.isChangable:
+    //            break;
+    //        case WordType.isInteractive:
+    //            break;
+    //        case WordType.isBreakable:
+    //            break;
+    //    }
+    //}
 
     private void FunctionMove(Transform origin, Vector3 destiny) {
         if (origin.CompareTag("Player")) origin = origin.parent;

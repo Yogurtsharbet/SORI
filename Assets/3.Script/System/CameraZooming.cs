@@ -30,10 +30,13 @@ public class CameraZooming : MonoBehaviour {
     }
 
     private void OnDisable() {
+        inputAction.UI.ScrollWheel.performed -= value => OnScroll(value.ReadValue<Vector2>());
         inputAction.Disable();
     }
 
     private void OnScroll(Vector2 value) {
+        if (ActiveSentenceController.IsOpenFrameList)
+            return;
         currentZoom -= value.y * 0.05f;
         currentZoom = Mathf.Clamp(currentZoom, MinZoom, MaxZoom);
         lastScrolledTime = Time.time;
