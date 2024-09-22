@@ -4,9 +4,12 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class ActiveSentenceController : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler {
-    Text activeCount;
-    FrameListContainer sentenceManager;
+// [UI] 활성 정보 - 활성화 중인 프레임 정보 창
+// 마우스 오버시 프레임목록 오픈, 현재 활성화중인 프레임 표시
+public class ActiveStatusController : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler {
+    private Text activeCountTxt;
+    private int activeCount = 0;
+    private FrameListContainer sentenceManager;
     public static bool IsOpenFrameList = false;
 
     private Vector3 openPosition = new Vector3(-750f, 0, 0);
@@ -23,8 +26,13 @@ public class ActiveSentenceController : MonoBehaviour, IPointerEnterHandler, IPo
         sentenceManager = FindObjectOfType<FrameListContainer>();
         foreach (Text txt in texts) {
             if (txt.name.Equals("Count"))
-                activeCount = txt;
+                activeCountTxt = txt;
         }
+    }
+
+    public void ActiveCountUpdate(int num) {
+        activeCount = num;
+        activeCountTxt.text = "x"+num;
     }
 
     public void OnPointerEnter(PointerEventData eventData) {

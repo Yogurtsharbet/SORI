@@ -35,7 +35,7 @@ public class CameraZooming : MonoBehaviour {
     }
 
     private void OnScroll(Vector2 value) {
-        if (ActiveSentenceController.IsOpenFrameList)
+        if (ActiveStatusController.IsOpenFrameList)
             return;
         currentZoom -= value.y * 0.05f;
         currentZoom = Mathf.Clamp(currentZoom, MinZoom, MaxZoom);

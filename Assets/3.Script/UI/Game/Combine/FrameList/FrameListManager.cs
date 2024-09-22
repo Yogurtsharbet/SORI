@@ -17,7 +17,8 @@ public class FrameListManager : MonoBehaviour {
     private Slider slider;
     private float previousValue = 0; // 이전 스크롤바 값
 
-    private DefaultInputActions inputAction;
+    private DefaultInputActions inputAction;                        //휠 InputSys
+    private ActiveStatusController activeStatus;                    //왼쪽 상단 active status
 
     private void Awake() {
         inputAction = new DefaultInputActions();
@@ -37,6 +38,7 @@ public class FrameListManager : MonoBehaviour {
         }
 
         inputAction.UI.ScrollWheel.performed += value => OnScroll(value.ReadValue<Vector2>());
+        activeStatus =FindObjectOfType<ActiveStatusController>();
     }
 
     private void Start() {
@@ -47,7 +49,7 @@ public class FrameListManager : MonoBehaviour {
 
         if (frameList.Count >= 6) {
             for (int i = 0; i < poolingCount; i++) {
-                if(i < frameList.Count) { 
+                if (i < frameList.Count) {
                     frameListSlotControllers[i].SetFrameData(frameList[i]);
                     frameListSlotControllers[i].SetKey(i);
                 }
@@ -76,9 +78,11 @@ public class FrameListManager : MonoBehaviour {
 
     private void testData() {
         for (int i = 0; i < 8; i++) {
-            frameList.Add(new Frame());
+            AddFrame(new Frame());
         }
     }
+
+    #region 스크롤
 
     private void CheckScrollbar() {
         if (frameList.Count < 6) {
@@ -88,7 +92,7 @@ public class FrameListManager : MonoBehaviour {
             slider.interactable = true;
         }
     }
-
+   
     public void OnSliding(float value) {
         for (int i = 0; i < poolingCount; i++) {
             initialPositions[i].y += (value - previousValue) * 145f;
@@ -112,7 +116,7 @@ public class FrameListManager : MonoBehaviour {
     }
 
     private void OnScroll(Vector2 value) {
-        if (ActiveSentenceController.IsOpenFrameList) {
+        if (ActiveStatusController.IsOpenFrameList) {
             float scrollDelta = -value.y;
             if (scrollDelta > 0f) {
                 slider.value = Mathf.Clamp(slider.value + 0.5f, slider.minValue, slider.maxValue);
@@ -123,6 +127,9 @@ public class FrameListManager : MonoBehaviour {
         }
     }
 
+    #endregion
+
+    #region 프레임 슬롯 세팅
     //프레임 전체 개수가 6 미만일때 세팅
     private void frameListMinSetting() {
         for (int i = 0; i < frameList.Count; i++) {
@@ -151,7 +158,9 @@ public class FrameListManager : MonoBehaviour {
             }
         }
     }
+    #endregion
 
+    #region 프레임 정렬
     public void SortingToActive() {
         frameList.Sort((x, y) => y.IsActive.CompareTo(x.IsActive));
         UpdateSlotData(previousValue);
@@ -161,10 +170,12 @@ public class FrameListManager : MonoBehaviour {
         frameList.Sort((x, y) => x.IsActive.CompareTo(y.IsActive));
         UpdateSlotData(previousValue);
     }
+    #endregion
 
     public void DeleteFrame(int index) {
         frameList.RemoveAt(index);
         UpdateSlotData(previousValue);
+        activeStatus.ActiveCountUpdate(checkActiveFrame());
     }
 
     public void AddFrame(Frame frame = null) {
@@ -175,5 +186,17 @@ public class FrameListManager : MonoBehaviour {
             frameList.Add(new Frame());
         }
         UpdateSlotData(previousValue);
+        activeStatus.ActiveCountUpdate(checkActiveFrame());
+    }
+
+    //활성화 개수 체크
+    private int checkActiveFrame() {
+        int activeCount = 0;
+        for (int i = 0; i < frameList.Count; i++) {
+            if (frameList[i].IsActive) {
+                activeCount++;
+            }
+        }
+        return activeCount;
     }
 }

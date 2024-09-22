@@ -130,6 +130,11 @@ public class CombineManager : MonoBehaviour {
         baseFrame.SetWord(index, word);
     }
 
+    public void SetWord(int frameIndex, int index, Word word) {
+        Frame frame = baseFrame.GetFrame(frameIndex);
+        frame.SetWord(index, word);
+    }
+
     //문장 조합
     public void CombineSubmit() {
         if (baseFrame == null) return;

@@ -4,10 +4,6 @@ using UnityEngine.EventSystems;
 using UnityEngine;
 
 public class DraggingFrame : DraggingObject, IEndDragHandler, IDragHandler {
-    public RectTransform dropZone; // 드롭 영역
-    public Vector3 zoomScale = new Vector3(1.5f, 1.5f, 1.5f);
-    private Vector3 originalScale;
-
     private FrameListSlotController frameListSlotController;
 
     private void Awake() {
@@ -18,10 +14,8 @@ public class DraggingFrame : DraggingObject, IEndDragHandler, IDragHandler {
             }
         }
         rectTransform = gameObject.GetComponent<RectTransform>();
-        frameListSlotController = gameObject.GetComponentInChildren         <FrameListSlotController>();
+        frameListSlotController = gameObject.GetComponentInChildren<FrameListSlotController>();
 
-        //dropZone = FindObjectOfType<CombineManager>().gameObject.GetComponent<RectTransform>();
-        //originalScale = dropZone.localScale;
     }
 
     public void OnDrag(PointerEventData eventData) {
