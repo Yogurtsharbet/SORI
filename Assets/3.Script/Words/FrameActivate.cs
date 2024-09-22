@@ -9,7 +9,7 @@ using WordKey = System.UInt16;
 
 public class FrameActivate : MonoBehaviour {
     private static FrameActivate instance;
-    private Queue<(Word, Word)> activeFunction;
+    private Queue<(Word, Word, Word)> activeFunction;
 
     private void Awake() {
         if (instance == null) {
@@ -19,14 +19,18 @@ public class FrameActivate : MonoBehaviour {
         else
             Destroy(gameObject);
 
-        activeFunction = new Queue<(Word, Word)>();
+        activeFunction = new Queue<(Word, Word, Word)>();
     }
 
     public static void ClearFunction() {
         instance.activeFunction.Clear();
     }
-    public static void AppendFunction(Word wordA, Word wordB) {
-        instance.activeFunction.Enqueue((wordA, wordB));
+
+    public static void AppendFunction(Word wordA, Word wordB, Word wordC = null) {
+        // noun-noun 들어오면 Change
+        // verb-verb 들어오면 wordCard
+        // noun-verb 들어오면 verb property
+        instance.activeFunction.Enqueue((wordA, wordB, wordC));
     }
 
     public void Activate(GameObject target, GameObject indicator) {

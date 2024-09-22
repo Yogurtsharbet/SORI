@@ -6,18 +6,19 @@ using DG.Tweening;
 using Random = UnityEngine.Random;
 using WordTag = System.String;
 using WordKey = System.UInt16;
+using UnityEditor;
 
 public enum CommonType {
     NOUN, VERB, SENTENCE
 }
 
 public class CommonWord {
-    private List<WordKey> keys = new List<WordKey>();
-    private CommonType type;
+    public List<WordKey> keys = new List<WordKey>();
+    public CommonType type;
     public bool IsValid { get; private set; }
 
     public CommonWord(Frame frame) {
-        IsValid = FrameValidity.CheckType(frame);
+        IsValid = FrameValidity.CheckValidity(frame);
         if (!IsValid) return;
 
         if (frame.Type == FrameType.AisB || frame.Type == FrameType.AtoBisC)
@@ -77,17 +78,13 @@ public class FrameValidity : MonoBehaviour {
         return instance.CheckFrame();
         //return 받은 쪽에서 true 이면 FrameActivate의 Activate 호출해야함
     }
-
-    public static bool CheckType(Frame frame) {
-        return instance.CheckType(frame);
-    }
-
     private bool CheckFrame() {
         if (!CheckBlank()) return false;
         if (!GetCommonWords()) return false;
-        // commonWords로 체크
+        if (!CheckBaseFrame()) return false;
         return true;
     }
+
 
     private bool CheckBlank() {
         for (int i = 0; i < frame.BlankCount; i++) {
@@ -113,6 +110,42 @@ public class FrameValidity : MonoBehaviour {
         return true;
     }
 
+    private bool CheckBaseFrame() {
+        if (frame.Type == FrameType.NotA) return false;
+        for (int i = 0; i < frame.BlankCount; i++) {
+            if (!commonWord[i].IsValid ||
+                (frame.Type == FrameType.AandB && commonWord[i].type != CommonType.SENTENCE)) 
+                return false;
+        }
+        if(frame.Type == FrameType.AisB) {
+            if (commonWord[0].type == CommonType.NOUN) {
+                if (commonWord[1].type == CommonType.NOUN) {
+                    foreach (var eachKey in commonWord[0].keys) {
+                        var eachTag = Word.GetWord(eachKey).Tag;
+                        if (!WordData.wordProperty["CHANGE"].Contains(eachTag)) return false;
+                    }
+                    foreach (var eachKey in commonWord[0].keys) {
+                        var eachWord = Word.GetWord(eachKey);
+                        FrameActivate()
+                    }
+                }
+            }
+            else if (commonWord[1].type != CommonType.NOUN) {
+
+            }
+        }
+        else if(frame.Type == FrameType.AtoBisC) {
+
+        }
+
+        return false;
+    }
+
+
+    public static bool CheckValidity(Frame frame) {
+        return instance.CheckType(frame);
+    }
+
     private bool CheckType(Frame frame = null) {
         // GetCommonWords 에서 CommonWord 생성할 때 호출됨.
         if (frame == null) frame = this.frame;
@@ -120,15 +153,16 @@ public class FrameValidity : MonoBehaviour {
             case FrameType.AisB:
                 return CheckAisB(frame);
             case FrameType.AtoBisC:
+                //TODO: CheckAtoBisC(frame);
                 break;
             case FrameType.AandB:
                 return CheckAandB(frame);
-            case FrameType.NotA: 
-                break;
+            case FrameType.NotA:
+                return CheckNotA(frame);
         }
         return false;
     }
-    
+
     // 유효성 검사는 property로
     // 하고나면 active 정보는?
     //      -> Senetence 인 경우 commonwords 조사할 때 수행시키기로
@@ -137,13 +171,12 @@ public class FrameValidity : MonoBehaviour {
     //      -> commonWord 조사 : sentence? acitvate. sentence가 생기는건 A and B 일 경우 뿐 / etc? 단어처럼 처리
     //      
     // 즉!!! CheckType을 수행하는 시점에서 MountFrame은 존재할 수 없음!!!!
-
-    private List<WordTag> targetNoun = new List<WordTag>();
-    private List<WordKey> targetVerb = new List<WordKey>();
+    // CheckType 에서는 유효한지 검사 / Sentence의 경우 Activate Enqueue
+    // 이후 CommonWord 생성자에서 CommonWord의 Type을 결정.
 
     private bool CheckAisB(Frame frame) {
-        if(frame.wordA.Type == WordType.NOUN) {
-            if(frame.wordB.Type == WordType.NOUN) {
+        if (frame.wordA.Type == WordType.NOUN) {
+            if (frame.wordB.Type == WordType.NOUN) {
                 if (WordData.wordProperty["CHANGE"].Contains(frame.wordA.Tag)) {
                     FrameActivate.AppendFunction(frame.wordA, frame.wordB);
                     return true;
@@ -167,8 +200,12 @@ public class FrameValidity : MonoBehaviour {
 
     private bool CheckAandB(Frame frame) {
         if (frame.wordA.Type != frame.wordB.Type) return false;
+        return true;
+    }
 
-        return false;
+    private bool CheckNotA(Frame frame) {
+        if (frame.wordA.Type == WordType.NOUN) return false;
+        return true;
     }
 
     private bool CheckNounisVerb(Word noun, Word verb) {
@@ -179,7 +216,4 @@ public class FrameValidity : MonoBehaviour {
             if (!nounProperty.Contains(type)) return false;
         return true;
     }
-
-
-
 }
