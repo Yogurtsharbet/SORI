@@ -73,7 +73,7 @@ public class SelectControl : MonoBehaviour {
         if (Physics.Raycast(currentCamera.ScreenPointToRay(mousePosition),
             out rayHit, maxDistance: float.MaxValue, layerMask)) {
 
-            if (rayHit.collider.CompareTag(targetTag)) {
+            if (rayHit.collider.CompareTag(Word.GetWord(FrameValidity.GetCommonWord(0).keys[0]).Tag)) {
                 nowObject = rayHit.collider.GetComponent<Renderer>();
 
                 if (prevObject != nowObject) {
@@ -86,7 +86,6 @@ public class SelectControl : MonoBehaviour {
     }
 
     private void Select() {
-        //TODO: nowSelected 가 Word의 속성과 일치하는지
         if (nowObject == null || clickedObject != null) return;
 
         ApplyMaterial(nowObject, clickedShader);
@@ -128,7 +127,6 @@ public class SelectControl : MonoBehaviour {
         Indicator.position = target.GetComponent<Collider>().bounds.center;
         // RepositionAtScreenOut();
 
-        //TODO: 위치값 조정. rotation 화면 바라보도록
     }
 
     private void IndicatorOff() {
@@ -150,7 +148,7 @@ public class SelectControl : MonoBehaviour {
     private void OnEnter() {
         if (clickedObject == null) return;
         playerBehavior.ToggleCombineMode();
-        combineManager.Activate(clickedObject.gameObject, Indicator.gameObject);
+        FrameActivate.Activate();
     }
 
     private void OnCancel() {
@@ -191,6 +189,6 @@ public class SelectControl : MonoBehaviour {
 }
 
 //TODO: clicked Shader dot 조금씩 위로 올라가는 연출
-//TODO: Outline woodbine 이나 bigflower에 안보이는거
+//TODO: 여러개 선택할 수 있고, 선택 범위 (distance 제한) 만들고, 선택한 오브젝트를 우클릭하면 해제되고.
+//TODO: 선택한 오브젝트가 movable 이면 indicator 표시하고, 재차 클릭하면 indicator 고정
 
-//TODO: clicked 상태에서 방향 등을 설정할 수 있게 하고, 우클릭을 하면 clicked가 해제되도록

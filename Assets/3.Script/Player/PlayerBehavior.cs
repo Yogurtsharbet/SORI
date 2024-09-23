@@ -68,7 +68,9 @@ public class PlayerBehavior : MonoBehaviour {
         // *************************************** //
         // Toggle Combine Mode when Tab is pressed //
         // *************************************** //
-        ToggleCombineMode();
+        if (CameraControl.Instance.cameraStatus == CameraControl.CameraStatus.TopView ||
+            CameraControl.Instance.cameraStatus == CameraControl.CameraStatus.CombineView)
+            ToggleCombineMode();
     }
 
     private void OnInventory() {
