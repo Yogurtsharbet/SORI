@@ -43,14 +43,19 @@
             "_type": 1
         }
     ],
+    "isUnselectable": [
+        "HP"
+    ],
     "isMovable": [
         "Player",
         "DOOR",
         "WOOD",
         "KEY"
     ],
-    "isDisappearable": [
-        "DOOR"
-    ],
-    "isTest": []
+    "isChangable": [
+        "DOOR",
+        "TREE",
+        "KEY",
+        "BIRD"
+    ]
 }

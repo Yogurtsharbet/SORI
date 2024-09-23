@@ -69,6 +69,10 @@ public class FrameValidity : MonoBehaviour {
         else Destroy(gameObject);
     }
 
+    public static CommonWord GetCommonWord(int index) {
+        return instance.commonWord[index];
+    }
+
     public static bool Check(Frame frame) {
         //조합창 만들기 버튼 누를 때 호출되어야 함
         if (instance == null) instance = FindObjectOfType<FrameValidity>();
@@ -119,19 +123,51 @@ public class FrameValidity : MonoBehaviour {
         }
         if(frame.Type == FrameType.AisB) {
             if (commonWord[0].type == CommonType.NOUN) {
-                if (commonWord[1].type == CommonType.NOUN) {
+
+                // AisB - Noun is Noun
+                if (commonWord[1].type == CommonType.NOUN) {        
                     foreach (var eachKey in commonWord[0].keys) {
                         var eachTag = Word.GetWord(eachKey).Tag;
                         if (!WordData.wordProperty["CHANGE"].Contains(eachTag)) return false;
                     }
-                    foreach (var eachKey in commonWord[0].keys) {
-                        var eachWord = Word.GetWord(eachKey);
-                        FrameActivate()
+                    foreach (var eachKeyA in commonWord[0].keys) {
+                        Word eachWordA = Word.GetWord(eachKeyA);
+                        foreach(var eachKeyB in commonWord[1].keys) {
+                            Word eachWordB = Word.GetWord(eachKeyB);
+                            FrameActivate.AppendFunction(eachWordA, eachWordB);
+                        }
                     }
                 }
+                // AisB - Noun is Verb
+                else {              
+                    List<(Word, Word)> tempPair = new List<(Word, Word)>();
+                    foreach(var eachKeyA in commonWord[0].keys) {
+                        Word eachWordA = Word.GetWord(eachKeyA);
+                        foreach(var eachKeyB in commonWord[1].keys) {
+                            Word eachWordB = Word.GetWord(eachKeyB);
+                            if (!WordData.wordProperty[eachWordB.Tag].Contains(eachWordA.Tag)) return false;
+                            tempPair.Add((eachWordA, eachWordB));
+                        }
+                    }
+                    foreach (var eachPair in tempPair)
+                        FrameActivate.AppendFunction(eachPair.Item1, eachPair.Item2);
+                }
             }
-            else if (commonWord[1].type != CommonType.NOUN) {
 
+            // AisB - Verb is Verb
+            else if (commonWord[1].type != CommonType.NOUN) {       
+                List<(Word, Word)> tempPair = new List<(Word, Word)>();
+                //TODO: ADD Destroy Tag func.
+                foreach (var eachKeyB in commonWord[1].keys) {
+                    Word eachWordB = Word.GetWord(eachKeyB);
+                    if (eachWordB.Tag != "CHANGE" /* or destroy */) return false;
+                    foreach(var eachKeyA in commonWord[0].keys) {
+                        Word eachWordA = Word.GetWord(eachKeyA);
+                        tempPair.Add((eachWordA, eachWordB));
+                    }
+                }
+                foreach (var eachPair in tempPair)
+                    FrameActivate.AppendFunction(eachPair.Item1, eachPair.Item2);
             }
         }
         else if(frame.Type == FrameType.AtoBisC) {
@@ -189,8 +225,9 @@ public class FrameValidity : MonoBehaviour {
                 }
             }
         }
-        else if (frame.wordB.Type != WordType.NOUN) {
-            if (frame.wordB.Tag == "CHANGE") {
+        else if (frame.wordB.Type != WordType.NOUN) { 
+            //TODO: ADD Destroy Tag func.
+            if (frame.wordB.Tag == "CHANGE" /* or Destroy */) {
                 FrameActivate.AppendFunction(frame.wordA, frame.wordB);
                 return true;
             }
@@ -205,15 +242,6 @@ public class FrameValidity : MonoBehaviour {
 
     private bool CheckNotA(Frame frame) {
         if (frame.wordA.Type == WordType.NOUN) return false;
-        return true;
-    }
-
-    private bool CheckNounisVerb(Word noun, Word verb) {
-        var nounProperty = Word.CheckWordProperty(noun);
-        var verbProperty = Word.CheckWordProperty(verb);
-
-        foreach (WordType type in verbProperty)
-            if (!nounProperty.Contains(type)) return false;
         return true;
     }
 }

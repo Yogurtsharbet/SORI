@@ -33,20 +33,24 @@ public class FrameActivate : MonoBehaviour {
         instance.activeFunction.Enqueue((wordA, wordB, wordC));
     }
 
-    public void Activate(GameObject target, GameObject indicator) {
-        switch (_type) {
-            case FrameType.AisB:
-                Function(target, indicator);
+    public static void Activate() { 
+    
+    }
 
-                break;
-            case FrameType.AtoBisC:
-                break;
-            case FrameType.AandB:
-                break;
-            case FrameType.NotA:
-                break;
-            default: return;
-        }
+    public void Activate(GameObject target, GameObject indicator) {
+        //switch (_type) {
+        //    case FrameType.AisB:
+        //        Function(target, indicator);
+        //
+        //        break;
+        //    case FrameType.AtoBisC:
+        //        break;
+        //    case FrameType.AandB:
+        //        break;
+        //    case FrameType.NotA:
+        //        break;
+        //    default: return;
+        //}
     }
 
     //private Vector3 GetIndicatePosition(GameObject target, GameObject indicator, FrameRank rank) {

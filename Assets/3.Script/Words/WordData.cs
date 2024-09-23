@@ -25,6 +25,7 @@ public enum WordRank {
 public class WordDataStruct {
     //TODO: 신규 동사 property 추가 시 반드시 우선 작성
     public Word[] words;
+    public WordTag[] isUnselectable;
     public WordTag[] isMovable;
     public WordTag[] isChangable;
 };
@@ -34,6 +35,7 @@ public class WordData : MonoBehaviour {
     public static Word[] words;
 
     public static Dictionary<WordTag, WordTag[]> wordProperty;
+    private WordTag[] isUnselectable;
     private WordTag[] isMovable;
     private WordTag[] isChangable;
 
@@ -54,6 +56,7 @@ public class WordData : MonoBehaviour {
 
         //TODO: 신규 동사 property 추가 시 반드시 우선 작성
         wordProperty = new Dictionary<WordTag, WordTag[]>();
+        wordProperty.Add("UNSELECT", isUnselectable);
         wordProperty.Add("MOVE", isMovable);
         wordProperty.Add("CHANGE", isChangable);
 
