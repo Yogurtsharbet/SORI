@@ -80,6 +80,12 @@ public class FrameListManager : MonoBehaviour {
         for (int i = 0; i < 8; i++) {
             AddFrame(new Frame());
         }
+
+        frameList[0].SetWord(0, Word.GetWord());
+        frameList[0].SetFrame(1, new Frame());
+        Frame tempFrame = frameList[0].GetFrame(1);
+        tempFrame.SetWord(0, Word.GetWord());
+        tempFrame.SetWord(1, Word.GetWord());
     }
 
     #region 스크롤
@@ -147,16 +153,16 @@ public class FrameListManager : MonoBehaviour {
     }
 
     private void UpdateSlotData(float scrollValue) {
-        int value = (int)scrollValue;
-        for (int i = 0; i < poolingCount; i++) {
-            if (i + value < frameList.Count) {
-                frameListSlotControllers[i].SetFrameData(frameList[i + value]);
-                frameListSlotControllers[i].SetKey(i + value);
-            }
-            else {
-                slotList[i].SetActive(false); // 데이터를 넘어가는 슬롯 비활성화
-            }
-        }
+        //int value = (int)scrollValue;
+        //for (int i = 0; i < poolingCount; i++) {
+        //    if (i + value < frameList.Count) {
+        //        frameListSlotControllers[i].SetFrameData(frameList[i + value]);
+        //        frameListSlotControllers[i].SetKey(i + value);
+        //    }
+        //    else {
+        //        slotList[i].SetActive(false); // 데이터를 넘어가는 슬롯 비활성화
+        //    }
+        //}
     }
     #endregion
 

@@ -31865,7 +31865,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 250d60f826b9c614495baf01690587a9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  slotPrefab: {fileID: 537770250641097165, guid: ee68f4d8fe6d43947b774c884b9a1dda, type: 3}
+  slotPrefab: {fileID: 901423744768305420, guid: 2b278d2ac007d8643aa7b0c6cf4425cc, type: 3}
 --- !u!1001 &902037771
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -59495,7 +59495,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!222 &4158325603354031593
 CanvasRenderer:
   m_ObjectHideFlags: 0

@@ -88,6 +88,10 @@ public class CombineManager : MonoBehaviour {
     #region 드래그 상호작용 및 데이터 getter, setter
 
     public void SetSubFrame(int index, Frame frame) {
+        if(baseFrame.GetWord(index) != null) {
+            playerInvenController.AddNewItem(baseFrame.GetWord(index));
+            baseFrame.SetWord(index, null);
+        }
         resetNotActiveSubFrame(index);
         baseFrame.SetFrame(index, frame);
     }

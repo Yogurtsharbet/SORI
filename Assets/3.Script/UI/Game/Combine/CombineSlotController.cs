@@ -7,10 +7,10 @@ public class CombineSlotController : MonoBehaviour {
     private Text wordText;
     private int slotIndex;
     public int SlotIndex => slotIndex;
+
     private List<GameObject> dataObject = new List<GameObject>();
-
     private int childCount = 0;
-
+    public int ChildCount => childCount;
 
     private void Awake() {
         if (gameObject.transform.parent.name.Contains("00")) {
@@ -35,6 +35,12 @@ public class CombineSlotController : MonoBehaviour {
 
         wordText = dataObject[0].GetComponentInChildren<Text>();
 
+        for (int i = 0; i < dataObject.Count; i++) {
+            dataObject[i].SetActive(false);
+        }
+    }
+
+    private void OnDisable() {
         for (int i = 0; i < dataObject.Count; i++) {
             dataObject[i].SetActive(false);
         }
