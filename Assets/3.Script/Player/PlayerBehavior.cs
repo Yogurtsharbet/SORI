@@ -26,9 +26,7 @@ public class PlayerBehavior : MonoBehaviour {
 
     private bool[] isWatchedCinematic = new bool[Enum.GetValues(typeof(CinematicType)).Length];
 
-    //TODO: 하나로 합쳐지면 바꾸기
     private CombineContainer combineContainer;
-    private HalfInvenContainer halfInvenContainer;
     private InvenContainer invenContainer;
 
     private void Awake() {
@@ -36,9 +34,7 @@ public class PlayerBehavior : MonoBehaviour {
         playerInputAction = new PlayerInputActions();
         playerAnimator = GetComponent<Animator>();
 
-        //TODO: 하나로 합쳐지면 바꾸기
         combineContainer = FindObjectOfType<CombineContainer>();
-        halfInvenContainer = FindObjectOfType<HalfInvenContainer>();
         invenContainer = FindObjectOfType<InvenContainer>();
 
         playerInputAction.PlayerActions.Combine.performed += value => OnCombine();
@@ -83,11 +79,9 @@ public class PlayerBehavior : MonoBehaviour {
         //Combine UI Set/Unset
         if (IsCombineMode) {
             combineContainer.OpenCombineField();
-            halfInvenContainer.OpenCombineInven();
         }
         else {
             combineContainer.CloseCombineField();
-            halfInvenContainer.CloseCombineInven();
         }
 
         playerAnimator.SetBool("isCombineMode", isCombineMode);

@@ -110,4 +110,12 @@ public class HalfInvenSlotController : CommonInvenSlotController, IEndDragHandle
     public void OnPointerClick(PointerEventData eventData) {
         //TODO: 클릭했을때 상점이 열려있으면 삭제할건지 dialog
     }
+
+    public void DeleteWord() {
+        playerInven.RemoveItemIndex(key);
+    }
+
+    public void AddWord(Word word) {
+        playerInven.AddNewItem(word);
+    }
 }

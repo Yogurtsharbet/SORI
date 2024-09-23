@@ -150,7 +150,7 @@ public class SelectControl : MonoBehaviour {
     private void OnEnter() {
         if (clickedObject == null) return;
         playerBehavior.ToggleCombineMode();
-        combineManager.Activate(clickedObject.gameObject, Indicator.gameObject);
+    //    combineManager.Activate(clickedObject.gameObject, Indicator.gameObject);
     }
 
     private void OnCancel() {

@@ -5,10 +5,9 @@ using UnityEngine.EventSystems;
 
 public class DraggingWord : DraggingObject, IEndDragHandler, IDragHandler {
     private HalfInvenSlotController halfInvenSlot;
-
-    private RectTransform dropZone; // 드롭 영역
-    private Vector3 zoomScale = new Vector3(2f, 2f, 2f);
+    private CombineManager combineManager;
     private Vector3 originalScale;
+    private WordDragTarget previousTarget = null;
 
     private void Awake() {
         Canvas[] canvases = FindObjectsOfType<Canvas>();
@@ -18,9 +17,7 @@ public class DraggingWord : DraggingObject, IEndDragHandler, IDragHandler {
             }
         }
         rectTransform = gameObject.GetComponent<RectTransform>();
-
-        //dropZone = FindObjectOfType<CombineManager>().gameObject.GetComponent<RectTransform>();
-        //originalScale = dropZone.localScale;
+        combineManager = FindObjectOfType<CombineManager>();
         halfInvenSlot = gameObject.GetComponent<HalfInvenSlotController>();
     }
     public void OnDrag(PointerEventData eventData) {
@@ -30,14 +27,43 @@ public class DraggingWord : DraggingObject, IEndDragHandler, IDragHandler {
 
         rectTransform.anchoredPosition += eventData.delta / canvas.scaleFactor;
 
-        //TODO: 드래그 할때 서브 frame일때 확대 처리
-        // 드롭 영역 위에 올라갔는지 확인
-        //if (RectTransformUtility.RectangleContainsScreenPoint(dropZone, Input.mousePosition, canvas.worldCamera)) {
-        //    dropZone.localScale = zoomScale;  // 확대 적용
-        //}
-        //else {
-        //    dropZone.localScale = originalScale;  // 원래 크기 유지
-        //}
+        PointerEventData pointerData = new PointerEventData(EventSystem.current) {
+            position = Input.mousePosition
+        };
+
+        var results = new List<RaycastResult>();
+        EventSystem.current.RaycastAll(pointerData, results);
+        List<WordDragTarget> tempList = new List<WordDragTarget>();
+
+        foreach (var result in results) {
+            if (result.gameObject.TryGetComponent(out WordDragTarget target)) {
+                tempList.Add(target);
+            }
+        }
+
+        if (tempList.Count > 0 && !tempList[0].IsSlotExistFrame()) {
+            var currentTarget = tempList[0];
+
+            if (previousTarget != currentTarget) {
+                if (previousTarget != null) {
+                    previousTarget.ChangeLocale(originalScale);
+                }
+                originalScale = currentTarget.ThisRectTransform.localScale;
+                if (tempList.Count > 1) {
+                    currentTarget.ChangeLocale(new Vector3(4f, 4f, 4f));
+                }
+                else {
+                    currentTarget.ChangeLocale(new Vector3(2f, 2f, 2f));
+                }
+                previousTarget = currentTarget;
+            }
+        }
+        else {
+            if (previousTarget != null) {
+                previousTarget.ChangeLocale(originalScale);
+                previousTarget = null;
+            }
+        }
     }
 
     public void OnEndDrag(PointerEventData eventData) {
@@ -58,20 +84,37 @@ public class DraggingWord : DraggingObject, IEndDragHandler, IDragHandler {
             }
         }
 
-        if (tempList.Count == 1) {
-            hitObject(tempList[0]);
+        if (!tempList[0].IsSlotExistFrame()) {
+            if (tempList.Count == 1) {
+                hitObject(tempList[0]);
+            }
+            else if (tempList.Count == 2) {
+                hitObject(tempList[0], tempList[1]);
+            }
         }
-        else if (tempList.Count == 2) {
-            hitObject(tempList[0],tempList[1]);
+        else {
+            tempList[0].SwitchingFrameToWord(halfInvenSlot.ThisWord);
+            halfInvenSlot.DeleteWord();
         }
+
+        tempList[0].ChangeLocale(originalScale);
     }
 
     //count가 1개 - baseframe의 word, 2개 - subFrame의 word
     private void hitObject(WordDragTarget target) {
-            target.OpenCombineWord(halfInvenSlot.ThisWord);
+        Word slotWord = target.OpenCombineWord(halfInvenSlot.ThisWord);
+        if (slotWord != null) {
+            halfInvenSlot.AddWord(slotWord);
+        }
+        halfInvenSlot.DeleteWord();
     }
 
     private void hitObject(WordDragTarget target, WordDragTarget targetParent) {
-        target.OpenCombineWord(halfInvenSlot.ThisWord, targetParent);
+        Word slotWord = target.OpenCombineWord(halfInvenSlot.ThisWord, targetParent);
+        if (slotWord != null) {
+            halfInvenSlot.AddWord(slotWord);
+        }
+        halfInvenSlot.DeleteWord();
     }
+
 }

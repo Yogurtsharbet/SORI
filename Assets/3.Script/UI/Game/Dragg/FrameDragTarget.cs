@@ -6,6 +6,12 @@ public class FrameDragTarget : MonoBehaviour {
     private CombineManager combineManager;
     private CombineSlotController combineSlotController;
 
+    public bool IsExistFrame { get; private set; }
+
+    private void OnDisable() {
+        IsExistFrame = false;
+    }
+
     private void Awake() {
         combineManager = FindObjectOfType<CombineManager>();
         combineSlotController = gameObject.GetComponent<CombineSlotController>();
@@ -23,6 +29,7 @@ public class FrameDragTarget : MonoBehaviour {
             if (thisFrameType != FrameType.AisB && thisFrameType != FrameType.AtoBisC) {
                 combineManager.SetSubFrame(combineSlotController.SlotIndex, frame);
                 combineSlotController.OpenFrame(frame.Type);
+                IsExistFrame = true;
                 isOpenSlot = true;
             }
         }
@@ -32,6 +39,7 @@ public class FrameDragTarget : MonoBehaviour {
             if (thisFrameType != FrameType.AandB && thisFrameType != FrameType.NotA) {
                 combineManager.SetSubFrame(combineSlotController.SlotIndex, frame);
                 combineSlotController.OpenFrame(frame.Type);
+                IsExistFrame = true;
                 isOpenSlot = true;
             }
         }
@@ -40,5 +48,11 @@ public class FrameDragTarget : MonoBehaviour {
 
     public void OpenCombineFiled(int key, Frame frame) {
         combineManager.OpenBaseFrameSlot(key, frame);
+        IsExistFrame = true;
+    }
+
+    public void DeleteFrame() {
+        IsExistFrame = false;
+        combineSlotController.CloseFrame();
     }
 }

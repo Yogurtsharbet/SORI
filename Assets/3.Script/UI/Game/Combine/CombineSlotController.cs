@@ -11,6 +11,7 @@ public class CombineSlotController : MonoBehaviour {
 
     private int childCount = 0;
 
+
     private void Awake() {
         if (gameObject.transform.parent.name.Contains("00")) {
             slotIndex = 0;
@@ -47,6 +48,12 @@ public class CombineSlotController : MonoBehaviour {
                 return;
             }
         }
+    }
+
+    public void CloseFrame() {
+        dataObject[1].SetActive(false);
+        dataObject[2].SetActive(false);
+        dataObject[3].SetActive(false);
     }
 
     public int OpenWord(Word word) {
