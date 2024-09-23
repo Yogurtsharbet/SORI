@@ -31,7 +31,7 @@ public class CombineManager : MonoBehaviour {
         frameListManager = FindObjectOfType<FrameListManager>();
         selectControl = FindObjectOfType<SelectControl>();
         submitButton = FindObjectOfType<SubmitButtonController>();
-
+        playerInvenController = FindObjectOfType<PlayerInvenController>();
         combineContainer = FindObjectOfType<CombineContainer>();
 
         for (int i = 0; i < 4; i++) {

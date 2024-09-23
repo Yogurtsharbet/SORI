@@ -80,14 +80,9 @@ public class PlayerBehavior : MonoBehaviour {
     public void ToggleCombineMode() {
         isCombineMode = !isCombineMode;
 
-        //TODO: 단어조합 UI 지우기
-        //Combine UI Set/Unset
-        if (IsCombineMode) {
+        if (IsCombineMode) 
             combineContainer.OpenCombineField();
-        }
-        else {
-            combineContainer.CloseCombineField();
-        }
+        else combineContainer.CloseCombineField();
 
         playerAnimator.SetBool("isCombineMode", isCombineMode);
         CameraControl.Instance.ChangePlayerCamera();
@@ -139,11 +134,11 @@ public class PlayerBehavior : MonoBehaviour {
     }
 
     private void CheckCinematicZone(Collider zone) {
-        if (CameraControl.Instance.isDebugging) return; 
+        if (CameraControl.Instance.isDebugging) return;
         //TODO: REMOVE THIS LINE WHEN RELEASE
 
         if (zone.gameObject.layer == LayerMask.NameToLayer("CinematicZone")) {
-           if (zone.name == "ForestEntrance" && !isWatchedCinematic[(int)CinematicType.Forest]) {
+            if (zone.name == "ForestEntrance" && !isWatchedCinematic[(int)CinematicType.Forest]) {
                 isWatchedCinematic[(int)CinematicType.Forest] = true;
                 CameraControl.Instance.SetCamera("Forest");
             }

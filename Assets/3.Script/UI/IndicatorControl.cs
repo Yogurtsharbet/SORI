@@ -10,10 +10,12 @@ public class IndicatorControl : MonoBehaviour {
     private Quaternion targetRotation;
     private Vector3 mousePosition;
 
-    private float currentY = 0f;
+
+    [SerializeField] private float currentY = 0f;
     private float rotateSpeed = 10f;
 
     public Vector3 indicatePosition;
+    public bool isInstantiated;
 
     private void Awake() {
         playerTransform = GameObject.FindGameObjectWithTag("Player").transform;
@@ -35,6 +37,7 @@ public class IndicatorControl : MonoBehaviour {
     private Vector3 directionToMouse;
 
     private void Update() {
+        Debug.Log(currentY);
         currentY += Time.deltaTime * rotateSpeed;
         if (currentY > 360f) currentY -= 360f;
 
@@ -43,14 +46,19 @@ public class IndicatorControl : MonoBehaviour {
 
         transform.rotation = targetRotation;
 
-        Ray ray = Camera.main.ScreenPointToRay(mousePosition);
-        Plane plane = new Plane(transform.up, transform.position);
-        if (plane.Raycast(ray, out float distance)) {
-            Vector3 mouseWorldPos = ray.GetPoint(distance);
-            directionToMouse = (mouseWorldPos - transform.position).normalized;
+        if (isInstantiated) {
+            arcArrow.Angle = currentY - Quaternion.AngleAxis(currentY, Vector3.up).eulerAngles.y;
+        }
+        else {
+            Ray ray = Camera.main.ScreenPointToRay(mousePosition);
+            Plane plane = new Plane(transform.up, transform.position);
+            if (plane.Raycast(ray, out float distance)) {
+                Vector3 mouseWorldPos = ray.GetPoint(distance);
+                directionToMouse = (mouseWorldPos - transform.position).normalized;
 
-            float angleToMouse = Mathf.Atan2(directionToMouse.x, directionToMouse.z) * Mathf.Rad2Deg;
-            arcArrow.Angle = angleToMouse - currentY + 180 - playerTransform.eulerAngles.y;
+                float angleToMouse = Mathf.Atan2(directionToMouse.x, directionToMouse.z) * Mathf.Rad2Deg;
+                arcArrow.Angle = angleToMouse - currentY + 180 - playerTransform.eulerAngles.y;
+            }
         }
         
         indicatePosition = transform.position + 
@@ -70,8 +78,8 @@ public class IndicatorControl : MonoBehaviour {
     private void OnDrawGizmos() {
         Gizmos.color = Color.red;
 
-        // ÇØ´ç ¹æÇâÀ¸·Î Gizmo ±×¸®±â
-        Vector3 gizmoPosition = transform.position + indicatePosition * 20f;
+        // í•´ë‹¹ ë°©í–¥ìœ¼ë¡œ Gizmo ê·¸ë¦¬ê¸°
+        Vector3 gizmoPosition = indicatePosition;
         Gizmos.DrawWireSphere(gizmoPosition, 3f);
 
 

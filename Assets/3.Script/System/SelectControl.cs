@@ -28,6 +28,8 @@ public class SelectControl : MonoBehaviour {
     private Camera currentCamera { get { return cameraBrain.OutputCamera; } }
     private CameraControl.CameraStatus cameraStatus;
 
+    private List<GameObject> SpawnedIndicator;
+
     private void Awake() {
         playerBehavior = FindObjectOfType<PlayerBehavior>();
         combineManager = FindObjectOfType<CombineManager>();
@@ -47,6 +49,7 @@ public class SelectControl : MonoBehaviour {
         layerMask = ~layerMask;
 
         clickedObject = new List<Renderer>();
+        SpawnedIndicator = new List<GameObject>();
     }
 
     private void OnEnable() {
@@ -69,10 +72,11 @@ public class SelectControl : MonoBehaviour {
     }
 
     private void FindObject() {
+        if (Indicator.gameObject.activeSelf) return;
         if (Physics.Raycast(currentCamera.ScreenPointToRay(mousePosition),
             out rayHit, maxDistance: float.MaxValue, layerMask)) {
 
-            if (FrameActivate.CompareTag(rayHit.collider.tag)) { 
+            if (FrameActivate.CompareTag(rayHit.collider.tag)) {
                 nowObject = rayHit.collider.GetComponent<Renderer>();
 
                 if (prevObject != nowObject) {
@@ -85,23 +89,27 @@ public class SelectControl : MonoBehaviour {
     }
 
     private void Select() {
-        if (nowObject == null || clickedObject != null) return;
+
+        if (nowObject == null) return;
 
         ApplyMaterial(nowObject, clickedShader);
-        IndicatorOn(nowObject);
+        if (FrameActivate.CheckMovable(nowObject.tag))
+            IndicatorOn(nowObject);
 
         clickedObject.Add(nowObject);
+
     }
 
     private void Unselect() {
-        //TODO: 레이캐스트를 써서 취소시켜야 해!!!!!!!!!!!!
+
         IndicatorOff();
 
-        foreach (var each in clickedObject) RemoveMaterial(each, clickedShader);
-        if (nowObject != null) RemoveMaterial(nowObject, outlineShader);
+        if (nowObject != null) {
+            RemoveMaterial(nowObject, outlineShader);
+            RemoveMaterial(nowObject, clickedShader);
+        }
         if (prevObject != null) RemoveMaterial(prevObject, outlineShader);
 
-        clickedObject.Clear();
         nowObject = null;
         prevObject = null;
     }
@@ -124,10 +132,15 @@ public class SelectControl : MonoBehaviour {
         Indicator.gameObject.SetActive(true);
         Indicator.position = target.GetComponent<Collider>().bounds.center;
         // RepositionAtScreenOut();
-
     }
 
     private void IndicatorOff() {
+        Indicator.gameObject.SetActive(false);
+    }
+
+    private void SetIndicator() {
+        Instantiate(Indicator, Indicator.position, Indicator.rotation, Indicator.parent)
+            .GetComponent<IndicatorControl>().isInstantiated = true;
         Indicator.gameObject.SetActive(false);
     }
 
@@ -135,8 +148,15 @@ public class SelectControl : MonoBehaviour {
         mousePosition = value;
     }
 
+    private bool checkClick;
     private void OnClickLeft() {
-        Select();
+        if (!checkClick) checkClick = true;
+        else {
+            checkClick = false;
+            if (Indicator.gameObject.activeSelf)
+                SetIndicator();
+            else Select();
+        }
     }
 
     private void OnClickRight() {

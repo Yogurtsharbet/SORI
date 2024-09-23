@@ -25,7 +25,8 @@ public class CombineContainer : MonoBehaviour {
         FunctionMove(gameObject.transform, openPos);
     }
 
-    public void CloseCombineField() {
+    public void CloseCombineField(bool backToTopview = false) {
+        if (backToTopview) FindObjectOfType<PlayerBehavior>().ToggleCombineMode();
         combineManager.CloseCombineSlot();
         FunctionMove(gameObject.transform, closePos);
         halfInvenManager.SetCombineMode(false);

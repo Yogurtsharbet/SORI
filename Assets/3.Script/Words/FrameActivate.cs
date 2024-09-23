@@ -24,6 +24,18 @@ public class FrameActivate : MonoBehaviour {
         targetTag = new List<WordTag>();
     }
 
+    public static bool CheckMovable(WordTag tag) {
+        foreach(var each in instance.activeFunction) {
+            if (each.Item1.Tag == tag) {
+                if (each.Item3 == null) {
+                    if (each.Item2.Tag == "MOVE") return true;
+                }
+                else if (each.Item3.Tag == "MOVE") return true; 
+            }
+        }
+        return false;
+    }
+
     public static void ClearFunction() {
         instance.activeFunction.Clear();
     }
