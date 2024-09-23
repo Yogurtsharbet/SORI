@@ -2,13 +2,14 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-// [UI] ÀÎº¥Åä¸® - ½½·Ô °øÅë ÄÁÆ®·Ñ·¯
+// [UI] ì¸ë²¤í† ë¦¬ - ìŠ¬ë¡¯ ê³µí†µ ì»¨íŠ¸ë¡¤ëŸ¬
 public class CommonInvenSlotController : MonoBehaviour{
     protected InvenSlotCloseController closeController;
 
     protected int key;
 
     protected Word thisWord = null;
+    public Word ThisWord => thisWord;
     protected Text wordText;
     protected Image typeIcon;
     protected Image rankOutIcon;

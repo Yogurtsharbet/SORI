@@ -495,6 +495,7 @@ GameObject:
   - component: {fileID: 547318174737371350}
   - component: {fileID: 547318174737371351}
   - component: {fileID: 547318174737371352}
+  - component: {fileID: 3242149260085250809}
   m_Layer: 5
   m_Name: HalfInvenSlot
   m_TagString: Untagged
@@ -621,6 +622,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 912a8f4098499304b9421c919ab8396f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &3242149260085250809
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 547318174737371354}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5ff9f8b91a483ff4998d1bd68a5f1ae3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dropZone: {fileID: 0}
+  zoomScale: {x: 2, y: 2, z: 2}
 --- !u!1 &547318174768964009
 GameObject:
   m_ObjectHideFlags: 0

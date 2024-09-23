@@ -1656,6 +1656,7 @@ GameObject:
   - component: {fileID: 537770250641097170}
   - component: {fileID: 537770250641097171}
   - component: {fileID: 2938621892328749716}
+  - component: {fileID: 6102338984483115260}
   m_Layer: 5
   m_Name: SentenceSlot
   m_TagString: Untagged
@@ -1734,6 +1735,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f186d37de28744b49918e8dcd7261db0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &6102338984483115260
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 537770250641097165}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5849f4d9ec6aca14e82a4650e996df4c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &537770250697472539
