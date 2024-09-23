@@ -3,18 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-//SlotType 01 > [ word , sentence03, sentence04 ] , [ word, sentence03, sentence04 ]
-//SlotType 02 > [ word , sentence03, sentence04 ] , [ word, sentence03, sentence04 ]
-//SlotType 03 > [ word ] , [ word ] / [ sentence01 , sentence02 ] , [ sentence01, sentence02 ]
-//SlotType 04 > [ word ]
-
-/*  
- *  1. sentence type에 따라 먼저 어떤 틀을 열건지 체크
- *  2. 틀을 연 후 드래그해 온것이 sentence인지 word인지 체크해서 열기
- *  3. 중간에 바뀌면 그전것 되돌리기
- * 
- */
-
 // [UI] 조합 - 조합 매니저. 조합 창의 한 문장 틀
 public class CombineManager : MonoBehaviour {
     //기본 프레임 open 여부
@@ -29,15 +17,11 @@ public class CombineManager : MonoBehaviour {
     private bool canCombine;
     public bool CanCombine => canCombine;
 
-    //최대 들어갈수 있는 값
-    //Frame [ Frame [word, word, word] , word ] , [ Frame [word, word, word] , word ] , [ Frame [word, word, word] , word ]
-
     private FrameListManager frameListManager;
     private SubmitButtonController submitButton;
+    private PlayerInvenController playerInvenController;
 
-    //TODO: 하나로 합쳐지면 바꾸기
     private CombineContainer combineContainer;
-    private HalfInvenContainer halfInvenContainer;
 
     private SelectControl selectControl;
 
@@ -50,7 +34,6 @@ public class CombineManager : MonoBehaviour {
 
         //TODO: 하나로 합쳐지면 바꾸기
         combineContainer = FindObjectOfType<CombineContainer>();
-        halfInvenContainer = FindObjectOfType<HalfInvenContainer>();
 
         for (int i = 0; i < 4; i++) {
             frameObjects[i] = gameObject.transform.GetChild(i).gameObject;
@@ -127,6 +110,26 @@ public class CombineManager : MonoBehaviour {
         baseFrame.SetFrame(index, frame);
     }
 
+    //서브 프레임이 올려져 있는데 해당위치에 단어와 스위칭
+    //서브 프레임에 단어가 있는데 active 한 프레임이 아닐 시 해당 프레임도 인벤으로 돌려놓음
+    public void SwitchingFrameToWord(int index, Word word) {
+        Frame frame = baseFrame.GetFrame(index);
+        for(int i = 0; i < 3; i++) {
+            if (frame.IsActive) {
+                break;
+            }
+            else {
+                if(frame.GetWord(i) != null) {
+                    playerInvenController.AddNewItem(frame.GetWord(i));
+                    frame.SetWord(i, null);
+                }
+            }
+        }
+        frameListManager.AddFrame(frame);
+        baseFrame.SetFrame(index, null);
+        SetWord(index, word);
+    }
+
     public void SetWord(int index, Word word) {
         baseFrame.SetWord(index, word);
     }
@@ -134,6 +137,15 @@ public class CombineManager : MonoBehaviour {
     public void SetWord(int frameIndex, int index, Word word) {
         Frame frame = baseFrame.GetFrame(frameIndex);
         frame.SetWord(index, word);
+    }
+
+    public Word GetWord(int index) {
+        return baseFrame.GetWord(index);
+    }
+
+    public Word GetWord(int frameIndex, int index) {
+        Frame frame = baseFrame.GetFrame(frameIndex);
+        return frame.GetWord(index);
     }
 
     //문장 조합
@@ -161,4 +173,8 @@ public class CombineManager : MonoBehaviour {
         //if (dialogContents != string.Empty)
         //    DialogManager.Instance.OpenDefaultDialog(dialogContents, DialogType.FAIL);
     }
+
+    //public void Activate(GameObject target, GameObject indicator) {
+    //    baseFrame.Activate(target, indicator);
+    //}
 }

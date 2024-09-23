@@ -7,7 +7,6 @@ using UnityEngine.UI;
 public class FrameListSlotController : MonoBehaviour, IPointerClickHandler {
     private CombineManager combineManager;
     private CombineContainer combineContainer;
-    private RectTransform combineFieldRectTransform;    //문장 슬롯 영역
     private FrameListManager frameListManager;
 
     private GameObject[] frameByType = new GameObject[4];
@@ -21,7 +20,6 @@ public class FrameListSlotController : MonoBehaviour, IPointerClickHandler {
         combineManager = FindObjectOfType<CombineManager>();
         combineContainer = FindObjectOfType<CombineContainer>();
         Image img = combineContainer.GetComponentInChildren<Image>();
-        combineFieldRectTransform = img.GetComponent<RectTransform>();
         for (int i = 0; i < 4; i++) {
             frameByType[i] = gameObject.transform.GetChild(i).gameObject;
         }

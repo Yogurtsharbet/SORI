@@ -2,12 +2,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-// [UI] Á¶ÇÕ - ¹ÝÂÊ ÀÎº¥Åä¸® ¸Å´ÏÀú
+// [UI] ì¡°í•© - ë°˜ìª½ ì¸ë²¤í† ë¦¬ ë§¤ë‹ˆì €
 public class HalfInvenManager : CommonInvenSlotManager {
     private HalfInvenSlotController[] halfInvenSlot;
     private HalfInvenContainer halfInvenContainer;
 
-    private bool isCombineMode = false;     //¹®Àå Á¶ÇÕ¸ðµå
+    private bool isCombineMode = false;     //ë¬¸ìž¥ ì¡°í•©ëª¨ë“œ
     public bool IsCombineMode => isCombineMode;
 
     private void Awake() {
@@ -42,19 +42,14 @@ public class HalfInvenManager : CommonInvenSlotManager {
 
         playerInvenController = FindObjectOfType<PlayerInvenController>();
         playerInvenController.InvenChanged += updateSlot;
+
+        for (int i = 0; i < 20; i++) {
+            halfInvenSlot[i].CloseSlot();
+        }
     }
 
     public void SetCombineMode(bool yn) {
         isCombineMode = yn;
-    }
-
-    private void Start() {
-        for (int i = 0; i < 20; i++) {
-            halfInvenSlot[i].CloseSlot();
-        }
-        for (int i = 0; i < playerInvenController.InvenOpenCount; i++) {
-            halfInvenSlot[i].OpenSlot();
-        }
     }
 
     private void OnDestroy() {
@@ -62,6 +57,10 @@ public class HalfInvenManager : CommonInvenSlotManager {
     }
 
     private void updateSlot(List<Word> inventory) {
+        for (int i = 0; i < playerInvenController.InvenOpenCount; i++) {
+            halfInvenSlot[i].OpenSlot();
+        }
+
         for (int i = 0; i < inventory.Count; i++) {
             if (inventory[i] != null) {
                 halfInvenSlot[i].SetSlotWord(inventory[i]);
@@ -70,6 +69,10 @@ public class HalfInvenManager : CommonInvenSlotManager {
                 halfInvenSlot[i].SetSlotWord(null);
             }
         }
+    }
+
+    public void OpenInven() {
+        halfInvenContainer.OpenCombineInven();
     }
 
     public void CloseInven() {

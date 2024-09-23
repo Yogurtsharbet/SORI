@@ -37,14 +37,14 @@ public class PlayerInvenController : MonoBehaviour {
         }
     }
 
-    //ÀÎº¥Åä¸® Ä­ Ãß°¡
+    //ì¸ë²¤í† ë¦¬ ì¹¸ ì¶”ê°€
     public void AddInvenSlot() {
         inven.Add(null);
     }
 
-    //ÀÎº¥Åä¸® Ä­ »èÁ¦
-    // 1. Á¦ÀÏ ¸¶Áö¸·¿¡ ÀÖ´Â ´Ü¾î ¿Å±â°í ÀÎº¥ ½½·Ô »èÁ¦
-    // 2. ºó ½½·ÔÀÌ ¾øÀ» ¶§, ¼±ÅÃÇÑ ÀÎµ¦½ºÀÇ ´Ü¾î »èÁ¦
+    //ì¸ë²¤í† ë¦¬ ì¹¸ ì‚­ì œ
+    // 1. ì œì¼ ë§ˆì§€ë§‰ì— ìˆëŠ” ë‹¨ì–´ ì˜®ê¸°ê³  ì¸ë²¤ ìŠ¬ë¡¯ ì‚­ì œ
+    // 2. ë¹ˆ ìŠ¬ë¡¯ì´ ì—†ì„ ë•Œ, ì„ íƒí•œ ì¸ë±ìŠ¤ì˜ ë‹¨ì–´ ì‚­ì œ
     private void getRemoveInvenIndex() {
         if (inven[invenOpenCount - 1] == null) {
             inven.RemoveAt(invenOpenCount - 1);
@@ -64,15 +64,15 @@ public class PlayerInvenController : MonoBehaviour {
             }
             else {
                 //inven.RemoveAt(GetRemoveIndex());
-                // TODO: ÇÃ·¹ÀÌ¾î INPUT ¹Ş¾Æ¼­ ÇÃ·¹ÀÌ¾î°¡ ¼±ÅÃÇÑ ´Ü¾î »èÁ¦
-                //player°¡ »èÁ¦ÇÒ ´Ü¾î index ¼±ÅÃ Ã¢ ¿­±â
+                // TODO: í”Œë ˆì´ì–´ INPUT ë°›ì•„ì„œ í”Œë ˆì´ì–´ê°€ ì„ íƒí•œ ë‹¨ì–´ ì‚­ì œ
+                //playerê°€ ì‚­ì œí•  ë‹¨ì–´ index ì„ íƒ ì°½ ì—´ê¸°
                 return;
             }
         }
         UpdateInvenInvoke();
     }
 
-    //»õ ´Ü¾î Ãß°¡
+    //ìƒˆ ë‹¨ì–´ ì¶”ê°€
     public void AddNewItem(Word newWord) {
         for (int i = 0; i < invenOpenCount; i++) {
             if (inven[i] == null) {
@@ -83,13 +83,13 @@ public class PlayerInvenController : MonoBehaviour {
         UpdateInvenInvoke();
     }
 
-    //Æ¯Á¤ ÀÎµ¦½º¿¡ »õ ´Ü¾î Ãß°¡
+    //íŠ¹ì • ì¸ë±ìŠ¤ì— ìƒˆ ë‹¨ì–´ ì¶”ê°€
     public void AddItem(Word newWord, int index) {
         inven[index] = newWord;
         UpdateInvenInvoke();
     }
 
-    //Æ¯Á¤ ÀÎµ¦½ºÀÇ ´Ü¾î¿Í ÇöÀç ¼±ÅÃÇÑ ´Ü¾î¿Í ÀÎµ¦½º ½ºÀ§Äª
+    //íŠ¹ì • ì¸ë±ìŠ¤ì˜ ë‹¨ì–´ì™€ í˜„ì¬ ì„ íƒí•œ ë‹¨ì–´ì™€ ì¸ë±ìŠ¤ ìŠ¤ìœ„ì¹­
     public void SwitchingItem(int thisIndex, int targetIndex) {
         if (inven[targetIndex] == null) {
             inven[targetIndex] = inven[thisIndex];
@@ -103,13 +103,13 @@ public class PlayerInvenController : MonoBehaviour {
         UpdateInvenInvoke();
     }
 
-    //Æ¯Á¤ ÀÎµ¦½ºÀÇ ´Ü¾î »èÁ¦
+    //íŠ¹ì • ì¸ë±ìŠ¤ì˜ ë‹¨ì–´ ì‚­ì œ
     public void RemoveItemIndex(int index) {
         inven[index] = null;
         UpdateInvenInvoke();
     }
 
-    //Æ¯Á¤ ÀÎµ¦½ºÀÇ ´Ü¾î getter
+    //íŠ¹ì • ì¸ë±ìŠ¤ì˜ ë‹¨ì–´ getter
     public Word GetWordIndex(int index) {
         return inven[index];
     }
