@@ -13,6 +13,7 @@ public class SelectControl : MonoBehaviour {
 
     private PlayerBehavior playerBehavior;
     private CombineManager combineManager;
+    private CombineContainer combineContainer;
 
     private List<Renderer> clickedObject;
     private Renderer prevObject;
@@ -27,12 +28,10 @@ public class SelectControl : MonoBehaviour {
     private Camera currentCamera { get { return cameraBrain.OutputCamera; } }
     private CameraControl.CameraStatus cameraStatus;
 
-    public void SetTargetTag(string tag) { targetTag = tag; }
-    private string targetTag;
-
     private void Awake() {
         playerBehavior = FindObjectOfType<PlayerBehavior>();
         combineManager = FindObjectOfType<CombineManager>();
+        combineContainer = FindObjectOfType<CombineContainer>();
 
         cameraBrain = FindObjectOfType<CinemachineBrain>();
         Indicator = transform.GetChild(0);
@@ -65,17 +64,15 @@ public class SelectControl : MonoBehaviour {
             FindObject();
         }
         else {
-            CancelSelected();
+            Unselect();
         }
     }
 
     private void FindObject() {
-        if (clickedObject != null) return;
-
         if (Physics.Raycast(currentCamera.ScreenPointToRay(mousePosition),
             out rayHit, maxDistance: float.MaxValue, layerMask)) {
 
-            if (rayHit.collider.CompareTag(Word.GetWord(FrameValidity.GetCommonWord(0).keys[0]).Tag)) {
+            if (FrameActivate.CompareTag(rayHit.collider.tag)) { 
                 nowObject = rayHit.collider.GetComponent<Renderer>();
 
                 if (prevObject != nowObject) {
@@ -96,7 +93,7 @@ public class SelectControl : MonoBehaviour {
         clickedObject.Add(nowObject);
     }
 
-    private void CancelSelected() {
+    private void Unselect() {
         //TODO: 레이캐스트를 써서 취소시켜야 해!!!!!!!!!!!!
         IndicatorOff();
 
@@ -143,7 +140,7 @@ public class SelectControl : MonoBehaviour {
     }
 
     private void OnClickRight() {
-        CancelSelected();
+        Unselect();
     }
 
     private void OnEnter() {
@@ -162,7 +159,7 @@ public class SelectControl : MonoBehaviour {
 
             case CameraControl.CameraStatus.SelectView:
             case CameraControl.CameraStatus.SelectTopView:
-                //TODO: 단어조합창 UI 다시 띄우기
+                combineContainer.OpenCombineField();
                 CameraControl.Instance.SetCamera(CameraControl.CameraStatus.CombineView);
                 break;
         }

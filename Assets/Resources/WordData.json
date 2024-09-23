@@ -15,15 +15,15 @@
             "_type": 1
         },
         {
-            "_key": 2,
+            "_key": 200,
             "_tag": "MOVE",
-            "_name": "움직이다",
+            "_name": "움직인다",
             "_rank": 2,
             "_type": 2
         },
         {
             "_key": 102,
-            "_tag": "WOOD",
+            "_tag": "TREE",
             "_name": "나무",
             "_rank": 1,
             "_type": 1
@@ -41,6 +41,20 @@
             "_name": "새",
             "_rank": 1,
             "_type": 1
+        },
+        {
+            "_key": 105,
+            "_tag": "TIME",
+            "_name": "시간",
+            "_rank": 6,
+            "_type": 1
+        },
+        {
+            "_key": 106,
+            "_tag": "FLOOR",
+            "_name": "바닥",
+            "_rank": 2,
+            "_type": 1
         }
     ],
     "isUnselectable": [
@@ -49,7 +63,7 @@
     "isMovable": [
         "Player",
         "DOOR",
-        "WOOD",
+        "TREE",
         "KEY"
     ],
     "isChangable": [
