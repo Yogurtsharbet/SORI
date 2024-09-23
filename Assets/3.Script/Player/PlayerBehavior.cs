@@ -67,6 +67,9 @@ public class PlayerBehavior : MonoBehaviour {
         if (CameraControl.Instance.cameraStatus == CameraControl.CameraStatus.TopView ||
             CameraControl.Instance.cameraStatus == CameraControl.CameraStatus.CombineView)
             ToggleCombineMode();
+        else if (CameraControl.Instance.cameraStatus == CameraControl.CameraStatus.SelectView)
+            CameraControl.Instance.SetCamera(CameraControl.CameraStatus.SelectTopView);
+        else CameraControl.Instance.SetCamera(CameraControl.CameraStatus.SelectView);
     }
 
     private void OnInventory() {

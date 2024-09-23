@@ -167,7 +167,6 @@ public class CombineManager : MonoBehaviour {
             }
 
             combineContainer.CloseCombineField();
-            halfInvenContainer.CloseCombineInven();
 
         }
         //TODO: Dialog -> FrameValidity 에서 띄워주는 게 좋을 듯?

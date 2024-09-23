@@ -9,7 +9,8 @@ using WordKey = System.UInt16;
 
 public class FrameActivate : MonoBehaviour {
     private static FrameActivate instance;
-    private Queue<(Word, Word, Word)> activeFunction;
+    private List<(Word, Word, Word)> activeFunction;
+    public List<WordTag> targetTag { get; private set; }
 
     private void Awake() {
         if (instance == null) {
@@ -19,7 +20,8 @@ public class FrameActivate : MonoBehaviour {
         else
             Destroy(gameObject);
 
-        activeFunction = new Queue<(Word, Word, Word)>();
+        activeFunction = new List<(Word, Word, Word)>();
+        targetTag = new List<WordTag>();
     }
 
     public static void ClearFunction() {
@@ -30,7 +32,23 @@ public class FrameActivate : MonoBehaviour {
         // noun-noun 들어오면 Change
         // verb-verb 들어오면 wordCard
         // noun-verb 들어오면 verb property
-        instance.activeFunction.Enqueue((wordA, wordB, wordC));
+        instance.activeFunction.Add((wordA, wordB, wordC));
+        instance.AppendTag();
+    }
+
+    private void AppendTag() {
+        var last = activeFunction[activeFunction.Count - 1];
+        if (last.Item3 == null) {
+            if (last.Item1.Type == WordType.NOUN)
+                targetTag.Add(last.Item1.Tag);
+        }
+        else {  // AtoBisC
+
+        }
+    }
+
+    public new static bool CompareTag(WordTag tag) {
+        return instance.targetTag.Contains(tag);
     }
 
     public static void Activate() { 
