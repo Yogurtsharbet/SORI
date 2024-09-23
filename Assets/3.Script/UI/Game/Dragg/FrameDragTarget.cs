@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class FrameDragTarget : MonoBehaviour {
@@ -15,6 +13,10 @@ public class FrameDragTarget : MonoBehaviour {
     private void Awake() {
         combineManager = FindObjectOfType<CombineManager>();
         combineSlotController = gameObject.GetComponent<CombineSlotController>();
+    }
+
+    public bool IsFrameActive() {
+        return combineManager.BaseFrame.IsActive;
     }
 
     public bool OpenCombineSlot(int key, Frame frame) {

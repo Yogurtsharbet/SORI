@@ -1,9 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine.EventSystems;
 using UnityEngine;
 
-public class DraggingObject : MonoBehaviour, IBeginDragHandler {
+public class DraggingObject : MonoBehaviour{
     protected Canvas canvas;
     protected RectTransform originalParent;
     protected Vector2 originalPosition;
@@ -17,12 +14,5 @@ public class DraggingObject : MonoBehaviour, IBeginDragHandler {
             }
         }
         rectTransform = gameObject.GetComponent<RectTransform>();
-    }
-
-    public void OnBeginDrag(PointerEventData eventData) {
-        originalParent = rectTransform.parent as RectTransform;
-        originalPosition = rectTransform.anchoredPosition;
-        gameObject.transform.SetParent(canvas.transform, true);
-        gameObject.transform.SetAsLastSibling();
     }
 }

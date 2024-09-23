@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine.EventSystems;
 using UnityEngine;
 
-public class DraggingFrame : DraggingObject, IEndDragHandler, IDragHandler {
+public class DraggingFrame : DraggingObject, IEndDragHandler, IDragHandler, IBeginDragHandler {
     private FrameListSlotController frameListSlotController;
 
     private void Awake() {
@@ -15,24 +15,19 @@ public class DraggingFrame : DraggingObject, IEndDragHandler, IDragHandler {
         }
         rectTransform = gameObject.GetComponent<RectTransform>();
         frameListSlotController = gameObject.GetComponentInChildren<FrameListSlotController>();
+    }
 
+    public void OnBeginDrag(PointerEventData eventData) {
+        originalParent = rectTransform.parent as RectTransform;
+        originalPosition = rectTransform.anchoredPosition;
+        gameObject.transform.SetParent(canvas.transform, true);
+        gameObject.transform.SetAsLastSibling();
     }
 
     public void OnDrag(PointerEventData eventData) {
         Vector2 position;
         RectTransformUtility.ScreenPointToLocalPointInRectangle(canvas.transform as RectTransform, eventData.position, eventData.pressEventCamera, out position);
         rectTransform.anchoredPosition = position;
-
-        rectTransform.anchoredPosition += eventData.delta / canvas.scaleFactor;
-
-        //TODO: 드래그 할때 서브 frame일때 확대 처리
-        // 드롭 영역 위에 올라갔는지 확인
-        //if (RectTransformUtility.RectangleContainsScreenPoint(dropZone, Input.mousePosition, canvas.worldCamera)) {
-        //    dropZone.localScale = zoomScale;  // 확대 적용
-        //}
-        //else {
-        //    dropZone.localScale = originalScale;  // 원래 크기 유지
-        //}
     }
 
     public void OnEndDrag(PointerEventData eventData) {
@@ -53,15 +48,24 @@ public class DraggingFrame : DraggingObject, IEndDragHandler, IDragHandler {
             }
         }
 
-        hitObject(tempList[0], tempList.Count);
+        if (tempList.Count > 0) {
+            hitObject(tempList[0], tempList.Count);
+        }
     }
 
     private void hitObject(FrameDragTarget target, int num) {
         if (num == 1) {
+            //base frame
             target.OpenCombineFiled(frameListSlotController.key, frameListSlotController.thisFrame);
             frameListSlotController.FrameSlotDelete();
         }
         else if (num == 2) {
+            if (target.IsFrameActive()) {
+                string contents = "이미 조합된 문장틀입니다.\n새 문장을 만드시려면 새 문장틀을 선택해주세요.";
+                DialogManager.Instance.OpenDefaultDialog(contents, DialogType.FAIL);
+                return;
+            }
+
             bool isAddFrameToSlot = target.OpenCombineSlot(frameListSlotController.key, frameListSlotController.thisFrame);
             if (isAddFrameToSlot) {
                 frameListSlotController.FrameSlotDelete();
@@ -71,12 +75,9 @@ public class DraggingFrame : DraggingObject, IEndDragHandler, IDragHandler {
                 DialogManager.Instance.OpenDefaultDialog(contents, DialogType.FAIL);
             }
         }
-        else if (num == 3) {
+        else {
             string contents = "해당 위치에는 넣을 수 없습니다.\n다른곳에 추가해주세요.";
             DialogManager.Instance.OpenDefaultDialog(contents, DialogType.FAIL);
-        }
-        else {
-            Debug.Log("ERROR - RAYCAST DRAG TARGET EMPTY");
         }
     }
 }

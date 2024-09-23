@@ -2,12 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
-public class DraggingWord : DraggingObject, IEndDragHandler, IDragHandler {
+public class DraggingCombineWord : DraggingObject, IEndDragHandler, IDragHandler, IBeginDragHandler {
+    protected Text wordText;
+
     private HalfInvenSlotController halfInvenSlot;
-    private CombineManager combineManager;
     private Vector3 originalScale;
     private WordDragTarget previousTarget = null;
+
 
     private void Awake() {
         Canvas[] canvases = FindObjectsOfType<Canvas>();
@@ -17,15 +20,21 @@ public class DraggingWord : DraggingObject, IEndDragHandler, IDragHandler {
             }
         }
         rectTransform = gameObject.GetComponent<RectTransform>();
-        combineManager = FindObjectOfType<CombineManager>();
         halfInvenSlot = gameObject.GetComponent<HalfInvenSlotController>();
+        wordText = gameObject.GetComponentInChildren<Text>();
     }
-    public void OnDrag(PointerEventData eventData) {
-        Vector2 position;
-        RectTransformUtility.ScreenPointToLocalPointInRectangle(canvas.transform as RectTransform, eventData.position, eventData.pressEventCamera, out position);
-        rectTransform.anchoredPosition = position;
 
-        rectTransform.anchoredPosition += eventData.delta / canvas.scaleFactor;
+    public void OnBeginDrag(PointerEventData eventData) {
+        originalParent = wordText.rectTransform.parent as RectTransform;
+        originalPosition = wordText.rectTransform.anchoredPosition;
+        wordText.transform.SetParent(canvas.transform, true);
+        wordText.transform.SetAsLastSibling();
+    }
+
+    public void OnDrag(PointerEventData eventData) {
+        Vector2 localPosition;
+        RectTransformUtility.ScreenPointToLocalPointInRectangle(canvas.transform as RectTransform, eventData.position, eventData.pressEventCamera, out localPosition);
+        wordText.rectTransform.anchoredPosition = localPosition;
 
         PointerEventData pointerData = new PointerEventData(EventSystem.current) {
             position = Input.mousePosition
@@ -67,8 +76,8 @@ public class DraggingWord : DraggingObject, IEndDragHandler, IDragHandler {
     }
 
     public void OnEndDrag(PointerEventData eventData) {
-        gameObject.transform.SetParent(originalParent, true);
-        rectTransform.anchoredPosition = originalPosition;
+        wordText.transform.SetParent(originalParent, true);
+        wordText.rectTransform.anchoredPosition = originalPosition;
 
         PointerEventData pointerData = new PointerEventData(EventSystem.current) {
             position = Input.mousePosition
@@ -84,20 +93,30 @@ public class DraggingWord : DraggingObject, IEndDragHandler, IDragHandler {
             }
         }
 
-        if (!tempList[0].IsSlotExistFrame()) {
-            if (tempList.Count == 1) {
+        if (tempList.Count == 1) {
+            if (tempList[0].IsFrameActive()) {
+                string contents = "이미 조합된 문장틀입니다.\n새 문장을 만드시려면 새 문장틀을 선택해주세요.";
+                DialogManager.Instance.OpenDefaultDialog(contents, DialogType.FAIL);
+                return;
+            }
+
+            if (!tempList[0].IsSlotExistFrame()) {
                 hitObject(tempList[0]);
             }
-            else if (tempList.Count == 2) {
-                hitObject(tempList[0], tempList[1]);
+            else {
+                tempList[0].SwitchingFrameToWord(halfInvenSlot.ThisWord);
+                halfInvenSlot.DeleteWord();
             }
+            tempList[0].ChangeLocale(originalScale);
+        }
+        else if (tempList.Count == 2) {
+            hitObject(tempList[0], tempList[1]);
+            tempList[0].ChangeLocale(originalScale);
         }
         else {
-            tempList[0].SwitchingFrameToWord(halfInvenSlot.ThisWord);
-            halfInvenSlot.DeleteWord();
-        }
+            //TODO: 다른 SLOT일때 스위칭 혹은 원래대로
 
-        tempList[0].ChangeLocale(originalScale);
+        }
     }
 
     //count가 1개 - baseframe의 word, 2개 - subFrame의 word

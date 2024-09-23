@@ -19,6 +19,9 @@ public class WordDragTarget : MonoBehaviour {
             frameDragTarget = null;
         }
     }
+    public bool IsFrameActive() {
+        return combineManager.BaseFrame.IsActive;
+    }
 
     public void ChangeLocale(Vector3 scale) {
         ThisRectTransform.localScale = scale;

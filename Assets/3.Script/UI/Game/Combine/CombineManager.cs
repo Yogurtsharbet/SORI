@@ -32,7 +32,6 @@ public class CombineManager : MonoBehaviour {
         selectControl = FindObjectOfType<SelectControl>();
         submitButton = FindObjectOfType<SubmitButtonController>();
 
-        //TODO: 하나로 합쳐지면 바꾸기
         combineContainer = FindObjectOfType<CombineContainer>();
 
         for (int i = 0; i < 4; i++) {
@@ -46,10 +45,9 @@ public class CombineManager : MonoBehaviour {
     }
 
     public void OpenBaseFrameSlot(int key, Frame frame) {
+        //이미 baseFrame이 open 되어있는 상태
         if (baseFrameOpen) {
-            //이미 baseFrame이 open 되어있는 상태
-            baseFrame.SetBase(false);
-            frameListManager.AddFrame(baseFrame);
+            resetBaseFrame();
         }
         else {
             baseFrameOpen = true;
@@ -58,7 +56,6 @@ public class CombineManager : MonoBehaviour {
 
         frame.SetBase(true);
         baseFrame = frame;
-        //TODO: base frame 안에 setBase(true) 추가, 다른 프레임 switching 할때 false로 꺼줘야함
         activeFrameType((int)frame.Type - 1);
 
         if (baseFrame.IsActive) {       //문장틀에 문장이 들어가있는 상태
@@ -81,32 +78,16 @@ public class CombineManager : MonoBehaviour {
                 frameObjects[i].SetActive(false);
             }
         }
-    }
-
-    //슬롯 닫을 때 초기화
-    public void CloseCombineSlot() {
-        if (baseFrameOpen) {
-            baseFrame.SetBase(false);
-            frameListManager.AddFrame(baseFrame);
-            if (!baseFrame.IsActive) {
-                for (int i = 0; i < 3; i++) {
-                    if (baseFrame.GetFrame(i) != null) {
-                        frameListManager.AddFrame(baseFrame.GetFrame(i));
-                    }
-                }
-            }
-            //TODO: 슬롯에 있는 워드 원래대로 돌리기
-        }
-        baseFrame = null;
-        baseFrameOpen = false;
-        gameObject.SetActive(false);
-    }
+    }   
 
     public void CancelCombineTemp() {
         gameObject.SetActive(false);
     }
 
+    #region 드래그 상호작용 및 데이터 getter, setter
+
     public void SetSubFrame(int index, Frame frame) {
+        resetNotActiveSubFrame(index);
         baseFrame.SetFrame(index, frame);
     }
 
@@ -114,12 +95,12 @@ public class CombineManager : MonoBehaviour {
     //서브 프레임에 단어가 있는데 active 한 프레임이 아닐 시 해당 프레임도 인벤으로 돌려놓음
     public void SwitchingFrameToWord(int index, Word word) {
         Frame frame = baseFrame.GetFrame(index);
-        for(int i = 0; i < 3; i++) {
+        for (int i = 0; i < 3; i++) {
             if (frame.IsActive) {
                 break;
             }
             else {
-                if(frame.GetWord(i) != null) {
+                if (frame.GetWord(i) != null) {
                     playerInvenController.AddNewItem(frame.GetWord(i));
                     frame.SetWord(i, null);
                 }
@@ -148,6 +129,8 @@ public class CombineManager : MonoBehaviour {
         return frame.GetWord(index);
     }
 
+    #endregion
+
     //문장 조합
     public void CombineSubmit() {
         string dialogContents = string.Empty;
@@ -167,7 +150,6 @@ public class CombineManager : MonoBehaviour {
             }
 
             combineContainer.CloseCombineField();
-            halfInvenContainer.CloseCombineInven();
 
         }
         //TODO: Dialog -> FrameValidity 에서 띄워주는 게 좋을 듯?
@@ -175,7 +157,59 @@ public class CombineManager : MonoBehaviour {
             DialogManager.Instance.OpenDefaultDialog(dialogContents, DialogType.FAIL);
     }
 
-    //public void Activate(GameObject target, GameObject indicator) {
-    //    baseFrame.Activate(target, indicator);
-    //}
+    #region 리셋 및 초기화
+
+    //슬롯 닫을 때 초기화
+    public void CloseCombineSlot() {
+        if (baseFrameOpen) {
+            resetBaseFrame();
+        }
+        baseFrame = null;
+        baseFrameOpen = false;
+        gameObject.SetActive(false);
+    }
+
+    //베이스 프레임 단어 리셋
+    private void resetNotActiveBaseFrame() {
+        if (!baseFrame.IsActive) {
+            for (int i = 0; i < 3; i++) {
+                if (baseFrame.GetWord(i) != null) {
+                    playerInvenController.AddNewItem(baseFrame.GetWord(i));
+                    baseFrame.SetWord(i, null);
+                }
+                if (baseFrame.GetFrame(i) != null) {
+                    Frame tempFrame = baseFrame.GetFrame(i);
+                    if (!tempFrame.IsActive) {
+                        if (tempFrame.GetWord(i) != null) {
+                            playerInvenController.AddNewItem(tempFrame.GetWord(i));
+                            tempFrame.SetWord(i, null);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    //서브 프레임 단어 리셋
+    private void resetNotActiveSubFrame(int frameIndex) {
+        if (baseFrame.GetFrame(frameIndex) != null) {
+            Frame tempFrame = baseFrame.GetFrame(frameIndex);
+            if (!tempFrame.IsActive) {
+                for (int i = 0; i < 3; i++) {
+                    if (tempFrame.GetWord(i) != null) {
+                        playerInvenController.AddNewItem(tempFrame.GetWord(i));
+                        tempFrame.SetWord(i, null);
+                    }
+                }
+            }
+        }
+    }
+
+    //전체 베이스 프레임 리셋
+    private void resetBaseFrame() {
+        resetNotActiveBaseFrame();
+        baseFrame.SetBase(false);
+        frameListManager.AddFrame(baseFrame);
+    }
+    #endregion
 }
