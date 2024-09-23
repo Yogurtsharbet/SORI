@@ -33,6 +33,7 @@ public class CombineManager : MonoBehaviour {
         submitButton = FindObjectOfType<SubmitButtonController>();
 
         combineContainer = FindObjectOfType<CombineContainer>();
+        playerInvenController = FindObjectOfType<PlayerInvenController>();
 
         for (int i = 0; i < 4; i++) {
             frameObjects[i] = gameObject.transform.GetChild(i).gameObject;
