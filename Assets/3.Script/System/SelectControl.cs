@@ -14,7 +14,7 @@ public class SelectControl : MonoBehaviour {
     private PlayerBehavior playerBehavior;
     private CombineManager combineManager;
 
-    private Renderer clickedObject;
+    private List<Renderer> clickedObject;
     private Renderer prevObject;
     private Renderer nowObject;
 
@@ -46,6 +46,8 @@ public class SelectControl : MonoBehaviour {
 
         layerMask = (1 << LayerMask.NameToLayer("Ground")) | (1 << LayerMask.NameToLayer("Water"));
         layerMask = ~layerMask;
+
+        clickedObject = new List<Renderer>();
     }
 
     private void OnEnable() {
@@ -91,19 +93,18 @@ public class SelectControl : MonoBehaviour {
         ApplyMaterial(nowObject, clickedShader);
         IndicatorOn(nowObject);
 
-        if (clickedObject != null)
-            RemoveMaterial(clickedObject, clickedShader);
-        clickedObject = nowObject;
+        clickedObject.Add(nowObject);
     }
 
     private void CancelSelected() {
+        //TODO: 레이캐스트를 써서 취소시켜야 해!!!!!!!!!!!!
         IndicatorOff();
 
-        if (clickedObject != null) RemoveMaterial(clickedObject, clickedShader);
+        foreach (var each in clickedObject) RemoveMaterial(each, clickedShader);
         if (nowObject != null) RemoveMaterial(nowObject, outlineShader);
         if (prevObject != null) RemoveMaterial(prevObject, outlineShader);
-        
-        clickedObject = null;
+
+        clickedObject.Clear();
         nowObject = null;
         prevObject = null;
     }
