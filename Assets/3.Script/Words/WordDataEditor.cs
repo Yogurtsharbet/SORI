@@ -142,8 +142,8 @@ public class WordDataEditor : EditorWindow {
             EditorGUILayout.Space(20f);
 
             if (isNewAdd)
-                isModified &= _key != _keyOrig & _name != _nameOrig & _type != _typeOrig;
-            else isModified |= _key != _keyOrig | _name != _nameOrig | _type != _typeOrig;
+                isModified &= _key != _keyOrig & _tag != _tagOrig & _name != _nameOrig & _type != _typeOrig;
+            else isModified |= _key != _keyOrig | _tag != _tagOrig | _name != _nameOrig | _type != _typeOrig;
 
             // 수정 & 삭제 버튼
             EditorGUILayout.BeginHorizontal(); GUILayout.FlexibleSpace();
@@ -249,7 +249,7 @@ public class WordDataEditor : EditorWindow {
 
     private bool CheckUsedKey(WordKey key) {
         foreach (var each in words)
-            if (each.Key == key) return true;
+            if (each.Key == key && _key != _keyOrig) return true;
         return false;
     }
 

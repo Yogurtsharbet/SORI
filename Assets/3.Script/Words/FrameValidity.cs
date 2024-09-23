@@ -75,7 +75,8 @@ public class FrameValidity : MonoBehaviour {
 
     public static bool Check(Frame frame) {
         //조합창 만들기 버튼 누를 때 호출되어야 함
-        if (instance == null) instance = FindObjectOfType<FrameValidity>();
+        if (instance == null) 
+            instance = FindObjectOfType<FrameValidity>();
         instance.frame = frame;
         instance.commonWord = new CommonWord[frame.BlankCount];
         FrameActivate.ClearFunction();
@@ -136,6 +137,7 @@ public class FrameValidity : MonoBehaviour {
                             Word eachWordB = Word.GetWord(eachKeyB);
                             FrameActivate.AppendFunction(eachWordA, eachWordB);
                         }
+                        return true;
                     }
                 }
                 // AisB - Noun is Verb
@@ -151,6 +153,7 @@ public class FrameValidity : MonoBehaviour {
                     }
                     foreach (var eachPair in tempPair)
                         FrameActivate.AppendFunction(eachPair.Item1, eachPair.Item2);
+                    return true;
                 }
             }
 
@@ -168,6 +171,7 @@ public class FrameValidity : MonoBehaviour {
                 }
                 foreach (var eachPair in tempPair)
                     FrameActivate.AppendFunction(eachPair.Item1, eachPair.Item2);
+                return true;
             }
         }
         else if(frame.Type == FrameType.AtoBisC) {

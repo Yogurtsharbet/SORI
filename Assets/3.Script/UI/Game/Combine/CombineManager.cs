@@ -138,27 +138,28 @@ public class CombineManager : MonoBehaviour {
 
     //문장 조합
     public void CombineSubmit() {
-        if (baseFrame == null) return;
-        if (!FrameValidity.Check(baseFrame)) return;
-        //string dialogContents = string.Empty;
+        string dialogContents = string.Empty;
+        if (baseFrame == null) dialogContents = "프레임 없음";
+        else if (FrameValidity.Check(baseFrame)) {
 
-        bool isUnselectable = false;
-        foreach (var eachKeyA in FrameValidity.GetCommonWord(0).keys) {
-            Word eachWordA = Word.GetWord(eachKeyA);
-            if (WordData.wordProperty["UNSELECT"].Contains(eachWordA.Tag))
-                isUnselectable = true;
+            bool isUnselectable = false;
+            foreach (var eachKeyA in FrameValidity.GetCommonWord(0).keys) {
+                Word eachWordA = Word.GetWord(eachKeyA);
+                if (WordData.wordProperty["UNSELECT"].Contains(eachWordA.Tag))
+                    isUnselectable = true;
+            }
+
+            if (isUnselectable) FrameActivate.Activate();
+            else {
+                CameraControl.Instance.SetCamera(CameraControl.CameraStatus.SelectView);
+            }
+
+            combineContainer.CloseCombineField();
+            halfInvenContainer.CloseCombineInven();
+
         }
-
-        if (isUnselectable) FrameActivate.Activate();
-        else {
-            CameraControl.Instance.SetCamera(CameraControl.CameraStatus.SelectView);
-        }
-
-        combineContainer.CloseCombineField();
-        halfInvenContainer.CloseCombineInven();
-
         //TODO: Dialog -> FrameValidity 에서 띄워주는 게 좋을 듯?
-        //if (dialogContents != string.Empty)
-        //    DialogManager.Instance.OpenDefaultDialog(dialogContents, DialogType.FAIL);
+        if (dialogContents != string.Empty)
+            DialogManager.Instance.OpenDefaultDialog(dialogContents, DialogType.FAIL);
     }
 }

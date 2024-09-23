@@ -2,7 +2,7 @@
     "words": [
         {
             "_key": 100,
-            "_tag": "PLAYER",
+            "_tag": "Player",
             "_name": "소리",
             "_rank": 3,
             "_type": 1

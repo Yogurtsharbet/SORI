@@ -51,6 +51,7 @@ public class WordData : MonoBehaviour {
 
         Data = JsonUtility.FromJson<WordDataStruct>(dataFile.text);
         words = Data.words;
+        isUnselectable = Data.isUnselectable;
         isMovable = Data.isMovable;
         isChangable = Data.isChangable;
 
