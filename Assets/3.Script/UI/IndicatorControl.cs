@@ -9,9 +9,9 @@ public class IndicatorControl : MonoBehaviour {
 
     private Quaternion targetRotation;
     private Vector3 mousePosition;
+    public float angleToMouse;
 
-
-    [SerializeField] private float currentY = 0f;
+    public float currentY = 0f;
     private float rotateSpeed = 10f;
 
     public Vector3 indicatePosition;
@@ -31,44 +31,60 @@ public class IndicatorControl : MonoBehaviour {
     }
 
     private void OnDisable() {
+        fixedAngle = 0;
+        isInstantiated = false;
         inputAction.Disable();
     }
 
     private Vector3 directionToMouse;
+    private float fixedAngle;
 
     private void Update() {
-        Debug.Log(currentY);
         currentY += Time.deltaTime * rotateSpeed;
         if (currentY > 360f) currentY -= 360f;
 
-        targetRotation = Quaternion.LookRotation(Camera.main.transform.forward) * Quaternion.AngleAxis(330f, Vector3.right)
+        targetRotation = Quaternion.LookRotation(Camera.main.transform.forward) * Quaternion.AngleAxis(310f, Vector3.right)
         * Quaternion.AngleAxis(currentY, Vector3.up);
 
         transform.rotation = targetRotation;
 
         if (isInstantiated) {
-            arcArrow.Angle = currentY - Quaternion.AngleAxis(currentY, Vector3.up).eulerAngles.y;
+            arcArrow.Angle = angleToMouse - currentY + 180 - playerTransform.eulerAngles.y;
         }
-        else {
-            Ray ray = Camera.main.ScreenPointToRay(mousePosition);
-            Plane plane = new Plane(transform.up, transform.position);
-            if (plane.Raycast(ray, out float distance)) {
-                Vector3 mouseWorldPos = ray.GetPoint(distance);
-                directionToMouse = (mouseWorldPos - transform.position).normalized;
+        else CalcArrowAngle();
+    }
 
-                float angleToMouse = Mathf.Atan2(directionToMouse.x, directionToMouse.z) * Mathf.Rad2Deg;
-                arcArrow.Angle = angleToMouse - currentY + 180 - playerTransform.eulerAngles.y;
-            }
+    public void SetInstantitate(Transform original) {
+        var origin = original.GetComponent<IndicatorControl>();
+        isInstantiated = true;
+        transform.position = original.position;
+        transform.rotation = original.rotation;
+        currentY = origin.currentY;
+        CalcArrowAngle();
+        angleToMouse = origin.angleToMouse;
+        arcArrow.Angle = origin.arcArrow.Angle;
+        arcArrow.FillProgress = 0;
+        gameObject.SetActive(true);
+    }
+
+    private void CalcArrowAngle() {
+        Ray ray = Camera.main.ScreenPointToRay(mousePosition);
+        Plane plane = new Plane(transform.up, transform.position);
+        if (plane.Raycast(ray, out float distance)) {
+            Vector3 mouseWorldPos = ray.GetPoint(distance);
+            directionToMouse = (mouseWorldPos - transform.position).normalized;
+
+            angleToMouse = Mathf.Atan2(directionToMouse.x, directionToMouse.z) * Mathf.Rad2Deg;
+            arcArrow.Angle = angleToMouse - currentY + 180 - playerTransform.eulerAngles.y;
+
+            indicatePosition = transform.position +
+                    Quaternion.LookRotation(directionToMouse == Vector3.zero ? Vector3.one : directionToMouse)
+                    * Quaternion.AngleAxis(10f, Vector3.up) * Vector3.forward * 20f;
+            if (Physics.Raycast(indicatePosition, Vector3.down, out RaycastHit rayHit, Mathf.Infinity, LayerMask.GetMask("Ground")))
+                indicatePosition = rayHit.point;
+            else if (Physics.Raycast(indicatePosition, Vector3.up, out rayHit, Mathf.Infinity, LayerMask.GetMask("Ground")))
+                indicatePosition = rayHit.point;
         }
-        
-        indicatePosition = transform.position + 
-            Quaternion.LookRotation(directionToMouse == Vector3.zero ? Vector3.one : directionToMouse) 
-            * Quaternion.AngleAxis(10f, Vector3.up) * Vector3.forward * 20f;
-        if (Physics.Raycast(indicatePosition, Vector3.down, out RaycastHit rayHit, Mathf.Infinity, LayerMask.GetMask("Ground")))
-            indicatePosition = rayHit.point;
-        else if (Physics.Raycast(indicatePosition, Vector3.up, out rayHit, Mathf.Infinity, LayerMask.GetMask("Ground")))
-            indicatePosition = rayHit.point;
-
     }
 
     private void OnPoint(Vector2 value) {

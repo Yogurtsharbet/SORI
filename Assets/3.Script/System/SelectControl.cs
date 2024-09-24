@@ -68,6 +68,8 @@ public class SelectControl : MonoBehaviour {
         }
         else {
             Unselect();
+            ClearIndicator();
+            foreach (var each in clickedObject) RemoveMaterial(each, clickedShader);
         }
     }
 
@@ -97,16 +99,13 @@ public class SelectControl : MonoBehaviour {
             IndicatorOn(nowObject);
 
         clickedObject.Add(nowObject);
-
     }
 
     private void Unselect() {
-
-        IndicatorOff();
-
         if (nowObject != null) {
             RemoveMaterial(nowObject, outlineShader);
             RemoveMaterial(nowObject, clickedShader);
+            IndicatorOff();
         }
         if (prevObject != null) RemoveMaterial(prevObject, outlineShader);
 
@@ -132,16 +131,45 @@ public class SelectControl : MonoBehaviour {
         Indicator.gameObject.SetActive(true);
         Indicator.position = target.GetComponent<Collider>().bounds.center;
         // RepositionAtScreenOut();
+
+        foreach(var each in SpawnedIndicator) {
+            if (Vector3.Distance(each.transform.position, Indicator.position) <= 0.01f) {
+                each.SetActive(false);
+                break;
+            }
+        }
     }
 
     private void IndicatorOff() {
         Indicator.gameObject.SetActive(false);
+        foreach(var each in SpawnedIndicator) {
+            if (Vector3.Distance(nowObject.transform.position, each.transform.position) <= 0.01f) {
+                each.SetActive(false);
+                break;
+            }
+        }
     }
 
     private void SetIndicator() {
-        Instantiate(Indicator, Indicator.position, Indicator.rotation, Indicator.parent)
-            .GetComponent<IndicatorControl>().isInstantiated = true;
+        foreach(var each in SpawnedIndicator) {
+            if( !each.activeSelf) {
+                each.GetComponent<IndicatorControl>().SetInstantitate(Indicator);
+                Indicator.gameObject.SetActive(false);
+                return;
+            }
+        }
+
+        GameObject spawn = Instantiate(Indicator, Indicator.position, Indicator.rotation, Indicator.parent).gameObject;
+        spawn.GetComponent<IndicatorControl>().isInstantiated = true;
+
+        SpawnedIndicator.Add(spawn);
         Indicator.gameObject.SetActive(false);
+    }
+
+    private void ClearIndicator() {
+        foreach(var each in SpawnedIndicator) {
+            each.SetActive(false);
+        }
     }
 
     private void OnPoint(Vector2 value) {
