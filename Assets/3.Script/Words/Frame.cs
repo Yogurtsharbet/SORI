@@ -34,7 +34,7 @@ public class Frame {
 
     public FrameType Type { get { return _type; } }
     public FrameRank Rank { get { return _rank; } }
-    
+
     public int BlankCount { get { return blankCount; } }
     public bool IsBase { get { return isBase; } }
     public bool IsActive { get { return isActive; } }
@@ -47,7 +47,7 @@ public class Frame {
     public Frame frameA { get { return blankCount > 0 ? blankFrame[0] : null; } }
     public Frame frameB { get { return blankCount > 1 ? blankFrame[1] : null; } }
     public Frame frameC { get { return blankCount > 2 ? blankFrame[2] : null; } }
-    
+
     public void SetWord(int index, Word word) {
         if (index < 0 || index >= blankCount) return;
         blankWord[index] = word;
@@ -58,7 +58,7 @@ public class Frame {
         return blankWord[index];
     }
 
-    public void SetFrame (int index, Frame frame) {
+    public void SetFrame(int index, Frame frame) {
         if (index < 0 || index >= blankCount) return;
         blankFrame[index] = frame;
     }
@@ -99,6 +99,20 @@ public class Frame {
         }
         blankWord = new Word[blankCount];
         blankFrame = new Frame[blankCount];
+    }
+
+    public int CountOfFrame() {
+        switch (_type) {
+            case FrameType.NotA:
+                return 1;
+            case FrameType.AisB:
+            case FrameType.AandB:
+                return 2;
+            case FrameType.AtoBisC:
+                return 3;
+            default:
+                return 0;
+        }
     }
 
 }

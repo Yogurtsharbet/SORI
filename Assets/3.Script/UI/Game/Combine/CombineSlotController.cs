@@ -12,6 +12,9 @@ public class CombineSlotController : MonoBehaviour {
     private int childCount = 0;
     public int ChildCount => childCount;
 
+    private FrameType parentType;
+    public FrameType ParentType => parentType;
+
     private void Awake() {
         if (gameObject.transform.parent.name.Contains("00")) {
             slotIndex = 0;
@@ -22,6 +25,7 @@ public class CombineSlotController : MonoBehaviour {
         else {
             slotIndex = 2;
         }
+
         childCount = gameObject.transform.childCount;
         if (childCount == 1) {
             dataObject.Add(gameObject.transform.GetChild(0).gameObject);
@@ -33,8 +37,21 @@ public class CombineSlotController : MonoBehaviour {
             dataObject.Add(dataObject[1].transform.GetChild(1).gameObject); //frame02
         }
 
+        string parentName = transform.parent.transform.parent.name;
+        if (parentName.Contains("01")) {
+            parentType = FrameType.AandB;
+        }else if (parentName.Contains("02")) {
+            parentType = FrameType.AisB;
+        }else if (parentName.Contains("03")) {
+            parentType = FrameType.AtoBisC;
+        }else if (parentName.Contains("04")) {
+            parentType = FrameType.NotA;
+        }
+            
         wordText = dataObject[0].GetComponentInChildren<Text>();
+    }
 
+    private void Start() {
         for (int i = 0; i < dataObject.Count; i++) {
             dataObject[i].SetActive(false);
         }

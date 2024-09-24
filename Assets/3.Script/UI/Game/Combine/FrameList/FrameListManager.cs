@@ -1,5 +1,4 @@
 using DG.Tweening;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -38,7 +37,7 @@ public class FrameListManager : MonoBehaviour {
         }
 
         inputAction.UI.ScrollWheel.performed += value => OnScroll(value.ReadValue<Vector2>());
-        activeStatus =FindObjectOfType<ActiveStatusController>();
+        activeStatus = FindObjectOfType<ActiveStatusController>();
     }
 
     private void Start() {
@@ -82,10 +81,12 @@ public class FrameListManager : MonoBehaviour {
         }
 
         frameList[0].SetWord(0, Word.GetWord());
-        frameList[0].SetFrame(1, new Frame());
-        Frame tempFrame = frameList[0].GetFrame(1);
-        tempFrame.SetWord(0, Word.GetWord());
-        tempFrame.SetWord(1, Word.GetWord());
+        if (frameList[0].Type != FrameType.NotA) {
+            frameList[0].SetFrame(1, new Frame());
+            Frame tempFrame = frameList[0].GetFrame(1);
+            tempFrame.SetWord(0, Word.GetWord());
+            tempFrame.SetWord(1, Word.GetWord());
+        }
     }
 
     #region 스크롤
@@ -98,7 +99,7 @@ public class FrameListManager : MonoBehaviour {
             slider.interactable = true;
         }
     }
-   
+
     public void OnSliding(float value) {
         for (int i = 0; i < poolingCount; i++) {
             initialPositions[i].y += (value - previousValue) * 145f;
