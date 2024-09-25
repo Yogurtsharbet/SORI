@@ -3,6 +3,19 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using Cinemachine;
 
+public class SelectData {
+    public List<GameObject> clickedObject;
+    public List<GameObject> Indicator;
+
+    public SelectData(List<Renderer> clickedObject, List<GameObject> Indicator) {
+        this.Indicator = Indicator;
+        this.clickedObject = new List<GameObject>();
+        foreach(var each in clickedObject) {
+            this.clickedObject.Add(each.gameObject);
+        }
+    }
+}
+
 public class SelectControl : MonoBehaviour {
     private List<Material> selectedMaterials = new List<Material>();
     [SerializeField] private Material outlineShader;
@@ -29,6 +42,7 @@ public class SelectControl : MonoBehaviour {
     private CameraControl.CameraStatus cameraStatus;
 
     private List<GameObject> SpawnedIndicator;
+    private (List<Renderer>, List<GameObject>) SelectData;
 
     private void Awake() {
         playerBehavior = FindObjectOfType<PlayerBehavior>();
@@ -36,7 +50,7 @@ public class SelectControl : MonoBehaviour {
         combineContainer = FindObjectOfType<CombineContainer>();
 
         cameraBrain = FindObjectOfType<CinemachineBrain>();
-        Indicator = transform.GetChild(0);
+        Indicator = GetComponentInChildren<IndicatorControl>().transform;
 
         inputAction = new DefaultInputActions();
         inputAction.UI.Point.performed += value => OnPoint(value.ReadValue<Vector2>());
@@ -91,7 +105,6 @@ public class SelectControl : MonoBehaviour {
     }
 
     private void Select() {
-
         if (nowObject == null) return;
 
         ApplyMaterial(nowObject, clickedShader);
@@ -105,6 +118,7 @@ public class SelectControl : MonoBehaviour {
         if (nowObject != null) {
             RemoveMaterial(nowObject, outlineShader);
             RemoveMaterial(nowObject, clickedShader);
+            clickedObject.Remove(nowObject);
             IndicatorOff();
         }
         if (prevObject != null) RemoveMaterial(prevObject, outlineShader);
@@ -132,7 +146,7 @@ public class SelectControl : MonoBehaviour {
         Indicator.position = target.GetComponent<Collider>().bounds.center;
         // RepositionAtScreenOut();
 
-        foreach(var each in SpawnedIndicator) {
+        foreach (var each in SpawnedIndicator) {
             if (Vector3.Distance(each.transform.position, Indicator.position) <= 0.01f) {
                 each.SetActive(false);
                 break;
@@ -142,8 +156,8 @@ public class SelectControl : MonoBehaviour {
 
     private void IndicatorOff() {
         Indicator.gameObject.SetActive(false);
-        foreach(var each in SpawnedIndicator) {
-            if (Vector3.Distance(nowObject.transform.position, each.transform.position) <= 0.01f) {
+        foreach (var each in SpawnedIndicator) {
+            if (Vector3.Distance(nowObject.GetComponent<Collider>().bounds.center, each.transform.position) <= 0.01f) {
                 each.SetActive(false);
                 break;
             }
@@ -151,8 +165,8 @@ public class SelectControl : MonoBehaviour {
     }
 
     private void SetIndicator() {
-        foreach(var each in SpawnedIndicator) {
-            if( !each.activeSelf) {
+        foreach (var each in SpawnedIndicator) {
+            if (!each.activeSelf) {
                 each.GetComponent<IndicatorControl>().SetInstantitate(Indicator);
                 Indicator.gameObject.SetActive(false);
                 return;
@@ -167,7 +181,7 @@ public class SelectControl : MonoBehaviour {
     }
 
     private void ClearIndicator() {
-        foreach(var each in SpawnedIndicator) {
+        foreach (var each in SpawnedIndicator) {
             each.SetActive(false);
         }
     }
@@ -192,9 +206,11 @@ public class SelectControl : MonoBehaviour {
     }
 
     private void OnEnter() {
-        if (clickedObject == null) return;
+        if (clickedObject.Count == 0) return;
         playerBehavior.ToggleCombineMode();
-        FrameActivate.Activate();
+
+        FrameActivate.Activate(new SelectData(clickedObject, SpawnedIndicator));
+        clickedObject.Clear(); SpawnedIndicator.Clear();
     }
 
     private void OnCancel() {
@@ -238,3 +254,4 @@ public class SelectControl : MonoBehaviour {
 //TODO: 여러개 선택할 수 있고, 선택 범위 (distance 제한) 만들고, 선택한 오브젝트를 우클릭하면 해제되고.
 //TODO: 선택한 오브젝트가 movable 이면 indicator 표시하고, 재차 클릭하면 indicator 고정
 
+//TODO: R키 누르면 전부 Unselect

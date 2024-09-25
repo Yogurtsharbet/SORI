@@ -1,6 +1,5 @@
 using System;
 using UnityEngine;
-using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
 using Random = UnityEngine.Random;
@@ -9,7 +8,11 @@ using WordKey = System.UInt16;
 
 public class FrameActivate : MonoBehaviour {
     private static FrameActivate instance;
+    private WordFunction wordFunction;
+
     private List<(Word, Word, Word)> activeFunction;
+    private SelectData selectData;
+
     public List<WordTag> targetTag { get; private set; }
 
     private void Awake() {
@@ -20,11 +23,13 @@ public class FrameActivate : MonoBehaviour {
         else
             Destroy(gameObject);
 
+        wordFunction = FindObjectOfType<WordFunction>();
         activeFunction = new List<(Word, Word, Word)>();
         targetTag = new List<WordTag>();
     }
 
     public static bool CheckMovable(WordTag tag) {
+        //TODO: 이동관련 동사 추가시 TAG 추가
         foreach(var each in instance.activeFunction) {
             if (each.Item1.Tag == tag) {
                 if (each.Item3 == null) {
@@ -49,9 +54,10 @@ public class FrameActivate : MonoBehaviour {
     }
 
     private void AppendTag() {
+        // AisB 에서 item1 이 Noun. 동사적용 대상일 경우 Tag Append
         var last = activeFunction[activeFunction.Count - 1];
         if (last.Item3 == null) {
-            if (last.Item1.Type == WordType.NOUN)
+            if (last.Item1.IsNoun)
                 targetTag.Add(last.Item1.Tag);
         }
         else {  // AtoBisC
@@ -60,43 +66,59 @@ public class FrameActivate : MonoBehaviour {
     }
 
     public new static bool CompareTag(WordTag tag) {
+        // tag가 activeFunction의 Item1 에 있는지
         return instance.targetTag.Contains(tag);
     }
 
-    public static void Activate() { 
+    public static void Activate (Word word) {
+
+    }
+
+    public static void Activate(SelectData selectData) {
+        instance.selectData = selectData;
+        instance.ActivateFunction();
+    }
+
+    private void ActivateFunction() {
+        //activeFunction Queue에 있는 모든 Function을 실행
+        //Select된 오브젝트를 Queue의 word와 비교. 선택된 tag에 붙은 모든 verb / sentence를 activate
+        foreach (var eachFunction in activeFunction) {
+            if (eachFunction.Item3 == null) {
+                for (int i = 0; i < selectData.clickedObject.Count; i++) {
+                    var clicked = selectData.clickedObject[i];
+                    if (eachFunction.Item1.Tag == clicked.tag) {
+                        Function(clicked, eachFunction.Item2, GetIndicator(clicked));
+                    }
+                }
+
+            }
+            else {
+
+            }
+        }
+    }
+
+    private GameObject GetIndicator(GameObject clicked) {
+        if (!CheckMovable(clicked.tag)) return null;
+
+        for (int i = 0; i < selectData.Indicator.Count; i++) {
+            var indicator = selectData.Indicator[i];
+            if (Vector3.Distance(
+                indicator.transform.position, clicked.GetComponent<Collider>().bounds.center) < 0.1f) {
+                selectData.Indicator.RemoveAt(i);
+                return clicked;
+            }
+        }
+        return null;
+    }
+
+    private void Function(GameObject target, Word word, GameObject indicator = null) {
+        wordFunction.Excute(new WordFunctionData(target, word, indicator));
+    }
+
+
     
-    }
-
-    public void Activate(GameObject target, GameObject indicator) {
-        //switch (_type) {
-        //    case FrameType.AisB:
-        //        Function(target, indicator);
-        //
-        //        break;
-        //    case FrameType.AtoBisC:
-        //        break;
-        //    case FrameType.AandB:
-        //        break;
-        //    case FrameType.NotA:
-        //        break;
-        //    default: return;
-        //}
-    }
-
-    //private Vector3 GetIndicatePosition(GameObject target, GameObject indicator, FrameRank rank) {
-    //    Vector3 position = indicator.GetComponent<IndicatorControl>().indicatePosition;
-
-    //    float distance = 1f;
-    //    switch (rank) {
-    //        case FrameRank.EPIC:
-    //            distance = 2f; break;
-    //        case FrameRank.LEGEND:
-    //            distance = 4f; break;
-    //    }
-    //    position = position * distance;
-    //    Debug.Log(position);
-    //    return position;
-    //}
+}
 
     //private void Function(GameObject target, GameObject indicator) {
     //    WordType verbProperty = Word.CheckWordProperty(wordB)[0];
@@ -130,4 +152,3 @@ public class FrameActivate : MonoBehaviour {
     //            .Play();
     //    //TODO: 일부 rigid가 뚫고 지나가는 문제 (파악못함)
     //}
-}

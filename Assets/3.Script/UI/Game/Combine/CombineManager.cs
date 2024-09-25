@@ -24,6 +24,7 @@ public class CombineManager : MonoBehaviour {
     private CombineContainer combineContainer;
 
     private SelectControl selectControl;
+    private WordFunction wordFunction;
 
     private GameObject[] frameObjects = new GameObject[4];
 
@@ -33,6 +34,7 @@ public class CombineManager : MonoBehaviour {
         submitButton = FindObjectOfType<SubmitButtonController>();
         playerInvenController = FindObjectOfType<PlayerInvenController>();
         combineContainer = FindObjectOfType<CombineContainer>();
+        wordFunction = FindObjectOfType<WordFunction>();
 
         for (int i = 0; i < 4; i++) {
             frameObjects[i] = gameObject.transform.GetChild(i).gameObject;
@@ -136,13 +138,18 @@ public class CombineManager : MonoBehaviour {
         string dialogContents = string.Empty;
         if (baseFrame == null) dialogContents = "프레임 없음";
         else if (FrameValidity.Check(baseFrame)) {
-
             bool isUnselectable = false;
+            wordFunction.frameRank = baseFrame.Rank;
+
             foreach (var eachKeyA in FrameValidity.GetCommonWord(0).keys) {
                 Word eachWordA = Word.GetWord(eachKeyA);
                 if (WordData.wordProperty["UNSELECT"].Contains(eachWordA.Tag))
                     isUnselectable = true;
-            }
+            }//TODO: HP 그리고 소리 가 증가한다 : Unselcet 와 selectable 혼재 할 경우 selectMode 되어야.
+            //TODO: 그렇다면 Unselectable에 따라 Activate를 다르게 호출하는것이 아니라, ActiveFunction에서 
+            //TODO: activeFunction Queue를 조사할 때 Item1이 unselectable인지 조사해서
+            //TODO: selectData를 가져오지 않아도 즉시 function이 작동하도록 바꿔야할듯
+ 
 
             if (isUnselectable) FrameActivate.Activate();
             else {

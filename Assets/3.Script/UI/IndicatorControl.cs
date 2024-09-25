@@ -12,7 +12,7 @@ public class IndicatorControl : MonoBehaviour {
     public float angleToMouse;
 
     public float currentY = 0f;
-    private float rotateSpeed = 10f;
+    private float rotateSpeed = 18f;
 
     public Vector3 indicatePosition;
     public bool isInstantiated;
@@ -23,7 +23,6 @@ public class IndicatorControl : MonoBehaviour {
 
         inputAction = new DefaultInputActions();
         inputAction.UI.Point.performed += value => OnPoint(value.ReadValue<Vector2>());
-
     }
 
     private void OnEnable() {
@@ -63,7 +62,7 @@ public class IndicatorControl : MonoBehaviour {
         CalcArrowAngle();
         angleToMouse = origin.angleToMouse;
         arcArrow.Angle = origin.arcArrow.Angle;
-        arcArrow.FillProgress = 0;
+        rotateSpeed = 5f;
         gameObject.SetActive(true);
     }
 
