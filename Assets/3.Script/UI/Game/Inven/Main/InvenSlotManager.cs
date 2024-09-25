@@ -1,9 +1,8 @@
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 
-// [UI] ÀÎº¥Åä¸® - ÀÎº¥ ½½·Ô ¸ñ·Ï ¸Å´ÏÀú
-public class InvenSlotManager :CommonInvenSlotManager {
+// [UI] ì¸ë²¤í† ë¦¬ - ì¸ë²¤ ìŠ¬ë¡¯ ëª©ë¡ ë§¤ë‹ˆì €
+public class InvenSlotManager : CommonInvenSlotManager {
     private SynthesisManager synthesisManager;
     private InvenSlotController[] invenSlotControllers;
 
@@ -39,24 +38,20 @@ public class InvenSlotManager :CommonInvenSlotManager {
         }
 
         playerInvenController.InvenChanged += updateSlot;
-    }
 
-    private void Start() {
         for (int i = 0; i < 20; i++) {
             invenSlotControllers[i].CloseSlot();
-        }
-        for (int i = 0; i < playerInvenController.InvenOpenCount; i++) {
-            invenSlotControllers[i].OpenSlot();
         }
     }
 
     private void Update() {
-        //»èÁ¦ confirm Ã¼Å©
+        //ì‚­ì œ confirm ì²´í¬
         if (waitConfirm) {
             if (DialogManager.Instance.GetIsConfirmed() == 1) {
                 RemoveWord();
                 waitConfirm = false;
-            }else if(DialogManager.Instance.GetIsConfirmed() == 0) {
+            }
+            else if (DialogManager.Instance.GetIsConfirmed() == 0) {
                 DialogManager.Instance.ResetIsConfirm();
                 waitConfirm = false;
             }
@@ -67,7 +62,7 @@ public class InvenSlotManager :CommonInvenSlotManager {
         playerInvenController.InvenChanged -= updateSlot;
     }
 
-    //ÇÕ¼ºÃ¢ index¿¡ ÀÖ´Â ´Ü¾î¿Í ÀÎº¥ ´Ü¾î ½ºÀ§Äª
+    //í•©ì„±ì°½ indexì— ìˆëŠ” ë‹¨ì–´ì™€ ì¸ë²¤ ë‹¨ì–´ ìŠ¤ìœ„ì¹­
     public void SwitchingInvenToSynthesisSlot(int invenIndex, int index) {
         Word tempWord = playerInvenController.GetWordIndex(invenIndex);
         playerInvenController.RemoveItemIndex(invenIndex);
@@ -75,13 +70,17 @@ public class InvenSlotManager :CommonInvenSlotManager {
         synthesisManager.SlotItemChangeFromIndex(index, tempWord, invenIndex);
     }
 
-    //¼±ÅÃÇÑ index½½·Ô¿¡ ´Ü¾î Ãß°¡
+    //ì„ íƒí•œ indexìŠ¬ë¡¯ì— ë‹¨ì–´ ì¶”ê°€
     public void SetWordAdd(int invenIndex, int index) {
         synthesisManager.SlotItemChangeFromIndex(index, playerInvenController.GetWordIndex(invenIndex), invenIndex);
         playerInvenController.RemoveItemIndex(invenIndex);
     }
 
     private void updateSlot(List<Word> inventory) {
+        for (int i = 0; i < playerInvenController.InvenOpenCount; i++) {
+            invenSlotControllers[i].OpenSlot();
+        }
+
         for (int i = 0; i < inventory.Count; i++) {
             if (inventory[i] != null) {
                 invenSlotControllers[i].SetSlotWord(inventory[i]);
@@ -90,9 +89,5 @@ public class InvenSlotManager :CommonInvenSlotManager {
                 invenSlotControllers[i].SetSlotWord(null);
             }
         }
-    }
-
-    public RectTransform GetSlotRectTransform(int num) {
-        return invenSlotControllers[num].GetComponent<RectTransform>();
     }
 }

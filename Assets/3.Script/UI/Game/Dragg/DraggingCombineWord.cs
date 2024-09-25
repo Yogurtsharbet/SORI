@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -9,7 +8,7 @@ public class DraggingCombineWord : DraggingObject, IEndDragHandler, IDragHandler
 
     private HalfInvenSlotController halfInvenSlot;
     private Vector3 originalScale;
-    private WordDragTarget previousTarget = null;
+    private WordDragCombineTarget previousTarget = null;
 
 
     private void Awake() {
@@ -42,10 +41,10 @@ public class DraggingCombineWord : DraggingObject, IEndDragHandler, IDragHandler
 
         var results = new List<RaycastResult>();
         EventSystem.current.RaycastAll(pointerData, results);
-        List<WordDragTarget> tempList = new List<WordDragTarget>();
+        List<WordDragCombineTarget> tempList = new List<WordDragCombineTarget>();
 
         foreach (var result in results) {
-            if (result.gameObject.TryGetComponent(out WordDragTarget target)) {
+            if (result.gameObject.TryGetComponent(out WordDragCombineTarget target)) {
                 tempList.Add(target);
             }
         }
@@ -85,10 +84,10 @@ public class DraggingCombineWord : DraggingObject, IEndDragHandler, IDragHandler
 
         var results = new List<RaycastResult>();
         EventSystem.current.RaycastAll(pointerData, results);
-        List<WordDragTarget> tempList = new List<WordDragTarget>();
+        List<WordDragCombineTarget> tempList = new List<WordDragCombineTarget>();
 
         foreach (var result in results) {
-            if (result.gameObject.TryGetComponent(out WordDragTarget target)) {
+            if (result.gameObject.TryGetComponent(out WordDragCombineTarget target)) {
                 tempList.Add(target);
             }
         }
@@ -122,7 +121,7 @@ public class DraggingCombineWord : DraggingObject, IEndDragHandler, IDragHandler
     }
 
     //count가 1개 - baseframe의 word, 2개 - subFrame의 word
-    private void hitObject(WordDragTarget target) {
+    private void hitObject(WordDragCombineTarget target) {
         Word slotWord = target.OpenCombineWord(halfInvenSlot.ThisWord);
         if (slotWord != null) {
             halfInvenSlot.AddWord(slotWord);
@@ -130,7 +129,7 @@ public class DraggingCombineWord : DraggingObject, IEndDragHandler, IDragHandler
         halfInvenSlot.DeleteWord();
     }
 
-    private void hitObject(WordDragTarget target, WordDragTarget targetParent) {
+    private void hitObject(WordDragCombineTarget target, WordDragCombineTarget targetParent) {
         Word slotWord = target.OpenCombineWord(halfInvenSlot.ThisWord, targetParent);
         if (slotWord != null) {
             halfInvenSlot.AddWord(slotWord);

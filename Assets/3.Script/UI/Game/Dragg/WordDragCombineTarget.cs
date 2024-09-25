@@ -1,8 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class WordDragTarget : MonoBehaviour {
+public class WordDragCombineTarget : MonoBehaviour {
     public RectTransform ThisRectTransform { get; private set; }
     private CombineManager combineManager;
     private CombineSlotController combineSlotController;
@@ -12,7 +10,7 @@ public class WordDragTarget : MonoBehaviour {
         ThisRectTransform = GetComponent<RectTransform>();
         combineManager = FindObjectOfType<CombineManager>();
         combineSlotController = gameObject.GetComponent<CombineSlotController>();
-        if(gameObject.TryGetComponent<FrameDragTarget>(out FrameDragTarget fr)) {
+        if (gameObject.TryGetComponent<FrameDragTarget>(out FrameDragTarget fr)) {
             frameDragTarget = fr;
         }
         else {
@@ -34,8 +32,8 @@ public class WordDragTarget : MonoBehaviour {
         return newWord;
     }
 
-    public Word OpenCombineWord(Word word, WordDragTarget parent) {
-        int slotIndex = combineSlotController.OpenWord(word); 
+    public Word OpenCombineWord(Word word, WordDragCombineTarget parent) {
+        int slotIndex = combineSlotController.OpenWord(word);
         Word newWord = combineManager.GetWord(parent.combineSlotController.SlotIndex, slotIndex);
         combineManager.SetWord(parent.combineSlotController.SlotIndex, slotIndex, word);
         return newWord;
@@ -48,7 +46,7 @@ public class WordDragTarget : MonoBehaviour {
     }
 
     public bool IsSlotExistFrame() {
-        if(frameDragTarget == null) {
+        if (frameDragTarget == null) {
             return false;
         }
         else {

@@ -14,6 +14,7 @@ public class HalfInvenManager : CommonInvenSlotManager {
         halfInvenContainer = FindObjectOfType<HalfInvenContainer>();
         halfInvenSlot = new HalfInvenSlotController[20];
         invenSelectControllers = new InvenSlotSelectController[20];
+        playerInvenController = FindObjectOfType<PlayerInvenController>();
 
         for (int i = 0; i < 20; i++) {
             Vector3 position;
@@ -40,7 +41,6 @@ public class HalfInvenManager : CommonInvenSlotManager {
             halfInvenSlot[i].SetKey(i);
         }
 
-        playerInvenController = FindObjectOfType<PlayerInvenController>();
         playerInvenController.InvenChanged += updateSlot;
 
         for (int i = 0; i < 20; i++) {
@@ -50,10 +50,6 @@ public class HalfInvenManager : CommonInvenSlotManager {
 
     public void SetCombineMode(bool yn) {
         isCombineMode = yn;
-    }
-
-    private void OnDestroy() {
-        playerInvenController.InvenChanged -= updateSlot;
     }
 
     private void updateSlot(List<Word> inventory) {
@@ -69,6 +65,9 @@ public class HalfInvenManager : CommonInvenSlotManager {
                 halfInvenSlot[i].SetSlotWord(null);
             }
         }
+    }
+    private void OnDestroy() {
+        playerInvenController.InvenChanged -= updateSlot;
     }
 
     public void OpenInven() {
