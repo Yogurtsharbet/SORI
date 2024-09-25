@@ -44,7 +44,6 @@ public class FrameListManager : MonoBehaviour {
         testData(); //TODO: 테스트 데이터 지우기
 
         CheckScrollbar();
-        slider.maxValue = frameList.Count;
 
         if (frameList.Count >= 6) {
             for (int i = 0; i < poolingCount; i++) {
@@ -82,8 +81,6 @@ public class FrameListManager : MonoBehaviour {
         for (int i = 0; i < 4; i++) {
             AddFrame();
         }
-
-        Debug.Log("count : " + frameList.Count);
     }
 
     private void randomTestFrame() {
@@ -175,6 +172,7 @@ public class FrameListManager : MonoBehaviour {
             slider.gameObject.SetActive(false);
         }
         else {
+            slider.maxValue = frameList.Count - 5;
             slider.gameObject.SetActive(true);
             slider.interactable = true;
         }
@@ -185,11 +183,9 @@ public class FrameListManager : MonoBehaviour {
             initialPositions[i].y += (value - previousValue) * 145f;
             if (initialPositions[i].y > 605f) {
                 initialPositions[i].y -= 1450f;
-                UpdateSlotData(i);
             }
             else if (initialPositions[i].y < -845f) {
                 initialPositions[i].y += 1450f;
-                UpdateSlotData(i);
             }
             slotList[i].transform.DOLocalMoveY(initialPositions[i].y, 0.05f).SetEase(Ease.InOutQuad);
             if (slotList[i].transform.localPosition.y > 480f || slotList[i].transform.localPosition.y < -440f) {
@@ -199,6 +195,7 @@ public class FrameListManager : MonoBehaviour {
                 slotList[i].SetActive(true);
             }
         }
+        UpdateSlotData(value);
         previousValue = value;
     }
 
@@ -206,10 +203,10 @@ public class FrameListManager : MonoBehaviour {
         if (ActiveStatusController.IsOpenFrameList) {
             float scrollDelta = -value.y;
             if (scrollDelta > 0f) {
-                slider.value = Mathf.Clamp(slider.value + 0.5f, slider.minValue, slider.maxValue);
+                slider.value = Mathf.Clamp(slider.value + 1f, slider.minValue, slider.maxValue);
             }
             else if (scrollDelta < 0f) {
-                slider.value = Mathf.Clamp(slider.value - 0.5f, slider.minValue, slider.maxValue);
+                slider.value = Mathf.Clamp(slider.value - 1f, slider.minValue, slider.maxValue);
             }
         }
     }
@@ -235,6 +232,7 @@ public class FrameListManager : MonoBehaviour {
 
     private void UpdateSlotData(float scrollValue) {
         CheckScrollbar();
+
         int value = (int)scrollValue;
         for (int i = 0; i < poolingCount; i++) {
             if (i + value < frameList.Count) {
