@@ -97,6 +97,7 @@ public class DraggingCombineWord : DraggingObject, IEndDragHandler, IDragHandler
             if (tempList[0].IsFrameActive()) {
                 string contents = "이미 조합된 문장틀입니다.\n새 문장을 만드시려면 새 문장틀을 선택해주세요.";
                 DialogManager.Instance.OpenDefaultDialog(contents, DialogType.FAIL);
+                tempList[0].ChangeLocale(originalScale);
                 return;
             }
 
@@ -116,6 +117,7 @@ public class DraggingCombineWord : DraggingObject, IEndDragHandler, IDragHandler
         else {
             //TODO: 다른 SLOT일때 스위칭 혹은 원래대로
 
+            tempList[0].ChangeLocale(originalScale);
         }
     }
 

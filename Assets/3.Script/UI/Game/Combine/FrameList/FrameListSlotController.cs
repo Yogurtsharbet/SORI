@@ -53,47 +53,47 @@ public class FrameListSlotController : MonoBehaviour, IPointerClickHandler {
 
         frameByType[((int)thisFrameType - 1)].SetActive(true);
 
-        if (thisFrameType != FrameType.NotA) {
-            List<CombineSlotController> tempSlots = new List<CombineSlotController>();
-            for (int i = 0; i < combineSlotControllers.Count; i++) {
-                if (combineSlotControllers[i].Item1 == ((int)thisFrameType - 1)) {
-                    tempSlots.Add(combineSlotControllers[i].Item2);
-                }
-            }
+        setActiveFrameData(thisFrame);
+    }
 
+    private void setActiveFrameData(Frame baseFrame) {
+        List<CombineSlotController> tempSlots = new List<CombineSlotController>();
+        for (int i = 0; i < combineSlotControllers.Count; i++) {
+            if (combineSlotControllers[i].Item1 == ((int)baseFrame.Type - 1)) {
+                tempSlots.Add(combineSlotControllers[i].Item2);
+            }
+        }
+
+        if (baseFrame.Type != FrameType.NotA) {
             int wordCount = 0;
-            for (int i = 0; i < 3; i++) {
-                if (thisFrame.GetWord(i) != null) {
+            for (int i = 0; i < baseFrame.CountOfFrame(); i++) {
+                if (baseFrame.GetWord(i) != null) {
                     for (int j = 0; j < tempSlots.Count; j++) {
-                        if (tempSlots[j].SlotIndex == i && tempSlots[j].ChildCount > 1) {
-                            tempSlots[j].OpenWord(thisFrame.GetWord(i));
+                        if (tempSlots[j].SlotIndex == i && !tempSlots[j].IsSub) {
+                            tempSlots[j].OpenWord(baseFrame.GetWord(i));
                             wordCount++;
                         }
-                        if (wordCount >= thisFrame.CountOfFrame())
-                            break;
                     }
                 }
             }
 
-            if (wordCount < thisFrame.CountOfFrame()) {
-
-                for (int i = 0; i < 3; i++) {
-                    Frame tempFrame = thisFrame.GetFrame(i);
+            if (wordCount < baseFrame.CountOfFrame()) {
+                for (int i = 0; i < baseFrame.CountOfFrame(); i++) {
+                    Frame tempFrame = baseFrame.GetFrame(i);
                     if (tempFrame == null) continue;
 
                     foreach (var slot in tempSlots) {
-                        if (slot.SlotIndex != i || slot.ChildCount <= 1) continue;
+                        if (slot.SlotIndex != i || slot.IsSub) continue;
 
                         slot.OpenFrame(tempFrame.Type);
 
-                        for (int k = 0; k < 3; k++) {
+                        for (int k = 0; k < tempFrame.CountOfFrame(); k++) {
                             Word word = tempFrame.GetWord(k);
                             if (word == null) continue;
 
                             foreach (var subSlot in tempSlots) {
-                                if (subSlot.SlotIndex == k && subSlot.ChildCount < 2 && subSlot.ParentType == tempFrame.Type) {
+                                if (subSlot.SlotIndex == k && subSlot.IsSub && subSlot.ParentType == tempFrame.Type) {
                                     subSlot.OpenWord(word);
-                                    break;
                                 }
                             }
                         }
@@ -102,7 +102,15 @@ public class FrameListSlotController : MonoBehaviour, IPointerClickHandler {
             }
         }
         else {
-
+            for (int i = 0; i < baseFrame.CountOfFrame(); i++) {
+                if (baseFrame.GetWord(i) != null) {
+                    for (int j = 0; j < tempSlots.Count; j++) {
+                        if (tempSlots[j].SlotIndex == i && !tempSlots[j].IsSub) {
+                            tempSlots[j].OpenWord(baseFrame.GetWord(i));
+                        }
+                    }
+                }
+            }
         }
     }
 

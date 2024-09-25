@@ -76,16 +76,94 @@ public class FrameListManager : MonoBehaviour {
     }
 
     private void testData() {
-        for (int i = 0; i < 8; i++) {
-            AddFrame(new Frame());
+        for (int i = 0; i < 2; i++) {
+            randomTestFrame();
+        }
+        for (int i = 0; i < 4; i++) {
+            AddFrame();
         }
 
-        frameList[0].SetWord(0, Word.GetWord());
-        if (frameList[0].Type != FrameType.NotA) {
-            frameList[0].SetFrame(1, new Frame());
-            Frame tempFrame = frameList[0].GetFrame(1);
-            tempFrame.SetWord(0, Word.GetWord());
-            tempFrame.SetWord(1, Word.GetWord());
+        Debug.Log("count : " + frameList.Count);
+    }
+
+    private void randomTestFrame() {
+        int randomType = Random.Range(0, 4);
+        Frame tempFrame;
+        switch (randomType) {
+            case 0:
+                tempFrame = new Frame(FrameType.AisB);
+                tempFrame.SetActive(true);
+                for (int i = 0; i < 2; i++) {
+                    int random = Random.Range(0, 3);    //0 -3, 1-4, 2-word
+                    if (random == 2) {
+                        tempFrame.SetWord(i, Word.GetWord());
+                    }
+                    else if (random == 3) {
+                        Frame tempSubFrame = new Frame(FrameType.AandB);
+                        tempSubFrame.SetWord(0, Word.GetWord());
+                        tempSubFrame.SetWord(1, Word.GetWord());
+                        tempFrame.SetFrame(i, tempSubFrame);
+                    }
+                    else {
+                        Frame tempSubFrame = new Frame(FrameType.NotA);
+                        tempSubFrame.SetWord(0, Word.GetWord());
+                        tempFrame.SetFrame(i, tempSubFrame);
+                    }
+                }
+                AddFrame(tempFrame);
+                break;
+            case 1:
+                tempFrame = new Frame(FrameType.AtoBisC);
+                tempFrame.SetActive(true);
+                for (int i = 0; i < 3; i++) {
+                    int random = Random.Range(0, 3);    //0 -3, 1-4, 2-word
+                    if (random == 2) {
+                        tempFrame.SetWord(i, Word.GetWord());
+                    }
+                    else if (random == 3) {
+                        Frame tempSubFrame = new Frame(FrameType.AandB);
+                        tempSubFrame.SetWord(0, Word.GetWord());
+                        tempSubFrame.SetWord(1, Word.GetWord());
+                        tempFrame.SetFrame(i, tempSubFrame);
+                    }
+                    else {
+                        Frame tempSubFrame = new Frame(FrameType.NotA);
+                        tempSubFrame.SetWord(0, Word.GetWord());
+                        tempFrame.SetFrame(i, tempSubFrame);
+                    }
+                }
+                AddFrame(tempFrame);
+                break;
+            case 2:
+                tempFrame = new Frame(FrameType.AandB);
+                tempFrame.SetActive(true);
+                for (int i = 0; i < 2; i++) {
+                    int random = Random.Range(0, 3);    //0 -1, 1-2, 2-word
+                    if (random == 2) {
+                        tempFrame.SetWord(i, Word.GetWord());
+                    }
+                    else if (random == 3) {
+                        Frame tempSubFrame = new Frame(FrameType.AisB);
+                        tempSubFrame.SetWord(0, Word.GetWord());
+                        tempSubFrame.SetWord(1, Word.GetWord());
+                        tempFrame.SetFrame(i, tempSubFrame);
+                    }
+                    else {
+                        Frame tempSubFrame = new Frame(FrameType.AtoBisC);
+                        tempSubFrame.SetWord(0, Word.GetWord());
+                        tempSubFrame.SetWord(1, Word.GetWord());
+                        tempSubFrame.SetWord(2, Word.GetWord());
+                        tempFrame.SetFrame(i, tempSubFrame);
+                    }
+                }
+                AddFrame(tempFrame);
+                break;
+            case 3:
+                tempFrame = new Frame(FrameType.NotA);
+                tempFrame.SetActive(true);
+                tempFrame.SetWord(0, Word.GetWord());
+                AddFrame(tempFrame);
+                break;
         }
     }
 
@@ -94,8 +172,10 @@ public class FrameListManager : MonoBehaviour {
     private void CheckScrollbar() {
         if (frameList.Count < 6) {
             slider.interactable = false;
+            slider.gameObject.SetActive(false);
         }
         else {
+            slider.gameObject.SetActive(true);
             slider.interactable = true;
         }
     }
@@ -154,16 +234,17 @@ public class FrameListManager : MonoBehaviour {
     }
 
     private void UpdateSlotData(float scrollValue) {
-        //int value = (int)scrollValue;
-        //for (int i = 0; i < poolingCount; i++) {
-        //    if (i + value < frameList.Count) {
-        //        frameListSlotControllers[i].SetFrameData(frameList[i + value]);
-        //        frameListSlotControllers[i].SetKey(i + value);
-        //    }
-        //    else {
-        //        slotList[i].SetActive(false); // 데이터를 넘어가는 슬롯 비활성화
-        //    }
-        //}
+        CheckScrollbar();
+        int value = (int)scrollValue;
+        for (int i = 0; i < poolingCount; i++) {
+            if (i + value < frameList.Count) {
+                frameListSlotControllers[i].SetFrameData(frameList[i + value]);
+                frameListSlotControllers[i].SetKey(i + value);
+            }
+            else {
+                slotList[i].SetActive(false); // 데이터를 넘어가는 슬롯 비활성화
+            }
+        }
     }
     #endregion
 

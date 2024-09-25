@@ -56,7 +56,7 @@ public class DraggingFrame : DraggingObject, IEndDragHandler, IDragHandler, IBeg
     private void hitObject(FrameDragTarget target, int num) {
         if (num == 1) {
             //base frame
-            target.OpenCombineFiled(frameListSlotController.key, frameListSlotController.thisFrame);
+            target.OpenCombineFiled(frameListSlotController.thisFrame);
             frameListSlotController.FrameSlotDelete();
         }
         else if (num == 2) {

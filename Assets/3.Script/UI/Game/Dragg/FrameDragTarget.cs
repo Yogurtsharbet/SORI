@@ -48,8 +48,8 @@ public class FrameDragTarget : MonoBehaviour {
         return isOpenSlot;
     }
 
-    public void OpenCombineFiled(int key, Frame frame) {
-        combineManager.OpenBaseFrameSlot(key, frame);
+    public void OpenCombineFiled(Frame frame) {
+        combineManager.OpenBaseFrameSlot(frame);
         IsExistFrame = true;
     }
 

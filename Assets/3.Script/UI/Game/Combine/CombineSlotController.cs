@@ -15,7 +15,16 @@ public class CombineSlotController : MonoBehaviour {
     private FrameType parentType;
     public FrameType ParentType => parentType;
 
+    public bool IsSub { get; private set; }
+
     private void Awake() {
+        if (gameObject.name.Equals("Data")) {
+            IsSub = false;
+        }
+        else {
+            IsSub = true;
+        }
+
         if (gameObject.transform.parent.name.Contains("00")) {
             slotIndex = 0;
         }
@@ -39,44 +48,44 @@ public class CombineSlotController : MonoBehaviour {
 
         string parentName = transform.parent.transform.parent.name;
         if (parentName.Contains("01")) {
-            parentType = FrameType.AandB;
-        }else if (parentName.Contains("02")) {
             parentType = FrameType.AisB;
-        }else if (parentName.Contains("03")) {
+        }else if (parentName.Contains("02")) {
             parentType = FrameType.AtoBisC;
+        }else if (parentName.Contains("03")) {
+            parentType = FrameType.AandB;
         }else if (parentName.Contains("04")) {
             parentType = FrameType.NotA;
         }
-            
-        wordText = dataObject[0].GetComponentInChildren<Text>();
-    }
 
-    private void Start() {
-        for (int i = 0; i < dataObject.Count; i++) {
-            dataObject[i].SetActive(false);
-        }
+        wordText = dataObject[0].GetComponentInChildren<Text>();
     }
 
     private void OnDisable() {
         for (int i = 0; i < dataObject.Count; i++) {
             dataObject[i].SetActive(false);
         }
-    }
+    } 
 
     public void OpenFrame(FrameType subType) {
         dataObject[1].SetActive(true);
         for (int i = 0; i < dataObject.Count; i++) {
-            if (dataObject[i].name.Equals($"SlotType0{(int)subType}")) {
+            if (dataObject[i].name.Contains($"0{((int)subType)}")) {
                 dataObject[i].SetActive(true);
                 return;
             }
         }
     }
 
+    public void CloseAllSlot() {
+        for(int i =0; i < dataObject.Count; i++) {
+            dataObject[i].SetActive(false);
+        }
+    }
+
     public void CloseFrame() {
-        dataObject[1].SetActive(false);
-        dataObject[2].SetActive(false);
-        dataObject[3].SetActive(false);
+        for (int i = 1; i < dataObject.Count; i++) {
+            dataObject[i].SetActive(false);
+        }
     }
 
     public int OpenWord(Word word) {

@@ -13,6 +13,8 @@ public class CombineManager : MonoBehaviour {
     private Frame baseFrame;
     public Frame BaseFrame => baseFrame;
 
+    private Frame tempFrame;
+
     //조합 가능여부
     private bool canCombine;
     public bool CanCombine => canCombine;
@@ -20,12 +22,12 @@ public class CombineManager : MonoBehaviour {
     private FrameListManager frameListManager;
     private SubmitButtonController submitButton;
     private PlayerInvenController playerInvenController;
-
     private CombineContainer combineContainer;
 
     private SelectControl selectControl;
 
-    private GameObject[] frameObjects = new GameObject[4];
+    private GameObject[] frameByType = new GameObject[4];
+    private List<(int, CombineSlotController)> combineSlotControllers = new List<(int, CombineSlotController)>();
 
     private void Awake() {
         frameListManager = FindObjectOfType<FrameListManager>();
@@ -36,8 +38,11 @@ public class CombineManager : MonoBehaviour {
         playerInvenController = FindObjectOfType<PlayerInvenController>();
 
         for (int i = 0; i < 4; i++) {
-            frameObjects[i] = gameObject.transform.GetChild(i).gameObject;
-            frameObjects[i].SetActive(false);
+            frameByType[i] = gameObject.transform.GetChild(i).gameObject;
+            CombineSlotController[] tempSlots = frameByType[i].GetComponentsInChildren<CombineSlotController>();
+            for (int j = 0; j < tempSlots.Length; j++) {
+                combineSlotControllers.Add((i, tempSlots[j]));
+            }
         }
     }
 
@@ -45,23 +50,40 @@ public class CombineManager : MonoBehaviour {
         CloseCombineSlot();
     }
 
-    public void OpenBaseFrameSlot(int key, Frame frame) {
+    private void OnEnable() {
+        if (tempFrame != null) {
+            baseFrame = tempFrame;
+            frameByType[((int)baseFrame.Type - 1)].SetActive(true);
+            setActiveFrameData(baseFrame);
+        }
+    }
+
+    private void OnDisable() {
+        for (int i = 0; i < 4; i++)
+            frameByType[i].SetActive(false);
+    }
+
+    public void OpenBaseFrameSlot(Frame frame) {
         //이미 baseFrame이 open 되어있는 상태
         if (baseFrameOpen) {
             resetBaseFrame();
+            for (int i = 0; i < frameByType.Length; i++) {
+                frameByType[i].SetActive(false);
+            }
         }
         else {
-            baseFrameOpen = true;
             gameObject.SetActive(true);
+            baseFrameOpen = true;
         }
 
         frame.SetBase(true);
         baseFrame = frame;
-        activeFrameType((int)frame.Type - 1);
+        frameByType[((int)baseFrame.Type - 1)].SetActive(true);
 
         if (baseFrame.IsActive) {       //문장틀에 문장이 들어가있는 상태
             canCombine = false;             //조합이 완료된 상태
             submitButton.ButtonToRemove();
+            setActiveFrameData(baseFrame);
         }
         else {
             canCombine = true;              //조합하기를 눌러야 하는 상태
@@ -70,25 +92,72 @@ public class CombineManager : MonoBehaviour {
         }
     }
 
-    private void activeFrameType(int num) {
-        for (int i = 0; i < 4; i++) {
-            if (i == num) {
-                frameObjects[i].SetActive(true);
-            }
-            else {
-                frameObjects[i].SetActive(false);
-            }
-        }
-    }   
-
     public void CancelCombineTemp() {
         gameObject.SetActive(false);
     }
 
     #region 드래그 상호작용 및 데이터 getter, setter
 
+    private void setActiveFrameData(Frame baseFrame) {
+        List<CombineSlotController> tempSlots = new List<CombineSlotController>();
+        for (int i = 0; i < combineSlotControllers.Count; i++) {
+            if (combineSlotControllers[i].Item1 == ((int)baseFrame.Type - 1)) {
+                tempSlots.Add(combineSlotControllers[i].Item2);
+            }
+        }
+
+        if (baseFrame.Type != FrameType.NotA) {
+            int wordCount = 0;
+            for (int i = 0; i < baseFrame.CountOfFrame(); i++) {
+                if (baseFrame.GetWord(i) != null) {
+                    for (int j = 0; j < tempSlots.Count; j++) {
+                        if (tempSlots[j].SlotIndex == i && !tempSlots[j].IsSub) {
+                            tempSlots[j].OpenWord(baseFrame.GetWord(i));
+                            wordCount++;
+                        }
+                    }
+                }
+            }
+
+            if (wordCount < baseFrame.CountOfFrame()) {
+                for (int i = 0; i < baseFrame.CountOfFrame(); i++) {
+                    Frame tempFrame = baseFrame.GetFrame(i);
+                    if (tempFrame == null) continue;
+
+                    foreach (var slot in tempSlots) {
+                        if (slot.SlotIndex != i || slot.IsSub) continue;
+
+                        slot.OpenFrame(tempFrame.Type);
+
+                        for (int k = 0; k < tempFrame.CountOfFrame(); k++) {
+                            Word word = tempFrame.GetWord(k);
+                            if (word == null) continue;
+
+                            foreach (var subSlot in tempSlots) {
+                                if (subSlot.SlotIndex == k && subSlot.IsSub && subSlot.ParentType == tempFrame.Type) {
+                                    subSlot.OpenWord(word);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        else {
+            for (int i = 0; i < baseFrame.CountOfFrame(); i++) {
+                if (baseFrame.GetWord(i) != null) {
+                    for (int j = 0; j < tempSlots.Count; j++) {
+                        if (tempSlots[j].SlotIndex == i && !tempSlots[j].IsSub) {
+                            tempSlots[j].OpenWord(baseFrame.GetWord(i));
+                        }
+                    }
+                }
+            }
+        }
+    }
+
     public void SetSubFrame(int index, Frame frame) {
-        if(baseFrame.GetWord(index) != null) {
+        if (baseFrame.GetWord(index) != null) {
             playerInvenController.AddNewItem(baseFrame.GetWord(index));
             baseFrame.SetWord(index, null);
         }
@@ -138,28 +207,32 @@ public class CombineManager : MonoBehaviour {
 
     //문장 조합
     public void CombineSubmit() {
-        string dialogContents = string.Empty;
-        if (baseFrame == null) dialogContents = "프레임 없음";
-        else if (FrameValidity.Check(baseFrame)) {
+        if (canCombine) {
+            string dialogContents = string.Empty;
+            if (baseFrame == null) dialogContents = "프레임 없음";
+            else if (FrameValidity.Check(baseFrame)) {
 
-            bool isUnselectable = false;
-            foreach (var eachKeyA in FrameValidity.GetCommonWord(0).keys) {
-                Word eachWordA = Word.GetWord(eachKeyA);
-                if (WordData.wordProperty["UNSELECT"].Contains(eachWordA.Tag))
-                    isUnselectable = true;
+                bool isUnselectable = false;
+                foreach (var eachKeyA in FrameValidity.GetCommonWord(0).keys) {
+                    Word eachWordA = Word.GetWord(eachKeyA);
+                    if (WordData.wordProperty["UNSELECT"].Contains(eachWordA.Tag))
+                        isUnselectable = true;
+                }
+
+                //TODO: 사용되면 소모, 조합되고 영구적 -> LIST로 넣기
+                if (isUnselectable) FrameActivate.Activate();   //사용되는 timming
+                else {
+                    CameraControl.Instance.SetCamera(CameraControl.CameraStatus.SelectView);
+                }
+
+                //선택 view에서 frame 임시 저장
+                tempFrame = baseFrame;
+                combineContainer.CloseCombineField();
             }
-
-            if (isUnselectable) FrameActivate.Activate();
-            else {
-                CameraControl.Instance.SetCamera(CameraControl.CameraStatus.SelectView);
-            }
-
-            combineContainer.CloseCombineField();
-
+            //TODO: Dialog -> FrameValidity 에서 띄워주는 게 좋을 듯?
+            if (dialogContents != string.Empty)
+                DialogManager.Instance.OpenDefaultDialog(dialogContents, DialogType.FAIL);
         }
-        //TODO: Dialog -> FrameValidity 에서 띄워주는 게 좋을 듯?
-        if (dialogContents != string.Empty)
-            DialogManager.Instance.OpenDefaultDialog(dialogContents, DialogType.FAIL);
     }
 
     #region 리셋 및 초기화
@@ -214,7 +287,14 @@ public class CombineManager : MonoBehaviour {
     private void resetBaseFrame() {
         resetNotActiveBaseFrame();
         baseFrame.SetBase(false);
+        slotAllClose();
         frameListManager.AddFrame(baseFrame);
+    }
+
+    private void slotAllClose() {
+        for (int i = 0; i < combineSlotControllers.Count; i++) {
+            combineSlotControllers[i].Item2.CloseAllSlot();
+        }
     }
     #endregion
 }
