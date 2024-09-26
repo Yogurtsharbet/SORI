@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-// [UI] ªÛ¡° - øµºˆ¡ı
-public class ReceiptContainer : MonoBehaviour {
+// [UI] ÏÉÅÏ†ê - ÏòÅÏàòÏ¶ù
+public class ReceiptManager : MonoBehaviour {
     private PlayerBehavior playerBehavior;
+    private ShopSlotManager shopSlotManager;
 
-    #region UI ºº∆√
-    private Text currentAmount; //«ˆ¿Á ∫∏¿Ø∑Æ
+    #region UI ÏÑ∏ÌåÖ
+    private Text currentAmount; //ÌòÑÏû¨ Î≥¥Ïú†Îüâ
     private int buyCount;
     private Text buyCountText;
     private Text buyAmount;
@@ -17,11 +18,11 @@ public class ReceiptContainer : MonoBehaviour {
     private Text sellAmount;
     #endregion
 
-    private List<int> selectSlots = new List<int>();
     private void Awake() {
         playerBehavior = FindObjectOfType<PlayerBehavior>();
-        Text[] texts = GetComponentsInChildren<Text>();
+        shopSlotManager = FindObjectOfType<ShopSlotManager>();
 
+        Text[] texts = GetComponentsInChildren<Text>();
         foreach (Text txt in texts) {
             if (txt.name.Equals("CurrentAmount")) {
                 currentAmount = txt;
@@ -40,10 +41,19 @@ public class ReceiptContainer : MonoBehaviour {
             }
         }
     }
-
     private void OnEnable() {
-        //TODO: player behavior ø¨∞·«œ±‚
-        //SetCurrentAmount(playerBehavior.StarCoin);
+        SetCurrentAmount(playerBehavior.StarCoin);
+    }
+
+    private void Start() {
+        shopSlotManager.OnListChanged += UpdateSelectIndex;
+    }
+
+    private void UpdateSelectIndex(List<int> updatedList) {
+        sellCount = updatedList.Count;
+
+        setSellCount();
+
     }
 
     public void SetCurrentAmount(int num) {
@@ -51,7 +61,7 @@ public class ReceiptContainer : MonoBehaviour {
     }
 
     private void setBuyCount() {
-        buyCountText.text = $"√— {buyCount}∞≥";
+        buyCountText.text = $"Ï¥ù {buyCount}Í∞ú";
     }
 
     private void setBuyAmount() {
@@ -60,7 +70,7 @@ public class ReceiptContainer : MonoBehaviour {
     }
 
     private void setSellCount() {
-        sellCountText.text = $"√— {sellCount}∞≥";
+        sellCountText.text = $"Ï¥ù {sellCount}Í∞ú";
     }
 
     private void setSellAmount(int num) {
@@ -68,21 +78,4 @@ public class ReceiptContainer : MonoBehaviour {
         sellAmount.text = $"x{totalSell}";
     }
 
-    public void SelectSlot(int key) {
-        //¿÷¿∏∏È ªË¡¶, æ¯¿∏∏È √ﬂ∞°
-        int index = -1;
-        for (int i = 0; i < selectSlots.Count; i++) {
-            if (selectSlots[i] == key) {
-                index = i;
-                break;
-            }
-        }
-
-        if (index != -1) {
-            selectSlots.Add(key);
-        }
-        else {
-            selectSlots.RemoveAt(index);
-        }
-    }
 }

@@ -10,12 +10,14 @@ public class ShopSlotController : MonoBehaviour , IPointerClickHandler {
     private int key;
     
     private Word thisWord = null;
+    public Word ThisWord => thisWord;
 
     private Text wordText;
     private Image typeIcon;
     private Image rankOutIcon;
     private Image rankInnerIcon;
     private Image continueIcon;
+    private int price;
     private Text priceText;
     private Image selectSlot;
 

@@ -2,15 +2,20 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-// [UI] ���� - �Ǹ� ���� ��Ʈ�ѷ� 
-public class ShopSlotManager :MonoBehaviour {
+// [UI] 상점 - 판매 슬롯 컨트롤러 
+public class ShopSlotManager : MonoBehaviour {
     [SerializeField] private GameObject shopSlotPrefab;
     private List<GameObject> shopSlotObjects = new List<GameObject>();
     private ShopSlotController[] shopSlotControllers;
+    private ShopTransactionManager shopTransactionManager;
 
-    private List<int> SelectShopIndex = new List<int>();
+    private List<int> selectShopIndex = new List<int>();
+
+    public delegate void SelectShopItemDelegate(List<int> updatedList);
+    public event SelectShopItemDelegate OnListChanged;
 
     private void Awake() {
+        shopTransactionManager = FindObjectOfType<ShopTransactionManager>();
         shopSlotControllers = new ShopSlotController[9];
         for (int i = 0; i < 9; i++) {
             Vector3 position;
@@ -54,17 +59,32 @@ public class ShopSlotManager :MonoBehaviour {
         }
     }
 
-    public void SelectShopItem(int num) {
+    /// <summary>
+    /// 상점 아이템 선택
+    /// 이미 선택 되었으면 list에서 제거, 없으면  list에 넣음
+    /// </summary>
+    /// <param name="index">index</param>
+    public void SelectShopItem(int index) {
         bool isExist = false;
         for (int i = 0; i < 9; i++) {
-            if (SelectShopIndex[i] == num) {
+            if (selectShopIndex[i] == index) {
                 isExist = true;
-                SelectShopIndex.Remove(i);
+                selectShopIndex.Remove(i);
                 break;
             }
         }
         if (!isExist) {
-            SelectShopIndex.Add(num);
+            selectShopIndex.Add(index);
         }
+
+        OnListChanged?.Invoke(selectShopIndex);
+    }
+
+    public int GetSelectPrice() {
+        int totalPrice = 0;
+        for (int i = 0; i < selectShopIndex.Count; i++) {
+            totalPrice += shopTransactionManager.GetWordPrice(shopSlotControllers[i].ThisWord);
+        }
+        return totalPrice;
     }
 }
