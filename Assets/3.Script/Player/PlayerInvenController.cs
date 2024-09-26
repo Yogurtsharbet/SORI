@@ -24,7 +24,7 @@ public class PlayerInvenController : MonoBehaviour {
     }
 
     private void testData() {
-        for(int i = 0; i < 12; i++) {
+        for (int i = 0; i < 12; i++) {
             inven[i] = Word.GetWord();
         }
         UpdateInvenInvoke();
@@ -37,14 +37,18 @@ public class PlayerInvenController : MonoBehaviour {
         }
     }
 
-    //인벤토리 칸 추가
+    /// <summary>
+    /// 인벤토리 칸 추가
+    /// </summary>
     public void AddInvenSlot() {
         inven.Add(null);
     }
 
-    //인벤토리 칸 삭제
-    // 1. 제일 마지막에 있는 단어 옮기고 인벤 슬롯 삭제
-    // 2. 빈 슬롯이 없을 때, 선택한 인덱스의 단어 삭제
+    /// <summary>
+    /// 인벤토리 칸 삭제
+    /// 1. 제일 마지막에 있는 단어 옮기고 인벤 슬롯 삭제
+    /// 2. 빈 슬롯이 없을 때, 선택한 인덱스의 단어 삭제
+    /// </summary>
     private void getRemoveInvenIndex() {
         if (inven[invenOpenCount - 1] == null) {
             inven.RemoveAt(invenOpenCount - 1);
@@ -72,7 +76,11 @@ public class PlayerInvenController : MonoBehaviour {
         UpdateInvenInvoke();
     }
 
-    //새 단어 추가
+    /// <summary>
+    /// 빈칸에 새 단어 추가
+    /// TODO: 빈칸이 없을때 처리 추가필요
+    /// </summary>
+    /// <param name="newWord">Word</param>
     public void AddNewItem(Word newWord) {
         for (int i = 0; i < invenOpenCount; i++) {
             if (inven[i] == null) {
@@ -83,13 +91,21 @@ public class PlayerInvenController : MonoBehaviour {
         UpdateInvenInvoke();
     }
 
-    //특정 인덱스에 새 단어 추가
+    /// <summary>
+    /// 특정 인덱스에 새 단어 추가
+    /// </summary>
+    /// <param name="newWord">Word</param>
+    /// <param name="index">int</param>
     public void AddItem(Word newWord, int index) {
         inven[index] = newWord;
         UpdateInvenInvoke();
     }
 
-    //특정 인덱스의 단어와 현재 선택한 단어와 인덱스 스위칭
+    /// <summary>
+    /// 특정 인덱스의 단어와 현재 선택한 단어와 인덱스 스위칭
+    /// </summary>
+    /// <param name="thisIndex">int</param>
+    /// <param name="targetIndex">int</param>
     public void SwitchingItem(int thisIndex, int targetIndex) {
         if (inven[targetIndex] == null) {
             inven[targetIndex] = inven[thisIndex];
@@ -103,13 +119,20 @@ public class PlayerInvenController : MonoBehaviour {
         UpdateInvenInvoke();
     }
 
-    //특정 인덱스의 단어 삭제
+    /// <summary>
+    /// 특정 인덱스의 단어 삭제
+    /// </summary>
+    /// <param name="index">int</param>
     public void RemoveItemIndex(int index) {
         inven[index] = null;
         UpdateInvenInvoke();
     }
 
-    //특정 인덱스의 단어 getter
+    /// <summary>
+    /// 특정 인덱스의 단어 
+    /// </summary>
+    /// <param name="index"></param>
+    /// <returns>Word</returns>
     public Word GetWordIndex(int index) {
         return inven[index];
     }
@@ -122,5 +145,4 @@ public class PlayerInvenController : MonoBehaviour {
         inven = newList;
         UpdateInvenInvoke();
     }
-
 }

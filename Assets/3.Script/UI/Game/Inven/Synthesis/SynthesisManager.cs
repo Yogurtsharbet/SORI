@@ -1,7 +1,7 @@
 using System.Collections;
 using UnityEngine;
 
-// [UI] ÇÕ¼º - ÇÕ¼º ÀüÃ¼ ¸Å´ÏÀú
+// [UI] í•©ì„± - í•©ì„± ì „ì²´ ë§¤ë‹ˆì €
 public class SynthesisManager : MonoBehaviour {
     private SynthesisSlotController[] slotControllers;
     private InvenSlotManager invenSlotManager;
@@ -17,22 +17,18 @@ public class SynthesisManager : MonoBehaviour {
         return slotControllers[num].GetComponent<RectTransform>();
     }
 
+    /// <summary>
+    /// ì¡°í•©ì°½ì— ë‹¨ì–´ê°€ ì¡´ì¬í•˜ëŠ”ì§€ ì—¬ë¶€
+    /// </summary>
+    /// <param name="index"></param>
+    /// <returns>bool</returns>
     public bool GetExistFromIndex(int index) {
         return slotControllers[index].GetWordExist();
     }
 
-    //ÇØ´ç ½½·Ô indexÀÇ ´Ü¾î return
-    public Word GetSlotWordFromIndex(int index) {
-        return slotControllers[index].GetSlotWord();
-    }
-
-    //½½·Ô index¿¡ »õ ´Ü¾î Ãß°¡
-    public void SlotItemChangeFromIndex(int index, Word word, int invenIndex) {
-        slotControllers[index].RemoveSlotWord();
-        slotControllers[index].SetSlotWord(word, invenIndex);
-    }
-
-    //´Ü¾î ÀüÃ¼ »èÁ¦ÈÄ ¿ø·¡ ÀÎº¥À¸·Î ÀÌµ¿
+    /// <summary>
+    /// ë‹¨ì–´ ì „ì²´ ì‚­ì œ, ì¸ë²¤ì— ë„£ì–´ì¤Œ
+    /// </summary>
     public void ResetAllSlot() {
         for (int i = 0; i < slotControllers.Length; i++) {
             playerInvenController.AddNewItem(slotControllers[i].GetSlotWord());
@@ -40,28 +36,7 @@ public class SynthesisManager : MonoBehaviour {
         }
     }
 
-    //ÇÕ¼ºÃ¢ ½½·ÔÀÇ ´Ü¾î ÀÎº¥À¸·Î ÀÌµ¿ 
-    public void ResetSlotIndex(int index) {
-        if (slotControllers[index].GetSlotWord() != null) {
-            playerInvenController.AddItem(slotControllers[index].GetSlotWord(), slotControllers[index].GetWordOriginInvenIndex());
-            slotControllers[index].RemoveSlotWord();
-        }
-    }
-
-    public void GetNewWord() {
-        if (CheckCanSynthesis()) {
-            //ÇÕ¼ºÇÏ±â ¹öÆ° ´­·¶À»¶§, ·£´ıÀ¸·Î »õ ´Ü¾î ¾òÀ½
-            Word newWord = Word.GetWord();
-            slotControllers[3].SetSlotWord(newWord);
-            //¾òÀº´Ü¾î 2ÃÊ ÀÖ´Ù°¡ ÀÎº¥À¸·Î ÀÌµ¿
-            StartCoroutine(removeDelay());
-        }
-        else {
-            string dialogContents = "´Ü¾î ÇÕ¼ºÀ» ÇÒ ¼ö ¾ø½À´Ï´Ù\nÇÕ¼º ½½·ÔÀ» È®ÀÎÇØÁÖ¼¼¿ä.";
-            DialogManager.Instance.OpenDefaultDialog(dialogContents, DialogType.FAIL);
-        }
-    }
-
+    #region ë‹¨ì–´ í•©ì„±
     private bool CheckCanSynthesis() {
         if (slotControllers[0].GetWordExist() && slotControllers[1].GetWordExist() && slotControllers[2].GetWordExist()) {
             return true;
@@ -71,6 +46,19 @@ public class SynthesisManager : MonoBehaviour {
         }
     }
 
+    public void GetNewWord() {
+        if (CheckCanSynthesis()) {
+            //í•©ì„±í•˜ê¸° ë²„íŠ¼ ëˆŒë €ì„ë•Œ, ëœë¤ìœ¼ë¡œ ìƒˆ ë‹¨ì–´ ì–»ìŒ
+            Word newWord = Word.GetWord();
+            slotControllers[3].SetSlotWord(newWord);
+            //ì–»ì€ë‹¨ì–´ 2ì´ˆ ìˆë‹¤ê°€ ì¸ë²¤ìœ¼ë¡œ ì´ë™
+            StartCoroutine(removeDelay());
+        }
+        else {
+            string dialogContents = "ë‹¨ì–´ í•©ì„±ì„ í•  ìˆ˜ ì—†ìŠµë‹ˆë‹¤\ní•©ì„± ìŠ¬ë¡¯ì„ í™•ì¸í•´ì£¼ì„¸ìš”.";
+            DialogManager.Instance.OpenDefaultDialog(dialogContents, DialogType.FAIL);
+        }
+    }
     private IEnumerator removeDelay() {
         yield return new WaitForSeconds(2f);
 
@@ -79,5 +67,41 @@ public class SynthesisManager : MonoBehaviour {
         for (int i = 0; i < slotControllers.Length; i++) {
             slotControllers[i].RemoveSlotWord();
         }
+    }
+    #endregion
+
+    /// <summary>
+    /// ì¸ë²¤ ë‹¨ì–´, ì¡°í•©ì°½ ë‹¨ì–´ ìŠ¤ìœ„ì¹­
+    /// </summary>
+    /// <param name="invenIndex"></param>
+    /// <param name="syntheIndex"></param>
+    public void WordSwitchingToSynthesis(int invenIndex, int syntheIndex) {
+        if (slotControllers[syntheIndex].GetWordExist()) {
+            Word word = slotControllers[syntheIndex].GetSlotWord();
+            slotControllers[syntheIndex].SetSlotWord(playerInvenController.GetWordIndex(invenIndex));
+            playerInvenController.RemoveItemIndex(invenIndex);
+            playerInvenController.AddItem(word, invenIndex);
+        }
+        else {
+            slotControllers[syntheIndex].SetSlotWord(playerInvenController.GetWordIndex(invenIndex));
+            playerInvenController.RemoveItemIndex(invenIndex);
+        }
+    }
+
+    //í•´ë‹¹ ìŠ¬ë¡¯ indexì˜ ë‹¨ì–´ return
+    public Word GetSlotWordFromIndex(int index) {
+        return slotControllers[index].GetSlotWord();
+    }
+
+    //ìŠ¬ë¡¯ indexì— ìƒˆ ë‹¨ì–´ ì¶”ê°€
+    public void SlotItemChangeFromIndex(int index, Word word) {
+        slotControllers[index].RemoveSlotWord();
+        slotControllers[index].SetSlotWord(word);
+    }
+
+    public void SlotWordDelete(int index) {
+        Word word = slotControllers[index].GetSlotWord();
+        playerInvenController.AddNewItem(word);
+        slotControllers[index].RemoveSlotWord();
     }
 }

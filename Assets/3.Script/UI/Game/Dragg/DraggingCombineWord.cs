@@ -9,8 +9,6 @@ public class DraggingCombineWord : DraggingObject, IEndDragHandler, IDragHandler
     private HalfInvenSlotController halfInvenSlot;
     private Vector3 originalScale;
     private WordDragCombineTarget previousTarget = null;
-
-
     private void Awake() {
         Canvas[] canvases = FindObjectsOfType<Canvas>();
         foreach (Canvas cn in canvases) {

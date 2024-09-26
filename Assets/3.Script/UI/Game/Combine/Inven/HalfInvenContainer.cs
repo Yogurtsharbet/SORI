@@ -1,9 +1,9 @@
 using DG.Tweening;
 using UnityEngine;
 
-// [UI] Á¶ÇÕ - ÀÎº¥Åä¸® ÄÁÅ×ÀÌ³Ê, ¹İÂÊ ÀÎº¥Åä¸® ÀüÃ¼ ÄÁÅ×ÀÌ³Ê
+// [UI] ì¡°í•© - ì¸ë²¤í† ë¦¬ ì»¨í…Œì´ë„ˆ, ë°˜ìª½ ì¸ë²¤í† ë¦¬ ì „ì²´ ì»¨í…Œì´ë„ˆ
 public class HalfInvenContainer : MonoBehaviour {
-    
+
     private Vector3 openPos = new Vector3(353f, -24f, 0);
     private Vector3 closePos = new Vector3(353f, -990f, 0);
 

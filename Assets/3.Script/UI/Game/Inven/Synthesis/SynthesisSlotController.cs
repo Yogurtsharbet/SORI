@@ -1,11 +1,12 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-// [UI] «’º∫ - «’º∫√¢ ¥‹æÓ ΩΩ∑‘ ƒ¡∆Æ∑—
+// [UI] Ìï©ÏÑ± - Ìï©ÏÑ±Ï∞Ω Îã®Ïñ¥ Ïä¨Î°Ø Ïª®Ìä∏Î°§
 public class SynthesisSlotController : MonoBehaviour {
+    private SynthesisManager synthesisManager;
+
     private int key;
 
-    private int originInvenIndex = -1;
     private Word thisWord;
 
     private Text wordText;
@@ -15,6 +16,7 @@ public class SynthesisSlotController : MonoBehaviour {
     private Image continueIcon;
 
     private void Awake() {
+        synthesisManager = FindObjectOfType<SynthesisManager>();
         wordText = GetComponentInChildren<Text>();
         Image[] images = GetComponentsInChildren<Image>();
         foreach (Image img in images) {
@@ -74,24 +76,15 @@ public class SynthesisSlotController : MonoBehaviour {
         return thisWord;
     }
 
-    public int GetWordOriginInvenIndex() {
-        return originInvenIndex;
-    }
-
     public void RemoveSlotWord() {
         thisWord = null;
-        originInvenIndex = -1;
         NotExistWord();
     }
 
-    //¿Á¡∂«’ ΩΩ∑‘ø° ¥‹æÓ √ﬂ∞° »ƒ ¿Œ∫•ø°º≠ ¥‹æÓ ªË¡¶
-    public void SetSlotWord(Word word, int invenIndex) {
-        thisWord = word;
-        originInvenIndex = invenIndex;
-        ExistWord();
-        SetWordData(thisWord);
-    }
-
+    /// <summary>
+    /// Ïä¨Î°ØÏóê Îã®Ïñ¥ Ï∂îÍ∞Ä
+    /// </summary>
+    /// <param name="word">Word</param>
     public void SetSlotWord(Word word) {
         thisWord = word;
         ExistWord();
@@ -107,7 +100,7 @@ public class SynthesisSlotController : MonoBehaviour {
         }
     }
 
-    public void SetWordData(Word word) {
+    private void SetWordData(Word word) {
         wordText.text = word.Name;
         typeIcon.color = word.TypeColor;
         rankInnerIcon.color = word.RankColor;
@@ -117,5 +110,9 @@ public class SynthesisSlotController : MonoBehaviour {
         else {
             continueIcon.enabled = false;
         }
+    }
+
+    public void AddWord(int invenKey) {
+        synthesisManager.WordSwitchingToSynthesis(invenKey, key);
     }
 }

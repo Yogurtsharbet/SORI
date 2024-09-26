@@ -7,6 +7,7 @@ public class CommonInvenSlotController : MonoBehaviour{
     protected InvenSlotCloseController closeController;
 
     protected int key;
+    public int Key => key;
 
     protected Word thisWord = null;
     public Word ThisWord => thisWord;

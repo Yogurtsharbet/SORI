@@ -407,6 +407,7 @@ GameObject:
   - component: {fileID: 435143346148062144}
   - component: {fileID: 435143346148062207}
   - component: {fileID: 5385979130496166144}
+  - component: {fileID: 5625313224219034032}
   m_Layer: 5
   m_Name: InvenSlot
   m_TagString: Untagged
@@ -543,6 +544,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ba854eb1023cc4647a0ddf765f3f84ab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &5625313224219034032
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 435143346148062205}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3543243c0571e8441827a876438d24e2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &435143346158174017

@@ -62,20 +62,6 @@ public class InvenSlotManager : CommonInvenSlotManager {
         playerInvenController.InvenChanged -= updateSlot;
     }
 
-    //합성창 index에 있는 단어와 인벤 단어 스위칭
-    public void SwitchingInvenToSynthesisSlot(int invenIndex, int index) {
-        Word tempWord = playerInvenController.GetWordIndex(invenIndex);
-        playerInvenController.RemoveItemIndex(invenIndex);
-        playerInvenController.AddItem(synthesisManager.GetSlotWordFromIndex(index), invenIndex);
-        synthesisManager.SlotItemChangeFromIndex(index, tempWord, invenIndex);
-    }
-
-    //선택한 index슬롯에 단어 추가
-    public void SetWordAdd(int invenIndex, int index) {
-        synthesisManager.SlotItemChangeFromIndex(index, playerInvenController.GetWordIndex(invenIndex), invenIndex);
-        playerInvenController.RemoveItemIndex(invenIndex);
-    }
-
     private void updateSlot(List<Word> inventory) {
         for (int i = 0; i < playerInvenController.InvenOpenCount; i++) {
             invenSlotControllers[i].OpenSlot();

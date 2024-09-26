@@ -1,8 +1,12 @@
+using DG.Tweening;
 using UnityEngine;
 
-// [UI] ÀÎº¥Åä¸® - ÀÎº¥Åä¸® ÄÁÅ×ÀÌ³Ê °ü¸®
+// [UI] ì¸ë²¤í† ë¦¬ - ì¸ë²¤í† ë¦¬ ì»¨í…Œì´ë„ˆ ê´€ë¦¬
 public class InvenContainer : MonoBehaviour {
     private SynthesisManager synthesisManager;
+
+    private Vector3 openPos = new Vector3(0f, 0f, 0);
+    private Vector3 closePos = new Vector3(0f, -1020f, 0);
 
     private void Awake() {
         synthesisManager = FindObjectOfType<SynthesisManager>();
@@ -12,13 +16,18 @@ public class InvenContainer : MonoBehaviour {
         gameObject.SetActive(false);
     }
 
-    //TODO: È¿°ú³Ö±â ÀÎº¥~~ ¿­¸®´Â°Å »Ï·Î·Õ ÇÏ°í ÆÄ¾Æ¾Ñ ÇÏ¸é¼­ »ş¾Æ¾Æ¾Æ~~ ÇÏ°Ô~~ ^-^7777
     public void OpenInventory() {
         gameObject.SetActive(true);
+        FunctionMove(gameObject.transform, openPos);
     }
 
     public void CloseInventory() {
         synthesisManager.ResetAllSlot();
+        FunctionMove(gameObject.transform, closePos);
         gameObject.SetActive(false);
+    }
+
+    private void FunctionMove(Transform origin, Vector3 destiny) {
+        origin.DOLocalMove(destiny, 0.5f, true);
     }
 }

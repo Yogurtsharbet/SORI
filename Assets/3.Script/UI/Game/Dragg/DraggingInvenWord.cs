@@ -6,8 +6,13 @@ using UnityEngine.UI;
 
 public class DraggingInvenWord : DraggingObject, IEndDragHandler, IDragHandler, IBeginDragHandler {
     protected Text wordText;
+    private InvenSlotManager invenSlotManager;
+    private InvenSlotController invenSlotController;
 
     private void Awake() {
+        invenSlotManager = FindObjectOfType<InvenSlotManager>();
+        invenSlotController = gameObject.GetComponent<InvenSlotController>();
+
         Canvas[] canvases = FindObjectsOfType<Canvas>();
         foreach (Canvas cn in canvases) {
             if (cn.name.Equals("GameCanvas")) {
@@ -56,14 +61,14 @@ public class DraggingInvenWord : DraggingObject, IEndDragHandler, IDragHandler, 
     }
 
     private void addSynthesisSlot(WordDragInvenTarget target) {
-        //TODO: 이미 단어 있으면 스위칭
         if (target.IsInvenSlot) {
             //인벤 슬롯일때
+            invenSlotManager.SetInvenSwitching(invenSlotController.Key, target.InvenSlotKey());
         }
         else {
             //조합창 슬롯일때
+            target.AddWord(invenSlotController.Key);
         }
-
     }
 
-} 
+}
