@@ -18,27 +18,29 @@ public class WordFunctionData {
 }
 
 public class WordFunction : MonoBehaviour {
-    private Dictionary<Word, Action> functionList;
+    private Dictionary<WordKey, Action> functionList;
     private WordFunctionData function;
 
     public FrameRank frameRank = FrameRank.NORMAL;
 
     public void Excute(WordFunctionData data) {
         function = data;
-        functionList[data.word]();
+        functionList[data.word.Key]();
     }
 
     private void Awake() {
-        functionList = new Dictionary<Word, Action>();
+        functionList = new Dictionary<WordKey, Action>();
     }
 
     private void Start() {
-        functionList.Add(WordData.Search("MOVE"), Move);
+        functionList.Add(WordData.Search("MOVE").Key, Move);
     }
 
     private Vector3 GetIndicatePosition(GameObject indicator) {
         Vector3 position = indicator.GetComponent<IndicatorControl>().indicatePosition;
 
+        /**
+        //TODO: FrameRank에 따른 계산을 Select 할 때 적용시킬 것
         float distance = 1f;
         switch (frameRank) {
             case FrameRank.EPIC:
@@ -47,6 +49,7 @@ public class WordFunction : MonoBehaviour {
                 distance = 4f; break;
         }
         position = position * distance;
+        **/
         return position;
     }
 
@@ -68,5 +71,6 @@ public class WordFunction : MonoBehaviour {
         sequence.Append(rigid.DOMove(destiny, 2f))
                 .Join(targetTransform.DOLookAt(targetTransform.position + direction, 2f))
                 .Play();
+        function.indicator.SetActive(false);
     }
 }

@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using Random = UnityEngine.Random;
 using WordTag = System.String;
 using WordKey = System.UInt16;
+using System.Linq;
 
 public class FrameActivate : MonoBehaviour {
     private static FrameActivate instance;
@@ -70,10 +71,6 @@ public class FrameActivate : MonoBehaviour {
         return instance.targetTag.Contains(tag);
     }
 
-    public static void Activate (Word word) {
-
-    }
-
     public static void Activate(SelectData selectData) {
         instance.selectData = selectData;
         instance.ActivateFunction();
@@ -84,10 +81,15 @@ public class FrameActivate : MonoBehaviour {
         //Select된 오브젝트를 Queue의 word와 비교. 선택된 tag에 붙은 모든 verb / sentence를 activate
         foreach (var eachFunction in activeFunction) {
             if (eachFunction.Item3 == null) {
-                for (int i = 0; i < selectData.clickedObject.Count; i++) {
-                    var clicked = selectData.clickedObject[i];
-                    if (eachFunction.Item1.Tag == clicked.tag) {
-                        Function(clicked, eachFunction.Item2, GetIndicator(clicked));
+                if (WordData.wordProperty["UNSELECT"].Contains(eachFunction.Item1.Tag)) {
+                    //TODO: UNSELECT
+                }
+                else {
+                    for (int i = 0; i < selectData.clickedObject.Count; i++) {
+                        var clicked = selectData.clickedObject[i];
+                        if (eachFunction.Item1.Tag == clicked.tag) {
+                            Function(clicked, eachFunction.Item2, GetIndicator(clicked));
+                        }
                     }
                 }
 
@@ -103,10 +105,11 @@ public class FrameActivate : MonoBehaviour {
 
         for (int i = 0; i < selectData.Indicator.Count; i++) {
             var indicator = selectData.Indicator[i];
+            if (!indicator.activeSelf) continue;
             if (Vector3.Distance(
                 indicator.transform.position, clicked.GetComponent<Collider>().bounds.center) < 0.1f) {
                 selectData.Indicator.RemoveAt(i);
-                return clicked;
+                return indicator;
             }
         }
         return null;

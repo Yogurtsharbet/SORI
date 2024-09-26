@@ -111,7 +111,8 @@ public class SelectControl : MonoBehaviour {
         if (FrameActivate.CheckMovable(nowObject.tag))
             IndicatorOn(nowObject);
 
-        clickedObject.Add(nowObject);
+        if (!clickedObject.Contains(nowObject))
+            clickedObject.Add(nowObject);
     }
 
     private void Unselect() {
@@ -169,6 +170,8 @@ public class SelectControl : MonoBehaviour {
             if (!each.activeSelf) {
                 each.GetComponent<IndicatorControl>().SetInstantitate(Indicator);
                 Indicator.gameObject.SetActive(false);
+                RemoveMaterial(nowObject, clickedShader);
+                nowObject = null;
                 return;
             }
         }
@@ -207,9 +210,12 @@ public class SelectControl : MonoBehaviour {
 
     private void OnEnter() {
         if (clickedObject.Count == 0) return;
+        if (Indicator.gameObject.activeSelf) return;
         playerBehavior.ToggleCombineMode();
 
         FrameActivate.Activate(new SelectData(clickedObject, SpawnedIndicator));
+        foreach (var each in clickedObject)
+            RemoveMaterial(each, clickedShader);
         clickedObject.Clear(); SpawnedIndicator.Clear();
     }
 

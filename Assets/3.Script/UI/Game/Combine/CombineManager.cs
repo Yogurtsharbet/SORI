@@ -138,23 +138,16 @@ public class CombineManager : MonoBehaviour {
         string dialogContents = string.Empty;
         if (baseFrame == null) dialogContents = "프레임 없음";
         else if (FrameValidity.Check(baseFrame)) {
-            bool isUnselectable = false;
             wordFunction.frameRank = baseFrame.Rank;
-
-            foreach (var eachKeyA in FrameValidity.GetCommonWord(0).keys) {
-                Word eachWordA = Word.GetWord(eachKeyA);
-                if (WordData.wordProperty["UNSELECT"].Contains(eachWordA.Tag))
-                    isUnselectable = true;
-            }//TODO: HP 그리고 소리 가 증가한다 : Unselcet 와 selectable 혼재 할 경우 selectMode 되어야.
-            //TODO: 그렇다면 Unselectable에 따라 Activate를 다르게 호출하는것이 아니라, ActiveFunction에서 
-            //TODO: activeFunction Queue를 조사할 때 Item1이 unselectable인지 조사해서
-            //TODO: selectData를 가져오지 않아도 즉시 function이 작동하도록 바꿔야할듯
- 
-
-            if (isUnselectable) FrameActivate.Activate();
-            else {
-                CameraControl.Instance.SetCamera(CameraControl.CameraStatus.SelectView);
+            
+            int i;
+            for (i =  0; i < FrameValidity.GetCommonWord(0).keys.Count; i++) {
+                Word eachWord = Word.GetWord(FrameValidity.GetCommonWord(0).keys[i]);
+                if (!WordData.wordProperty["UNSELECT"].Contains(eachWord.Tag)) break;
             }
+            if (i < FrameValidity.GetCommonWord(0).keys.Count)
+                CameraControl.Instance.SetCamera(CameraControl.CameraStatus.SelectView);
+            else FrameActivate.Activate(null);
 
             combineContainer.CloseCombineField();
 
