@@ -22,6 +22,7 @@ public class CameraControl : MonoBehaviour {
 
     private CinemachineBlendListCamera cinematicIntro;
     private CinemachineBlendListCamera cinematicForest;
+    private CinemachineBlendListCamera cinematicRuins;
 
     public CinemachineVirtualCameraBase currentCamera { get; private set; }
 
@@ -30,6 +31,7 @@ public class CameraControl : MonoBehaviour {
     private Animator butterflyAnimator;
 
     [SerializeField] private Transform cinematicForestPosition;
+    [SerializeField] private Transform cinematicRuinsPosition;
 
     private void Awake() {
         Instance = this;
@@ -53,6 +55,7 @@ public class CameraControl : MonoBehaviour {
         allCamera.Add(cameraSelectTopView);
         allCamera.Add(cinematicIntro);
         allCamera.Add(cinematicForest);
+        allCamera.Add(cinematicRuins);
     }
 
     private void Start() {
@@ -74,6 +77,7 @@ public class CameraControl : MonoBehaviour {
 
     public void SetCamera(string camera) {
         if (camera == "Forest") SetCamera(cinematicForest);
+        else if (camera == "Ruins") SetCamera(cinematicRuins);
     }
 
     public void SetCamera(CinemachineVirtualCameraBase camera) {
@@ -91,35 +95,18 @@ public class CameraControl : MonoBehaviour {
                     StartCoroutine(WaitForCinematicEnd(camera as CinemachineBlendListCamera));
                     CursorControl.SetCursor(CursorType.Loading);
 
-                    if (camera == cinematicIntro) 
+                    if (camera == cinematicIntro)
                         playerAnimator.SetTrigger("cinematicIntro");
-
-                    else if (camera == cinematicForest) {
-                        StartCoroutine(RotateFreeLock());
-                        playerAnimator.SetFloat("MoveSpeed", 7f);
-                        butterflyAnimator.SetTrigger("cinematicForest");
-
-                        Sequence sequence = DOTween.Sequence();
-                        sequence
-                            .AppendCallback(() => playerMove.transform.LookAt(cinematicForestPosition.position))
-                            .Append(playerMove.transform.DOMove(cinematicForestPosition.position, 5f)
-                            .OnComplete(() => playerAnimator.SetFloat("MoveSpeed", 3f)))
-                            .Append(playerMove.transform.DOMove(cinematicForestPosition.position + transform.forward, 0.5f)
-                            .OnComplete(() => playerAnimator.SetTrigger("cinematicForest")))
-                            .OnKill(() => playerAnimator.SetFloat("MoveSpeed", 0f))
-                            .Play();
-                    }
+                    else if (camera == cinematicForest)
+                        CinematicForestProcess();
+                    else if (camera == cinematicRuins)
+                        CinematicRuinsProcess();
                 }
             }
             else
                 eachCamera.Priority = 0;
         }
     }
-
-    // GameState 구현에 따른 삭제. 240927
-    //public void ChangePlayerCamera() {
-    //    SetCamera(currentCamera != cameraTopView ? cameraTopView : cameraCombineView);
-    //}
 
     private IEnumerator WaitForCinematicEnd(CinemachineBlendListCamera camera) {
         Debug.Log($"Waiting Cinmatic : {camera.name}");
@@ -148,6 +135,36 @@ public class CameraControl : MonoBehaviour {
             yield return null;
         }
     }
+
+    private void CinematicForestProcess() {
+        StartCoroutine(RotateFreeLock());
+        playerAnimator.SetFloat("MoveSpeed", 7f);
+        butterflyAnimator.SetTrigger("cinematicForest");
+
+        Sequence sequence = DOTween.Sequence();
+        sequence
+            .AppendCallback(() => playerMove.transform.LookAt(cinematicForestPosition.position))
+            .Append(playerMove.transform.DOMove(cinematicForestPosition.position, 5f)
+            .OnComplete(() => playerAnimator.SetFloat("MoveSpeed", 3f)))
+            .Append(playerMove.transform.DOMove(cinematicForestPosition.position + transform.forward, 0.5f)
+            .OnComplete(() => playerAnimator.SetTrigger("cinematicForest")))
+            .OnKill(() => playerAnimator.SetFloat("MoveSpeed", 0f))
+            .Play();
+    }
+
+    private void CinematicRuinsProcess() {
+        playerAnimator.SetFloat("MoveSpeed", 10f);
+    
+        Sequence sequence = DOTween.Sequence();
+        sequence
+            .AppendCallback(() => playerMove.transform.LookAt(cinematicRuinsPosition.position))
+            .Append(playerMove.transform.DOMove(cinematicRuinsPosition.position, 5f))
+            .OnComplete(() => playerAnimator.SetFloat("MoveSpeed", 3f))
+            .Append(playerMove.transform.DOMove(cinematicRuinsPosition.position + transform.forward, 1f))
+            .OnKill(() => playerAnimator.SetFloat("MoveSpeed", 0f))
+            .Play();
+    }
+
 }
 
 //TODO: SELECT VIEW 좌우 움직임 방지를 recentering 시간을 짧게하는 방식 말고, 직접 각도 지정으로 변경할 것. (어지러움)

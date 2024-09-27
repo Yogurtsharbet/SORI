@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 enum CinematicType {
-    Intro, Forest
+    Intro, Forest, Ruins
 }
 
 public class PlayerBehavior : MonoBehaviour {
@@ -140,6 +140,10 @@ public class PlayerBehavior : MonoBehaviour {
             if (zone.name == "ForestEntrance" && !isWatchedCinematic[(int)CinematicType.Forest]) {
                 isWatchedCinematic[(int)CinematicType.Forest] = true;
                 CameraControl.Instance.SetCamera("Forest");
+            }
+            else if (zone.name == "Ruins" && !isWatchedCinematic[(int)CinematicType.Ruins]) {
+                isWatchedCinematic[(int)CinematicType.Ruins] = true;
+                CameraControl.Instance.SetCamera("Ruins");
             }
         }
     }
