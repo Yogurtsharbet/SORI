@@ -2,7 +2,7 @@
     "name": "PlayerInputActions",
     "maps": [
         {
-            "name": "PlayerActions",
+            "name": "PlayerMovement",
             "id": "8245bdff-b58e-4d34-8c67-224ec6990d9f",
             "actions": [
                 {
@@ -16,7 +16,7 @@
                 },
                 {
                     "name": "Dash",
-                    "type": "Button",
+                    "type": "PassThrough",
                     "id": "ade6d01d-d97a-4593-bb33-7fe70c7d7e9d",
                     "expectedControlType": "Button",
                     "processors": "",
@@ -25,26 +25,8 @@
                 },
                 {
                     "name": "Jump",
-                    "type": "Button",
+                    "type": "PassThrough",
                     "id": "741d2de8-280c-4ae7-bbea-ca5892aa0466",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
-                    "name": "Combine",
-                    "type": "Button",
-                    "id": "6941514a-9fa7-4bfa-8afc-b8c31fe3641c",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
-                    "name": "Inventory",
-                    "type": "Button",
-                    "id": "21a2cd29-f6dd-43fd-8ed8-d4e9a5441c83",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -183,39 +165,44 @@
                     "action": "Jump",
                     "isComposite": false,
                     "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "63a482ca-2b71-4eb1-aeae-9b3c81671877",
-                    "path": "<Keyboard>/tab",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "Keyboard",
-                    "action": "Combine",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "7cd50194-965b-495b-a79b-6986d86711bf",
-                    "path": "<Keyboard>/i",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Inventory",
-                    "isComposite": false,
-                    "isPartOfComposite": false
                 }
             ]
         },
         {
-            "name": "Camera",
-            "id": "7eb05334-7a2b-40f6-8c84-137571ecb86b",
+            "name": "UI",
+            "id": "4c1301d3-7ad4-4451-b8ce-26d55418d13d",
             "actions": [
                 {
-                    "name": "Click",
+                    "name": "Enter",
                     "type": "Button",
-                    "id": "79e8d161-9057-468e-a8bb-5760d01d8345",
+                    "id": "2484416a-9839-4967-b9fc-0b3d209ced13",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Cancel",
+                    "type": "Button",
+                    "id": "2f9a634d-9ee7-416d-a477-f4b2fab04ee3",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Tab",
+                    "type": "Button",
+                    "id": "d5be77b8-050b-4af5-b018-51850b092e39",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Inventory",
+                    "type": "Button",
+                    "id": "bd448463-6c87-4cab-9ec6-2bb148434989",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -225,12 +212,45 @@
             "bindings": [
                 {
                     "name": "",
-                    "id": "e29d9077-3462-4ae4-adf2-cefd232457ea",
-                    "path": "<Mouse>/leftButton",
+                    "id": "a96d2382-0661-46e3-a1c5-4ffc3d592889",
+                    "path": "*/{Cancel}",
                     "interactions": "",
                     "processors": "",
-                    "groups": "",
-                    "action": "Click",
+                    "groups": "Keyboard",
+                    "action": "Cancel",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "727a3abf-6f44-4a6f-bd00-7e945ecf877c",
+                    "path": "<Keyboard>/i",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard",
+                    "action": "Inventory",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "fba032be-09be-4a88-9be9-a02b7918e5b6",
+                    "path": "*/{Submit}",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard",
+                    "action": "Enter",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "964fe11d-471d-4f49-b8b4-9fbd234cf052",
+                    "path": "<Keyboard>/tab",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard",
+                    "action": "Tab",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

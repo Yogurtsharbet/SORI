@@ -34,9 +34,9 @@ public class PlayerMove : MonoBehaviour {
 
         Dust = GetComponent<PlayerRunningParticle>();
 
-        playerInputAction.PlayerActions.Move.performed += value => OnMove(value.ReadValue<Vector2>());
-        playerInputAction.PlayerActions.Dash.performed += value => OnDash();
-        playerInputAction.PlayerActions.Jump.performed += value => OnJump();
+        playerInputAction.PlayerMovement.Move.performed += value => OnMove(value.ReadValue<Vector2>());
+        playerInputAction.PlayerMovement.Dash.performed += value => OnDash();
+        playerInputAction.PlayerMovement.Jump.performed += value => OnJump();
 
         pastFramePosition = currentFramePosition = transform.position;
     }
@@ -287,4 +287,4 @@ public class PlayerMove : MonoBehaviour {
     }
 
 }
-
+//TODO: 대시랑 점프가 동시에 안눌리는 버그

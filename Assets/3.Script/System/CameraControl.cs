@@ -116,9 +116,10 @@ public class CameraControl : MonoBehaviour {
         }
     }
 
-    public void ChangePlayerCamera() {
-        SetCamera(currentCamera != cameraTopView ? cameraTopView : cameraCombineView);
-    }
+    // GameState êµ¬í˜„ì— ë”°ë¥¸ ì‚­ì œ. 240927
+    //public void ChangePlayerCamera() {
+    //    SetCamera(currentCamera != cameraTopView ? cameraTopView : cameraCombineView);
+    //}
 
     private IEnumerator WaitForCinematicEnd(CinemachineBlendListCamera camera) {
         Debug.Log($"Waiting Cinmatic : {camera.name}");
@@ -149,4 +150,4 @@ public class CameraControl : MonoBehaviour {
     }
 }
 
-//TODO: SELECT VIEW ÁÂ¿ì ¿òÁ÷ÀÓ ¹æÁö¸¦ recentering ½Ã°£À» Âª°ÔÇÏ´Â ¹æ½Ä ¸»°í, Á÷Á¢ °¢µµ ÁöÁ¤À¸·Î º¯°æÇÒ °Í. (¾îÁö·¯¿ò)
+//TODO: SELECT VIEW ì¢Œìš° ì›€ì§ì„ ë°©ì§€ë¥¼ recentering ì‹œê°„ì„ ì§§ê²Œí•˜ëŠ” ë°©ì‹ ë§ê³ , ì§ì ‘ ê°ë„ ì§€ì •ìœ¼ë¡œ ë³€ê²½í•  ê²ƒ. (ì–´ì§€ëŸ¬ì›€)

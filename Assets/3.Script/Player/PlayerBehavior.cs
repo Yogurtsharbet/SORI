@@ -36,9 +36,6 @@ public class PlayerBehavior : MonoBehaviour {
 
         combineContainer = FindObjectOfType<CombineContainer>();
         invenContainer = FindObjectOfType<InvenContainer>();
-
-        playerInputAction.PlayerActions.Combine.performed += value => OnCombine();
-        playerInputAction.PlayerActions.Inventory.performed += value => OnInventory();
     }
 
     private void Start() {
@@ -60,33 +57,35 @@ public class PlayerBehavior : MonoBehaviour {
         OnPlayerDie -= PlayerDieAnimation;
     }
 
-    private void OnCombine() {
-        // *************************************** //
-        // Toggle Combine Mode when Tab is pressed //
-        // *************************************** //
-        if (CameraControl.Instance.cameraStatus == CameraControl.CameraStatus.TopView ||
-            CameraControl.Instance.cameraStatus == CameraControl.CameraStatus.CombineView)
-            ToggleCombineMode();
-        else if (CameraControl.Instance.cameraStatus == CameraControl.CameraStatus.SelectView)
-            CameraControl.Instance.SetCamera(CameraControl.CameraStatus.SelectTopView);
-        else CameraControl.Instance.SetCamera(CameraControl.CameraStatus.SelectView);
-    }
+    // GameState 구현에 따른 삭제. 240927.
+    //private void OnCombine() {
+    //    // *************************************** //
+    //    // Toggle Combine Mode when Tab is pressed //
+    //    // *************************************** //
+    //    if (CameraControl.Instance.cameraStatus == CameraControl.CameraStatus.TopView ||
+    //        CameraControl.Instance.cameraStatus == CameraControl.CameraStatus.CombineView)
+    //        ToggleCombineMode();
+    //    else if (CameraControl.Instance.cameraStatus == CameraControl.CameraStatus.SelectView)
+    //        CameraControl.Instance.SetCamera(CameraControl.CameraStatus.SelectTopView);
+    //    else CameraControl.Instance.SetCamera(CameraControl.CameraStatus.SelectView);
+    //}
 
     private void OnInventory() {
         if (invenContainer.gameObject.activeSelf) invenContainer.CloseInventory();
         else invenContainer.OpenInventory();
     }
 
-    public void ToggleCombineMode() {
-        isCombineMode = !isCombineMode;
+    // GameState 구현에 따른 삭제. 240927
+    //public void ToggleCombineMode() {
+    //    isCombineMode = !isCombineMode;
 
-        if (IsCombineMode) 
-            combineContainer.OpenCombineField();
-        else combineContainer.CloseCombineField();
+    //    if (IsCombineMode) 
+    //        combineContainer.OpenCombineField();
+    //    else combineContainer.CloseCombineField();
 
-        playerAnimator.SetBool("isCombineMode", isCombineMode);
-        CameraControl.Instance.ChangePlayerCamera();
-    }
+    //    playerAnimator.SetBool("isCombineMode", isCombineMode);
+    //    CameraControl.Instance.ChangePlayerCamera();
+    //}
 
     private void PlayerDieAnimation() {
         playerAnimator.SetTrigger("triggerDie");

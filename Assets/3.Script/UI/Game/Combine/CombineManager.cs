@@ -212,17 +212,17 @@ public class CombineManager : MonoBehaviour {
             string dialogContents = string.Empty;
             if (baseFrame == null) dialogContents = "프레임 없음";
             else if (FrameValidity.Check(baseFrame)) {
-
                 wordFunction.frameRank = baseFrame.Rank;
-                 int i;
-            for (i =  0; i < FrameValidity.GetCommonWord(0).keys.Count; i++) {
-                Word eachWord = Word.GetWord(FrameValidity.GetCommonWord(0).keys[i]);
-                if (!WordData.wordProperty["UNSELECT"].Contains(eachWord.Tag)) break;
-            }
-            if (i < FrameValidity.GetCommonWord(0).keys.Count)
-                CameraControl.Instance.SetCamera(CameraControl.CameraStatus.SelectView);
-            else FrameActivate.Activate(null);
-            
+
+                int i;
+                for (i = 0; i < FrameValidity.GetCommonWord(0).keys.Count; i++) {
+                    Word eachWord = Word.GetWord(FrameValidity.GetCommonWord(0).keys[i]);
+                    if (!WordData.wordProperty["UNSELECT"].Contains(eachWord.Tag)) break;
+                }
+                if (i < FrameValidity.GetCommonWord(0).keys.Count)
+                    (FindObjectOfType<GameManager>().gameState as State_Combine).OnCombineSubmit();
+                else FrameActivate.Activate(null);
+
                 //선택 view에서 frame 임시 저장
                 tempFrame = baseFrame;
                 combineContainer.CloseCombineField();

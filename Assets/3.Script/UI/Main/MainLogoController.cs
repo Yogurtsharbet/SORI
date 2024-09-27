@@ -14,6 +14,7 @@ public class MainLogoController : MonoBehaviour {
         action.UI.Enable();
         action.UI.Click.performed += value => onClick();
     }
+
     private void OnDisable() {
         action.UI.Disable();
     }

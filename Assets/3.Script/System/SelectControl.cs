@@ -25,8 +25,6 @@ public class SelectControl : MonoBehaviour {
     private DefaultInputActions inputAction;
 
     private PlayerBehavior playerBehavior;
-    private CombineManager combineManager;
-    private CombineContainer combineContainer;
 
     private List<Renderer> clickedObject;
     private Renderer prevObject;
@@ -42,12 +40,10 @@ public class SelectControl : MonoBehaviour {
     private CameraControl.CameraStatus cameraStatus;
 
     private List<GameObject> SpawnedIndicator;
-    private (List<Renderer>, List<GameObject>) SelectData;
+    public bool IsSelectComplete { get { return clickedObject.Count != 0 && !Indicator.gameObject.activeSelf; } }
 
     private void Awake() {
         playerBehavior = FindObjectOfType<PlayerBehavior>();
-        combineManager = FindObjectOfType<CombineManager>();
-        combineContainer = FindObjectOfType<CombineContainer>();
 
         cameraBrain = FindObjectOfType<CinemachineBrain>();
         Indicator = GetComponentInChildren<IndicatorControl>().transform;
@@ -55,9 +51,8 @@ public class SelectControl : MonoBehaviour {
         inputAction = new DefaultInputActions();
         inputAction.UI.Point.performed += value => OnPoint(value.ReadValue<Vector2>());
         inputAction.UI.Click.performed += value => OnClickLeft();
-        inputAction.UI.Submit.performed += value => OnEnter();
-        inputAction.UI.Cancel.performed += value => OnCancel();
         inputAction.UI.RightClick.performed += value => OnClickRight();
+        //inputAction.UI.Cancel.performed += value => OnCancel();
 
         layerMask = (1 << LayerMask.NameToLayer("Ground")) | (1 << LayerMask.NameToLayer("Water"));
         layerMask = ~layerMask;
@@ -75,6 +70,7 @@ public class SelectControl : MonoBehaviour {
     }
 
     private void Update() {
+        //TODO: cameraStatus 를 GameState 로 바꾸기 
         cameraStatus = CameraControl.Instance.cameraStatus;
         if (cameraStatus == CameraControl.CameraStatus.SelectView ||
             cameraStatus == CameraControl.CameraStatus.SelectTopView) {
@@ -193,7 +189,7 @@ public class SelectControl : MonoBehaviour {
         mousePosition = value;
     }
 
-    private bool checkClick;
+    private bool checkClick;    // 이중클릭 막기 위한 임시방편
     private void OnClickLeft() {
         if (!checkClick) checkClick = true;
         else {
@@ -208,32 +204,29 @@ public class SelectControl : MonoBehaviour {
         Unselect();
     }
 
-    private void OnEnter() {
-        if (clickedObject.Count == 0) return;
-        if (Indicator.gameObject.activeSelf) return;
-        playerBehavior.ToggleCombineMode();
-
+    public void ActivateSelected() {
         FrameActivate.Activate(new SelectData(clickedObject, SpawnedIndicator));
         foreach (var each in clickedObject)
             RemoveMaterial(each, clickedShader);
         clickedObject.Clear(); SpawnedIndicator.Clear();
     }
 
-    private void OnCancel() {
-        switch (CameraControl.Instance.cameraStatus) {
-            case CameraControl.CameraStatus.TopView: return;
+    // GameState 구현에 따른 삭제. 240927.
+    //private void OnCancel() {
+    //    switch (CameraControl.Instance.cameraStatus) {
+    //        case CameraControl.CameraStatus.TopView: return;
 
-            case CameraControl.CameraStatus.CombineView:
-                playerBehavior.ToggleCombineMode();
-                break;
+    //        case CameraControl.CameraStatus.CombineView:
+    //            playerBehavior.ToggleCombineMode();
+    //            break;
 
-            case CameraControl.CameraStatus.SelectView:
-            case CameraControl.CameraStatus.SelectTopView:
-                combineContainer.OpenCombineField();
-                CameraControl.Instance.SetCamera(CameraControl.CameraStatus.CombineView);
-                break;
-        }
-    }
+    //        case CameraControl.CameraStatus.SelectView:
+    //        case CameraControl.CameraStatus.SelectTopView:
+    //            combineContainer.OpenCombineField();
+    //            CameraControl.Instance.SetCamera(CameraControl.CameraStatus.CombineView);
+    //            break;
+    //    }
+    //}
 
     private void ApplyMaterial(Renderer renderer, Material material) {
         if (renderer == null) return;

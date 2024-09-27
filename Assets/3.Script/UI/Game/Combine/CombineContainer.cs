@@ -26,12 +26,15 @@ public class CombineContainer : MonoBehaviour {
     }
 
     public void CloseCombineField(bool backToTopview = false) {
-        if (backToTopview) FindObjectOfType<PlayerBehavior>().ToggleCombineMode();
-        combineManager.CloseCombineSlot();
-        FunctionMove(gameObject.transform, closePos);
-        halfInvenManager.SetCombineMode(false);
-        halfInvenManager.CloseInven();
-        gameObject.SetActive(false);
+        if (backToTopview)
+            FindObjectOfType<GameManager>().gameState.OnCancel();
+        else {
+            combineManager.CloseCombineSlot();
+            FunctionMove(gameObject.transform, closePos);
+            halfInvenManager.SetCombineMode(false);
+            halfInvenManager.CloseInven();
+            gameObject.SetActive(false);
+        }
     }
 
     private void FunctionMove(Transform origin, Vector3 destiny) {
