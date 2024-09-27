@@ -6,12 +6,10 @@ public interface IGameState {
     public void OnCancel();
     public void OnTab();
     public void OnInven();
-
-
 }
 
 public enum GameState {
-    Normal, Combine, Select, Inven
+    Normal, Combine, Select, Inven, Shop
 }
 
 public class State_Normal : IGameState {
@@ -155,5 +153,37 @@ public class State_Inven : IGameState {
 
     public void OnInven() {
         OnCancel();
+    }
+
+
+}
+public class State_Shop : IGameState {
+    private GameManager gameManager;
+    private ShopContainer shopContainer;
+
+    public State_Shop() {
+        gameManager = GameObject.FindObjectOfType<GameManager>();
+        shopContainer = GameObject.FindObjectOfType<ShopContainer>();
+    }
+
+    public void OnStateChanged() {
+        shopContainer.OpenShopContainer();
+    }
+
+    public void OnCancel() {
+        gameManager.ChangeState(GameState.Normal);
+        shopContainer.CloseShopContainer();
+    }
+
+    public void OnEnter() {
+        return;
+    }
+
+    public void OnInven() {
+        return;
+    }
+
+    public void OnTab() {
+        return;
     }
 }

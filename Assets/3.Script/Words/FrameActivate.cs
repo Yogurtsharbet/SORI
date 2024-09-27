@@ -74,6 +74,18 @@ public class FrameActivate : MonoBehaviour {
     public static void Activate(SelectData selectData) {
         instance.selectData = selectData;
         instance.ActivateFunction();
+        instance.useFrame();
+    }
+
+    public void useFrame() {
+        CombineManager combineManager = FindObjectOfType<CombineManager>();
+        if (combineManager.TempFrame.IsPersistence) {
+            combineManager.FrameToList(combineManager.TempFrame);
+            combineManager.ResetTempFrame();
+        }
+        else {
+            combineManager.ResetTempFrame();
+        }
     }
 
     private void ActivateFunction() {

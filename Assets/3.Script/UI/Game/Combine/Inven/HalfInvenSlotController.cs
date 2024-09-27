@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public class HalfInvenSlotController : CommonInvenSlotController, IPointerClickHandler {
     private HalfInvenManager halfInvenManager;
     private PlayerInvenController playerInven;
+    private GameManager gameManager;
 
     private void Awake() {
         //TODO: 게임씬으로 분리시  CANVAS 분리 필요
@@ -16,6 +17,7 @@ public class HalfInvenSlotController : CommonInvenSlotController, IPointerClickH
             }
         }
 
+        gameManager = FindObjectOfType<GameManager>();
         closeController = GetComponentInChildren<InvenSlotCloseController>();
         halfInvenManager = FindObjectOfType<HalfInvenManager>();
         playerInven = FindObjectOfType<PlayerInvenController>();
@@ -45,8 +47,9 @@ public class HalfInvenSlotController : CommonInvenSlotController, IPointerClickH
         }
         halfInvenManager.SelectSlot(key);
 
-        //TODO: if( 상점모드일때 )
-        halfInvenManager.UpdateRecipt();
+        if (gameManager.CompareState(GameState.Shop)){
+            halfInvenManager.UpdateRecipt();
+        }
     }
 
     public void DeleteWord() {

@@ -11,12 +11,12 @@ public class HalfInvenContainer : MonoBehaviour {
         gameObject.SetActive(false);
     }
 
-    public void OpenCombineInven() {
+    public void OpenHalfInven() {
         gameObject.SetActive(true);
         FunctionMove(gameObject.transform, openPos);
     }
 
-    public void CloseCombineInven() {
+    public void CloseHalfInven() {
         FunctionMove(gameObject.transform, closePos);
         gameObject.SetActive(false);
     }

@@ -75,11 +75,11 @@ public class HalfInvenManager : CommonInvenSlotManager {
     }
 
     public void OpenInven() {
-        halfInvenContainer.OpenCombineInven();
+        halfInvenContainer.OpenHalfInven();
     }
 
     public void CloseInven() {
-        halfInvenContainer.CloseCombineInven();
+        halfInvenContainer.CloseHalfInven();
     }
 
     /// <summary>

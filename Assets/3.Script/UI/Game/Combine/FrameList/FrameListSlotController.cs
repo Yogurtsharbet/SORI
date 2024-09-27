@@ -5,6 +5,7 @@ using UnityEngine.UI;
 
 // [UI] 문장 목록 - 문장 슬롯 컨트롤러. 문장 리스트 중 한 문장 틀
 public class FrameListSlotController : MonoBehaviour, IPointerClickHandler {
+    private GameManager gameManager;
     private CombineContainer combineContainer;
     private FrameListManager frameListManager;
     private List<(int, CombineSlotController)> combineSlotControllers = new List<(int, CombineSlotController)>();
@@ -16,6 +17,7 @@ public class FrameListSlotController : MonoBehaviour, IPointerClickHandler {
     private FrameType thisFrameType;                        //현재 프레임 타입
 
     private void Awake() {
+        gameManager = FindObjectOfType<GameManager>();
         frameListManager = FindObjectOfType<FrameListManager>();
         combineContainer = FindObjectOfType<CombineContainer>();
         for (int i = 0; i < 4; i++) {
@@ -41,7 +43,8 @@ public class FrameListSlotController : MonoBehaviour, IPointerClickHandler {
     }
 
     public void OnPointerClick(PointerEventData eventData) {
-        combineContainer.OpenCombineField();
+        if (gameManager.CompareState(GameState.Normal))
+            gameManager.ChangeState(GameState.Combine);
     }
 
     public void SetFrameData(Frame frame) {

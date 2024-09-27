@@ -14,6 +14,7 @@ public class CombineManager : MonoBehaviour {
     public Frame BaseFrame => baseFrame;
 
     private Frame tempFrame;
+    public Frame TempFrame => tempFrame;
 
     //조합 가능여부
     private bool canCombine;
@@ -122,20 +123,20 @@ public class CombineManager : MonoBehaviour {
 
             if (wordCount < baseFrame.CountOfFrame()) {
                 for (int i = 0; i < baseFrame.CountOfFrame(); i++) {
-                    Frame tempFrame = baseFrame.GetFrame(i);
-                    if (tempFrame == null) continue;
+                    Frame _tempFrame = baseFrame.GetFrame(i);
+                    if (_tempFrame == null) continue;
 
                     foreach (var slot in tempSlots) {
                         if (slot.SlotIndex != i || slot.IsSub) continue;
 
-                        slot.OpenFrame(tempFrame.Type);
+                        slot.OpenFrame(_tempFrame.Type);
 
-                        for (int k = 0; k < tempFrame.CountOfFrame(); k++) {
-                            Word word = tempFrame.GetWord(k);
+                        for (int k = 0; k < _tempFrame.CountOfFrame(); k++) {
+                            Word word = _tempFrame.GetWord(k);
                             if (word == null) continue;
 
                             foreach (var subSlot in tempSlots) {
-                                if (subSlot.SlotIndex == k && subSlot.IsSub && subSlot.ParentType == tempFrame.Type) {
+                                if (subSlot.SlotIndex == k && subSlot.IsSub && subSlot.ParentType == _tempFrame.Type) {
                                     subSlot.OpenWord(word);
                                 }
                             }
@@ -204,6 +205,14 @@ public class CombineManager : MonoBehaviour {
         return frame.GetWord(index);
     }
 
+    public void FrameToList(Frame frame) {
+        frameListManager.AddFrame(frame);
+    }
+
+    public void ResetTempFrame() {
+        tempFrame = null;
+    }
+
     #endregion
 
     //문장 조합
@@ -219,12 +228,13 @@ public class CombineManager : MonoBehaviour {
                     Word eachWord = Word.GetWord(FrameValidity.GetCommonWord(0).keys[i]);
                     if (!WordData.wordProperty["UNSELECT"].Contains(eachWord.Tag)) break;
                 }
-                if (i < FrameValidity.GetCommonWord(0).keys.Count)
+                if (i < FrameValidity.GetCommonWord(0).keys.Count) {
+                    tempFrame = baseFrame;
                     (FindObjectOfType<GameManager>().gameState as State_Combine).OnCombineSubmit();
+                }
                 else FrameActivate.Activate(null);
 
                 //선택 view에서 frame 임시 저장
-                tempFrame = baseFrame;
                 combineContainer.CloseCombineField();
             }
             //TODO: Dialog -> FrameValidity 에서 띄워주는 게 좋을 듯?
@@ -269,12 +279,12 @@ public class CombineManager : MonoBehaviour {
     //서브 프레임 단어 리셋
     private void resetNotActiveSubFrame(int frameIndex) {
         if (baseFrame.GetFrame(frameIndex) != null) {
-            Frame tempFrame = baseFrame.GetFrame(frameIndex);
-            if (!tempFrame.IsActive) {
+            Frame _tempFrame = baseFrame.GetFrame(frameIndex);
+            if (!_tempFrame.IsActive) {
                 for (int i = 0; i < 3; i++) {
-                    if (tempFrame.GetWord(i) != null) {
-                        playerInvenController.AddNewItem(tempFrame.GetWord(i));
-                        tempFrame.SetWord(i, null);
+                    if (_tempFrame.GetWord(i) != null) {
+                        playerInvenController.AddNewItem(_tempFrame.GetWord(i));
+                        _tempFrame.SetWord(i, null);
                     }
                 }
             }

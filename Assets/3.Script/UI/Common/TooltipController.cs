@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -22,7 +20,12 @@ public class TooltipController : MonoBehaviour {
     }
 
     public void OpenTooltip(PointerEventData eventData) {
-        gameObject.transform.position = new Vector3(eventData.position.x, eventData.position.y - 80f, 0f);
+        if (eventData.position.y < 230) {
+            gameObject.transform.position = new Vector3(eventData.position.x, eventData.position.y + 80f, 0f);
+        }
+        else {
+            gameObject.transform.position = new Vector3(eventData.position.x, eventData.position.y - 80f, 0f);
+        }
         string contents = GetTooltipContents(eventData.pointerEnter.name);
         SetTooltipText(contents);
 
@@ -71,10 +74,11 @@ public class TooltipController : MonoBehaviour {
     }
 
     private string GetTooltipContents(string name) {
+        Debug.Log(name);
         if (name.Equals("SynthesisTooltip")) {
             return "소유중인 단어 3개를 소모하여\n새로운 단어를 얻을 수 있습니다.";
         }
-        else if (name.Equals("Submit")) {
+        else if (name.Equals("ShopSubmit")) {
             return "판매한 단어는 복구할 수 없습니다.";
         }
         else {

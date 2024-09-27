@@ -5269,7 +5269,7 @@ GameObject:
   - component: {fileID: 403285331}
   - component: {fileID: 403285330}
   m_Layer: 5
-  m_Name: Text
+  m_Name: ShopSubmit
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -41059,7 +41059,7 @@ GameObject:
   - component: {fileID: 1617668494}
   - component: {fileID: 1617668498}
   m_Layer: 5
-  m_Name: Submit
+  m_Name: ShopSubmit
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

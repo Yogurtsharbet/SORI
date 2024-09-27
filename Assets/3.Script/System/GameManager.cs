@@ -1,7 +1,5 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 
 public class GameManager : MonoBehaviour {
@@ -33,6 +31,11 @@ public class GameManager : MonoBehaviour {
         State.Add(GameState.Combine, new State_Combine());
         State.Add(GameState.Select, new State_Select());
         State.Add(GameState.Inven, new State_Inven());
+        State.Add(GameState.Shop, new State_Shop());
+    }
+
+    public bool CompareState(GameState state) {
+        return gameState == State[state];
     }
 
     public void ChangeState(GameState state) {
