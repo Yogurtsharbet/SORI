@@ -157,8 +157,8 @@ public class Word {
             case WordRank.NORMAL:   return 150;
             case WordRank.EPIC:     return 400;
             case WordRank.LEGEND:   return 750;
-            case WordRank.UNIQUE:   return 1000;
-            case WordRank.SPECIAL:  return 1500;
+            case WordRank.UNIQUE:   return 1200;
+            case WordRank.SPECIAL:  return 1750;
             default: return 0;
         }
     }

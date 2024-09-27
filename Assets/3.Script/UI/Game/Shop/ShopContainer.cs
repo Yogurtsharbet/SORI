@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-// [UI] »óÁ¡ - »óÁ¡ UI ÄÁÅ×ÀÌ³Ê °ü¸®
+// [UI] ìƒì  - ìƒì  UI ì»¨í…Œì´ë„ˆ ê´€ë¦¬
 public class ShopContainer : MonoBehaviour {
 
     private Vector3 openPos = new Vector3(-360f, -68f, 0);
@@ -15,6 +15,7 @@ public class ShopContainer : MonoBehaviour {
 
     public void OpenShopContainer() {
         gameObject.SetActive(true);
+        //TODO: ìƒì  ëª¨ë“œ ì¶”ê°€í•˜ê¸°
         FunctionMove(gameObject.transform, openPos);
     }
 

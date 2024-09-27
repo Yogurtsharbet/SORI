@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 // [UI] 인벤토리 - 슬롯 목록 관리 공통 매니저
-public class CommonInvenSlotManager :MonoBehaviour {
+public class CommonInvenSlotManager : MonoBehaviour {
 
     [SerializeField] protected GameObject invenSlotPrefab;
 
@@ -12,18 +12,14 @@ public class CommonInvenSlotManager :MonoBehaviour {
     protected PlayerInvenController playerInvenController;
     protected InvenSlotSelectController[] invenSelectControllers;
 
-    private List<int> selectInvens = new List<int>();       //선택한 인벤 index
-
-    private int prevSelectInvenIndex = -1;
+    protected List<int> selectInvens = new List<int>();       //선택한 인벤 index
 
     protected bool waitConfirm = false;
 
-    //슬롯 번호로 RectTransform return
-    public RectTransform GetInvenSlotRectTransfor(int num) {
-        return slotList[num].GetComponent<RectTransform>();
-    }
-
-    //슬롯 선택
+    /// <summary>
+    /// 슬롯 선택
+    /// </summary>
+    /// <param name="num">slot key int</param>
     public void SelectSlot(int num) {
         bool isExist = false;
         for (int i = 0; i < selectInvens.Count; i++) {
@@ -39,6 +35,17 @@ public class CommonInvenSlotManager :MonoBehaviour {
             invenSelectControllers[num].Enable();
             selectInvens.Add(num);
         }
+    }
+
+    public void ResetSelectInvens() {
+        for(int i = 0; i < invenSelectControllers.Length; i++) {
+            invenSelectControllers[i].DisEnable();
+        }
+        selectInvens.RemoveRange(0, selectInvens.Count);
+    }
+
+    public int GetSelectCount() {
+        return selectInvens.Count;
     }
 
     //인벤끼리 스위칭
@@ -60,5 +67,6 @@ public class CommonInvenSlotManager :MonoBehaviour {
         for (int i = 0; i < selectInvens.Count; i++) {
             playerInvenController.RemoveItemIndex(selectInvens[i]);
         }
+        selectInvens.RemoveRange(0, selectInvens.Count);
     }
 }

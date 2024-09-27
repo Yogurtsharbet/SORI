@@ -21,7 +21,7 @@ public class PlayerBehavior : MonoBehaviour {
 
     [SerializeField] private Image playerHPSlider;
 
-    public int StarCoin { get { return StarCoin; } }
+    public int StarCoin { get { return starCoin; } }
     public bool IsCombineMode { get { return isCombineMode; } }
 
     private bool[] isWatchedCinematic = new bool[Enum.GetValues(typeof(CinematicType)).Length];

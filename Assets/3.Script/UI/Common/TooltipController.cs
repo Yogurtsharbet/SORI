@@ -72,7 +72,10 @@ public class TooltipController : MonoBehaviour {
 
     private string GetTooltipContents(string name) {
         if (name.Equals("SynthesisTooltip")) {
-            return "¼ÒÀ¯ÁßÀÎ ´Ü¾î 3°³¸¦ ¼Ò¸ğÇÏ¿©\n»õ·Î¿î ´Ü¾î¸¦ ¾òÀ» ¼ö ÀÖ½À´Ï´Ù.";
+            return "ì†Œìœ ì¤‘ì¸ ë‹¨ì–´ 3ê°œë¥¼ ì†Œëª¨í•˜ì—¬\nìƒˆë¡œìš´ ë‹¨ì–´ë¥¼ ì–»ì„ ìˆ˜ ìˆìŠµë‹ˆë‹¤.";
+        }
+        else if (name.Equals("Submit")) {
+            return "íŒë§¤í•œ ë‹¨ì–´ëŠ” ë³µêµ¬í•  ìˆ˜ ì—†ìŠµë‹ˆë‹¤.";
         }
         else {
             return "";

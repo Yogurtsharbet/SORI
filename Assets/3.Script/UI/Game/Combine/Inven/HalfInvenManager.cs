@@ -6,12 +6,16 @@ using UnityEngine.UI;
 public class HalfInvenManager : CommonInvenSlotManager {
     private HalfInvenSlotController[] halfInvenSlot;
     private HalfInvenContainer halfInvenContainer;
+    private ShopTransactionManager shopTransactionManager;
+    private ReceiptManager receiptManager;
 
     private bool isCombineMode = false;     //문장 조합모드
     public bool IsCombineMode => isCombineMode;
 
     private void Awake() {
+        receiptManager = FindObjectOfType<ReceiptManager>();
         halfInvenContainer = FindObjectOfType<HalfInvenContainer>();
+        shopTransactionManager = FindObjectOfType<ShopTransactionManager>();
         halfInvenSlot = new HalfInvenSlotController[20];
         invenSelectControllers = new InvenSlotSelectController[20];
         playerInvenController = FindObjectOfType<PlayerInvenController>();
@@ -76,5 +80,29 @@ public class HalfInvenManager : CommonInvenSlotManager {
 
     public void CloseInven() {
         halfInvenContainer.CloseCombineInven();
+    }
+
+    /// <summary>
+    /// 선택한 아이템 가격 return
+    /// </summary>
+    /// <returns></returns>
+    public int GetSelectPrice() {
+        int totalPrice = 0;
+        for (int i = 0; i < selectInvens.Count; i++) {
+            totalPrice += shopTransactionManager.GetWordPrice(halfInvenSlot[selectInvens[i]].ThisWord);
+        }
+        return totalPrice;
+    }
+
+    public void SelectItemSell() {
+        for(int i = 0; i<selectInvens.Count; i++) {
+            playerInvenController.RemoveItemIndex(selectInvens[i]);
+        }
+        ResetSelectInvens();
+
+    }
+
+    public void UpdateRecipt() {
+        receiptManager.UpdateReciptData();
     }
 }

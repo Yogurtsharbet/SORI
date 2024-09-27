@@ -2,15 +2,20 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-// [UI] ���� - �Ǹ� ���� ��Ʈ�ѷ� 
-public class ShopSlotManager :MonoBehaviour {
+// [UI] 상점 - 판매 슬롯 컨트롤러 
+public class ShopSlotManager : MonoBehaviour {
     [SerializeField] private GameObject shopSlotPrefab;
     private List<GameObject> shopSlotObjects = new List<GameObject>();
     private ShopSlotController[] shopSlotControllers;
+    private ShopTransactionManager shopTransactionManager;
+    private ReceiptManager receiptManager;
 
-    private List<int> SelectShopIndex = new List<int>();
+    private List<Word> shopWords = new List<Word>();
+    private List<int> selectShopIndex = new List<int>();
 
     private void Awake() {
+        shopTransactionManager = FindObjectOfType<ShopTransactionManager>();
+        receiptManager = FindObjectOfType<ReceiptManager>();
         shopSlotControllers = new ShopSlotController[9];
         for (int i = 0; i < 9; i++) {
             Vector3 position;
@@ -38,33 +43,71 @@ public class ShopSlotManager :MonoBehaviour {
 
     private void initProduct() {
         for (int i = 0; i < 5; i++) {
-            shopSlotControllers[i].SetWord(Word.GetWord());
+            shopWords.Add(Word.GetWord());
         }
         CheckProduct();
     }
 
     private void CheckProduct() {
-        for (int i = 0; i < 9; i++) {
-            if (shopSlotControllers[i].IsExistWord()) {
+        for (int i = 0; i < shopSlotControllers.Length; i++) {
+            if (i < shopWords.Count) {
                 shopSlotControllers[i].gameObject.SetActive(true);
+                shopSlotControllers[i].SetWord(shopWords[i]);
             }
             else {
                 shopSlotControllers[i].gameObject.SetActive(false);
+                shopSlotControllers[i].SetWord(null);
             }
         }
     }
 
-    public void SelectShopItem(int num) {
-        bool isExist = false;
-        for (int i = 0; i < 9; i++) {
-            if (SelectShopIndex[i] == num) {
-                isExist = true;
-                SelectShopIndex.Remove(i);
-                break;
-            }
+    /// <summary>
+    /// 상점 아이템 선택
+    /// 이미 선택 되었으면 list에서 제거, 없으면  list에 넣음
+    /// </summary>
+    /// <param name="index">index</param>
+    public void SelectShopItem(int index) {
+        if (selectShopIndex.Remove(index))
+            shopSlotControllers[index].ActiveSelect(false);
+        else {
+            selectShopIndex.Add(index);
+            shopSlotControllers[index].ActiveSelect(true);
         }
-        if (!isExist) {
-            SelectShopIndex.Add(num);
+        receiptManager.UpdateReciptData();
+    }
+
+
+    public int GetSelectCount() {
+        return selectShopIndex.Count;
+    }
+
+    public int GetSelectPrice() {
+        int totalPrice = 0;
+        for (int i = 0; i < selectShopIndex.Count; i++) {
+            totalPrice += shopTransactionManager.GetWordPrice(shopWords[selectShopIndex[i]]);
         }
+        return totalPrice;
+    }
+
+    public List<Word> BuyItems() {
+        List<Word> buyWords = new List<Word>();
+        for (int i = 0; i < selectShopIndex.Count; i++) {
+            buyWords.Add(shopWords[selectShopIndex[i]]);
+            shopWords.RemoveAt(selectShopIndex[i]);
+        }
+        resetShopSelects();
+        CheckProduct();
+        return buyWords;
+    }
+
+    public int GetWordPrice(Word word) {
+        return shopTransactionManager.GetWordPrice(word);
+    }
+
+    private void resetShopSelects() {
+        for(int i = 0; i < shopSlotControllers.Length; i++) {
+            shopSlotControllers[i].ActiveSelect(false);
+        }
+        selectShopIndex.RemoveRange(0, selectShopIndex.Count);
     }
 }
