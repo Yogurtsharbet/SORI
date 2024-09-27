@@ -3,6 +3,19 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using Cinemachine;
 
+public class SelectData {
+    public List<GameObject> clickedObject;
+    public List<GameObject> Indicator;
+
+    public SelectData(List<Renderer> clickedObject, List<GameObject> Indicator) {
+        this.Indicator = Indicator;
+        this.clickedObject = new List<GameObject>();
+        foreach(var each in clickedObject) {
+            this.clickedObject.Add(each.gameObject);
+        }
+    }
+}
+
 public class SelectControl : MonoBehaviour {
     private List<Material> selectedMaterials = new List<Material>();
     [SerializeField] private Material outlineShader;
@@ -28,13 +41,16 @@ public class SelectControl : MonoBehaviour {
     private Camera currentCamera { get { return cameraBrain.OutputCamera; } }
     private CameraControl.CameraStatus cameraStatus;
 
+    private List<GameObject> SpawnedIndicator;
+    private (List<Renderer>, List<GameObject>) SelectData;
+
     private void Awake() {
         playerBehavior = FindObjectOfType<PlayerBehavior>();
         combineManager = FindObjectOfType<CombineManager>();
         combineContainer = FindObjectOfType<CombineContainer>();
 
         cameraBrain = FindObjectOfType<CinemachineBrain>();
-        Indicator = transform.GetChild(0);
+        Indicator = GetComponentInChildren<IndicatorControl>().transform;
 
         inputAction = new DefaultInputActions();
         inputAction.UI.Point.performed += value => OnPoint(value.ReadValue<Vector2>());
@@ -47,6 +63,7 @@ public class SelectControl : MonoBehaviour {
         layerMask = ~layerMask;
 
         clickedObject = new List<Renderer>();
+        SpawnedIndicator = new List<GameObject>();
     }
 
     private void OnEnable() {
@@ -65,14 +82,17 @@ public class SelectControl : MonoBehaviour {
         }
         else {
             Unselect();
+            ClearIndicator();
+            foreach (var each in clickedObject) RemoveMaterial(each, clickedShader);
         }
     }
 
     private void FindObject() {
+        if (Indicator.gameObject.activeSelf) return;
         if (Physics.Raycast(currentCamera.ScreenPointToRay(mousePosition),
             out rayHit, maxDistance: float.MaxValue, layerMask)) {
 
-            if (FrameActivate.CompareTag(rayHit.collider.tag)) { 
+            if (FrameActivate.CompareTag(rayHit.collider.tag)) {
                 nowObject = rayHit.collider.GetComponent<Renderer>();
 
                 if (prevObject != nowObject) {
@@ -85,23 +105,25 @@ public class SelectControl : MonoBehaviour {
     }
 
     private void Select() {
-        if (nowObject == null || clickedObject != null) return;
+        if (nowObject == null) return;
 
         ApplyMaterial(nowObject, clickedShader);
-        IndicatorOn(nowObject);
+        if (FrameActivate.CheckMovable(nowObject.tag))
+            IndicatorOn(nowObject);
 
-        clickedObject.Add(nowObject);
+        if (!clickedObject.Contains(nowObject))
+            clickedObject.Add(nowObject);
     }
 
     private void Unselect() {
-        //TODO: 레이캐스트를 써서 취소시켜야 해!!!!!!!!!!!!
-        IndicatorOff();
-
-        foreach (var each in clickedObject) RemoveMaterial(each, clickedShader);
-        if (nowObject != null) RemoveMaterial(nowObject, outlineShader);
+        if (nowObject != null) {
+            RemoveMaterial(nowObject, outlineShader);
+            RemoveMaterial(nowObject, clickedShader);
+            clickedObject.Remove(nowObject);
+            IndicatorOff();
+        }
         if (prevObject != null) RemoveMaterial(prevObject, outlineShader);
 
-        clickedObject.Clear();
         nowObject = null;
         prevObject = null;
     }
@@ -125,18 +147,61 @@ public class SelectControl : MonoBehaviour {
         Indicator.position = target.GetComponent<Collider>().bounds.center;
         // RepositionAtScreenOut();
 
+        foreach (var each in SpawnedIndicator) {
+            if (Vector3.Distance(each.transform.position, Indicator.position) <= 0.01f) {
+                each.SetActive(false);
+                break;
+            }
+        }
     }
 
     private void IndicatorOff() {
         Indicator.gameObject.SetActive(false);
+        foreach (var each in SpawnedIndicator) {
+            if (Vector3.Distance(nowObject.GetComponent<Collider>().bounds.center, each.transform.position) <= 0.01f) {
+                each.SetActive(false);
+                break;
+            }
+        }
+    }
+
+    private void SetIndicator() {
+        foreach (var each in SpawnedIndicator) {
+            if (!each.activeSelf) {
+                each.GetComponent<IndicatorControl>().SetInstantitate(Indicator);
+                Indicator.gameObject.SetActive(false);
+                RemoveMaterial(nowObject, clickedShader);
+                nowObject = null;
+                return;
+            }
+        }
+
+        GameObject spawn = Instantiate(Indicator, Indicator.position, Indicator.rotation, Indicator.parent).gameObject;
+        spawn.GetComponent<IndicatorControl>().isInstantiated = true;
+
+        SpawnedIndicator.Add(spawn);
+        Indicator.gameObject.SetActive(false);
+    }
+
+    private void ClearIndicator() {
+        foreach (var each in SpawnedIndicator) {
+            each.SetActive(false);
+        }
     }
 
     private void OnPoint(Vector2 value) {
         mousePosition = value;
     }
 
+    private bool checkClick;
     private void OnClickLeft() {
-        Select();
+        if (!checkClick) checkClick = true;
+        else {
+            checkClick = false;
+            if (Indicator.gameObject.activeSelf)
+                SetIndicator();
+            else Select();
+        }
     }
 
     private void OnClickRight() {
@@ -144,9 +209,14 @@ public class SelectControl : MonoBehaviour {
     }
 
     private void OnEnter() {
-        if (clickedObject == null) return;
+        if (clickedObject.Count == 0) return;
+        if (Indicator.gameObject.activeSelf) return;
         playerBehavior.ToggleCombineMode();
-        FrameActivate.Activate();
+
+        FrameActivate.Activate(new SelectData(clickedObject, SpawnedIndicator));
+        foreach (var each in clickedObject)
+            RemoveMaterial(each, clickedShader);
+        clickedObject.Clear(); SpawnedIndicator.Clear();
     }
 
     private void OnCancel() {
@@ -190,3 +260,4 @@ public class SelectControl : MonoBehaviour {
 //TODO: 여러개 선택할 수 있고, 선택 범위 (distance 제한) 만들고, 선택한 오브젝트를 우클릭하면 해제되고.
 //TODO: 선택한 오브젝트가 movable 이면 indicator 표시하고, 재차 클릭하면 indicator 고정
 
+//TODO: R키 누르면 전부 Unselect

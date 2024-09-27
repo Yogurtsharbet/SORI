@@ -84,4 +84,17 @@ public class WordData : MonoBehaviour {
         //}
         #endregion
     }
+
+    public static Word Search(WordKey key) {
+        foreach(var word in words) {
+            if (word.Key == key) return word;
+        }
+        return null;
+    }
+
+    public static Word Search(WordTag tag) {
+        foreach (var word in words)
+            if (word.Tag == tag) return word;
+        return null;
+    }
 }

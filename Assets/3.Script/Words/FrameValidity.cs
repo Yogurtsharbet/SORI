@@ -24,7 +24,7 @@ public class CommonWord {
         if (frame.Type == FrameType.AisB || frame.Type == FrameType.AtoBisC)
             type = CommonType.SENTENCE;
         else if (frame.Type == FrameType.AandB &&
-            frame.wordA.Type == WordType.NOUN && frame.wordB.Type == WordType.NOUN)
+            frame.wordA.IsNoun && frame.wordB.IsNoun)
             type = CommonType.NOUN;
         else
             type = CommonType.VERB;
@@ -215,8 +215,8 @@ public class FrameValidity : MonoBehaviour {
     // 이후 CommonWord 생성자에서 CommonWord의 Type을 결정.
 
     private bool CheckAisB(Frame frame) {
-        if (frame.wordA.Type == WordType.NOUN) {
-            if (frame.wordB.Type == WordType.NOUN) {
+        if (frame.wordA.IsNoun) {
+            if (frame.wordB.IsNoun) {
                 if (WordData.wordProperty["CHANGE"].Contains(frame.wordA.Tag)) {
                     FrameActivate.AppendFunction(frame.wordA, frame.wordB);
                     return true;
@@ -245,7 +245,7 @@ public class FrameValidity : MonoBehaviour {
     }
 
     private bool CheckNotA(Frame frame) {
-        if (frame.wordA.Type == WordType.NOUN) return false;
+        if (frame.wordA.IsNoun) return false;
         return true;
     }
 }

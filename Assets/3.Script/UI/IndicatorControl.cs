@@ -9,11 +9,14 @@ public class IndicatorControl : MonoBehaviour {
 
     private Quaternion targetRotation;
     private Vector3 mousePosition;
+    public float angleToMouse;
 
-    private float currentY = 0f;
-    private float rotateSpeed = 10f;
+    public float currentY = 0f;
+    private float rotateSpeed = 18f;
 
     public Vector3 indicatePosition;
+    public Vector3 mousePoint;
+    public bool isInstantiated;
 
     private void Awake() {
         playerTransform = GameObject.FindGameObjectWithTag("Player").transform;
@@ -21,7 +24,6 @@ public class IndicatorControl : MonoBehaviour {
 
         inputAction = new DefaultInputActions();
         inputAction.UI.Point.performed += value => OnPoint(value.ReadValue<Vector2>());
-
     }
 
     private void OnEnable() {
@@ -29,38 +31,69 @@ public class IndicatorControl : MonoBehaviour {
     }
 
     private void OnDisable() {
+        fixedAngle = 0;
+        isInstantiated = false;
         inputAction.Disable();
     }
 
     private Vector3 directionToMouse;
+    private float fixedAngle;
 
     private void Update() {
         currentY += Time.deltaTime * rotateSpeed;
         if (currentY > 360f) currentY -= 360f;
 
-        targetRotation = Quaternion.LookRotation(Camera.main.transform.forward) * Quaternion.AngleAxis(330f, Vector3.right)
+        targetRotation = Quaternion.LookRotation(Camera.main.transform.forward) * Quaternion.AngleAxis(310f, Vector3.right)
         * Quaternion.AngleAxis(currentY, Vector3.up);
 
         transform.rotation = targetRotation;
 
+        if (isInstantiated) {
+            arcArrow.Angle = angleToMouse - currentY + 180 - playerTransform.eulerAngles.y;
+        }
+        else {
+            CalcArrowAngle();
+
+            CalcIndicatePosition();
+        }
+    }
+
+    public void SetInstantitate(Transform original) {
+        var origin = original.GetComponent<IndicatorControl>();
+        isInstantiated = true;
+        transform.position = original.position;
+        transform.rotation = original.rotation;
+        currentY = origin.currentY;
+        CalcArrowAngle();
+        mousePoint = origin.mousePoint;
+        indicatePosition = origin.indicatePosition;
+        angleToMouse = origin.angleToMouse;
+        arcArrow.Angle = origin.arcArrow.Angle;
+        rotateSpeed = 5f;
+        gameObject.SetActive(true);
+    }
+
+    private void CalcArrowAngle() {
         Ray ray = Camera.main.ScreenPointToRay(mousePosition);
         Plane plane = new Plane(transform.up, transform.position);
         if (plane.Raycast(ray, out float distance)) {
-            Vector3 mouseWorldPos = ray.GetPoint(distance);
-            directionToMouse = (mouseWorldPos - transform.position).normalized;
+            mousePoint = ray.GetPoint(distance);
+            directionToMouse = (mousePoint - transform.position).normalized;
 
-            float angleToMouse = Mathf.Atan2(directionToMouse.x, directionToMouse.z) * Mathf.Rad2Deg;
+            angleToMouse = Mathf.Atan2(directionToMouse.x, directionToMouse.z) * Mathf.Rad2Deg;
             arcArrow.Angle = angleToMouse - currentY + 180 - playerTransform.eulerAngles.y;
         }
-        
-        indicatePosition = transform.position + 
-            Quaternion.LookRotation(directionToMouse == Vector3.zero ? Vector3.one : directionToMouse) 
-            * Quaternion.AngleAxis(10f, Vector3.up) * Vector3.forward * 20f;
+    }
+    //TODO: mouseWorldPos ÎèôÍ∏∞Ìôî ÏïàÎê® SetInstantiate ÏóêÏÑú
+
+    private void CalcIndicatePosition () {
+        indicatePosition = transform.position +
+                    Quaternion.LookRotation(directionToMouse == Vector3.zero ? Vector3.one : directionToMouse)
+                    * Quaternion.AngleAxis(10f, Vector3.up) * Vector3.forward * 20f;
         if (Physics.Raycast(indicatePosition, Vector3.down, out RaycastHit rayHit, Mathf.Infinity, LayerMask.GetMask("Ground")))
             indicatePosition = rayHit.point;
         else if (Physics.Raycast(indicatePosition, Vector3.up, out rayHit, Mathf.Infinity, LayerMask.GetMask("Ground")))
             indicatePosition = rayHit.point;
-
     }
 
     private void OnPoint(Vector2 value) {
@@ -70,8 +103,8 @@ public class IndicatorControl : MonoBehaviour {
     private void OnDrawGizmos() {
         Gizmos.color = Color.red;
 
-        // «ÿ¥Á πÊ«‚¿∏∑Œ Gizmo ±◊∏Æ±‚
-        Vector3 gizmoPosition = transform.position + indicatePosition * 20f;
+        // Ìï¥Îãπ Î∞©Ìñ•ÏúºÎ°ú Gizmo Í∑∏Î¶¨Í∏∞
+        Vector3 gizmoPosition = indicatePosition;
         Gizmos.DrawWireSphere(gizmoPosition, 3f);
 
 

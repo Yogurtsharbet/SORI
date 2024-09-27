@@ -25,6 +25,7 @@ public class CombineManager : MonoBehaviour {
     private CombineContainer combineContainer;
 
     private SelectControl selectControl;
+    private WordFunction wordFunction;
 
     private GameObject[] frameByType = new GameObject[4];
     private List<(int, CombineSlotController)> combineSlotControllers = new List<(int, CombineSlotController)>();
@@ -33,9 +34,9 @@ public class CombineManager : MonoBehaviour {
         frameListManager = FindObjectOfType<FrameListManager>();
         selectControl = FindObjectOfType<SelectControl>();
         submitButton = FindObjectOfType<SubmitButtonController>();
-
-        combineContainer = FindObjectOfType<CombineContainer>();
         playerInvenController = FindObjectOfType<PlayerInvenController>();
+        combineContainer = FindObjectOfType<CombineContainer>();
+        wordFunction = FindObjectOfType<WordFunction>();
 
         for (int i = 0; i < 4; i++) {
             frameByType[i] = gameObject.transform.GetChild(i).gameObject;
@@ -212,19 +213,16 @@ public class CombineManager : MonoBehaviour {
             if (baseFrame == null) dialogContents = "프레임 없음";
             else if (FrameValidity.Check(baseFrame)) {
 
-                bool isUnselectable = false;
-                foreach (var eachKeyA in FrameValidity.GetCommonWord(0).keys) {
-                    Word eachWordA = Word.GetWord(eachKeyA);
-                    if (WordData.wordProperty["UNSELECT"].Contains(eachWordA.Tag))
-                        isUnselectable = true;
-                }
-
-                //TODO: 사용되면 소모, 조합되고 영구적 -> LIST로 넣기
-                if (isUnselectable) FrameActivate.Activate();   //사용되는 timming
-                else {
-                    CameraControl.Instance.SetCamera(CameraControl.CameraStatus.SelectView);
-                }
-
+                wordFunction.frameRank = baseFrame.Rank;
+                 int i;
+            for (i =  0; i < FrameValidity.GetCommonWord(0).keys.Count; i++) {
+                Word eachWord = Word.GetWord(FrameValidity.GetCommonWord(0).keys[i]);
+                if (!WordData.wordProperty["UNSELECT"].Contains(eachWord.Tag)) break;
+            }
+            if (i < FrameValidity.GetCommonWord(0).keys.Count)
+                CameraControl.Instance.SetCamera(CameraControl.CameraStatus.SelectView);
+            else FrameActivate.Activate(null);
+            
                 //선택 view에서 frame 임시 저장
                 tempFrame = baseFrame;
                 combineContainer.CloseCombineField();
