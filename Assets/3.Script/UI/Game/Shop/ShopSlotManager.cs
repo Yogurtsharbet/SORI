@@ -8,14 +8,14 @@ public class ShopSlotManager : MonoBehaviour {
     private List<GameObject> shopSlotObjects = new List<GameObject>();
     private ShopSlotController[] shopSlotControllers;
     private ShopTransactionManager shopTransactionManager;
+    private ReceiptManager receiptManager;
 
+    private List<Word> shopWords = new List<Word>();
     private List<int> selectShopIndex = new List<int>();
-
-    public delegate void SelectShopItemDelegate(List<int> updatedList);
-    public event SelectShopItemDelegate OnListChanged;
 
     private void Awake() {
         shopTransactionManager = FindObjectOfType<ShopTransactionManager>();
+        receiptManager = FindObjectOfType<ReceiptManager>();
         shopSlotControllers = new ShopSlotController[9];
         for (int i = 0; i < 9; i++) {
             Vector3 position;
@@ -43,18 +43,20 @@ public class ShopSlotManager : MonoBehaviour {
 
     private void initProduct() {
         for (int i = 0; i < 5; i++) {
-            shopSlotControllers[i].SetWord(Word.GetWord());
+            shopWords.Add(Word.GetWord());
         }
         CheckProduct();
     }
 
     private void CheckProduct() {
-        for (int i = 0; i < 9; i++) {
-            if (shopSlotControllers[i].IsExistWord()) {
+        for (int i = 0; i < shopSlotControllers.Length; i++) {
+            if (i < shopWords.Count) {
                 shopSlotControllers[i].gameObject.SetActive(true);
+                shopSlotControllers[i].SetWord(shopWords[i]);
             }
             else {
                 shopSlotControllers[i].gameObject.SetActive(false);
+                shopSlotControllers[i].SetWord(null);
             }
         }
     }
@@ -65,26 +67,47 @@ public class ShopSlotManager : MonoBehaviour {
     /// </summary>
     /// <param name="index">index</param>
     public void SelectShopItem(int index) {
-        bool isExist = false;
-        for (int i = 0; i < 9; i++) {
-            if (selectShopIndex[i] == index) {
-                isExist = true;
-                selectShopIndex.Remove(i);
-                break;
-            }
-        }
-        if (!isExist) {
+        if (selectShopIndex.Remove(index))
+            shopSlotControllers[index].ActiveSelect(false);
+        else {
             selectShopIndex.Add(index);
+            shopSlotControllers[index].ActiveSelect(true);
         }
+        receiptManager.UpdateReciptData();
+    }
 
-        OnListChanged?.Invoke(selectShopIndex);
+
+    public int GetSelectCount() {
+        return selectShopIndex.Count;
     }
 
     public int GetSelectPrice() {
         int totalPrice = 0;
         for (int i = 0; i < selectShopIndex.Count; i++) {
-            totalPrice += shopTransactionManager.GetWordPrice(shopSlotControllers[i].ThisWord);
+            totalPrice += shopTransactionManager.GetWordPrice(shopWords[selectShopIndex[i]]);
         }
         return totalPrice;
+    }
+
+    public List<Word> BuyItems() {
+        List<Word> buyWords = new List<Word>();
+        for (int i = 0; i < selectShopIndex.Count; i++) {
+            buyWords.Add(shopWords[selectShopIndex[i]]);
+            shopWords.RemoveAt(selectShopIndex[i]);
+        }
+        resetShopSelects();
+        CheckProduct();
+        return buyWords;
+    }
+
+    public int GetWordPrice(Word word) {
+        return shopTransactionManager.GetWordPrice(word);
+    }
+
+    private void resetShopSelects() {
+        for(int i = 0; i < shopSlotControllers.Length; i++) {
+            shopSlotControllers[i].ActiveSelect(false);
+        }
+        selectShopIndex.RemoveRange(0, selectShopIndex.Count);
     }
 }

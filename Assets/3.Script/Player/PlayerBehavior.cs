@@ -21,7 +21,7 @@ public class PlayerBehavior : MonoBehaviour {
 
     [SerializeField] private Image playerHPSlider;
 
-    public int StarCoin { get { return StarCoin; } }
+    public int StarCoin { get { return starCoin; } }
     public bool IsCombineMode { get { return isCombineMode; } }
 
     private bool[] isWatchedCinematic = new bool[Enum.GetValues(typeof(CinematicType)).Length];
@@ -139,11 +139,11 @@ public class PlayerBehavior : MonoBehaviour {
     }
 
     private void CheckCinematicZone(Collider zone) {
-        if (CameraControl.Instance.isDebugging) return; 
+        if (CameraControl.Instance.isDebugging) return;
         //TODO: REMOVE THIS LINE WHEN RELEASE
 
         if (zone.gameObject.layer == LayerMask.NameToLayer("CinematicZone")) {
-           if (zone.name == "ForestEntrance" && !isWatchedCinematic[(int)CinematicType.Forest]) {
+            if (zone.name == "ForestEntrance" && !isWatchedCinematic[(int)CinematicType.Forest]) {
                 isWatchedCinematic[(int)CinematicType.Forest] = true;
                 CameraControl.Instance.SetCamera("Forest");
             }

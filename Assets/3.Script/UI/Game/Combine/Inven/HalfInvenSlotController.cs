@@ -5,7 +5,6 @@ using UnityEngine.UI;
 // [UI] 상점, 조합창 - 인벤토리 슬롯 컨트롤러
 public class HalfInvenSlotController : CommonInvenSlotController, IPointerClickHandler {
     private HalfInvenManager halfInvenManager;
-    private CombineManager combineSlotManager;
     private PlayerInvenController playerInven;
 
     private void Awake() {
@@ -19,7 +18,6 @@ public class HalfInvenSlotController : CommonInvenSlotController, IPointerClickH
 
         closeController = GetComponentInChildren<InvenSlotCloseController>();
         halfInvenManager = FindObjectOfType<HalfInvenManager>();
-        combineSlotManager = FindObjectOfType<CombineManager>();
         playerInven = FindObjectOfType<PlayerInvenController>();
 
         wordText = GetComponentInChildren<Text>();
@@ -42,7 +40,13 @@ public class HalfInvenSlotController : CommonInvenSlotController, IPointerClickH
     }
 
     public void OnPointerClick(PointerEventData eventData) {
-        //TODO: 클릭했을때 상점이 열려있으면 삭제할건지 dialog
+        if (thisWord == null) {
+            return;
+        }
+        halfInvenManager.SelectSlot(key);
+
+        //TODO: if( 상점모드일때 )
+        halfInvenManager.UpdateRecipt();
     }
 
     public void DeleteWord() {

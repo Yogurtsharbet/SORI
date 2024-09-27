@@ -145,4 +145,14 @@ public class PlayerInvenController : MonoBehaviour {
         inven = newList;
         UpdateInvenInvoke();
     }
+
+    public int ExistInvenCount() {
+        int count = 0;
+        for (int i = 0; i < inven.Count; i++) {
+            if (inven[i] != null) {
+                count++;
+            }
+        }
+        return count;
+    }
 }

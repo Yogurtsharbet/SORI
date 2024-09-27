@@ -4,7 +4,6 @@ using UnityEngine.UI;
 
 // [UI] 인벤토리 - 인벤토리 슬롯 컨트롤러
 public class InvenSlotController : CommonInvenSlotController, IPointerClickHandler {
-    private SynthesisManager synthesisManager;
     private InvenSlotManager invenSlotManager;
 
     private void Awake() {
@@ -16,7 +15,6 @@ public class InvenSlotController : CommonInvenSlotController, IPointerClickHandl
             }
         }
 
-        synthesisManager = FindObjectOfType<SynthesisManager>();
         closeController = GetComponentInChildren<InvenSlotCloseController>();
         invenSlotManager = FindObjectOfType<InvenSlotManager>();
 
