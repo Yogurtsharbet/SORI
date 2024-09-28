@@ -48,6 +48,7 @@ public class CameraControl : MonoBehaviour {
         var cinematics = GetComponentsInChildren<CinemachineBlendListCamera>();
         cinematicIntro = cinematics[0];
         cinematicForest = cinematics[1];
+        cinematicRuins = cinematics[2];
 
         allCamera.Add(cameraTopView);
         allCamera.Add(cameraCombineView);
@@ -153,14 +154,14 @@ public class CameraControl : MonoBehaviour {
     }
 
     private void CinematicRuinsProcess() {
-        playerAnimator.SetFloat("MoveSpeed", 10f);
+        playerAnimator.SetFloat("MoveSpeed", 7f);
     
         Sequence sequence = DOTween.Sequence();
         sequence
             .AppendCallback(() => playerMove.transform.LookAt(cinematicRuinsPosition.position))
             .Append(playerMove.transform.DOMove(cinematicRuinsPosition.position, 5f))
-            .OnComplete(() => playerAnimator.SetFloat("MoveSpeed", 3f))
-            .Append(playerMove.transform.DOMove(cinematicRuinsPosition.position + transform.forward, 1f))
+            .OnComplete(() => playerAnimator.SetFloat("MoveSpeed", 2f))
+            .Append(playerMove.transform.DOMove(cinematicRuinsPosition.position + transform.forward, 1.5f))
             .OnKill(() => playerAnimator.SetFloat("MoveSpeed", 0f))
             .Play();
     }
