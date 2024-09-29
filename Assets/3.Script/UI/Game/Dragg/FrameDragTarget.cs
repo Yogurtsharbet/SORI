@@ -27,7 +27,6 @@ public class FrameDragTarget : MonoBehaviour {
 
         if (baseFrameType == FrameType.AisB || baseFrameType == FrameType.AtoBisC) {
             //1,2번 프레임 > 3,4번 프레임만 추가 가능
-            //1번, 2번 프레임의 슬롯 rectTransform 가져와서 비교
             if (thisFrameType != FrameType.AisB && thisFrameType != FrameType.AtoBisC) {
                 combineManager.SetSubFrame(combineSlotController.SlotIndex, frame);
                 combineSlotController.OpenFrame(frame.Type);
@@ -37,7 +36,12 @@ public class FrameDragTarget : MonoBehaviour {
         }
         else if (baseFrameType == FrameType.AandB) {
             //3번 프레임 > 1,2번 프레임만 추가가능
-            //3번 프레임 슬롯 rectTransform 가져와서 비교
+            //둘중 한개의 슬롯에 단어가 있으면 단어만 추가 가능, 한개의 슬롯에 프레임이 있으면 프레임만 추가 가능
+            for(int i=0; i < combineManager.BaseFrame.CountOfFrame(); i++) {
+                if (combineManager.BaseFrame.GetWord(i) !=null) {
+                    return false;
+                }
+            }
             if (thisFrameType != FrameType.AandB && thisFrameType != FrameType.NotA) {
                 combineManager.SetSubFrame(combineSlotController.SlotIndex, frame);
                 combineSlotController.OpenFrame(frame.Type);
