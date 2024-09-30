@@ -3,6 +3,7 @@ using UnityEngine;
 
 // [UI] 조합 - 조합창 컨테이너
 public class CombineContainer : MonoBehaviour {
+    [SerializeField] private GameObject bgPanel;
     private CombineManager combineManager;
     private HalfInvenManager halfInvenManager;
 
@@ -20,12 +21,14 @@ public class CombineContainer : MonoBehaviour {
 
     public void OpenCombineField() {
         gameObject.SetActive(true);
+        bgPanel.gameObject.SetActive(true);
         halfInvenManager.SetCombineMode(true);
         halfInvenManager.OpenInven();
         FunctionMove(gameObject.transform, openPos);
     }
 
     public void CloseCombineField(bool backToTopview = false) {
+        bgPanel.gameObject.SetActive(false);
         if (backToTopview)
             FindObjectOfType<GameManager>().gameState.OnCancel();
         else {

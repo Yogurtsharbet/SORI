@@ -3,7 +3,9 @@ using UnityEngine;
 
 // [UI] 상점 - 상점 UI 컨테이너 관리
 public class ShopContainer : MonoBehaviour {
+    [SerializeField] private GameObject bgPanel;
     private HalfInvenContainer halfInvenContainer;
+
     private Vector3 openPos = new Vector3(-360f, -68f, 0);
     private Vector3 closePos = new Vector3(-360f, -970f, 0);
 
@@ -18,12 +20,14 @@ public class ShopContainer : MonoBehaviour {
     // gameManager.ChangeState(GameState.Shop);
     // TODO: 상점 열게 하는 무언가가 있을 때 호출
     public void OpenShopContainer() {
+        bgPanel.SetActive(true);
         halfInvenContainer.OpenHalfInven();
         gameObject.SetActive(true);
         FunctionMove(gameObject.transform, openPos);
     }
 
     public void CloseShopContainer() {
+        bgPanel.SetActive(false);
         halfInvenContainer.CloseHalfInven();
         FunctionMove(gameObject.transform, closePos);
         gameObject.SetActive(false);

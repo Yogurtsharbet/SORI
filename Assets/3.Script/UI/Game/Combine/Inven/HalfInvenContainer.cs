@@ -3,6 +3,7 @@ using UnityEngine;
 
 // [UI] 조합 - 인벤토리 컨테이너, 반쪽 인벤토리 전체 컨테이너
 public class HalfInvenContainer : MonoBehaviour {
+    [SerializeField] private GameObject bgPanel;
 
     private Vector3 openPos = new Vector3(353f, -24f, 0);
     private Vector3 closePos = new Vector3(353f, -990f, 0);
@@ -13,11 +14,13 @@ public class HalfInvenContainer : MonoBehaviour {
 
     public void OpenHalfInven() {
         gameObject.SetActive(true);
+        bgPanel.SetActive(true);
         FunctionMove(gameObject.transform, openPos);
     }
 
     public void CloseHalfInven() {
         FunctionMove(gameObject.transform, closePos);
+        bgPanel.SetActive(false);
         gameObject.SetActive(false);
     }
 

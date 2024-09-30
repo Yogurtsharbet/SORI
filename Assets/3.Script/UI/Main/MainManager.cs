@@ -2,231 +2,37 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-// [UI] ∏ﬁ¿Œ - ∏ﬁ¿Œ »≠∏È ∏≈¥œ¿˙
+// [UI] Î©îÏù∏ - Î©îÏù∏ ÌôîÎ©¥ Îß§ÎãàÏ†Ä
 public class MainManager : MonoBehaviour {
-    private bool isOpenMenu = false;
-    private bool isDetailMenu = false;
-    private bool isOpenOption = false;
-
-    private Canvas mainCanvas;
-    private Canvas mainMenuCanvas;
-    private Canvas loadCanvas;
-
-    private DefaultInputActions action;
-    private Animator menuAni;
-
-    private MainMenuButtonManager mainMenuButtonManager;
-    private MainDetailManager mainDetailManager;
-    private DetailOptionManager detailOptionManager;
+    private MainTitle mainTitle;
+    private MainMenuContainer mainMenu;
+    private MainLoading mainLoading;
 
     private void Awake() {
-        Canvas[] canvases = GetComponentsInChildren<Canvas>();
-        foreach (Canvas c in canvases) {
-            if (c.name.Equals("MainCanvas")) {
-                mainCanvas = c;
-            }
-            else if (c.name.Equals("MainMenuCanvas")) {
-                mainMenuCanvas = c;
-            }
-            else {
-                loadCanvas = c;
-            }
-        }
-        action = new DefaultInputActions();
-        menuAni = mainMenuCanvas.GetComponentInChildren<Animator>();
-        mainMenuButtonManager = FindObjectOfType<MainMenuButtonManager>();
-        mainDetailManager = FindObjectOfType<MainDetailManager>();
-        detailOptionManager = FindObjectOfType<DetailOptionManager>();
+        mainTitle = FindObjectOfType<MainTitle>();
+        mainMenu = FindObjectOfType<MainMenuContainer>();
+        mainLoading = FindObjectOfType<MainLoading>();
     }
 
     private void Start() {
-        openMain();
+        OpenMainTitle();
     }
 
-    private void OnEnable() {
-        action.UI.Enable();
-        //input system settings
-        action.UI.Submit.performed += value => onSubmit();
-        action.UI.Navigate.performed += value => onMove(value.ReadValue<Vector2>());
-        action.UI.Cancel.performed += value => onCancel();
-        mainMenuButtonManager.SetSelectMenuKey(0);
+    public void OpenMainTitle() {
+        mainTitle.OpenMainTitle();
+        mainMenu.CloseMainMenu();
+        mainLoading.gameObject.SetActive(false);
     }
 
-    private void OnDisable() {
-        action.UI.Disable();
-    }
-
-    #region Active ºº∆√
     public void OpenMainMenu() {
-        mainCanvas.gameObject.SetActive(false);
-        mainMenuCanvas.gameObject.SetActive(true);
-        loadCanvas.gameObject.SetActive(false);
-        isOpenMenu = true;
+        mainTitle.CloseMainTitle();
+        mainMenu.OpenMainMenu();
+        mainLoading.gameObject.SetActive(false);
     }
 
-    private void openMain() {
-        mainCanvas.gameObject.SetActive(true);
-        mainMenuCanvas.gameObject.SetActive(false);
-        loadCanvas.gameObject.SetActive(false);
-        isOpenMenu = false;
-    }
-
-    private void openLoad() {
-        mainCanvas.gameObject.SetActive(false);
-        mainMenuCanvas.gameObject.SetActive(false);
-        loadCanvas.gameObject.SetActive(true);
-        isOpenMenu = false;
-    }
-    #endregion
-
-    #region ≈∞∫∏µÂ ªÁøÎ º≥¡§
-    private void onSubmit() {
-        if (!isOpenMenu) {
-            OpenMainMenu();
-            return;
-        }
-
-        //∏ﬁ¿Œ -> ∏ﬁ¿Œ ªÛºº ∏ﬁ¥∫
-        if (isOpenMenu && !isDetailMenu) {
-            MainMenuClick();
-        }
-
-        //∏ﬁ¿Œ ªÛºº ∏ﬁ¥∫ -> ∏ﬁ¥∫ º±≈√
-        if (isDetailMenu && !isOpenOption) {
-        }
-
-        //ø…º« ∏ﬁ¥∫
-        if (isOpenOption) {
-            detailOptionManager.OpenOptions();
-        }
-    }
-
-    private void onMove(Vector2 pos) {
-        if (!isOpenMenu) {
-            return;
-        }
-
-        //∏ﬁ¿Œ ∏ﬁ¥∫
-        if (isOpenMenu && !isDetailMenu) {
-            mainMenuMove(pos);
-        }
-
-        //ø…º« ∏ﬁ¥∫
-        if (isOpenOption) {
-            optionMenuMove(pos);
-        }
-    }
-
-    private void onCancel() {
-        if (isDetailMenu && !isOpenOption) {
-            mainDetailManager.gameObject.SetActive(false);
-            menuAni.SetBool("Open", false);
-            StartCoroutine(DelayedCo(false));
-            isDetailMenu = false;
-            return;
-        }
-
-        //ø…º« ∏ﬁ¥∫
-        if (isOpenOption) {
-            isOpenOption = false;
-            mainDetailManager.OpenDetailData(mainMenuButtonManager.SelectMenuKey);
-            detailOptionManager.CloseOptions();
-            return;
-        }
-    }
-    #endregion
-
-    #region ∏ﬁ¥∫ ¿Ãµø º≥¡§
-    //∏ﬁ¿Œ ∏ﬁ¥∫ ¿Ãµø (∫“∑Øø¿±‚, ªı∞‘¿”, ø…º«, ¡æ∑·)
-    private void mainMenuMove(Vector2 pos) {
-        int key = mainMenuButtonManager.SelectMenuKey;
-        if ((pos.y < 0 && pos.x == 0) || (pos.x > 0 && pos.y == 0)) {
-            if (key == 3) {
-                mainMenuButtonManager.SetSelectMenuKey(0);
-            }
-            else {
-                mainMenuButtonManager.SetSelectMenuKey(key + 1);
-            }
-        }
-        else if ((pos.y > 0 && pos.x == 0) || (pos.x < 0 && pos.y == 0)) {
-            if (key == 0) {
-                mainMenuButtonManager.SetSelectMenuKey(3);
-            }
-            else {
-                mainMenuButtonManager.SetSelectMenuKey(key - 1);
-            }
-        }
-        mainMenuButtonManager.MenuSelectCheck(key);
-    }
-
-    //ø…º« ∏ﬁ¥∫ ¿Ãµø (±◊∑°«», ø¿µø¿, ƒ¡∆Æ∑—)
-    private void optionMenuMove(Vector2 pos) {
-        int key = detailOptionManager.SelectOptionKey;
-        if ((pos.y < 0 && pos.x == 0) || (pos.x > 0 && pos.y == 0)) {
-            if (key == 2) {
-                detailOptionManager.SetSelectOptionKey(0);
-            }
-            else {
-                detailOptionManager.SetSelectOptionKey(key + 1);
-            }
-        }
-        else if ((pos.y > 0 && pos.x == 0) || (pos.x < 0 && pos.y == 0)) {
-            if (key == 0) {
-                detailOptionManager.SetSelectOptionKey(2);
-            }
-            else {
-                detailOptionManager.SetSelectOptionKey(key - 1);
-            }
-        }
-        detailOptionManager.CheckSelectOption(key);
-    }
-    #endregion
-
-    public void MainMenuClick() {
-        menuAni.SetBool("Open", true);
-        mainMenuButtonManager.CloseMenuButtons();
-        if (mainMenuButtonManager.SelectMenuKey == 0 || mainMenuButtonManager.SelectMenuKey == 2) {
-            StartCoroutine(DelayedCo(true));
-        }
-        else if (mainMenuButtonManager.SelectMenuKey == 3) {
-            QuitGame();
-        }
-        else {
-            StartNewGame();
-        }
-        isDetailMenu = true;
-    }
-
-    //µÙ∑π¿Ã ƒ⁄∑Á∆æ
-    IEnumerator DelayedCo(bool isDetailOpen) {
-        yield return new WaitForSeconds(0.35f);
-        if (isDetailOpen) {
-            mainDetailManager.gameObject.SetActive(true);
-            mainDetailManager.OpenDetailData(mainMenuButtonManager.SelectMenuKey);
-            isOpenOption = true;
-        }
-        else {
-            mainMenuButtonManager.OpenMenuButtons();
-        }
-    }
-
-    public void QuitGame() {
-#if UNITY_EDITOR
-        UnityEditor.EditorApplication.isPlaying = false;
-#else
-            Application.Quit(); // æÓ«√∏Æƒ…¿Ãº« ¡æ∑·
-#endif
-    }
-
-    public void StartNewGame() {
-        openLoad();
-        FadeControl.Instance.FadeOut();
-        StartCoroutine(NewGameDelayedCo());
-    }
-
-    IEnumerator NewGameDelayedCo() {
-        yield return new WaitForSeconds(1.5f);
-
-        loadCanvas.GetComponent<SceneLoader>().LoadSceneAsync();
+    public void OpenLoad() {
+        mainTitle.CloseMainTitle();
+        mainMenu.CloseMainMenu();
+        mainLoading.gameObject.SetActive(true);
     }
 }

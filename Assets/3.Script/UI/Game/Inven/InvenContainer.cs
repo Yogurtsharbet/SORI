@@ -3,6 +3,7 @@ using UnityEngine;
 
 // [UI] 인벤토리 - 인벤토리 컨테이너 관리
 public class InvenContainer : MonoBehaviour {
+    [SerializeField] private GameObject bgPanel;
     private SynthesisManager synthesisManager;
 
     private Vector3 openPos = new Vector3(0f, 0f, 0);
@@ -18,6 +19,7 @@ public class InvenContainer : MonoBehaviour {
 
     public void OpenInventory() {
         gameObject.SetActive(true);
+        bgPanel.SetActive(true);
         FunctionMove(gameObject.transform, openPos);
     }
 
@@ -25,6 +27,7 @@ public class InvenContainer : MonoBehaviour {
         synthesisManager.ResetAllSlot();
         FunctionMove(gameObject.transform, closePos);
         gameObject.SetActive(false);
+        bgPanel.SetActive(false);
     }
 
     private void FunctionMove(Transform origin, Vector3 destiny) {
