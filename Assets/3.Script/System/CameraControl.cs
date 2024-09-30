@@ -32,6 +32,8 @@ public class CameraControl : MonoBehaviour {
 
     [SerializeField] private Transform cinematicForestPosition;
     [SerializeField] private Transform cinematicRuinsPosition;
+    [SerializeField] private GameObject cinematicRuinsRocks;
+    [SerializeField] private GameObject cinematicRuinsBarrier;
 
     private void Awake() {
         Instance = this;
@@ -127,18 +129,29 @@ public class CameraControl : MonoBehaviour {
         SetCamera(cameraTopView);
     }
 
-    private IEnumerator RotateFreeLock() {
-        var camera = GetComponentInChildren<CinemachineFreeLook>();
-        yield return new WaitForSeconds(2f);
-
-        while(currentCamera != cameraTopView) {
-            camera.m_XAxis.m_InputAxisValue = -0.5f;
+    private IEnumerator RotateDolly() {
+        while (true) {
             yield return null;
+            if (cinematicForest.IsLiveChild(cinematicForest.ChildCameras[3])) {
+                yield return new WaitForSeconds(0.5f);
+
+                var camera = cinematicForest.ChildCameras[3] as CinemachineVirtualCamera;
+                var dolly = camera.GetCinemachineComponent<CinemachineTrackedDolly>();
+
+                while (dolly.m_PathPosition < 8) {
+                    yield return new WaitForSeconds(0.7f);
+                    dolly.m_PathPosition++;
+                    camera.m_Lens.FieldOfView -= Time.deltaTime;
+                }
+
+                camera.m_Lens.FieldOfView -= Time.deltaTime * 3f;
+                if (camera.m_Lens.FieldOfView <= 50) break;
+            }
         }
     }
 
     private void CinematicForestProcess() {
-        StartCoroutine(RotateFreeLock());
+        StartCoroutine(RotateDolly());
         playerAnimator.SetFloat("MoveSpeed", 7f);
         butterflyAnimator.SetTrigger("cinematicForest");
 
@@ -147,7 +160,7 @@ public class CameraControl : MonoBehaviour {
             .AppendCallback(() => playerMove.transform.LookAt(cinematicForestPosition.position))
             .Append(playerMove.transform.DOMove(cinematicForestPosition.position, 5f)
             .OnComplete(() => playerAnimator.SetFloat("MoveSpeed", 3f)))
-            .Append(playerMove.transform.DOMove(cinematicForestPosition.position + transform.forward, 0.5f)
+            .Append(playerMove.transform.DOMove(cinematicForestPosition.position + transform.forward * 2f, 0.5f)
             .OnComplete(() => playerAnimator.SetTrigger("cinematicForest")))
             .OnKill(() => playerAnimator.SetFloat("MoveSpeed", 0f))
             .Play();
@@ -155,15 +168,46 @@ public class CameraControl : MonoBehaviour {
 
     private void CinematicRuinsProcess() {
         playerAnimator.SetFloat("MoveSpeed", 7f);
-    
+
         Sequence sequence = DOTween.Sequence();
         sequence
             .AppendCallback(() => playerMove.transform.LookAt(cinematicRuinsPosition.position))
             .Append(playerMove.transform.DOMove(cinematicRuinsPosition.position, 5f))
             .OnComplete(() => playerAnimator.SetFloat("MoveSpeed", 2f))
+            .AppendCallback(() => StartCoroutine(ActiveRuinsRock()))
             .Append(playerMove.transform.DOMove(cinematicRuinsPosition.position + transform.forward, 1.5f))
-            .OnKill(() => playerAnimator.SetFloat("MoveSpeed", 0f))
+            .OnComplete(() => playerAnimator.SetFloat("MoveSpeed", 0f))
+            .OnKill(() => StartCoroutine(PlayerRuinsAnimation()))
             .Play();
+    }
+
+    private IEnumerator ActiveRuinsRock() {
+        cinematicRuinsRocks.SetActive(true);
+        foreach (Transform eachRock in cinematicRuinsRocks.transform)
+            eachRock.GetComponent<Rigidbody>().AddTorque(new Vector3(Random.Range(3000, 15000), Random.Range(3000, 20000), Random.Range(3300, 10000)), ForceMode.Impulse);
+        yield return new WaitForSeconds(5f);
+        foreach (Transform eachRock in cinematicRuinsRocks.transform)
+            eachRock.GetComponent<Rigidbody>().isKinematic = true;
+        cinematicRuinsBarrier.SetActive(false);
+    }
+
+    private IEnumerator PlayerRuinsAnimation() {
+        while (true) {
+            yield return null;
+            if (cinematicRuins.IsLiveChild(cinematicRuins.ChildCameras[2])) {
+                yield return new WaitForSeconds(2f);
+                playerAnimator.Play("Impact");
+                while (true) {
+                    yield return null;
+                    AnimatorStateInfo stateInfo = playerAnimator.GetCurrentAnimatorStateInfo(0);
+                    if (!stateInfo.IsTag("DisableMovement")) {
+                        playerAnimator.Play("Looking Around");
+                        break;
+                    }
+                }
+                break;
+            }
+        }
     }
 
 }
