@@ -73,12 +73,12 @@ public class PlayerBehavior : MonoBehaviour {
     //    else CameraControl.Instance.SetCamera(CameraControl.CameraStatus.SelectView);
     //}
 
-    private void OnInventory() {
-        if (invenContainer.gameObject.activeSelf) invenContainer.CloseInventory();
-        else invenContainer.OpenInventory();
-    }
 
     // GameState 구현에 따른 삭제. 240927
+    //private void OnInventory() {
+    //    if (invenContainer.gameObject.activeSelf) invenContainer.CloseInventory();
+    //    else invenContainer.OpenInventory();
+    //}
     //public void ToggleCombineMode() {
     //    isCombineMode = !isCombineMode;
 

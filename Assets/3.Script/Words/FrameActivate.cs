@@ -77,6 +77,8 @@ public class FrameActivate : MonoBehaviour {
         instance.useFrame();
     }
 
+    //TODO: TempFrame에서 NullReferenceException 뜸. ( if문 조건에서 )
+    // Enter 입력 - Frame Activate 할 때 발생
     public void useFrame() {
         CombineManager combineManager = FindObjectOfType<CombineManager>();
         if (combineManager.TempFrame.IsPersistence) {
