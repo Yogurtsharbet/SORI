@@ -55,6 +55,27 @@
             "_name": "바닥",
             "_rank": 2,
             "_type": 1
+        },
+        {
+            "_key": 107,
+            "_tag": "ROCK",
+            "_name": "돌",
+            "_rank": 1,
+            "_type": 1
+        },
+        {
+            "_key": 108,
+            "_tag": "PILLAR",
+            "_name": "기둥",
+            "_rank": 1,
+            "_type": 1
+        },
+        {
+            "_key": 201,
+            "_tag": "FLY",
+            "_name": "날아간다",
+            "_rank": 3,
+            "_type": 2
         }
     ],
     "isUnselectable": [
@@ -64,12 +85,16 @@
         "Player",
         "DOOR",
         "TREE",
-        "KEY"
+        "KEY",
+        "ROCK",
+        "PILLAR"
     ],
     "isChangable": [
         "DOOR",
         "TREE",
         "KEY",
-        "BIRD"
+        "BIRD",
+        "ROCK",
+        "PILLAR"
     ]
 }
