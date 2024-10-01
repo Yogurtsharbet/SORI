@@ -1,8 +1,8 @@
 using System.Collections;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 public class MainMenuContainer : MonoBehaviour {
+    private MainManager mainManager;
     private MainMenuManager mainMenuManager;
     private MainDetailManager detailManager;
     private MainLoading mainLoading;
@@ -10,6 +10,7 @@ public class MainMenuContainer : MonoBehaviour {
     private Animator menuAni;
 
     private void Awake() {
+        mainManager = FindObjectOfType<MainManager>();
         mainMenuManager = FindObjectOfType<MainMenuManager>();
         detailManager = FindObjectOfType<MainDetailManager>();
         mainLoading = FindObjectOfType<MainLoading>();
@@ -63,7 +64,7 @@ public class MainMenuContainer : MonoBehaviour {
     }
 
     public void StartNewGame() {
-        // openLoad();
+        mainManager.OpenLoad();
         FadeControl.Instance.FadeOut();
         StartCoroutine(NewGameDelayedCo());
     }

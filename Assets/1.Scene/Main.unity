@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.42227417, g: 0.6437038, b: 0.7936718, a: 1}
+  m_IndirectSpecularColor: {r: 0.42227343, g: 0.6437029, b: 0.79367083, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -33700,9 +33700,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1924403694}
-        m_TargetAssemblyTypeName: MainManager, Assembly-CSharp
-        m_MethodName: MainMenuClick
+      - m_Target: {fileID: 778875960}
+        m_TargetAssemblyTypeName: MainMenuContainer, Assembly-CSharp
+        m_MethodName: OpenMainDetail
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -36593,9 +36593,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1924403694}
-        m_TargetAssemblyTypeName: MainManager, Assembly-CSharp
-        m_MethodName: MainMenuClick
+      - m_Target: {fileID: 778875960}
+        m_TargetAssemblyTypeName: MainMenuContainer, Assembly-CSharp
+        m_MethodName: QuitGame
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -41798,9 +41798,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1924403694}
-        m_TargetAssemblyTypeName: MainManager, Assembly-CSharp
-        m_MethodName: MainMenuClick
+      - m_Target: {fileID: 778875960}
+        m_TargetAssemblyTypeName: MainMenuContainer, Assembly-CSharp
+        m_MethodName: OpenMainDetail
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -42524,6 +42524,7 @@ GameObject:
   - component: {fileID: 1437195305}
   - component: {fileID: 1437195306}
   - component: {fileID: 1437195307}
+  - component: {fileID: 1437195308}
   m_Layer: 0
   m_Name: MainObjects
   m_TagString: Untagged
@@ -42577,12 +42578,12 @@ AudioSource:
   m_GameObject: {fileID: 1437195304}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: 3667669019795713410, guid: 0671e8c8e7c10af448e20b90fc8f18f0, type: 2}
+  m_audioClip: {fileID: 8300000, guid: f0aab8452a2ebd045a74aed123844d1a, type: 3}
   m_PlayOnAwake: 1
   m_Volume: 1
   m_Pitch: 1
-  Loop: 0
+  Loop: 1
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
@@ -42664,6 +42665,18 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &1437195308
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1437195304}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 26f9c9a29b2075c4ab75d31432ff567e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1443571898
 GameObject:
   m_ObjectHideFlags: 0
@@ -43755,9 +43768,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1924403694}
-        m_TargetAssemblyTypeName: MainManager, Assembly-CSharp
-        m_MethodName: MainMenuClick
+      - m_Target: {fileID: 778875960}
+        m_TargetAssemblyTypeName: MainMenuContainer, Assembly-CSharp
+        m_MethodName: StartNewGame
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
