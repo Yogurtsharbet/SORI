@@ -14,6 +14,8 @@ TagManager:
   - FLOOR
   - BIRD
   - TIME
+  - ROCK
+  - PILLAR
   layers:
   - Default
   - TransparentFX

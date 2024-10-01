@@ -38,6 +38,8 @@ public class WordDataEditor : EditorWindow {
     private bool isDelete;
     private bool isModified;
 
+    private bool isTagOrTextField;
+
     [MenuItem("WordData/Edit WordData")]
     private static void Init() {
         WordDataEditor Editor = (WordDataEditor)GetWindow(typeof(WordDataEditor));
@@ -113,7 +115,11 @@ public class WordDataEditor : EditorWindow {
             EditorGUILayout.BeginHorizontal(); GUILayout.FlexibleSpace();
             GUI.contentColor = _tag != _tagOrig ? Color.yellow : Color.white;
             EditorGUILayout.LabelField("Tag", GUILayout.Width(150f));
-            _tag = EditorGUILayout.TagField(_tag, GUILayout.Width(150f)); GUI.contentColor = Color.white;
+            if (isTagOrTextField) _tag = EditorGUILayout.TextField(_tag, GUILayout.Width(130f));
+            else _tag = EditorGUILayout.TagField(_tag, GUILayout.Width(130f));
+            if(GUILayout.Button("", GUILayout.Width(20f)))
+                isTagOrTextField = !isTagOrTextField;
+            GUI.contentColor = Color.white;
             GUILayout.FlexibleSpace(); EditorGUILayout.EndHorizontal();
 
             // Name 입력 필드

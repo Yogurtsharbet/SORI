@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 enum CinematicType {
-    Intro, Forest
+    Intro, Forest, Ruins, Butterfly01, Butterfly02, Butterfly03
 }
 
 public class PlayerBehavior : MonoBehaviour {
@@ -20,6 +20,7 @@ public class PlayerBehavior : MonoBehaviour {
     private bool isCombineMode;
 
     [SerializeField] private Image playerHPSlider;
+    private Animator butterflyAnimator;
 
     public int StarCoin { get { return starCoin; } }
     public bool IsCombineMode { get { return isCombineMode; } }
@@ -35,7 +36,9 @@ public class PlayerBehavior : MonoBehaviour {
         playerAnimator = GetComponent<Animator>();
 
         combineContainer = FindObjectOfType<CombineContainer>();
-        invenContainer = FindObjectOfType<InvenContainer>();
+        invenContainer = FindObjectOfType<InvenContainer>(); 
+        
+        butterflyAnimator = GameObject.FindGameObjectWithTag("Butterfly").GetComponent<Animator>();
     }
 
     private void Start() {
@@ -140,6 +143,22 @@ public class PlayerBehavior : MonoBehaviour {
             if (zone.name == "ForestEntrance" && !isWatchedCinematic[(int)CinematicType.Forest]) {
                 isWatchedCinematic[(int)CinematicType.Forest] = true;
                 CameraControl.Instance.SetCamera("Forest");
+            }
+            else if (zone.name == "Ruins" && !isWatchedCinematic[(int)CinematicType.Ruins]) {
+                isWatchedCinematic[(int)CinematicType.Ruins] = true;
+                CameraControl.Instance.SetCamera("Ruins");
+            }
+            else if( zone.name== "ButterflyZone01" && !isWatchedCinematic[(int)CinematicType.Butterfly01]) {
+                isWatchedCinematic[(int)CinematicType.Butterfly01] = true;
+                butterflyAnimator.Play("ButterFlyZone01");
+            }
+            else if(zone.name== "ButterflyZone02" && !isWatchedCinematic[(int)CinematicType.Butterfly02]) {
+                isWatchedCinematic[(int)CinematicType.Butterfly02] = true;
+                butterflyAnimator.Play("ButterFlyZone02");
+            }
+            else if(zone.name== "ButterflyZone03" && !isWatchedCinematic[(int)CinematicType.Butterfly03]) {
+                isWatchedCinematic[(int)CinematicType.Butterfly03] = true;
+                butterflyAnimator.Play("ButterFlyZone03");
             }
         }
     }

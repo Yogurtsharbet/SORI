@@ -22,6 +22,7 @@ public class CameraControl : MonoBehaviour {
 
     private CinemachineBlendListCamera cinematicIntro;
     private CinemachineBlendListCamera cinematicForest;
+    private CinemachineBlendListCamera cinematicRuins;
 
     public CinemachineVirtualCameraBase currentCamera { get; private set; }
 
@@ -30,6 +31,9 @@ public class CameraControl : MonoBehaviour {
     private Animator butterflyAnimator;
 
     [SerializeField] private Transform cinematicForestPosition;
+    [SerializeField] private Transform cinematicRuinsPosition;
+    [SerializeField] private GameObject cinematicRuinsRocks;
+    [SerializeField] private GameObject cinematicRuinsBarrier;
 
     private void Awake() {
         Instance = this;
@@ -46,6 +50,7 @@ public class CameraControl : MonoBehaviour {
         var cinematics = GetComponentsInChildren<CinemachineBlendListCamera>();
         cinematicIntro = cinematics[0];
         cinematicForest = cinematics[1];
+        cinematicRuins = cinematics[2];
 
         allCamera.Add(cameraTopView);
         allCamera.Add(cameraCombineView);
@@ -53,6 +58,7 @@ public class CameraControl : MonoBehaviour {
         allCamera.Add(cameraSelectTopView);
         allCamera.Add(cinematicIntro);
         allCamera.Add(cinematicForest);
+        allCamera.Add(cinematicRuins);
     }
 
     private void Start() {
@@ -74,6 +80,7 @@ public class CameraControl : MonoBehaviour {
 
     public void SetCamera(string camera) {
         if (camera == "Forest") SetCamera(cinematicForest);
+        else if (camera == "Ruins") SetCamera(cinematicRuins);
     }
 
     public void SetCamera(CinemachineVirtualCameraBase camera) {
@@ -91,35 +98,18 @@ public class CameraControl : MonoBehaviour {
                     StartCoroutine(WaitForCinematicEnd(camera as CinemachineBlendListCamera));
                     CursorControl.SetCursor(CursorType.Loading);
 
-                    if (camera == cinematicIntro) 
+                    if (camera == cinematicIntro)
                         playerAnimator.SetTrigger("cinematicIntro");
-
-                    else if (camera == cinematicForest) {
-                        StartCoroutine(RotateFreeLock());
-                        playerAnimator.SetFloat("MoveSpeed", 7f);
-                        butterflyAnimator.SetTrigger("cinematicForest");
-
-                        Sequence sequence = DOTween.Sequence();
-                        sequence
-                            .AppendCallback(() => playerMove.transform.LookAt(cinematicForestPosition.position))
-                            .Append(playerMove.transform.DOMove(cinematicForestPosition.position, 5f)
-                            .OnComplete(() => playerAnimator.SetFloat("MoveSpeed", 3f)))
-                            .Append(playerMove.transform.DOMove(cinematicForestPosition.position + transform.forward, 0.5f)
-                            .OnComplete(() => playerAnimator.SetTrigger("cinematicForest")))
-                            .OnKill(() => playerAnimator.SetFloat("MoveSpeed", 0f))
-                            .Play();
-                    }
+                    else if (camera == cinematicForest)
+                        CinematicForestProcess();
+                    else if (camera == cinematicRuins)
+                        CinematicRuinsProcess();
                 }
             }
             else
                 eachCamera.Priority = 0;
         }
     }
-
-    // GameState 구현에 따른 삭제. 240927
-    //public void ChangePlayerCamera() {
-    //    SetCamera(currentCamera != cameraTopView ? cameraTopView : cameraCombineView);
-    //}
 
     private IEnumerator WaitForCinematicEnd(CinemachineBlendListCamera camera) {
         Debug.Log($"Waiting Cinmatic : {camera.name}");
@@ -139,15 +129,87 @@ public class CameraControl : MonoBehaviour {
         SetCamera(cameraTopView);
     }
 
-    private IEnumerator RotateFreeLock() {
-        var camera = GetComponentInChildren<CinemachineFreeLook>();
-        yield return new WaitForSeconds(2f);
-
-        while(currentCamera != cameraTopView) {
-            camera.m_XAxis.m_InputAxisValue = -0.5f;
+    private IEnumerator RotateDolly() {
+        while (true) {
             yield return null;
+            if (cinematicForest.IsLiveChild(cinematicForest.ChildCameras[3])) {
+                yield return new WaitForSeconds(0.5f);
+
+                var camera = cinematicForest.ChildCameras[3] as CinemachineVirtualCamera;
+                var dolly = camera.GetCinemachineComponent<CinemachineTrackedDolly>();
+
+                while (dolly.m_PathPosition < 8) {
+                    yield return new WaitForSeconds(0.7f);
+                    dolly.m_PathPosition++;
+                    camera.m_Lens.FieldOfView -= Time.deltaTime;
+                }
+
+                camera.m_Lens.FieldOfView -= Time.deltaTime * 3f;
+                if (camera.m_Lens.FieldOfView <= 50) break;
+            }
         }
     }
+
+    private void CinematicForestProcess() {
+        StartCoroutine(RotateDolly());
+        playerAnimator.SetFloat("MoveSpeed", 7f);
+        butterflyAnimator.SetTrigger("cinematicForest");
+
+        Sequence sequence = DOTween.Sequence();
+        sequence
+            .AppendCallback(() => playerMove.transform.LookAt(cinematicForestPosition.position))
+            .Append(playerMove.transform.DOMove(cinematicForestPosition.position, 5f))
+            .OnComplete(() => playerAnimator.SetTrigger("cinematicForest"))
+            .OnKill(() => playerAnimator.SetFloat("MoveSpeed", 0f))
+            .Play();
+    }
+
+    private void CinematicRuinsProcess() {
+        playerAnimator.SetFloat("MoveSpeed", 7f);
+
+        Sequence sequence = DOTween.Sequence();
+        sequence
+            .AppendCallback(() => playerMove.transform.LookAt(cinematicRuinsPosition.position))
+            .Append(playerMove.transform.DOMove(cinematicRuinsPosition.position, 5f))
+            .OnComplete(() => playerAnimator.SetFloat("MoveSpeed", 2f))
+            .AppendCallback(() => StartCoroutine(ActiveRuinsRock()))
+            .Append(playerMove.transform.DOMove(cinematicRuinsPosition.position + transform.forward, 1.5f))
+            .OnComplete(() => playerAnimator.SetFloat("MoveSpeed", 0f))
+            .OnKill(() => StartCoroutine(PlayerRuinsAnimation()))
+            .Play();
+    }
+
+    private IEnumerator ActiveRuinsRock() {
+        cinematicRuinsRocks.SetActive(true);
+        foreach (Transform eachRock in cinematicRuinsRocks.transform)
+            eachRock.GetComponent<Rigidbody>().AddTorque(new Vector3(Random.Range(3000, 15000), Random.Range(3000, 20000), Random.Range(3300, 10000)), ForceMode.Impulse);
+        yield return new WaitForSeconds(5f);
+        foreach (Transform eachRock in cinematicRuinsRocks.transform)
+            eachRock.GetComponent<Rigidbody>().isKinematic = true;
+        cinematicRuinsBarrier.SetActive(false);
+    }
+
+    private IEnumerator PlayerRuinsAnimation() {
+        while (true) {
+            yield return null;
+            if (cinematicRuins.IsLiveChild(cinematicRuins.ChildCameras[2])) {
+                yield return new WaitForSeconds(2f);
+                playerAnimator.Play("Impact");
+                butterflyAnimator.Play("ButterFlyZone04");
+                while (true) {
+                    yield return null;
+                    AnimatorStateInfo stateInfo = playerAnimator.GetCurrentAnimatorStateInfo(0);
+                    if (!stateInfo.IsTag("DisableMovement")) {
+                        playerAnimator.Play("Looking Around");
+                        break;
+                    }
+                }
+                break;
+            }
+        }
+    }
+
+   
 }
 
 //TODO: SELECT VIEW 좌우 움직임 방지를 recentering 시간을 짧게하는 방식 말고, 직접 각도 지정으로 변경할 것. (어지러움)
