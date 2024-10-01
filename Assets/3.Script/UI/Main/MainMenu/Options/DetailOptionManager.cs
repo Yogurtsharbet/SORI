@@ -1,17 +1,14 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class DetailOptionManager : MonoBehaviour {
     private Button[] optionButtons;
-    private Image[] graphicSelects;
-    private Image[] audioSelects;
-    private Image[] controlSelects;
 
     private GraphicOptionsManager graphicOptions;
     private AudioOptionsManager audioOptions;
     private ControlOptionsManager controlOptions;
+
+    private DetailOptionController[] detailOptions;
 
     private int selectOptionKey = 0;
 
@@ -23,9 +20,7 @@ public class DetailOptionManager : MonoBehaviour {
 
     private void Awake() {
         optionButtons = GetComponentsInChildren<Button>();
-        graphicSelects = optionButtons[0].GetComponentsInChildren<Image>();
-        audioSelects = optionButtons[1].GetComponentsInChildren<Image>();
-        controlSelects = optionButtons[2].GetComponentsInChildren<Image>();
+        detailOptions = GetComponentsInChildren<DetailOptionController>();
 
         graphicOptions = FindObjectOfType<GraphicOptionsManager>();
         audioOptions = FindObjectOfType<AudioOptionsManager>();
@@ -34,9 +29,10 @@ public class DetailOptionManager : MonoBehaviour {
 
     private void Start() {
         for (int i = 0; i < 2; i++) {
-            graphicSelects[i].enabled = true;
-            audioSelects[i].enabled = false;
-            controlSelects[i].enabled = false;
+            if (i == 0)
+                detailOptions[i].ActiveButtonHover(true);
+            else
+                detailOptions[i].ActiveButtonHover(false);
         }
     }
 
@@ -45,26 +41,11 @@ public class DetailOptionManager : MonoBehaviour {
     }
 
     public void CheckSelectOption(int key) {
-        if (key == 0) {
-            for (int i = 0; i < 2; i++) {
-                graphicSelects[i].enabled = true;
-                audioSelects[i].enabled = false;
-                controlSelects[i].enabled = false;
-            }
-        }
-        else if (key == 1) {
-            for (int i = 0; i < 2; i++) {
-                graphicSelects[i].enabled = false;
-                audioSelects[i].enabled = true;
-                controlSelects[i].enabled = false;
-            }
-        }
-        else {
-            for (int i = 0; i < 2; i++) {
-                graphicSelects[i].enabled = false;
-                audioSelects[i].enabled = false;
-                controlSelects[i].enabled = true;
-            }
+        for (int i = 0; i < 2; i++) {
+            if (i == key)
+                detailOptions[i].ActiveButtonHover(true);
+            else
+                detailOptions[i].ActiveButtonHover(false);
         }
     }
 
