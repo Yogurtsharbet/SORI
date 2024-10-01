@@ -158,10 +158,8 @@ public class CameraControl : MonoBehaviour {
         Sequence sequence = DOTween.Sequence();
         sequence
             .AppendCallback(() => playerMove.transform.LookAt(cinematicForestPosition.position))
-            .Append(playerMove.transform.DOMove(cinematicForestPosition.position, 5f)
-            .OnComplete(() => playerAnimator.SetFloat("MoveSpeed", 3f)))
-            .Append(playerMove.transform.DOMove(cinematicForestPosition.position + transform.forward * 2f, 0.5f)
-            .OnComplete(() => playerAnimator.SetTrigger("cinematicForest")))
+            .Append(playerMove.transform.DOMove(cinematicForestPosition.position, 5f))
+            .OnComplete(() => playerAnimator.SetTrigger("cinematicForest"))
             .OnKill(() => playerAnimator.SetFloat("MoveSpeed", 0f))
             .Play();
     }
@@ -197,6 +195,7 @@ public class CameraControl : MonoBehaviour {
             if (cinematicRuins.IsLiveChild(cinematicRuins.ChildCameras[2])) {
                 yield return new WaitForSeconds(2f);
                 playerAnimator.Play("Impact");
+                butterflyAnimator.Play("ButterFlyZone04");
                 while (true) {
                     yield return null;
                     AnimatorStateInfo stateInfo = playerAnimator.GetCurrentAnimatorStateInfo(0);
@@ -210,6 +209,7 @@ public class CameraControl : MonoBehaviour {
         }
     }
 
+   
 }
 
 //TODO: SELECT VIEW 좌우 움직임 방지를 recentering 시간을 짧게하는 방식 말고, 직접 각도 지정으로 변경할 것. (어지러움)
