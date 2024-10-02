@@ -40,7 +40,6 @@ public class CameraControl : MonoBehaviour {
 
         playerMove = FindObjectOfType<PlayerMove>();
         playerAnimator = playerMove.GetComponent<Animator>();
-        butterflyAnimator = GameObject.FindGameObjectWithTag("Butterfly").GetComponent<Animator>();
 
         cameraTopView = GetComponentsInChildren<CinemachineVirtualCamera>()[0];
         cameraCombineView = GetComponentsInChildren<CinemachineVirtualCamera>()[1];
@@ -59,6 +58,8 @@ public class CameraControl : MonoBehaviour {
         allCamera.Add(cinematicIntro);
         allCamera.Add(cinematicForest);
         allCamera.Add(cinematicRuins);
+
+        butterflyAnimator = GameObject.FindGameObjectWithTag("Butterfly")?.GetComponent<Animator>();
     }
 
     private void Start() {

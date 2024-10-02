@@ -27,18 +27,12 @@ public class PlayerBehavior : MonoBehaviour {
 
     private bool[] isWatchedCinematic = new bool[Enum.GetValues(typeof(CinematicType)).Length];
 
-    private CombineContainer combineContainer;
-    private InvenContainer invenContainer;
-
     private void Awake() {
         starCoinManager = FindObjectOfType<StarCoinManager>();
         playerInputAction = new PlayerInputActions();
         playerAnimator = GetComponent<Animator>();
-
-        combineContainer = FindObjectOfType<CombineContainer>();
-        invenContainer = FindObjectOfType<InvenContainer>(); 
         
-        butterflyAnimator = GameObject.FindGameObjectWithTag("Butterfly").GetComponent<Animator>();
+        butterflyAnimator = GameObject.FindGameObjectWithTag("Butterfly")?.GetComponent<Animator>();
     }
 
     private void Start() {
