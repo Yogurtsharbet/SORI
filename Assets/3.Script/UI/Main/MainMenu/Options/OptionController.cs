@@ -2,12 +2,12 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class DetailOptionController : MonoBehaviour, IPointerEnterHandler {
-    private DetailOptionManager detailOptionManager;
+public class OptionController : MonoBehaviour, IPointerEnterHandler {
+    private MainDetailManager mainDetailManager;
     private Image[] images;
 
     private void Awake() {
-        detailOptionManager = FindObjectOfType<DetailOptionManager>();
+        mainDetailManager = FindObjectOfType<MainDetailManager>();
         images = GetComponentsInChildren<Image>();
     }
 
@@ -26,13 +26,13 @@ public class DetailOptionController : MonoBehaviour, IPointerEnterHandler {
 
     public void OnPointerEnter(PointerEventData eventData) {
         if (name.Contains("Graphic")) {
-            detailOptionManager.CheckSelectOption(0);
+            mainDetailManager.CheckSelectOption(0);
         }
         else if (name.Contains("Audio")) {
-            detailOptionManager.CheckSelectOption(1);
+            mainDetailManager.CheckSelectOption(1);
         }
         else if (name.Contains("Control")) {
-            detailOptionManager.CheckSelectOption(2);
+            mainDetailManager.CheckSelectOption(2);
         }
     }
 }

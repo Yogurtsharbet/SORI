@@ -73,7 +73,7 @@ public class MainManager : MonoBehaviour {
 
     public void OpenLoad() {
         mainTitle.CloseMainTitle();
-        //mainMenu.CloseMainMenu(); // Load할 때 mainMenu 꺼지면 로딩 coroutine이 안돌아감
-        mainLoading.gameObject.SetActive(true);
+        mainMenu.CloseMainMenu();
+        mainLoading.StartLoading();
     }
 }

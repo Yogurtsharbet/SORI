@@ -38,4 +38,15 @@ public class MainLoading : MonoBehaviour {
             yield return null;
         }
     }
+
+    public void StartLoading() {
+        gameObject.SetActive(true);
+        FadeControl.Instance.FadeOut();
+        StartCoroutine(NewGameDelayedCo());
+    }
+
+    IEnumerator NewGameDelayedCo() {
+        yield return new WaitForSeconds(1.5f);
+        LoadSceneAsync();
+    }
 }
