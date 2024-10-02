@@ -2,8 +2,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-// Ç×¾Æ¸®, »óÀÚ µî¿¡¼­ ÄÚÀÎÀÌ ³ª¿À°Ô ÇÏ±â.
-// »ç¿ë¹ı :
+// í•­ì•„ë¦¬, ìƒì ë“±ì—ì„œ ì½”ì¸ì´ ë‚˜ì˜¤ê²Œ í•˜ê¸°.
+// ì‚¬ìš©ë²• :
 //      FindObjectOfType<CoinDropControl>().SpawnCoin(transform.position);
 
 public class StarCoinManager : MonoBehaviour {

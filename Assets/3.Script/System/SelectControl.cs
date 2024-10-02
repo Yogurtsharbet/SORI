@@ -24,7 +24,6 @@ public class SelectControl : MonoBehaviour {
     private CinemachineBrain cameraBrain;
     private DefaultInputActions inputAction;
 
-    private PlayerBehavior playerBehavior;
 
     private List<Renderer> clickedObject;
     private Renderer prevObject;
@@ -43,8 +42,6 @@ public class SelectControl : MonoBehaviour {
     public bool IsSelectComplete { get { return clickedObject.Count != 0 && !Indicator.gameObject.activeSelf; } }
 
     private void Awake() {
-        playerBehavior = FindObjectOfType<PlayerBehavior>();
-
         cameraBrain = FindObjectOfType<CinemachineBrain>();
         Indicator = GetComponentInChildren<IndicatorControl>().transform;
 

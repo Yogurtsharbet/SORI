@@ -13,12 +13,6 @@ public enum GameState {
 }
 
 public class State_Normal : IGameState {
-    private GameManager gameManager;
-
-    public State_Normal() {
-        gameManager = GameObject.FindObjectOfType<GameManager>();
-    }
-
     public void OnStateChanged() {
         CameraControl.Instance.SetCamera(CameraControl.CameraStatus.TopView);
     }
@@ -34,21 +28,19 @@ public class State_Normal : IGameState {
 
 
     public void OnTab() {
-        gameManager.ChangeState(GameState.Combine);
+        GameManager.Instance.ChangeState(GameState.Combine);
     }
 
     public void OnInven() {
-        gameManager.ChangeState(GameState.Inven);
+        GameManager.Instance.ChangeState(GameState.Inven);
     }
 }
 
 public class State_Combine : IGameState {
-    private GameManager gameManager;
     private CombineContainer combineContainer;
     private Animator playerAnimator;
 
     public State_Combine() {
-        gameManager = GameObject.FindObjectOfType<GameManager>();
         combineContainer = GameObject.FindObjectOfType<CombineContainer>();
         playerAnimator = GameObject.FindGameObjectWithTag("Player").GetComponent<Animator>();
     }
@@ -64,7 +56,7 @@ public class State_Combine : IGameState {
     }
 
     public void OnCancel() {
-        gameManager.ChangeState(GameState.Normal);
+        GameManager.Instance.ChangeState(GameState.Normal);
         combineContainer.CloseCombineField();
         playerAnimator.SetBool("isCombineMode", false);
     }
@@ -74,25 +66,23 @@ public class State_Combine : IGameState {
     }
 
     public void OnInven() {
-        gameManager.ChangeState(GameState.Inven);
+        GameManager.Instance.ChangeState(GameState.Inven);
         combineContainer.CloseCombineField();
         playerAnimator.SetBool("isCombineMode", false);
     }
 
     public void OnCombineSubmit() {
-        gameManager.ChangeState(GameState.Select);
+        GameManager.Instance.ChangeState(GameState.Select);
         combineContainer.CloseCombineField();
     }
 }
 
 public class State_Select : IGameState {
-    private GameManager gameManager;
     private SelectControl selectControl;
     private Animator playerAnimator;
 
     public State_Select() {
-        gameManager = GameObject.FindObjectOfType<GameManager>();
-        selectControl = GameObject.FindObjectOfType<SelectControl>();
+        selectControl = GameManager.Instance.selectControl;
         playerAnimator = GameObject.FindGameObjectWithTag("Player").GetComponent<Animator>();
     }
 
@@ -102,14 +92,14 @@ public class State_Select : IGameState {
 
     public void OnEnter() {
         if (selectControl.IsSelectComplete) {
-            gameManager.ChangeState(GameState.Normal);
+            GameManager.Instance.ChangeState(GameState.Normal);
             selectControl.ActivateSelected();
             playerAnimator.SetBool("isCombineMode", false);
         }
     }
 
     public void OnCancel() {
-        gameManager.ChangeState(GameState.Combine);
+        GameManager.Instance.ChangeState(GameState.Combine);
     }
 
     public void OnTab() {
@@ -119,16 +109,14 @@ public class State_Select : IGameState {
     }
 
     public void OnInven() {
-        gameManager.ChangeState(GameState.Inven);
+        GameManager.Instance.ChangeState(GameState.Inven);
     }
 }
 
 public class State_Inven : IGameState {
-    private GameManager gameManager;
     private InvenContainer invenContainer;
 
     public State_Inven() {
-        gameManager = GameObject.FindObjectOfType<GameManager>();
         invenContainer = GameObject.FindObjectOfType<InvenContainer>();
     }
 
@@ -142,12 +130,12 @@ public class State_Inven : IGameState {
     }
 
     public void OnCancel() {
-        gameManager.ChangeState(GameState.Normal);
+        GameManager.Instance.ChangeState(GameState.Normal);
         invenContainer.CloseInventory();
     }
 
     public void OnTab() {
-        gameManager.ChangeState(GameState.Combine);
+        GameManager.Instance.ChangeState(GameState.Combine);
         invenContainer.CloseInventory();
     }
 
@@ -158,11 +146,9 @@ public class State_Inven : IGameState {
 
 }
 public class State_Shop : IGameState {
-    private GameManager gameManager;
     private ShopContainer shopContainer;
 
     public State_Shop() {
-        gameManager = GameObject.FindObjectOfType<GameManager>();
         shopContainer = GameObject.FindObjectOfType<ShopContainer>();
     }
 
@@ -171,7 +157,7 @@ public class State_Shop : IGameState {
     }
 
     public void OnCancel() {
-        gameManager.ChangeState(GameState.Normal);
+        GameManager.Instance.ChangeState(GameState.Normal);
         shopContainer.CloseShopContainer();
     }
 

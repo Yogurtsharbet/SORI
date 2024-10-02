@@ -25,7 +25,6 @@ public class CombineManager : MonoBehaviour {
     private PlayerInvenController playerInvenController;
     private CombineContainer combineContainer;
 
-    private SelectControl selectControl;
     private WordFunction wordFunction;
 
     private GameObject[] frameByType = new GameObject[4];
@@ -33,11 +32,10 @@ public class CombineManager : MonoBehaviour {
 
     private void Awake() {
         frameListManager = FindObjectOfType<FrameListManager>();
-        selectControl = FindObjectOfType<SelectControl>();
         submitButton = FindObjectOfType<SubmitButtonController>();
         playerInvenController = FindObjectOfType<PlayerInvenController>();
         combineContainer = FindObjectOfType<CombineContainer>();
-        wordFunction = FindObjectOfType<WordFunction>();
+        wordFunction = GameManager.Instance.wordFunction;
 
         for (int i = 0; i < 4; i++) {
             frameByType[i] = gameObject.transform.GetChild(i).gameObject;

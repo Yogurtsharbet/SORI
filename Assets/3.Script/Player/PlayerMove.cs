@@ -252,6 +252,7 @@ public class PlayerMove : MonoBehaviour {
     private Queue<float> impactTime = new Queue<float>();
     private void SetCollideAnimation() {
         playerAnimator.SetTrigger("triggerImpact");
+        isDash = false;
         impactTime.Enqueue(Time.time);
 
         if (impactTime.Count >= 3) {
