@@ -28,7 +28,9 @@ public class PauseContainer : MonoBehaviour {
     }
 
     public void OpenPause() {
+        isOption = false;
         gameObject.SetActive(true);
+        gameOptionContainer.gameObject.SetActive(false);
         bgPanel.SetActive(true);
         FunctionMove(gameObject.transform, openPos);
     }
@@ -122,6 +124,7 @@ public class PauseContainer : MonoBehaviour {
 
     public void OpenOption() {
         isOption = true;
+        gameObject.transform.localPosition = closePos;
         gameOptionContainer.OpenOption();
         gameObject.SetActive(false);
     }

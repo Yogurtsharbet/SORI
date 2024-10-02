@@ -218,6 +218,7 @@ public class CombineManager : MonoBehaviour {
     //문장 조합
     public void CombineSubmit() {
         if (canCombine) {
+            //조합
             string dialogContents = string.Empty;
             if (baseFrame == null) dialogContents = "프레임 없음";
             else if (FrameValidity.Check(baseFrame)) {
@@ -240,6 +241,30 @@ public class CombineManager : MonoBehaviour {
             //TODO: Dialog -> FrameValidity 에서 띄워주는 게 좋을 듯?
             if (dialogContents != string.Empty)
                 DialogManager.Instance.OpenDefaultDialog(dialogContents, DialogType.FAIL);
+        }
+        else {
+            //프레임 비우기
+            for (int i = 0; i < baseFrame.CountOfFrame(); i++) {
+                if (baseFrame.GetFrame(i) != null) {
+                    Frame frame = baseFrame.GetFrame(i);
+                    for (int j = 0; j < frame.CountOfFrame(); j++) {
+                        frame.SetWord(i, null);
+                    }
+                    frameListManager.AddFrame(frame);
+                    baseFrame.SetFrame(i, null);
+                }
+
+                if (baseFrame.GetWord(i) != null) {
+                    baseFrame.SetWord(i, null);
+                }
+            }
+            baseFrame.SetActive(false);
+            baseFrame.SetBase(false);
+            frameListManager.AddFrame(baseFrame);
+            baseFrame = null;
+            slotAllClose();
+            submitButton.ButtonToSubmit();
+            gameObject.SetActive(false);
         }
     }
 
