@@ -8,20 +8,30 @@ public class MainDetailManager : MonoBehaviour {
     private Text title;
 
     private DefaultInputActions action;
-    private DetailOptionManager detailOptionManager;
     private LoadManager loadManager;
     private MainMenuContainer mainMenuContainer;
+
+    private OptionController[] optionControllers;
+
+    private GameObject[] optionObjects = new GameObject[4];
 
     private bool isOptionMenu = false;
     private bool isOptionDetail = false;
 
+    private int selectOptionKey = 0;
+
     private void Awake() {
         title = GetComponentInChildren<Text>();
 
+        for (int i = 2; i < 4 + 2; i++) {
+            optionObjects[i - 2] = transform.GetChild(i).gameObject;
+        }
+
         action = new DefaultInputActions();
-        detailOptionManager = FindObjectOfType<DetailOptionManager>();
         mainMenuContainer = FindObjectOfType<MainMenuContainer>();
         loadManager = FindObjectOfType<LoadManager>();
+
+        optionControllers = GetComponentsInChildren<OptionController>();
     }
 
     private void OnEnable() {
@@ -34,15 +44,28 @@ public class MainDetailManager : MonoBehaviour {
     private void OnDisable() {
         action.UI.Disable();
     }
+    public void OpenDetailData(int key) {
+        if (key == 0) {  //불러오기
+            title.text = "불러오기";
+            isOptionMenu = false;
+            OpenDetailLoad();
+        }
+        else {          //옵션
+            title.text = "옵션";
+            isOptionMenu = true;
+            OpenOptions();
+        }
+    }
 
     private void onSubmit() {
         if (isOptionMenu && !isOptionDetail) {
             //옵션 메뉴
-            isOptionDetail = true;
+            OpenDetailOption();
         }
         else if (isOptionMenu && isOptionDetail) {
             //옵션 상세메뉴
-
+            //TODO: 상세 옵션에서 키보드 움직임 X
+            return;
         }
         else {
             //TODO: 세이브 파일 로드
@@ -56,7 +79,8 @@ public class MainDetailManager : MonoBehaviour {
         }
         else if (isOptionMenu && isOptionDetail) {
             //옵션 상세메뉴
-
+            //TODO: 상세 옵션에서 키보드 움직임 X
+            return;
         }
         else {
             //세이브 파일 로드
@@ -66,49 +90,40 @@ public class MainDetailManager : MonoBehaviour {
 
     public void OnCancel() {
         if (isOptionMenu && !isOptionDetail) {
+            //옵션 메뉴
             mainMenuContainer.CloseMainDetail();
         }
         else if (isOptionMenu && isOptionDetail) {
-
+            //옵션 상세 메뉴
+            OpenOptions();
         }
         else {
+            //세이브 파일 메뉴
             mainMenuContainer.CloseMainDetail();
         }
     }
 
-    public void OpenDetailData(int key) {
-        if (key == 0) {  //불러오기
-            title.text = "불러오기";
-            isOptionMenu = false;
-            OpenDetailLoad();
-        }
-        else {          //옵션
-            title.text = "옵션";
-            isOptionMenu = true;
-            OpenDetailOption();
-        }
-    }
 
     //옵션 메뉴 이동 (그래픽, 오디오, 컨트롤)
     private void optionMenuMove(Vector2 pos) {
-        int key = detailOptionManager.SelectOptionKey;
+        int key = selectOptionKey;
         if ((pos.y < 0 && pos.x == 0) || (pos.x > 0 && pos.y == 0)) {
             if (key == 2) {
-                detailOptionManager.SetSelectOptionKey(0);
+                selectOptionKey = 0;
             }
             else {
-                detailOptionManager.SetSelectOptionKey(key + 1);
+                selectOptionKey = key + 1;
             }
         }
         else if ((pos.y > 0 && pos.x == 0) || (pos.x < 0 && pos.y == 0)) {
             if (key == 0) {
-                detailOptionManager.SetSelectOptionKey(2);
+                selectOptionKey = 2;
             }
             else {
-                detailOptionManager.SetSelectOptionKey(key - 1);
+                selectOptionKey = key - 1;
             }
         }
-        detailOptionManager.CheckSelectOption(key);
+        //selectOptionKey = key;
     }
 
     private void loadMenuMove(Vector2 pos) {
@@ -134,16 +149,41 @@ public class MainDetailManager : MonoBehaviour {
 
     public void OpenDetailLoad() {
         loadManager.gameObject.SetActive(true);
-        detailOptionManager.gameObject.SetActive(false);
+        optionObjects[0].SetActive(false);
+        CloseDetailOptions();
+    }
+
+    public void OpenOptions() {
+        loadManager.gameObject.SetActive(false);
+        optionObjects[0].SetActive(true);
+        CloseDetailOptions();
+        isOptionDetail = false;
     }
 
     public void OpenDetailOption() {
+        isOptionDetail = true;
         loadManager.gameObject.SetActive(false);
-        detailOptionManager.gameObject.SetActive(true);
+        for (int i = 0; i < optionObjects.Length; i++) {
+            if ((i - 1) == selectOptionKey) {
+                optionObjects[i].SetActive(true);
+            }
+            else {
+                optionObjects[i].SetActive(false);
+            }
+        }
     }
 
-    public void CloseDetails() {
-        loadManager.gameObject.SetActive(false);
-        detailOptionManager.gameObject.SetActive(false);
+    private void CloseDetailOptions() {
+        for (int i = 1; i < optionObjects.Length; i++) {
+            optionObjects[i].SetActive(false);
+        }
+    }
+
+    public void CheckSelectOption(int key) {
+        selectOptionKey = key;
+        for (int i = 0; i < optionControllers.Length; i++) {
+            optionControllers[i].ActiveButtonHover(false);
+        }
+        optionControllers[key].ActiveButtonHover(true);
     }
 }

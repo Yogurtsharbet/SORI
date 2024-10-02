@@ -39,6 +39,10 @@ public class PauseContainer : MonoBehaviour {
         }
     }
 
+    private void Start() {
+        gameObject.SetActive(false);
+    }
+
     public void OpenPause() {
         gameObject.SetActive(true);
         bgPanel.SetActive(true);
@@ -72,7 +76,7 @@ public class PauseContainer : MonoBehaviour {
                 OpenOption();
                 break;
             case 2:
-
+                GoMain();
                 break;
             case 3:
                 ClickExitButton();
@@ -114,12 +118,14 @@ public class PauseContainer : MonoBehaviour {
 
     public void MenuSelectCheck(int key) {
         for (int i = 0; i < pauseButtonController.Length; i++) {
-            pauseButtonController[i].DisActiveSelectImage();
+            if (i != key)
+                pauseButtonController[i].DisActiveSelectImage();
         }
         pauseButtonController[key].ActiveSelectImage();
     }
+
     private void FunctionMove(Transform origin, Vector3 destiny) {
-        origin.DOLocalMove(destiny, 1f, true);
+        origin.DOLocalMove(destiny, 1f, true).SetUpdate(true);
     }
     #endregion
 

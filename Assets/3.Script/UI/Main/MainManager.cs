@@ -31,6 +31,6 @@ public class MainManager : MonoBehaviour {
     public void OpenLoad() {
         mainTitle.CloseMainTitle();
         mainMenu.CloseMainMenu();
-        mainLoading.gameObject.SetActive(true);
+        mainLoading.StartLoading();
     }
 }

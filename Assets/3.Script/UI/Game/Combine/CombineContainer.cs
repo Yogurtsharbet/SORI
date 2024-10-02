@@ -16,6 +16,7 @@ public class CombineContainer : MonoBehaviour {
     }
 
     private void Start() {
+        bgPanel.gameObject.SetActive(false);
         gameObject.SetActive(false);
     }
 

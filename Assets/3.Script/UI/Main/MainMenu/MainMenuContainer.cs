@@ -5,7 +5,6 @@ public class MainMenuContainer : MonoBehaviour {
     private MainManager mainManager;
     private MainMenuManager mainMenuManager;
     private MainDetailManager detailManager;
-    private MainLoading mainLoading;
 
     private Animator menuAni;
 
@@ -13,7 +12,6 @@ public class MainMenuContainer : MonoBehaviour {
         mainManager = FindObjectOfType<MainManager>();
         mainMenuManager = FindObjectOfType<MainMenuManager>();
         detailManager = FindObjectOfType<MainDetailManager>();
-        mainLoading = FindObjectOfType<MainLoading>();
 
         menuAni = GetComponentInChildren<Animator>();
     }
@@ -65,12 +63,5 @@ public class MainMenuContainer : MonoBehaviour {
 
     public void StartNewGame() {
         mainManager.OpenLoad();
-        FadeControl.Instance.FadeOut();
-        StartCoroutine(NewGameDelayedCo());
-    }
-
-    IEnumerator NewGameDelayedCo() {
-        yield return new WaitForSeconds(1.5f);
-        mainLoading.LoadSceneAsync();
     }
 }

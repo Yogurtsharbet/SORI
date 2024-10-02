@@ -38,7 +38,7 @@ public class OptionData : ScriptableObject {
     }
 
     [SerializeField, Range(0f, 1f)] private float uIScale = 1f;
-    public float UIScale => UIScale;
+    public float UIScale => uIScale;
     public void SetUIScale(float value) {
         uIScale = value;
     }
