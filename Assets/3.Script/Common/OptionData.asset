@@ -12,10 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 441112ea470d5774685b0a833eb886ea, type: 3}
   m_Name: OptionData
   m_EditorClassIdentifier: 
-  masterAudionValue: 100
-  bgmAudionValue: 100
-  sfxAudionValue: 100
+  masterAudionValue: 1
+  bgmAudionValue: 1
+  sfxAudionValue: 1
   isFullScreen: 1
   resolutionType: 0
-  uiScale: 100
-  ActiveVSync: 1
+  uIScale: 1
+  activeVSync: 1

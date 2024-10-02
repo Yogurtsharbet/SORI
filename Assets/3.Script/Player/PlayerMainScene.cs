@@ -14,6 +14,7 @@ public class PlayerMainScene : MonoBehaviour {
     }
 
     private IEnumerator PlayerAnimationState() {
+        playerAnimator.Play("Yawn");
         while (true) {
             yield return new WaitForSeconds(Random.Range(10, 20));
             switch (Random.Range(0, 1)) {
