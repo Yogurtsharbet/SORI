@@ -3,14 +3,14 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class ResolutionController : MonoBehaviour {
-    private MainDetailManager mainDetailManager;
+    private OptionDataManager optionDataManager;
     private CanvasScaler[] canvasScaler;
 
     private Text text;
     private int resolKey = 0;
 
     private void Awake() {
-        mainDetailManager = FindObjectOfType<MainDetailManager>();
+        optionDataManager = FindObjectOfType<OptionDataManager>();
         canvasScaler = GetComponentsInParent<CanvasScaler>();
         Text[] texts = GetComponentsInChildren<Text>();
         foreach (Text txt in texts) {
@@ -21,7 +21,7 @@ public class ResolutionController : MonoBehaviour {
     }
 
     private void OnEnable() {
-        resolKey = (int)mainDetailManager.OptionData.ResolutionType;
+        resolKey = (int)optionDataManager.OptionData.ResolutionType;
         CheckResolution();
     }
 
@@ -42,7 +42,7 @@ public class ResolutionController : MonoBehaviour {
             resolKey = resolKey + 1;
         }
         ResolutionType type = Resolutions.GetResolutionTypeByNum(resolKey);
-        mainDetailManager.OptionData.SetResolutionType(type);
+        optionDataManager.OptionData.SetResolutionType(type);
         CheckResolution();
     }
 
@@ -54,7 +54,7 @@ public class ResolutionController : MonoBehaviour {
             resolKey = resolKey - 1;
         }
         ResolutionType type = Resolutions.GetResolutionTypeByNum(resolKey);
-        mainDetailManager.OptionData.SetResolutionType(type);
+        optionDataManager.OptionData.SetResolutionType(type);
         CheckResolution();
     }
 

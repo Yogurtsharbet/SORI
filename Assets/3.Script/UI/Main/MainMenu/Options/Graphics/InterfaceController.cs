@@ -3,18 +3,18 @@ using UnityEngine.UI;
 
 //메인 - 옵션 - 인터페이스 설정 컨트롤러
 public class InterfaceController : MonoBehaviour {
-    private MainDetailManager mainDetailManager;
+    private OptionDataManager optionDataManager;
     private Slider slider;
     private CanvasScaler[] canvasScaler;
 
     private void Awake() {
-        mainDetailManager= FindObjectOfType<MainDetailManager>();
+        optionDataManager = FindObjectOfType<OptionDataManager>();
         slider = GetComponentInChildren<Slider>();
         canvasScaler = GetComponentsInParent<CanvasScaler>();
     }
 
     private void Start() {
-        CheckUIScale(mainDetailManager.OptionData.UIScale);
+        CheckUIScale(optionDataManager.OptionData.UIScale);
         slider.value = canvasScaler[0].scaleFactor;
 
         slider.onValueChanged.AddListener(delegate {
@@ -24,7 +24,7 @@ public class InterfaceController : MonoBehaviour {
     }
 
     private void SetUIScale(float scaleFactor) {
-        mainDetailManager.OptionData.SetUIScale(scaleFactor);
+        optionDataManager.OptionData.SetUIScale(scaleFactor);
         CheckUIScale(scaleFactor);
     }
 

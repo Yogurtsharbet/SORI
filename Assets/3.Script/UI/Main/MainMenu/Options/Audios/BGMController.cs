@@ -1,21 +1,20 @@
 using UnityEngine;
 using UnityEngine.Audio;
-using UnityEngine.Rendering;
 using UnityEngine.UI;
 
 public class BGMController : MonoBehaviour {
-    private MainDetailManager mainDetailManager;
     private Slider slider;
     public AudioMixer audioMixer;
+    private OptionDataManager optionDataManager;
 
     private void Awake() {
-        mainDetailManager = FindObjectOfType<MainDetailManager>();
+        optionDataManager = FindObjectOfType<OptionDataManager>();
         slider = GetComponentInChildren<Slider>();
     }
 
     private void Start() {
-        slider.value = mainDetailManager.OptionData.BgmAudioValue;
-        checkVolume(mainDetailManager.OptionData.BgmAudioValue);
+        slider.value = optionDataManager.OptionData.BgmAudioValue;
+        checkVolume(optionDataManager.OptionData.BgmAudioValue);
 
         slider.onValueChanged.AddListener(delegate {
             setVolume(slider.value);
@@ -33,10 +32,10 @@ public class BGMController : MonoBehaviour {
 
     private void setVolume(float volume) {
         if (volume <= 0) {
-            mainDetailManager.OptionData.SetBgmAudioValue(0);
+            optionDataManager.OptionData.SetBgmAudioValue(0);
         }
         else {
-            mainDetailManager.OptionData.SetBgmAudioValue(volume);
+            optionDataManager.OptionData.SetBgmAudioValue(volume);
         }
         checkVolume(volume);
     }

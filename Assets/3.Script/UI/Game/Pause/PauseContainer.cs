@@ -2,41 +2,25 @@ using DG.Tweening;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
-using UnityEngine.UI;
 
 // [UI] 일시정지 - 일시정지 컨테이너 관리
 public class PauseContainer : MonoBehaviour {
     [SerializeField] private GameObject bgPanel;
     private int index = 0;
 
-    private Vector3 openPos = new Vector3(-246f, 27f, 0);
-    private Vector3 closePos = new Vector3(-246f, -864f, 0);
-
-    private Button returnButton;
-    private Button optionButton;
-    private Button mainButton;
-    private Button exitButton;
+    private Vector3 openPos = new Vector3(0f, -24f, 0);
+    private Vector3 closePos = new Vector3(0f, -990f, 0);
 
     private DefaultInputActions action;
-    private PauseButtonController[] pauseButtonController;
+    private PauseButtonController[] pauseButtonControllers;
+    private GameOptionContainer gameOptionContainer;
+
+    private bool isOption = false;
 
     private void Awake() {
         action = new DefaultInputActions();
-        Button[] buttons = GetComponentsInChildren<Button>();
-        pauseButtonController = new PauseButtonController[buttons.Length];
-        int i = 0;
-        foreach (Button btn in buttons) {
-            if (btn.name.Equals("Return"))
-                returnButton = btn;
-            else if (btn.name.Equals("Option"))
-                optionButton = btn;
-            else if (btn.name.Equals("Main"))
-                mainButton = btn;
-            else
-                exitButton = btn;
-            pauseButtonController[i] = btn.GetComponent<PauseButtonController>();
-            i++;
-        }
+        gameOptionContainer = FindObjectOfType<GameOptionContainer>();
+        pauseButtonControllers = GetComponentsInChildren<PauseButtonController>();
     }
 
     private void Start() {
@@ -52,7 +36,7 @@ public class PauseContainer : MonoBehaviour {
     public void ClosePause() {
         gameObject.SetActive(false);
         FunctionMove(gameObject.transform, closePos);
-        gameObject.SetActive(false);
+        bgPanel.SetActive(false);
     }
 
     private void OnEnable() {
@@ -64,7 +48,8 @@ public class PauseContainer : MonoBehaviour {
 
     private void OnDisable() {
         action.UI.Disable();
-        Time.timeScale = 1f;
+        if (!isOption)
+            Time.timeScale = 1f;
     }
 
     private void onSubmit() {
@@ -117,25 +102,28 @@ public class PauseContainer : MonoBehaviour {
     }
 
     public void MenuSelectCheck(int key) {
-        for (int i = 0; i < pauseButtonController.Length; i++) {
+        for (int i = 0; i < pauseButtonControllers.Length; i++) {
             if (i != key)
-                pauseButtonController[i].DisActiveSelectImage();
+                pauseButtonControllers[i].DisActiveSelectImage();
         }
-        pauseButtonController[key].ActiveSelectImage();
+        pauseButtonControllers[key].ActiveSelectImage();
     }
 
     private void FunctionMove(Transform origin, Vector3 destiny) {
-        origin.DOLocalMove(destiny, 1f, true).SetUpdate(true);
+        origin.DOLocalMove(destiny, 0.5f, true).SetUpdate(true);
     }
     #endregion
 
     #region 기능
     public void ClickReturn() {
+        bgPanel.SetActive(false);
         gameObject.SetActive(false);
     }
 
     public void OpenOption() {
-
+        isOption = true;
+        gameOptionContainer.OpenOption();
+        gameObject.SetActive(false);
     }
 
     public void GoMain() {

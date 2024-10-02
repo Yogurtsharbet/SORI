@@ -14,8 +14,10 @@ public enum GameState {
 
 public class State_Normal : IGameState {
     private GameManager gameManager;
+    private PauseContainer pauseContainer;
 
     public State_Normal() {
+        pauseContainer = GameObject.FindObjectOfType<PauseContainer>();
         gameManager = GameObject.FindObjectOfType<GameManager>();
     }
 
@@ -28,8 +30,7 @@ public class State_Normal : IGameState {
     }
 
     public void OnCancel() {
-        //TODO: 일시정지 UI
-        throw new System.NotImplementedException();
+        pauseContainer.OpenPause();
     }
 
 

@@ -1,22 +1,20 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Audio;
 using UnityEngine.UI;
 
 public class MasterController : MonoBehaviour {
-    private MainDetailManager mainDetailManager;
+    private OptionDataManager optionDataManager;
     private Slider slider;
     public AudioMixer audioMixer;
 
     private void Awake() {
-        mainDetailManager = FindObjectOfType<MainDetailManager>();
+        optionDataManager = FindObjectOfType<OptionDataManager>();
         slider = GetComponentInChildren<Slider>();
     }
 
     private void Start() {
-        slider.value = mainDetailManager.OptionData.MasterAudioValue;
-        checkVolume(mainDetailManager.OptionData.MasterAudioValue);
+        slider.value = optionDataManager.OptionData.MasterAudioValue;
+        checkVolume(optionDataManager.OptionData.MasterAudioValue);
 
         slider.onValueChanged.AddListener(delegate {
             setVolume(slider.value);
@@ -34,10 +32,10 @@ public class MasterController : MonoBehaviour {
 
     private void setVolume(float volume) {
         if (volume <= 0) {
-            mainDetailManager.OptionData.SetMasetAudionValue(0);
+            optionDataManager.OptionData.SetMasetAudionValue(0);
         }
         else {
-            mainDetailManager.OptionData.SetMasetAudionValue(volume);
+            optionDataManager.OptionData.SetMasetAudionValue(volume);
         }
         checkVolume(volume);
     }

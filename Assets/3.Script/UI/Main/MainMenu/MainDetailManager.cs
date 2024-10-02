@@ -3,15 +3,13 @@ using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
 public class MainDetailManager : MonoBehaviour {
-    [SerializeField] private OptionData optionData;
-    public OptionData OptionData => optionData;
     private Text title;
 
     private DefaultInputActions action;
     private LoadManager loadManager;
     private MainMenuContainer mainMenuContainer;
 
-    private OptionController[] optionControllers;
+    private MainOptionController[] optionControllers;
 
     private GameObject[] optionObjects = new GameObject[4];
 
@@ -31,7 +29,7 @@ public class MainDetailManager : MonoBehaviour {
         mainMenuContainer = FindObjectOfType<MainMenuContainer>();
         loadManager = FindObjectOfType<LoadManager>();
 
-        optionControllers = GetComponentsInChildren<OptionController>();
+        optionControllers = GetComponentsInChildren<MainOptionController>();
     }
 
     private void OnEnable() {
@@ -44,6 +42,7 @@ public class MainDetailManager : MonoBehaviour {
     private void OnDisable() {
         action.UI.Disable();
     }
+
     public void OpenDetailData(int key) {
         if (key == 0) {  //불러오기
             title.text = "불러오기";

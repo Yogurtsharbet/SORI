@@ -2,12 +2,12 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class VSyncController : MonoBehaviour {
-    private MainDetailManager mainDetailManager;
+    private OptionDataManager optionDataManager;
     bool isActive = false;
     private Text text;
 
     private void Awake() {
-        mainDetailManager = FindObjectOfType<MainDetailManager>();
+        optionDataManager = FindObjectOfType<OptionDataManager>();
         Text[] texts = GetComponentsInChildren<Text>();
         foreach (Text txt in texts) {
             if (txt.name.Equals("ChangerText")) {
@@ -21,7 +21,7 @@ public class VSyncController : MonoBehaviour {
     }
 
     private void CheckVsync() {
-        isActive = mainDetailManager.OptionData.ActiveVSync;
+        isActive = optionDataManager.OptionData.ActiveVSync;
         if (isActive) {
             text.text = "켜기";
 
@@ -35,7 +35,7 @@ public class VSyncController : MonoBehaviour {
 
     public void ChangeActive() {
         isActive = !isActive;
-        mainDetailManager.OptionData.SetActiveVSync(isActive);
+        optionDataManager.OptionData.SetActiveVSync(isActive);
         CheckVsync();
     }
 }

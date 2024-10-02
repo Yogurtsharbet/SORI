@@ -1,22 +1,20 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Audio;
 using UnityEngine.UI;
 
 public class SFXController : MonoBehaviour {
-    private MainDetailManager mainDetailManager;
+    private OptionDataManager optionDataManager;
     private Slider slider;
     public AudioMixer audioMixer;
 
     private void Awake() {
-        mainDetailManager = FindObjectOfType<MainDetailManager>();
+        optionDataManager = FindObjectOfType<OptionDataManager>();
         slider = GetComponentInChildren<Slider>();
     }
 
     private void Start() {
-        slider.value = mainDetailManager.OptionData.SfxAudionValue;
-        checkVolume(mainDetailManager.OptionData.SfxAudionValue);
+        slider.value = optionDataManager.OptionData.SfxAudionValue;
+        checkVolume(optionDataManager.OptionData.SfxAudionValue);
 
         slider.onValueChanged.AddListener(delegate {
             setVolume(slider.value);
@@ -34,10 +32,10 @@ public class SFXController : MonoBehaviour {
 
     private void setVolume(float volume) {
         if (volume <= 0) {
-            mainDetailManager.OptionData.SetSfxAudionValue(0);
+            optionDataManager.OptionData.SetSfxAudionValue(0);
         }
         else {
-            mainDetailManager.OptionData.SetSfxAudionValue(volume);
+            optionDataManager.OptionData.SetSfxAudionValue(volume);
         }
         checkVolume(volume);
     }
