@@ -9,28 +9,25 @@ public interface IGameState {
 }
 
 public enum GameState {
-    Normal, Combine, Select, Inven, Shop
+    Normal, Combine, Select, Inven, Shop, Pause
 }
 
 public class State_Normal : IGameState {
-    private PauseContainer pauseContainer;
 
-    public State_Normal() {
-        pauseContainer = GameObject.FindObjectOfType<PauseContainer>();
-    }
 
     public void OnStateChanged() {
         CameraControl.Instance.SetCamera(CameraControl.CameraStatus.TopView);
     }
 
     public void OnEnter() {
-        return;
+        //if ( 상점 npc가 가까이 있으면 );
+            GameManager.Instance.ChangeState(GameState.Shop);
+
     }
 
     public void OnCancel() {
-        pauseContainer.OpenPause();
+        GameManager.Instance.ChangeState(GameState.Pause);
     }
-
 
     public void OnTab() {
         GameManager.Instance.ChangeState(GameState.Combine);
@@ -158,6 +155,7 @@ public class State_Shop : IGameState {
     }
 
     public void OnStateChanged() {
+        CameraControl.Instance.SetCamera(CameraControl.CameraStatus.CombineView);
         shopContainer.OpenShopContainer();
     }
 
@@ -167,6 +165,36 @@ public class State_Shop : IGameState {
     }
 
     public void OnEnter() {
+        return;
+    }
+
+    public void OnInven() {
+        return;
+    }
+
+    public void OnTab() {
+        return;
+    }
+}
+
+public class State_Pause : IGameState {
+    private PauseContainer pauseContainer;
+
+    public State_Pause() {
+        pauseContainer = GameObject.FindObjectOfType<PauseContainer>();
+    }
+
+    public void OnStateChanged() {
+        CameraControl.Instance.SetCamera(CameraControl.CameraStatus.CombineView);
+        pauseContainer.OpenPause();
+    }
+
+    public void OnCancel() {
+        GameManager.Instance.ChangeState(GameState.Normal);
+    }
+
+    public void OnEnter() {
+        //TODO: 아마? 선택된 옵션키 누르기 버튼?
         return;
     }
 
