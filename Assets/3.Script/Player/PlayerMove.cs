@@ -25,6 +25,9 @@ public class PlayerMove : MonoBehaviour {
 
     private Vector3 pastFramePosition;
     private Vector3 currentFramePosition;
+
+    private SFXManager sfxManager;
+
     private void Awake() {
         playerInputAction = new PlayerInputActions();
         playerCollider = GetComponentInChildren<Collider>();
@@ -39,6 +42,7 @@ public class PlayerMove : MonoBehaviour {
         playerInputAction.PlayerMovement.Jump.performed += value => OnJump();
 
         pastFramePosition = currentFramePosition = transform.position;
+        sfxManager = GetComponent<SFXManager>();
     }
 
     private void OnEnable() {
@@ -150,6 +154,8 @@ public class PlayerMove : MonoBehaviour {
     private void Jump() {
         if (CheckMovementValidity()) {
             playerRigid.AddForce(Vector3.up * Mathf.Sqrt(jumpSpeed), ForceMode.Impulse);
+
+            sfxManager.PlayJump();
             Dust.Jump();
         }
     }

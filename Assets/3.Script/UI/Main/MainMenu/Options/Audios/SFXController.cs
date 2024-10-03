@@ -12,10 +12,12 @@ public class SFXController : MonoBehaviour {
         slider = GetComponentInChildren<Slider>();
     }
 
-    private void Start() {
+    private void OnEnable() {
         slider.value = optionDataManager.OptionData.SfxAudionValue;
         checkVolume(optionDataManager.OptionData.SfxAudionValue);
+    }
 
+    private void Start() {
         slider.onValueChanged.AddListener(delegate {
             setVolume(slider.value);
         });
