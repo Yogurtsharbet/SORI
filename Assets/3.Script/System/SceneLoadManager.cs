@@ -3,10 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-
 public class SceneLoadManager : MonoBehaviour {
     private string sceneName = "StageBase";
     private int stageCount;
+    private Vector3 stageOffset = new Vector3(0, 0, 290);
+
+    private void Start() {
+        LoadScene();
+    }
 
     public void LoadScene() {
         StartCoroutine(Load());
@@ -18,8 +22,26 @@ public class SceneLoadManager : MonoBehaviour {
         while (!op.isDone)
             yield return null;
 
-        var scene = SceneManager.GetSceneByName(sceneName);
+        var scene = SceneManager.GetSceneAt(SceneManager.sceneCount - 1);
         var rootObjects = scene.GetRootGameObjects();
-        rootObjects[0].transform.position = new Vector3(0, 0, 290 * stageCount);
+
+        rootObjects[0].transform.position = stageOffset * stageCount;
+
+        if (SceneManager.sceneCount > 3) StartCoroutine(Unload(SceneManager.GetSceneAt(0)));
+        if (SceneManager.sceneCount > 2) {
+            var targetPosition = CameraControl.Instance.CameraBorder.position + stageOffset;
+            while(Vector3.Distance(CameraControl.Instance.CameraBorder.position, targetPosition) > 0.1f) {
+                CameraControl.Instance.CameraBorder.position = 
+                    Vector3.MoveTowards(CameraControl.Instance.CameraBorder.position, targetPosition, Time.deltaTime * 50f);
+                yield return null;
+            }
+            CameraControl.Instance.CameraBorder.position = targetPosition;
+        }
+    }
+
+    private IEnumerator Unload(Scene scene) {
+        var op = SceneManager.UnloadSceneAsync(scene);
+        while (!op.isDone)
+            yield return null;
     }
 }

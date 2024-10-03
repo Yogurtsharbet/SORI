@@ -76,6 +76,27 @@
             "_name": "날아간다",
             "_rank": 3,
             "_type": 2
+        },
+        {
+            "_key": 109,
+            "_tag": "RUSTKEY",
+            "_name": "열쇠",
+            "_rank": 3,
+            "_type": 1
+        },
+        {
+            "_key": 110,
+            "_tag": "WALL",
+            "_name": "벽",
+            "_rank": 3,
+            "_type": 1
+        },
+        {
+            "_key": 202,
+            "_tag": "DISAPPEAR",
+            "_name": "사라진다",
+            "_rank": 2,
+            "_type": 2
         }
     ],
     "isUnselectable": [

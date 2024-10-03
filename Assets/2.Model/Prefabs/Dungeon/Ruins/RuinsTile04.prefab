@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 5115009805199062813}
   m_Layer: 0
   m_Name: RuinsTile04
-  m_TagString: Untagged
+  m_TagString: FLOOR
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

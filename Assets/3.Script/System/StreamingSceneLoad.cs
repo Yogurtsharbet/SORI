@@ -15,6 +15,7 @@ public class StreamingSceneLoad : MonoBehaviour {
             var direction = Vector3.Angle(transform.forward, other.transform.position - transform.position);
             if (direction < 90f && !isLoaded) {
                 isLoaded = true;
+                
                 sceneManager.LoadScene();
             }
         }

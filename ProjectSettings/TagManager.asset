@@ -16,6 +16,8 @@ TagManager:
   - TIME
   - ROCK
   - PILLAR
+  - RUSTKEY
+  - WALL
   layers:
   - Default
   - TransparentFX

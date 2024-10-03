@@ -7,6 +7,7 @@ using DG.Tweening;
 
 public class CameraControl : MonoBehaviour {
     public static CameraControl Instance;
+    public Transform CameraBorder;
     public bool isDebugging;
 
     private List<CinemachineVirtualCameraBase> allCamera = new List<CinemachineVirtualCameraBase>();
@@ -37,6 +38,7 @@ public class CameraControl : MonoBehaviour {
 
     private void Awake() {
         Instance = this;
+        CameraBorder = transform.GetChild(0);
 
         playerMove = FindObjectOfType<PlayerMove>();
         playerAnimator = playerMove.GetComponent<Animator>();

@@ -60,7 +60,7 @@ public class StarCoinControl : MonoBehaviour {
         playerPosition.y += 2f;
         starCoinRigid.MovePosition(Vector3.Slerp(transform.position, playerPosition, Mathf.Pow(existedTime / 3f, 2)));
 
-        // ÇÃ·¹ÀÌ¾î¿¡ µµ´ŞÇß´ÂÁö È®ÀÎ
+        // í”Œë ˆì´ì–´ì— ë„ë‹¬í–ˆëŠ”ì§€ í™•ì¸
         if (Vector3.Distance(transform.position, playerPosition) < 0.2f) {
             gameObject.SetActive(false);
             pickCoin = false;
