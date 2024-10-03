@@ -11,11 +11,12 @@ public class MasterController : MonoBehaviour {
         optionDataManager = FindObjectOfType<OptionDataManager>();
         slider = GetComponentInChildren<Slider>();
     }
+    private void OnEnable() {
+        slider.value = optionDataManager.OptionData.MasterAudioValue;
+        checkVolume(optionDataManager.OptionData.MasterAudioValue);        
+    }
 
     private void Start() {
-        slider.value = optionDataManager.OptionData.MasterAudioValue;
-        checkVolume(optionDataManager.OptionData.MasterAudioValue);
-
         slider.onValueChanged.AddListener(delegate {
             setVolume(slider.value);
         });

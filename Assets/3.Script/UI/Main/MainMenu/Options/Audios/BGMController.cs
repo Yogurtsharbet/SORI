@@ -12,10 +12,11 @@ public class BGMController : MonoBehaviour {
         slider = GetComponentInChildren<Slider>();
     }
 
-    private void Start() {
+    private void OnEnable() {
         slider.value = optionDataManager.OptionData.BgmAudioValue;
         checkVolume(optionDataManager.OptionData.BgmAudioValue);
-
+    }
+    private void Start() {
         slider.onValueChanged.AddListener(delegate {
             setVolume(slider.value);
         });

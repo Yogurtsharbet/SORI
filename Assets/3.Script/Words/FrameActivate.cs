@@ -81,7 +81,7 @@ public class FrameActivate : MonoBehaviour {
             combineManager.ResetTempFrame();
         }
         else {
-            combineManager.ResetTempFrame();
+            combineManager.TempResetAndAddList();
         }
     }
 

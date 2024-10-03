@@ -211,6 +211,25 @@ public class CombineManager : MonoBehaviour {
         tempFrame = null;
     }
 
+    public void TempResetAndAddList() {
+        for (int i = 0; i < tempFrame.CountOfFrame(); i++) {
+            if (tempFrame.GetFrame(i) != null) {
+                Frame frame = tempFrame.GetFrame(i);
+                for (int j = 0; j < frame.CountOfFrame(); j++) {
+                    frame.SetWord(i, null);
+                }
+                frameListManager.AddFrame(frame);
+                tempFrame.SetFrame(i, null);
+            }
+
+            if (tempFrame.GetWord(i) != null) {
+                baseFrame.SetWord(i, null);
+            }
+        }
+        frameListManager.AddFrame(tempFrame);
+        tempFrame = null;
+    }
+
     #endregion
 
     //문장 조합
