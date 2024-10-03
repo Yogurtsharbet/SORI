@@ -86,7 +86,7 @@ public class SelectControl : MonoBehaviour {
             out rayHit, maxDistance: float.MaxValue, layerMask)) {
 
             if (FrameActivate.CompareTag(rayHit.collider.tag)) {
-                nowObject = rayHit.collider.GetComponent<Renderer>();
+                nowObject = rayHit.collider.GetComponentInChildren<Renderer>();
 
                 if (prevObject != nowObject) {
                     ApplyMaterial(nowObject, outlineShader);
@@ -136,8 +136,12 @@ public class SelectControl : MonoBehaviour {
     }
 
     private void IndicatorOn(Renderer target) {
-        Indicator.gameObject.SetActive(true);
-        Indicator.position = target.GetComponent<Collider>().bounds.center;
+        var collider = target.GetComponent<Collider>();
+        if (collider == null)
+            collider = target.transform.parent.GetComponent<Collider>();
+
+        Indicator.gameObject.SetActive(true); 
+        Indicator.position = collider.bounds.center;
         // RepositionAtScreenOut();
 
         foreach (var each in SpawnedIndicator) {
@@ -151,7 +155,11 @@ public class SelectControl : MonoBehaviour {
     private void IndicatorOff() {
         Indicator.gameObject.SetActive(false);
         foreach (var each in SpawnedIndicator) {
-            if (Vector3.Distance(nowObject.GetComponent<Collider>().bounds.center, each.transform.position) <= 0.01f) {
+            var collider = nowObject.GetComponent<Collider>();
+            if(collider == null) 
+                collider = nowObject.transform.parent.GetComponent<Collider>();
+
+            if (Vector3.Distance(collider.bounds.center, each.transform.position) <= 0.01f) {
                 each.SetActive(false);
                 break;
             }

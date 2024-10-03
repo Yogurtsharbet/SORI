@@ -28,6 +28,7 @@ public class WordDataStruct {
     public WordTag[] isUnselectable;
     public WordTag[] isMovable;
     public WordTag[] isChangable;
+    public WordTag[] isDisappearable;
 };
 
 public class WordData : MonoBehaviour {
@@ -38,6 +39,7 @@ public class WordData : MonoBehaviour {
     private WordTag[] isUnselectable;
     private WordTag[] isMovable;
     private WordTag[] isChangable;
+    private WordTag[] isDisappearable;
 
     public const WordKey RandomKey = 0;
 
@@ -54,12 +56,15 @@ public class WordData : MonoBehaviour {
         isUnselectable = Data.isUnselectable;
         isMovable = Data.isMovable;
         isChangable = Data.isChangable;
+        isDisappearable = Data.isDisappearable;
 
         //TODO: 신규 동사 property 추가 시 반드시 우선 작성
         wordProperty = new Dictionary<WordTag, WordTag[]>();
         wordProperty.Add("UNSELECT", isUnselectable);
         wordProperty.Add("MOVE", isMovable);
         wordProperty.Add("CHANGE", isChangable);
+        wordProperty.Add("FLY", isMovable);
+        wordProperty.Add("DISAPPEAR", isDisappearable);
 
         #region DEBUGGING
         // FOR DEBUGGING : Make a new JSON

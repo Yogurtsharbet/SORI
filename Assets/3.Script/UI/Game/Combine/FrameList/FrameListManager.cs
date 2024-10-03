@@ -75,11 +75,11 @@ public class FrameListManager : MonoBehaviour {
     }
 
     private void testData() {
-        for (int i = 0; i < 2; i++) {
+        for (int i = 0; i < 1; i++) {
             randomTestFrame();
         }
-        for (int i = 0; i < 4; i++) {
-            AddFrame();
+        for (int i = 0; i < 6; i++) {
+            AddFrame(new Frame(FrameType.AisB));
         }
     }
 

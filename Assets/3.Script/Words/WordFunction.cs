@@ -25,7 +25,8 @@ public class WordFunction : MonoBehaviour {
 
     public void Excute(WordFunctionData data) {
         function = data;
-        functionList[data.word.Key]();
+        if (function.word.IsNoun) Change();
+        else functionList[data.word.Key]();
     }
 
     private void Awake() {
@@ -34,6 +35,10 @@ public class WordFunction : MonoBehaviour {
 
     private void Start() {
         functionList.Add(WordData.Search("MOVE").Key, Move);
+        functionList.Add(WordData.Search("FLY").Key, Fly);
+        functionList.Add(WordData.Search("DISAPPEAR").Key, Disappear);
+        functionList.Add(WordData.Search("CHANGE").Key, Change);
+
     }
 
     private Vector3 GetIndicatePosition(GameObject indicator) {
@@ -72,5 +77,32 @@ public class WordFunction : MonoBehaviour {
                 .Join(targetTransform.DOLookAt(targetTransform.position + direction, 2f))
                 .Play();
         function.indicator.SetActive(false);
+    }
+
+    private void Fly() {
+        Transform targetTransform = function.target.transform;
+        if (function.target.CompareTag("Player")) targetTransform = targetTransform.parent;
+
+        Rigidbody rigid = targetTransform.GetComponent<Rigidbody>();
+        if (rigid == null) {
+            rigid = targetTransform.gameObject.AddComponent<Rigidbody>();
+            rigid.freezeRotation = true;
+        }
+
+        Vector3 destiny = GetIndicatePosition(function.indicator);
+        Vector3 direction = destiny - targetTransform.position;
+        direction.y = 45;
+
+        rigid.AddForce(direction * 2f, ForceMode.Impulse);
+        function.indicator.SetActive(false);
+    }
+
+    private void Disappear() {
+        function.target.SetActive(false);
+    }
+
+    private void Change() {
+        function.target.SetActive(false);
+        //TODO: 바꾸기 애초에 Actiavte에서 clicked 를 여러개 들고와야함; word를 GameObject로 바꿀수없음
     }
 }

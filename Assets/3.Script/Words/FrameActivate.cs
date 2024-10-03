@@ -29,9 +29,11 @@ public class FrameActivate : MonoBehaviour {
         foreach(var each in instance.activeFunction) {
             if (each.Item1.Tag == tag) {
                 if (each.Item3 == null) {
-                    if (each.Item2.Tag == "MOVE") return true;
+                    if (each.Item2.Tag == "MOVE" ||
+                        each.Item2.Tag == "FLY") return true;
                 }
-                else if (each.Item3.Tag == "MOVE") return true; 
+                else if (each.Item3.Tag == "MOVE" ||
+                        each.Item2.Tag == "FLY") return true; 
             }
         }
         return false;
@@ -55,6 +57,8 @@ public class FrameActivate : MonoBehaviour {
         if (last.Item3 == null) {
             if (last.Item1.IsNoun)
                 targetTag.Add(last.Item1.Tag);
+            if (last.Item2.IsNoun)
+                targetTag.Add(last.Item2.Tag);
         }
         else {  // AtoBisC
 
@@ -76,12 +80,14 @@ public class FrameActivate : MonoBehaviour {
     // Enter 입력 - Frame Activate 할 때 발생
     public void useFrame() {
         CombineManager combineManager = FindObjectOfType<CombineManager>();
-        if (combineManager.TempFrame.IsPersistence) {
-            combineManager.FrameToList(combineManager.TempFrame);
-            combineManager.ResetTempFrame();
-        }
-        else {
-            combineManager.ResetTempFrame();
+        if (combineManager != null) {
+            if (combineManager.TempFrame.IsPersistence) {
+                combineManager.FrameToList(combineManager.TempFrame);
+                combineManager.ResetTempFrame();
+            }
+            else {
+                combineManager.ResetTempFrame();
+            }
         }
     }
 
@@ -111,6 +117,10 @@ public class FrameActivate : MonoBehaviour {
 
     private GameObject GetIndicator(GameObject clicked) {
         if (!CheckMovable(clicked.tag)) return null;
+
+        var collider = clicked.GetComponent<Collider>();
+        if (collider == null)
+            collider = clicked.transform.parent.GetComponent<Collider>();
 
         for (int i = 0; i < selectData.Indicator.Count; i++) {
             var indicator = selectData.Indicator[i];
