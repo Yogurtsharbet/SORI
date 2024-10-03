@@ -13,16 +13,19 @@ public enum GameState {
 }
 
 public class State_Normal : IGameState {
+    private InteractionController interactionController;
 
+    public State_Normal() {
+        interactionController = GameObject.FindObjectOfType <InteractionController>();
+    }
 
     public void OnStateChanged() {
         CameraControl.Instance.SetCamera(CameraControl.CameraStatus.TopView);
     }
 
     public void OnEnter() {
-        //if ( 상점 npc가 가까이 있으면 );
-            GameManager.Instance.ChangeState(GameState.Shop);
-
+        interactionController.OpenInteraction();
+        interactionController.ResetType();
     }
 
     public void OnCancel() {
