@@ -36,6 +36,9 @@ public class CameraControl : MonoBehaviour {
     [SerializeField] private GameObject cinematicRuinsRocks;
     [SerializeField] private GameObject cinematicRuinsBarrier;
 
+    [SerializeField] private Canvas gameCanvas;
+    private QuestController questController;
+
     private void Awake() {
         Instance = this;
         CameraBorder = transform.GetChild(0);
@@ -62,6 +65,7 @@ public class CameraControl : MonoBehaviour {
         allCamera.Add(cinematicRuins);
 
         butterflyAnimator = GameObject.FindGameObjectWithTag("Butterfly")?.GetComponent<Animator>();
+        questController = gameCanvas.GetComponentInChildren<QuestController>();
     }
 
     private void Start() {
@@ -91,6 +95,8 @@ public class CameraControl : MonoBehaviour {
         cameraStatus = (CameraStatus)allCamera.IndexOf(camera);
         playerMove.enabled = camera == cameraTopView;
         playerMove.ClearCurretSpeed();
+        if(camera == cameraTopView)
+            gameCanvas.gameObject.SetActive(true);
 
         foreach (var eachCamera in allCamera) {
             if (eachCamera == camera) {
@@ -101,12 +107,21 @@ public class CameraControl : MonoBehaviour {
                     StartCoroutine(WaitForCinematicEnd(camera as CinemachineBlendListCamera));
                     CursorControl.SetCursor(CursorType.Loading);
 
-                    if (camera == cinematicIntro)
+                    if (camera == cinematicIntro) {
+                        //TODO: QUEST TEXT 바꾸기
+                        questController.SetQuestText("길을 따라 가세요");
+                        gameCanvas.gameObject.SetActive(false);
                         playerAnimator.SetTrigger("cinematicIntro");
-                    else if (camera == cinematicForest)
+                    }
+                    else if (camera == cinematicForest) {
+                        questController.SetQuestText("길을 따라 가세요");
+                        gameCanvas.gameObject.SetActive(false);
                         CinematicForestProcess();
-                    else if (camera == cinematicRuins)
+                    }
+                    else if (camera == cinematicRuins) {
+                        gameCanvas.gameObject.SetActive(false);
                         CinematicRuinsProcess();
+                    }
                 }
             }
             else
