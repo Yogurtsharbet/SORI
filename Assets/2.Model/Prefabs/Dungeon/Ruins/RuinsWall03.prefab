@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: -6026198853769526921}
   m_Layer: 0
   m_Name: RuinsWall03
-  m_TagString: Untagged
+  m_TagString: WALL
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

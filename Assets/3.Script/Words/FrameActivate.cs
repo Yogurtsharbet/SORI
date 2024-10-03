@@ -17,14 +17,9 @@ public class FrameActivate : MonoBehaviour {
     public List<WordTag> targetTag { get; private set; }
 
     private void Awake() {
-        if (instance == null) {
-            instance = this;
-            DontDestroyOnLoad(gameObject);
-        }
-        else
-            Destroy(gameObject);
+        if (instance == null) instance = this;
 
-        wordFunction = FindObjectOfType<WordFunction>();
+        wordFunction = GameManager.Instance.wordFunction;
         activeFunction = new List<(Word, Word, Word)>();
         targetTag = new List<WordTag>();
     }

@@ -70,7 +70,7 @@ public class PlayerMove : MonoBehaviour {
         }
 
         CheckJumpValidity();
-        CheckWallThroughBack();
+        //CheckWallThroughBack();
         CheckIdleAnimation();
         CheckResetDash();
     }

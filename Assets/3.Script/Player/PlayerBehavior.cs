@@ -28,7 +28,7 @@ public class PlayerBehavior : MonoBehaviour {
     private bool[] isWatchedCinematic = new bool[Enum.GetValues(typeof(CinematicType)).Length];
 
     private void Awake() {
-        starCoinManager = FindObjectOfType<StarCoinManager>();
+        starCoinManager = GameManager.Instance.starCoinManager;
         playerInputAction = new PlayerInputActions();
         playerAnimator = GetComponent<Animator>();
         
