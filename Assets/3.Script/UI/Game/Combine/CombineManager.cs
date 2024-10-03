@@ -256,6 +256,7 @@ public class CombineManager : MonoBehaviour {
                     baseFrame.SetWord(i, null);
                 }
             }
+            baseFrameOpen = false;
             baseFrame.SetActive(false);
             baseFrame.SetBase(false);
             frameListManager.AddFrame(baseFrame);
