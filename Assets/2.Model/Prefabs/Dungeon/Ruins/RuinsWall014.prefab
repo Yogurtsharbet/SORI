@@ -56,7 +56,7 @@ GameObject:
   - component: {fileID: 4236648901026205606}
   - component: {fileID: 7519251626641919208}
   - component: {fileID: 5949804522336343396}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: RuinsWall04
   m_TagString: WALL
   m_Icon: {fileID: 0}

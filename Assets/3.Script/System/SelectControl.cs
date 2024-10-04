@@ -51,7 +51,9 @@ public class SelectControl : MonoBehaviour {
         inputAction.UI.RightClick.performed += value => OnClickRight();
         //inputAction.UI.Cancel.performed += value => OnCancel();
 
-        layerMask = (1 << LayerMask.NameToLayer("Ground")) | (1 << LayerMask.NameToLayer("Water"));
+        layerMask = 
+            (1 << LayerMask.NameToLayer("Ground")) | (1 << LayerMask.NameToLayer("Water")) |
+            (1 << LayerMask.NameToLayer("Ignore Raycast"));
         layerMask = ~layerMask;
 
         clickedObject = new List<Renderer>();
@@ -84,7 +86,6 @@ public class SelectControl : MonoBehaviour {
         if (Indicator.gameObject.activeSelf) return;
         if (Physics.Raycast(currentCamera.ScreenPointToRay(mousePosition),
             out rayHit, maxDistance: float.MaxValue, layerMask)) {
-
             if (FrameActivate.CompareTag(rayHit.collider.tag)) {
                 nowObject = rayHit.collider.GetComponentInChildren<Renderer>();
 
@@ -101,8 +102,11 @@ public class SelectControl : MonoBehaviour {
         if (nowObject == null) return;
 
         ApplyMaterial(nowObject, clickedShader);
-        if (FrameActivate.CheckMovable(nowObject.tag))
-            IndicatorOn(nowObject);
+        Collider collider = nowObject.GetComponent<Collider>();
+        if (collider == null) collider = nowObject.GetComponentInParent<Collider>();
+
+        if (FrameActivate.CheckMovable(collider.tag))
+            IndicatorOn(collider);
 
         if (!clickedObject.Contains(nowObject))
             clickedObject.Add(nowObject);
@@ -140,8 +144,27 @@ public class SelectControl : MonoBehaviour {
         if (collider == null)
             collider = target.transform.parent.GetComponent<Collider>();
 
-        Indicator.gameObject.SetActive(true); 
-        Indicator.position = collider.bounds.center;
+        Indicator.gameObject.SetActive(true);
+        var position = collider.bounds.center;
+        if (collider.CompareTag("RUSTKEY"))
+            position.y = collider.GetComponent<RustKeyMovement>().defaultY;
+        Indicator.position = position;
+        // RepositionAtScreenOut();
+
+        foreach (var each in SpawnedIndicator) {
+            if (Vector3.Distance(each.transform.position, Indicator.position) <= 0.01f) {
+                each.SetActive(false);
+                break;
+            }
+        }
+    }
+
+    private void IndicatorOn(Collider target) {
+        Indicator.gameObject.SetActive(true);
+        var position = target.bounds.center;
+        if (target.CompareTag("RUSTKEY"))
+            position.y = target.GetComponent<RustKeyMovement>().defaultY;
+        Indicator.position = position;
         // RepositionAtScreenOut();
 
         foreach (var each in SpawnedIndicator) {

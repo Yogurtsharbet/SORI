@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using DG.Tweening;
 using UnityEngine;
@@ -61,12 +62,14 @@ public class WordFunction : MonoBehaviour {
     private void Move() {
         Transform targetTransform = function.target.transform;
         if (function.target.CompareTag("Player")) targetTransform = targetTransform.parent;
+        if (function.target.TryGetComponent(out RustKeyMovement rustKey)) rustKey.isFloating = false;
 
         Rigidbody rigid = targetTransform.GetComponent<Rigidbody>();
-        if (rigid == null) {
+        if (rigid == null) 
             rigid = targetTransform.gameObject.AddComponent<Rigidbody>();
-            rigid.freezeRotation = true;
-        }
+
+
+        rigid.freezeRotation = true;
 
         Vector3 destiny = GetIndicatePosition(function.indicator);
         Vector3 direction = destiny - targetTransform.position;
@@ -75,30 +78,68 @@ public class WordFunction : MonoBehaviour {
         Sequence sequence = DOTween.Sequence();
         sequence.Append(rigid.DOMove(destiny, 2f))
                 .Join(targetTransform.DOLookAt(targetTransform.position + direction, 2f))
+                .OnComplete(() => AfterMove())
                 .Play();
+
         function.indicator.SetActive(false);
+    }
+
+    private void AfterMove() {
+        if (function.target.CompareTag("WALL"))
+            function.target.GetComponent<Rigidbody>().freezeRotation = false;
+        if (function.target.TryGetComponent(out RustKeyMovement rustKey))
+            rustKey.InitRustKey();
+
     }
 
     private void Fly() {
         Transform targetTransform = function.target.transform;
         if (function.target.CompareTag("Player")) targetTransform = targetTransform.parent;
+        if (function.target.TryGetComponent(out RustKeyMovement rustKey)) rustKey.isFloating = false;
 
+        Collider collider = targetTransform.GetComponent<Collider>();
         Rigidbody rigid = targetTransform.GetComponent<Rigidbody>();
         if (rigid == null) {
             rigid = targetTransform.gameObject.AddComponent<Rigidbody>();
-            rigid.freezeRotation = true;
+            rigid.isKinematic = true;
         }
+        
+        rigid.freezeRotation = true;
+        var isTrigger = collider.isTrigger;     collider.isTrigger = false;
+        var isKinematic = rigid.isKinematic;    rigid.isKinematic = false;
+        var useGravity = rigid.useGravity;      rigid.useGravity = true;
 
         Vector3 destiny = GetIndicatePosition(function.indicator);
         Vector3 direction = destiny - targetTransform.position;
         direction.y = 45;
 
-        rigid.AddForce(direction * 2f, ForceMode.Impulse);
+        rigid.AddForce(direction, ForceMode.Impulse);
+        StartCoroutine(AfterFly(rigid, isKinematic, useGravity, isTrigger));
+
         function.indicator.SetActive(false);
     }
 
+    private IEnumerator AfterFly(Rigidbody rigid, bool isKinematic, bool useGravity, bool isTrigger) {
+        yield return new WaitForSeconds(0.2f);
+        while (rigid.velocity.magnitude > 0.05f) yield return null;
+        
+        rigid.velocity = Vector3.zero;
+        rigid.isKinematic = isKinematic;
+        rigid.useGravity = useGravity;
+        rigid.GetComponent<Collider>().isTrigger = isTrigger;
+
+        if (rigid.CompareTag("WALL"))
+            rigid.freezeRotation = false;
+        if (rigid.TryGetComponent(out RustKeyMovement rustKey)) {
+            rustKey.transform.DOMove(transform.up * 7f, 1f);
+            rustKey.InitRustKey();
+        }
+    }
+
     private void Disappear() {
-        function.target.SetActive(false);
+        var collider = function.target.GetComponentInChildren<Collider>();
+        if (collider == null) collider = function.target.transform.parent.GetComponent<Collider>();
+        collider.gameObject.SetActive(false);
     }
 
     private void Change() {

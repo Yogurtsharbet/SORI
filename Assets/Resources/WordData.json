@@ -30,7 +30,7 @@
         },
         {
             "_key": 103,
-            "_tag": "KEY",
+            "_tag": "RUSTKEY",
             "_name": "열쇠",
             "_rank": 3,
             "_type": 1
@@ -117,7 +117,8 @@
         "ROCK",
         "PILLAR",
         "RUSTKEY",
-        "WALL"
+        "WALL",
+        "FLOOR"
     ],
     "isChangable": [
         "DOOR",

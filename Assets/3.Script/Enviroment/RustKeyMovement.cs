@@ -5,14 +5,19 @@ using DG.Tweening;
 using System.Runtime.CompilerServices;
 
 public class RustKeyMovement : MonoBehaviour {
-    private float defaultY;
+    public float defaultY { get; private set; }
     private Transform playerTransform;
     private Vector3 keyPosition;
 
     private void Start() {
+        InitRustKey();
+        StartCoroutine(FloatingKey());
+    }
+
+    public void InitRustKey() {
         defaultY = transform.position.y;
         keyPosition = transform.position;
-        StartCoroutine(FloatingKey());
+        isFloating = true;
     }
 
     private void OnTriggerEnter(Collider other) {
@@ -40,13 +45,16 @@ public class RustKeyMovement : MonoBehaviour {
     }
 
     private float exitTime = 1f;
+    public bool isFloating;
+
     private IEnumerator FloatingKey() {
         while (true) {
-            transform.position = Vector3.Slerp(transform.position, keyPosition, Mathf.Pow((Time.time - exitTime) * 0.4f, 2));
+            if (isFloating) {
+                transform.position = Vector3.Slerp(transform.position, keyPosition, Mathf.Pow((Time.time - exitTime) * 0.4f, 2));
 
-            keyPosition.y = defaultY + Mathf.Sin(Time.time);
-            transform.Rotate(Vector3.forward * Time.deltaTime * 10f);
-
+                keyPosition.y = defaultY + Mathf.Sin(Time.time);
+                transform.Rotate(Vector3.forward * Time.deltaTime * 10f);
+            }
             yield return null;
         }
     }

@@ -102,6 +102,7 @@ public class FrameActivate : MonoBehaviour {
                 else {
                     for (int i = 0; i < selectData.clickedObject.Count; i++) {
                         var clicked = selectData.clickedObject[i];
+                        if (clicked.CompareTag("WALL")) clicked = clicked.transform.parent.gameObject;
                         if (eachFunction.Item1.Tag == clicked.tag) {
                             Function(clicked, eachFunction.Item2, GetIndicator(clicked));
                         }
@@ -122,11 +123,15 @@ public class FrameActivate : MonoBehaviour {
         if (collider == null)
             collider = clicked.transform.parent.GetComponent<Collider>();
 
+        var position = collider.bounds.center;
+        if (collider.CompareTag("RUSTKEY")) 
+            position.y = collider.GetComponent<RustKeyMovement>().defaultY;
+
         for (int i = 0; i < selectData.Indicator.Count; i++) {
             var indicator = selectData.Indicator[i];
             if (!indicator.activeSelf) continue;
             if (Vector3.Distance(
-                indicator.transform.position, clicked.GetComponent<Collider>().bounds.center) < 0.1f) {
+                indicator.transform.position, position) < 0.1f) {
                 selectData.Indicator.RemoveAt(i);
                 return indicator;
             }

@@ -5,6 +5,7 @@ using UnityEngine.SceneManagement;
 
 public class SceneLoadManager : MonoBehaviour {
     private string sceneName = "StageBase";
+    private int clearCount = 2;
     private int stageCount;
     private Vector3 stageOffset = new Vector3(0, 0, 290);
 
@@ -13,6 +14,7 @@ public class SceneLoadManager : MonoBehaviour {
     }
 
     public void LoadScene() {
+        if (stageCount > clearCount) ;
         StartCoroutine(Load());
     }
 

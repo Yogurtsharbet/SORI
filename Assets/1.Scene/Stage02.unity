@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.42221767, g: 0.6431584, b: 0.793694, a: 1}
+  m_IndirectSpecularColor: {r: 0.42227417, g: 0.6437038, b: 0.7936718, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -705,7 +705,7 @@ Rigidbody:
   m_Drag: 0
   m_AngularDrag: 0.05
   m_UseGravity: 0
-  m_IsKinematic: 1
+  m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
@@ -48632,6 +48632,10 @@ PrefabInstance:
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: 1a7c6b13b8983fa4bbfb1dbfbb5fef57, type: 2}
+    - target: {fileID: 2933456718074969812, guid: 78df1db2fbc8ec64f949fac0c05bf693, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3021595832852447768, guid: 78df1db2fbc8ec64f949fac0c05bf693, type: 3}
       propertyPath: m_IsTrigger
       value: 1
@@ -52049,9 +52053,9 @@ PrefabInstance:
       propertyPath: m_Name
       value: RuinsWall017 (1)
       objectReference: {fileID: 0}
-    - target: {fileID: 4181484186793717470, guid: 11c25fdfa12f48740828567699301bbe, type: 3}
-      propertyPath: m_TagString
-      value: WALL
+    - target: {fileID: 2650161347303763613, guid: 11c25fdfa12f48740828567699301bbe, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6731904936386968791, guid: 11c25fdfa12f48740828567699301bbe, type: 3}
       propertyPath: m_RootOrder

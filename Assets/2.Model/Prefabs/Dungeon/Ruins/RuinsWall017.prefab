@@ -56,9 +56,9 @@ GameObject:
   - component: {fileID: 3312476781280532162}
   - component: {fileID: 4127912342920953621}
   - component: {fileID: 9027088837769898063}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: RuinsWall07
-  m_TagString: Untagged
+  m_TagString: WALL
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
