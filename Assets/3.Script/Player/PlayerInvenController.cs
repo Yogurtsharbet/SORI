@@ -25,7 +25,8 @@ public class PlayerInvenController : MonoBehaviour {
 
     private void testData() {
         for (int i = 0; i < 12; i++) {
-            inven[i] = Word.GetWord();
+            if (i == 11) inven[i] = Word.GetWord(WordData.Search("WALL").Key);
+            else inven[i] = Word.GetWord();
         }
         UpdateInvenInvoke();
     }

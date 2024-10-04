@@ -30,7 +30,7 @@
         },
         {
             "_key": 103,
-            "_tag": "KEY",
+            "_tag": "RUSTKEY",
             "_name": "열쇠",
             "_rank": 3,
             "_type": 1
@@ -97,6 +97,13 @@
             "_name": "사라진다",
             "_rank": 2,
             "_type": 2
+        },
+        {
+            "_key": 203,
+            "_tag": "CHANGE",
+            "_name": "바뀐다",
+            "_rank": 6,
+            "_type": 2
         }
     ],
     "isUnselectable": [
@@ -108,7 +115,10 @@
         "TREE",
         "KEY",
         "ROCK",
-        "PILLAR"
+        "PILLAR",
+        "RUSTKEY",
+        "WALL",
+        "FLOOR"
     ],
     "isChangable": [
         "DOOR",
@@ -116,6 +126,20 @@
         "KEY",
         "BIRD",
         "ROCK",
-        "PILLAR"
+        "PILLAR",
+        "RUSTKEY",
+        "WALL"
+    ],
+    "isDisappearable": [
+        "Enemy",
+        "DOOR",
+        "TREE",
+        "KEY",
+        "FLOOR",
+        "BIRD",
+        "ROCK",
+        "PILLAR",
+        "RUSTKEY",
+        "WALL"
     ]
 }
