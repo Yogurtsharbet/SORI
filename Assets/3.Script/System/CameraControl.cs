@@ -225,6 +225,7 @@ public class CameraControl : MonoBehaviour {
                 break;
             }
         }
+        GameManager.Instance.CompleteTutorial();
     }
 
    

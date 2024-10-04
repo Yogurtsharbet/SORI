@@ -64,31 +64,42 @@ public class WordFunction : MonoBehaviour {
         if (function.target.CompareTag("Player")) targetTransform = targetTransform.parent;
         if (function.target.TryGetComponent(out RustKeyMovement rustKey)) rustKey.isFloating = false;
 
+        Collider collider = targetTransform.GetComponent<Collider>();
         Rigidbody rigid = targetTransform.GetComponent<Rigidbody>();
-        if (rigid == null) 
+        if (rigid == null) {
             rigid = targetTransform.gameObject.AddComponent<Rigidbody>();
-
+            rigid.isKinematic = true;
+        }
 
         rigid.freezeRotation = true;
+        var isTrigger = collider.isTrigger; collider.isTrigger = false;
+        var isKinematic = rigid.isKinematic; rigid.isKinematic = false;
+        var useGravity = rigid.useGravity; rigid.useGravity = true;
 
         Vector3 destiny = GetIndicatePosition(function.indicator);
         Vector3 direction = destiny - targetTransform.position;
-        direction.y = 0;
+        direction.y = 0; 
+
 
         Sequence sequence = DOTween.Sequence();
         sequence.Append(rigid.DOMove(destiny, 2f))
-                .Join(targetTransform.DOLookAt(targetTransform.position + direction, 2f))
-                .OnComplete(() => AfterMove())
+                //.Join(targetTransform.DORotate(lookAt, 2f))
+                .OnComplete(() => AfterMove(rigid, isKinematic, useGravity, isTrigger))
                 .Play();
 
         function.indicator.SetActive(false);
     }
 
-    private void AfterMove() {
+    private void AfterMove(Rigidbody rigid, bool isKinematic, bool useGravity, bool isTrigger) {
         if (function.target.CompareTag("WALL"))
             function.target.GetComponent<Rigidbody>().freezeRotation = false;
         if (function.target.TryGetComponent(out RustKeyMovement rustKey))
             rustKey.InitRustKey();
+
+        rigid.velocity = Vector3.zero;
+        rigid.isKinematic = isKinematic;
+        rigid.useGravity = useGravity;
+        rigid.GetComponent<Collider>().isTrigger = isTrigger;
 
     }
 
