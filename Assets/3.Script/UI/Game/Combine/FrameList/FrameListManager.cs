@@ -15,6 +15,7 @@ public class FrameListManager : MonoBehaviour {
 
     private Slider slider;
     private float previousValue = 0; // 이전 스크롤바 값
+    public float PreviousValue => previousValue;
 
     private DefaultInputActions inputAction;                        //휠 InputSys
     private ActiveStatusController activeStatus;                    //왼쪽 상단 active status
@@ -230,7 +231,7 @@ public class FrameListManager : MonoBehaviour {
         }
     }
 
-    private void UpdateSlotData(float scrollValue) {
+    public void UpdateSlotData(float scrollValue) {
         CheckScrollbar();
 
         int value = (int)scrollValue;

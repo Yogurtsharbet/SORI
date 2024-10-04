@@ -85,10 +85,12 @@ public class State_Combine : IGameState {
 public class State_Select : IGameState {
     private SelectControl selectControl;
     private Animator playerAnimator;
+    private CombineManager combineManager;
 
     public State_Select() {
         selectControl = GameManager.Instance.selectControl;
         playerAnimator = GameObject.FindGameObjectWithTag("Player").GetComponent<Animator>();
+        combineManager = GameObject.FindObjectOfType<CombineManager>();
     }
 
     public void OnStateChanged() {
@@ -104,6 +106,9 @@ public class State_Select : IGameState {
     }
 
     public void OnCancel() {
+        if (combineManager.TempFrame != null) {
+            combineManager.TempResetAndAddList();
+        }
         GameManager.Instance.ChangeState(GameState.Combine);
     }
 

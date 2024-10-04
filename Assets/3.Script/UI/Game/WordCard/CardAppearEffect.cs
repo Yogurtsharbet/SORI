@@ -7,11 +7,8 @@ public class CardAppearEffect : MonoBehaviour {
     private Vector3 targetPosition;
     private CanvasGroup canvasGroup;
 
-    void Start() {
-        canvasGroup = GetComponent<CanvasGroup>();
-        if (canvasGroup == null) {
-            return;
-        }
+    private void Awake() {
+        canvasGroup = GetComponent<CanvasGroup>();   
     }
 
     public void SetPostion(Vector3 pos) {
