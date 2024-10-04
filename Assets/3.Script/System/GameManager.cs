@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour {
     public static GameManager Instance;
@@ -35,6 +35,9 @@ public class GameManager : MonoBehaviour {
     private void Start() {
         InitializeGameState();
         ChangeState(State[GameState.Normal]);
+        if (SceneManager.GetActiveScene().name == "Map") 
+            isCompleteTutorial = false;
+        else isCompleteTutorial = true;
     }
 
     private void InitializeGameManager() {
@@ -63,6 +66,7 @@ public class GameManager : MonoBehaviour {
         State.Add(GameState.Select, new State_Select());
         State.Add(GameState.Inven, new State_Inven());
         State.Add(GameState.Shop, new State_Shop());
+        State.Add(GameState.Pause, new State_Pause());
     }
 
     public bool CompareState(GameState state) {

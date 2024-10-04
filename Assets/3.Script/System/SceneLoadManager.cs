@@ -14,8 +14,10 @@ public class SceneLoadManager : MonoBehaviour {
     }
 
     public void LoadScene() {
-        if (stageCount > clearCount) ;
-        StartCoroutine(Load());
+        if (stageCount > clearCount)
+            FindObjectOfType<MainLoading>().StartLoading(0);
+        else
+            StartCoroutine(Load());
     }
 
     private IEnumerator Load() {

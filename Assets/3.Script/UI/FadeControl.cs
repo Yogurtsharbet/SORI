@@ -15,6 +15,10 @@ public class FadeControl : MonoBehaviour {
         fadeScreen = GetComponent<Image>();
     }
 
+    private void OnEnable() {
+        FadeIn();
+    }
+
     private void StopFade() {
         StopCoroutine(FadeIn_Co());
         StopCoroutine(FadeOut_Co());
@@ -46,6 +50,7 @@ public class FadeControl : MonoBehaviour {
         fadeScreen.color = screenColor;
         StartCoroutine(FadeOut_Co());
     }
+
     private IEnumerator FadeOut_Co() {
         float fadeStart = Time.time;
         do {
