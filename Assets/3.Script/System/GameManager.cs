@@ -15,6 +15,7 @@ public class GameManager : MonoBehaviour {
     public WordFunction wordFunction { get; private set; }
     public SceneLoadManager sceneLoadManager { get; private set; }
 
+    public bool isCompleteTutorial;
 
     public IGameState gameState { get; private set; }
     private Dictionary<GameState, IGameState> State;
@@ -70,6 +71,7 @@ public class GameManager : MonoBehaviour {
 
     public void ChangeState(GameState state) {
         if (gameState != State[state]) {
+            if (state == GameState.Combine && !isCompleteTutorial) return;
             gameState = State[state];
             gameState.OnStateChanged();
         }
@@ -77,8 +79,13 @@ public class GameManager : MonoBehaviour {
 
     public void ChangeState(IGameState state) {
         if (gameState != state) {
+            if (state == State[GameState.Combine] && !isCompleteTutorial) return;
             gameState = state;
             gameState.OnStateChanged();
         }
+    }
+
+    public void CompleteTutorial() {
+        isCompleteTutorial = true;
     }
 }
