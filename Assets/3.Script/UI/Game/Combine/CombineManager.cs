@@ -228,6 +228,7 @@ public class CombineManager : MonoBehaviour {
         }
         frameListManager.AddFrame(tempFrame);
         tempFrame = null;
+        frameListManager.UpdateSlotData(frameListManager.PreviousValue);
     }
 
     #endregion

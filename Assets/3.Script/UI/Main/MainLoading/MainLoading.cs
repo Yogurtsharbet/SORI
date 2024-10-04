@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public class MainLoading : MonoBehaviour {
     private Text text;
     private Animator[] loadAni;
+    private string[] sceneName = new string[4];
 
     private void Awake() {
         loadAni = GetComponentsInChildren<Animator>();
@@ -14,18 +15,30 @@ public class MainLoading : MonoBehaviour {
             loadAni[i].SetBool("endFadeout", false);
         }
         text.enabled = false;
+        setScenceName();
     }
 
-    public void LoadSceneAsync() {
+    private void Start() {
+        gameObject.SetActive(false);
+    }
+
+    private void setScenceName() {
+        sceneName[0] = "Main";
+        sceneName[1] = "Map";
+        sceneName[2] = "StageBase";
+        sceneName[3] = "Stage02";
+    }
+
+    public void LoadSceneAsync(int index) {
         for (int i = 0; i < loadAni.Length; i++) {
             loadAni[i].SetBool("endFadeout", true);
         }
         text.enabled = true;
-        StartCoroutine(LoadSceneCoroutine());
+        StartCoroutine(LoadSceneCoroutine(index));
     }
 
-    private IEnumerator LoadSceneCoroutine() {
-        AsyncOperation asyncOperation = SceneManager.LoadSceneAsync("Map");
+    private IEnumerator LoadSceneCoroutine(int index) {
+        AsyncOperation asyncOperation = SceneManager.LoadSceneAsync(sceneName[index]);
 
         asyncOperation.allowSceneActivation = false;
 
@@ -39,14 +52,14 @@ public class MainLoading : MonoBehaviour {
         }
     }
 
-    public void StartLoading() {
+    public void StartLoading(int index) {
         gameObject.SetActive(true);
         FadeControl.Instance.FadeOut();
-        StartCoroutine(NewGameDelayedCo());
+        StartCoroutine(NewGameDelayedCo(index));
     }
 
-    IEnumerator NewGameDelayedCo() {
+    IEnumerator NewGameDelayedCo(int index) {
         yield return new WaitForSeconds(1.5f);
-        LoadSceneAsync();
+        LoadSceneAsync(index);
     }
 }

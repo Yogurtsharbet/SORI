@@ -43,13 +43,11 @@ public class State_Normal : IGameState {
 
 public class State_Combine : IGameState {
     private CombineContainer combineContainer;
-    private CombineManager combineManager;
     private Animator playerAnimator;
 
     public State_Combine() {
         combineContainer = GameObject.FindObjectOfType<CombineContainer>();
         playerAnimator = GameObject.FindGameObjectWithTag("Player").GetComponent<Animator>();
-        combineManager = GameObject.FindObjectOfType<CombineManager>();
     }
 
     public void OnStateChanged() {
@@ -66,9 +64,6 @@ public class State_Combine : IGameState {
         GameManager.Instance.ChangeState(GameState.Normal);
         combineContainer.CloseCombineField();
         playerAnimator.SetBool("isCombineMode", false);
-        if (combineManager.TempFrame != null) {
-            combineManager.TempResetAndAddList();
-        }
     }
 
     public void OnTab() {
@@ -90,10 +85,12 @@ public class State_Combine : IGameState {
 public class State_Select : IGameState {
     private SelectControl selectControl;
     private Animator playerAnimator;
+    private CombineManager combineManager;
 
     public State_Select() {
         selectControl = GameManager.Instance.selectControl;
         playerAnimator = GameObject.FindGameObjectWithTag("Player").GetComponent<Animator>();
+        combineManager = GameObject.FindObjectOfType<CombineManager>();
     }
 
     public void OnStateChanged() {
@@ -109,6 +106,9 @@ public class State_Select : IGameState {
     }
 
     public void OnCancel() {
+        if (combineManager.TempFrame != null) {
+            combineManager.TempResetAndAddList();
+        }
         GameManager.Instance.ChangeState(GameState.Combine);
     }
 

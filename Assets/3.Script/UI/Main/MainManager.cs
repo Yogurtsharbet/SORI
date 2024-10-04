@@ -2,7 +2,6 @@ using UnityEngine;
 using Cinemachine;
 using System.Collections;
 using UnityEngine.UI;
-using System.Collections.Generic;
 
 // [UI] 메인 - 메인 화면 매니저
 public class MainManager : MonoBehaviour {
@@ -74,6 +73,6 @@ public class MainManager : MonoBehaviour {
     public void OpenLoad() {
         mainTitle.CloseMainTitle();
         mainMenu.CloseMainMenu();
-        mainLoading.StartLoading();
+        mainLoading.StartLoading(0);
     }
 }
