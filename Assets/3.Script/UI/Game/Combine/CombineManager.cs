@@ -1,5 +1,4 @@
 using System.Linq;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -90,6 +89,7 @@ public class CombineManager : MonoBehaviour {
             submitButton.ButtonToSubmit();
             //TODO: 하위 슬롯 끄기
         }
+        submitButton.CheckSubmitInteractable();
     }
 
     public void CancelCombineTemp() {
@@ -236,9 +236,7 @@ public class CombineManager : MonoBehaviour {
     public void CombineSubmit() {
         if (canCombine) {
             //조합
-            string dialogContents = string.Empty;
-            if (baseFrame == null) dialogContents = "프레임 없음";
-            else if (FrameValidity.Check(baseFrame)) {
+            if (FrameValidity.Check(baseFrame)) {
                 wordFunction.frameRank = baseFrame.Rank;
 
                 int i;
@@ -255,9 +253,6 @@ public class CombineManager : MonoBehaviour {
                 //선택 view에서 frame 임시 저장
                 combineContainer.CloseCombineField();
             }
-            //TODO: Dialog -> FrameValidity 에서 띄워주는 게 좋을 듯?
-            if (dialogContents != string.Empty)
-                DialogManager.Instance.OpenDefaultDialog(dialogContents, DialogType.FAIL);
         }
         else {
             //프레임 비우기
@@ -270,7 +265,6 @@ public class CombineManager : MonoBehaviour {
                     frameListManager.AddFrame(frame);
                     baseFrame.SetFrame(i, null);
                 }
-
                 if (baseFrame.GetWord(i) != null) {
                     baseFrame.SetWord(i, null);
                 }
@@ -282,6 +276,7 @@ public class CombineManager : MonoBehaviour {
             baseFrame = null;
             slotAllClose();
             submitButton.ButtonToSubmit();
+            submitButton.CheckSubmitInteractable();
             gameObject.SetActive(false);
         }
     }

@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -25,20 +24,22 @@ public class CommonInvenSlotManager : MonoBehaviour {
         for (int i = 0; i < selectInvens.Count; i++) {
             if (selectInvens[i] == num) {
                 isExist = true;
-                invenSelectControllers[num].DisEnable();
+                if (invenSelectControllers != null)
+                    invenSelectControllers[num].DisEnable();
                 selectInvens.RemoveAt(i);
                 break;
             }
         }
 
         if (!isExist) {
-            invenSelectControllers[num].Enable();
+            if (invenSelectControllers != null)
+                invenSelectControllers[num].Enable();
             selectInvens.Add(num);
         }
     }
 
     public void ResetSelectInvens() {
-        for(int i = 0; i < invenSelectControllers.Length; i++) {
+        for (int i = 0; i < invenSelectControllers.Length; i++) {
             invenSelectControllers[i].DisEnable();
         }
         selectInvens.RemoveRange(0, selectInvens.Count);
@@ -66,6 +67,9 @@ public class CommonInvenSlotManager : MonoBehaviour {
     public void RemoveWord() {
         for (int i = 0; i < selectInvens.Count; i++) {
             playerInvenController.RemoveItemIndex(selectInvens[i]);
+        }
+        for (int i = 0; i < selectInvens.Count; i++) {
+            invenSelectControllers[selectInvens[i]].DisEnable();
         }
         selectInvens.RemoveRange(0, selectInvens.Count);
     }

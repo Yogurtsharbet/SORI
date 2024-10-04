@@ -336,7 +336,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &547318174155333425
 RectTransform:
   m_ObjectHideFlags: 0
@@ -634,8 +634,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5ff9f8b91a483ff4998d1bd68a5f1ae3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dropZone: {fileID: 0}
-  zoomScale: {x: 2, y: 2, z: 2}
 --- !u!1 &547318174768964009
 GameObject:
   m_ObjectHideFlags: 0

@@ -17,7 +17,6 @@ public class HalfInvenManager : CommonInvenSlotManager {
         halfInvenContainer = FindObjectOfType<HalfInvenContainer>();
         shopTransactionManager = FindObjectOfType<ShopTransactionManager>();
         halfInvenSlot = new HalfInvenSlotController[20];
-        invenSelectControllers = new InvenSlotSelectController[20];
         playerInvenController = FindObjectOfType<PlayerInvenController>();
 
         for (int i = 0; i < 20; i++) {
@@ -41,7 +40,6 @@ public class HalfInvenManager : CommonInvenSlotManager {
             newSlotObject.name = $"slot{i}";
             slotList.Add(newSlotObject);
             halfInvenSlot[i] = newSlotObject.GetComponentInChildren<HalfInvenSlotController>();
-            invenSelectControllers[i] = newSlotObject.GetComponentInChildren<InvenSlotSelectController>();
             halfInvenSlot[i].SetKey(i);
         }
 

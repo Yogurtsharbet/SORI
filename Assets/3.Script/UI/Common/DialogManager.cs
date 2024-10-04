@@ -39,7 +39,6 @@ public class DialogManager : MonoBehaviour {
         text = GetComponentInChildren<Text>();
         rectTransform = gameObject.GetComponentInChildren<RectTransform>();
 
-        //TODO: CONFIRM πˆ∆∞ √ﬂ∞°«œ±‚
         buttons = GetComponentsInChildren<Button>();
         buttonActive(false);
     }
@@ -97,7 +96,7 @@ public class DialogManager : MonoBehaviour {
         isConfirmed = -1;
     }
 
-    #region ¥Ÿ¿ÃæÛ∑Œ±◊ º≥¡§
+    #region Îã§Ïù¥ÏñºÎ°úÍ∑∏ ÏÑ§Ï†ï
 
     public void CloseDialog() {
         text.text = string.Empty;
@@ -106,7 +105,7 @@ public class DialogManager : MonoBehaviour {
         gameObject.SetActive(false);
     }
 
-    //ªÁ¿Ã¡Ó ∞ËªÍ
+    //ÏÇ¨Ïù¥Ï¶à Í≥ÑÏÇ∞
     private Vector2 getDialogSize(string contents) {
         (int, int) sentenceCountes = sentenceCount(contents);
 

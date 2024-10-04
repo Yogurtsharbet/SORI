@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 // [UI] 인벤토리 - 슬롯 공통 컨트롤러
