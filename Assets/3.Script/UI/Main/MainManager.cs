@@ -73,6 +73,6 @@ public class MainManager : MonoBehaviour {
     public void OpenLoad() {
         mainTitle.CloseMainTitle();
         mainMenu.CloseMainMenu();
-        mainLoading.StartLoading(0);
+        mainLoading.StartLoading(1);
     }
 }

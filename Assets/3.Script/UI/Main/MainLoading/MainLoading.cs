@@ -20,13 +20,15 @@ public class MainLoading : MonoBehaviour {
 
     private void Start() {
         gameObject.SetActive(false);
+        if (SceneManager.GetActiveScene().name == "Map")
+            gameObject.SetActive(true);
     }
 
     private void setScenceName() {
         sceneName[0] = "Main";
         sceneName[1] = "Map";
-        sceneName[2] = "StageBase";
-        sceneName[3] = "Stage02";
+        sceneName[2] = "Stage02";
+        sceneName[3] = "StageBase";
     }
 
     public void LoadSceneAsync(int index) {

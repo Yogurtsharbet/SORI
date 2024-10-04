@@ -12,6 +12,8 @@ public class NextSceneTrigger : MonoBehaviour {
 
     void OnTriggerEnter(Collider other) {
         if (other.CompareTag("Player")) {
+            Destroy(FindObjectOfType<GameManager>().gameObject);
+            Destroy(FindObjectOfType<CameraControl>().gameObject);
             LoadNextScene();
         }
     }
