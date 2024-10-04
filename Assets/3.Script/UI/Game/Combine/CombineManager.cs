@@ -87,7 +87,6 @@ public class CombineManager : MonoBehaviour {
         else {
             canCombine = true;              //조합하기를 눌러야 하는 상태
             submitButton.ButtonToSubmit();
-            //TODO: 하위 슬롯 끄기
         }
         submitButton.CheckSubmitInteractable();
     }
@@ -205,6 +204,7 @@ public class CombineManager : MonoBehaviour {
 
     public void FrameToList(Frame frame) {
         frameListManager.AddFrame(frame);
+        frameListManager.UpdateSlotData(frameListManager.PreviousValue);
     }
 
     public void ResetTempFrame() {
