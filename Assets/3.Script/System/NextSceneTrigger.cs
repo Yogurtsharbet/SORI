@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class NextSceneTrigger : MonoBehaviour {
@@ -12,10 +13,21 @@ public class NextSceneTrigger : MonoBehaviour {
 
     void OnTriggerEnter(Collider other) {
         if (other.CompareTag("Player")) {
-            Destroy(FindObjectOfType<GameManager>().gameObject);
-            Destroy(FindObjectOfType<CameraControl>().gameObject);
-            LoadNextScene();
+            StartCoroutine(WaitForFade());
+            
         }
+    }
+
+    private IEnumerator WaitForFade() {
+        var fadeControl = FindObjectOfType<FadeControl>();
+
+        fadeControl.FadeOut();
+        while (fadeControl.screenColor.a < 1) 
+            yield return null; 
+        
+        Destroy(FindObjectOfType<GameManager>().gameObject);
+        Destroy(FindObjectOfType<CameraControl>().gameObject);
+        LoadNextScene();
     }
 
     private void LoadNextScene() {

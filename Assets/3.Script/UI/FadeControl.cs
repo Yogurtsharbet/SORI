@@ -5,7 +5,7 @@ using UnityEngine.UI;
 public class FadeControl : MonoBehaviour {
     public static FadeControl Instance;
     private Image fadeScreen;
-    private Color screenColor;
+    public Color screenColor;
 
     [Range(1f, 5f)]
     [SerializeField] private float FadeTime = 1f;
