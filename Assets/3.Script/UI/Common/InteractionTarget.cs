@@ -7,14 +7,25 @@ public class InteractionTarget : MonoBehaviour {
     [SerializeField] private InteractType type;
     [SerializeField, TextArea(3, 10)] private string content;
 
+    private bool isTargetBound = false;
+    public bool IsTargetBound => isTargetBound;
+
     private void Awake() {
         interactUI = FindObjectOfType<InteractionController>();
         thisCamera = Camera.main;
     }
 
-    void OnTriggerEnter(Collider other) {
+    private void OnTriggerStay(Collider other) {
         if (other.CompareTag("Player")) {
-            interactUI.ShowSqure(GetTargetPosition(), type);
+            Debug.Log("CHECK");
+            if (!isTargetBound && !interactUI.IsOpenSquare) {
+                isTargetBound = true;
+                interactUI.ShowSqure(GetTargetPosition(), type);
+            }
+
+            if (isTargetBound && interactUI.IsOpenSquare) {
+                interactUI.UpdateSquarePosition(GetTargetPosition());
+            }
         }
     }
 
@@ -26,6 +37,7 @@ public class InteractionTarget : MonoBehaviour {
     void OnTriggerExit(Collider other) {
         if (other.CompareTag("Player")) {
             interactUI.HideSqure();
+            isTargetBound = false;
         }
     }
 }

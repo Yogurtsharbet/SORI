@@ -17,8 +17,6 @@ public class ShopContainer : MonoBehaviour {
         gameObject.SetActive(false);
     }
 
-    // gameManager.ChangeState(GameState.Shop);
-    // TODO: 상점 열게 하는 무언가가 있을 때 호출
     public void OpenShopContainer() {
         bgPanel.SetActive(true);
         halfInvenContainer.OpenHalfInven();

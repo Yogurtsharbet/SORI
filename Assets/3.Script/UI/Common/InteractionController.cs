@@ -14,6 +14,7 @@ public class InteractionController : MonoBehaviour {
 
     private bool isOpenSquare = false;
     private bool isOpenBubble = false;
+    public bool IsOpenSquare => isOpenSquare;
 
     private InteractType type = InteractType.Normal;
 
@@ -67,5 +68,9 @@ public class InteractionController : MonoBehaviour {
 
     public void ResetType() {
         type = InteractType.Normal;
+    }
+
+    public void UpdateSquarePosition(Vector3 pos) {
+        square.UpdatePosition(pos);
     }
 }
