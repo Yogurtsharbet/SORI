@@ -1,6 +1,8 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using static CameraControl;
 
 public class GameManager : MonoBehaviour {
     public static GameManager Instance;
@@ -91,5 +93,13 @@ public class GameManager : MonoBehaviour {
 
     public void CompleteTutorial() {
         isCompleteTutorial = true;
+        StartCoroutine(WaitRockCinematicEnd());
+    }
+    
+    private IEnumerator WaitRockCinematicEnd() {
+        WordCardSelectContainer wordCardContainer = FindObjectOfType<WordCardSelectContainer>();
+        yield return new WaitUntil(() => CameraControl.Instance.cameraStatus == CameraStatus.TopView);
+
+        wordCardContainer.GetWordCard(2);
     }
 }

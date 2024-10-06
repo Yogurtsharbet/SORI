@@ -25,10 +25,6 @@ public class WordCardSelectContainer : MonoBehaviour {
         gameObject.SetActive(true);
     }
 
-    public void NewWordTestData() {
-        GetWordCard(2);
-    }
-
     //랜덤 카드 생성
     public void GetWordCard(int num) {
         gameObject.SetActive(true);

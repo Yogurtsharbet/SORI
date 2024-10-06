@@ -63,7 +63,6 @@ public class MainDetailManager : MonoBehaviour {
         }
         else if (isOptionMenu && isOptionDetail) {
             //옵션 상세메뉴
-            //TODO: 상세 옵션에서 키보드 움직임 X
             return;
         }
         else {
@@ -78,7 +77,6 @@ public class MainDetailManager : MonoBehaviour {
         }
         else if (isOptionMenu && isOptionDetail) {
             //옵션 상세메뉴
-            //TODO: 상세 옵션에서 키보드 움직임 X
             return;
         }
         else {
@@ -143,7 +141,6 @@ public class MainDetailManager : MonoBehaviour {
                 loadManager.SetSelectIndex(key - 1);
             }
         }
-        //TODO: 선택한 인덱스 체크 추가하기
     }
 
     public void OpenDetailLoad() {

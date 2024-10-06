@@ -88,7 +88,6 @@ public class NewWordCardController : MonoBehaviour, IPointerClickHandler {
     }
 
     public void OnPointerClick(PointerEventData eventData) {
-        //TODO: 보여주는 선택 단어 삭제, 초기화, SELECT CONTAINER 숨김
         wordCardSelectContainer.SelectNewWord(thisWord);
     }
 }

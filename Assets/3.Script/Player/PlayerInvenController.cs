@@ -20,13 +20,13 @@ public class PlayerInvenController : MonoBehaviour {
     }
 
     private void Start() {
-        testData();
+        // testData();
     }
 
     private void testData() {
         for (int i = 0; i < 12; i++) {
             if (i == 11) inven[i] = Word.GetWord(WordData.Search("ROCK").Key);
-           else if (i == 10) inven[i] = Word.GetWord(WordData.Search("MOVE").Key);
+            else if (i == 10) inven[i] = Word.GetWord(WordData.Search("MOVE").Key);
             else inven[i] = Word.GetWord();
         }
         UpdateInvenInvoke();
@@ -70,7 +70,6 @@ public class PlayerInvenController : MonoBehaviour {
             }
             else {
                 //inven.RemoveAt(GetRemoveIndex());
-                // TODO: 플레이어 INPUT 받아서 플레이어가 선택한 단어 삭제
                 //player가 삭제할 단어 index 선택 창 열기
                 return;
             }
@@ -80,9 +79,9 @@ public class PlayerInvenController : MonoBehaviour {
 
     /// <summary>
     /// 빈칸에 새 단어 추가
-    /// TODO: 빈칸이 없을때 처리 추가필요
     /// </summary>
     /// <param name="newWord">Word</param>
+    // TODO: 빈칸이 없을때 처리 추가필요
     public void AddNewItem(Word newWord) {
         for (int i = 0; i < invenOpenCount; i++) {
             if (inven[i] == null) {

@@ -114,7 +114,7 @@ public class CameraControl : MonoBehaviour {
                         playerAnimator.SetTrigger("cinematicIntro");
                     }
                     else if (camera == cinematicForest) {
-                        questController.SetQuestText("길을 따라 가세요");
+                        questController.SetQuestText("빛을 따라 가세요");
                         gameCanvas.gameObject.SetActive(false);
                         CinematicForestProcess();
                     }

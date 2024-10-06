@@ -116,8 +116,6 @@ public class DraggingCombineWord : DraggingObject, IEndDragHandler, IDragHandler
             tempList[0].ChangeLocale(originalScale);
         }
         else {
-            //TODO: 다른 SLOT일때 스위칭 혹은 원래대로
-
             tempList[0].ChangeLocale(originalScale);
         }
     }
