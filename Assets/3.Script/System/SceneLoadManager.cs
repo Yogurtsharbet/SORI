@@ -15,7 +15,7 @@ public class SceneLoadManager : MonoBehaviour {
 
     public void LoadScene() {
         if (stageCount > clearCount)
-            FindObjectOfType<MainLoading>().StartLoading(0);
+            FindObjectOfType<MainLoading>().StartLoading(1);
         else
             StartCoroutine(Load());
     }
