@@ -19,9 +19,9 @@ public class MainLoading : MonoBehaviour {
     }
 
     private void Start() {
-        gameObject.SetActive(false);
-        if (SceneManager.GetActiveScene().name == "Map")
-            gameObject.SetActive(true);
+        if (SceneManager.GetActiveScene().name != "Map" &&
+            SceneManager.GetActiveScene().name != "Stage02")
+            gameObject.SetActive(false);
     }
 
     private void setScenceName() {

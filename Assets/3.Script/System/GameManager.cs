@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem.LowLevel;
 using UnityEngine.SceneManagement;
 using static CameraControl;
 
@@ -42,6 +43,14 @@ public class GameManager : MonoBehaviour {
         else isCompleteTutorial = true;
     }
 
+    private void OnDisable() {
+        inputAction.UI.Cancel.performed -= value => gameState.OnCancel();
+        inputAction.UI.Enter.performed -= value => gameState.OnEnter();
+        inputAction.UI.Tab.performed -= value => gameState.OnTab();
+        inputAction.UI.Inventory.performed -= value => gameState.OnInven();
+        inputAction.Disable();
+    }
+
     private void InitializeGameManager() {
         starCoinManager = GetComponent<StarCoinManager>();
         selectControl = GetComponent<SelectControl>();
@@ -61,6 +70,7 @@ public class GameManager : MonoBehaviour {
         inputAction.UI.Inventory.performed += value => gameState.OnInven();
         inputAction.Enable();
     }
+
     private void InitializeGameState() {
         State = new Dictionary<GameState, IGameState>();
         State.Add(GameState.Normal, new State_Normal());
