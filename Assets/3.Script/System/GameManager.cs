@@ -37,7 +37,7 @@ public class GameManager : MonoBehaviour {
     private void Start() {
         InitializeGameState();
         ChangeState(State[GameState.Normal]);
-        if (SceneManager.GetActiveScene().name == "Map") 
+        if (SceneManager.GetActiveScene().name == "Map")
             isCompleteTutorial = false;
         else isCompleteTutorial = true;
     }
@@ -95,11 +95,13 @@ public class GameManager : MonoBehaviour {
         isCompleteTutorial = true;
         StartCoroutine(WaitRockCinematicEnd());
     }
-    
+
     private IEnumerator WaitRockCinematicEnd() {
         WordCardSelectContainer wordCardContainer = FindObjectOfType<WordCardSelectContainer>();
         yield return new WaitUntil(() => CameraControl.Instance.cameraStatus == CameraStatus.TopView);
 
+        Word[] newWord = new Word[1];
+        newWord[0] = WordData.Search("ROCK");
         wordCardContainer.GetWordCard(2);
     }
 }

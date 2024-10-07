@@ -9,6 +9,9 @@ public class WordCardSelectContainer : MonoBehaviour {
     public GameObject LastSelected { get; set; }
     public int LastSelectedIndex {  get; set; }
 
+    private int num = 0;
+    public int Num => num;
+
     private void Awake() {
         newWordCardControllers = GetComponentsInChildren<NewWordCardController>();
         playerInvenController = FindObjectOfType<PlayerInvenController>();
@@ -70,7 +73,12 @@ public class WordCardSelectContainer : MonoBehaviour {
             newWordCardControllers[i].gameObject.SetActive(false);
         }
         gameObject.SetActive(false);
+        num++;
+
+        if (num == 1) {
+            Word[] newWord = new Word[1];
+            newWord[0] = WordData.Search("MOVE");
+            GetWordCard(newWord);
+        }
     }
-
-
 }
