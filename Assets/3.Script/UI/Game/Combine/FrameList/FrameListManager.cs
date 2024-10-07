@@ -42,6 +42,7 @@ public class FrameListManager : MonoBehaviour {
     }
 
     private void Start() {
+        setDefaultFrame();
         CheckScrollbar();
 
         if (frameList.Count >= 6) {
@@ -73,86 +74,12 @@ public class FrameListManager : MonoBehaviour {
         inputAction.UI.ScrollWheel.performed -= value => OnScroll(value.ReadValue<Vector2>());
     }
 
-    //private void randomTestFrame() {
-    //    int randomType = Random.Range(0, 4);
-    //    Frame tempFrame;
-    //    switch (randomType) {
-    //        case 0:
-    //            tempFrame = new Frame(FrameType.AisB);
-    //            tempFrame.SetActive(true);
-    //            for (int i = 0; i < 2; i++) {
-    //                int random = Random.Range(0, 3);    //0 -3, 1-4, 2-word
-    //                if (random == 2) {
-    //                    tempFrame.SetWord(i, Word.GetWord());
-    //                }
-    //                else if (random == 3) {
-    //                    Frame tempSubFrame = new Frame(FrameType.AandB);
-    //                    tempSubFrame.SetWord(0, Word.GetWord());
-    //                    tempSubFrame.SetWord(1, Word.GetWord());
-    //                    tempFrame.SetFrame(i, tempSubFrame);
-    //                }
-    //                else {
-    //                    Frame tempSubFrame = new Frame(FrameType.NotA);
-    //                    tempSubFrame.SetWord(0, Word.GetWord());
-    //                    tempFrame.SetFrame(i, tempSubFrame);
-    //                }
-    //            }
-    //            AddFrame(tempFrame);
-    //            break;
-    //        case 1:
-    //            tempFrame = new Frame(FrameType.AtoBisC);
-    //            tempFrame.SetActive(true);
-    //            for (int i = 0; i < 3; i++) {
-    //                int random = Random.Range(0, 3);    //0 -3, 1-4, 2-word
-    //                if (random == 2) {
-    //                    tempFrame.SetWord(i, Word.GetWord());
-    //                }
-    //                else if (random == 3) {
-    //                    Frame tempSubFrame = new Frame(FrameType.AandB);
-    //                    tempSubFrame.SetWord(0, Word.GetWord());
-    //                    tempSubFrame.SetWord(1, Word.GetWord());
-    //                    tempFrame.SetFrame(i, tempSubFrame);
-    //                }
-    //                else {
-    //                    Frame tempSubFrame = new Frame(FrameType.NotA);
-    //                    tempSubFrame.SetWord(0, Word.GetWord());
-    //                    tempFrame.SetFrame(i, tempSubFrame);
-    //                }
-    //            }
-    //            AddFrame(tempFrame);
-    //            break;
-    //        case 2:
-    //            tempFrame = new Frame(FrameType.AandB);
-    //            tempFrame.SetActive(true);
-    //            for (int i = 0; i < 2; i++) {
-    //                int random = Random.Range(0, 3);    //0 -1, 1-2, 2-word
-    //                if (random == 2) {
-    //                    tempFrame.SetWord(i, Word.GetWord());
-    //                }
-    //                else if (random == 3) {
-    //                    Frame tempSubFrame = new Frame(FrameType.AisB);
-    //                    tempSubFrame.SetWord(0, Word.GetWord());
-    //                    tempSubFrame.SetWord(1, Word.GetWord());
-    //                    tempFrame.SetFrame(i, tempSubFrame);
-    //                }
-    //                else {
-    //                    Frame tempSubFrame = new Frame(FrameType.AtoBisC);
-    //                    tempSubFrame.SetWord(0, Word.GetWord());
-    //                    tempSubFrame.SetWord(1, Word.GetWord());
-    //                    tempSubFrame.SetWord(2, Word.GetWord());
-    //                    tempFrame.SetFrame(i, tempSubFrame);
-    //                }
-    //            }
-    //            AddFrame(tempFrame);
-    //            break;
-    //        case 3:
-    //            tempFrame = new Frame(FrameType.NotA);
-    //            tempFrame.SetActive(true);
-    //            tempFrame.SetWord(0, Word.GetWord());
-    //            AddFrame(tempFrame);
-    //            break;
-    //    }
-    //}
+    private void setDefaultFrame() {
+        AddFrame(new Frame(FrameType.AandB));
+        AddFrame(new Frame(FrameType.AisB));
+        AddFrame(new Frame(FrameType.AtoBisC));
+        AddFrame(new Frame(FrameType.NotA));
+    }
 
     #region 스크롤
 

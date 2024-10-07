@@ -38,6 +38,7 @@ public class CameraControl : MonoBehaviour {
 
     [SerializeField] private Canvas gameCanvas;
     private QuestController questController;
+    private SFXManager sfxManager;
 
     private void Awake() {
         Instance = this;
@@ -66,6 +67,7 @@ public class CameraControl : MonoBehaviour {
 
         butterflyAnimator = GameObject.FindGameObjectWithTag("Butterfly")?.GetComponent<Animator>();
         questController = gameCanvas.GetComponentInChildren<QuestController>();
+        sfxManager = FindObjectOfType<SFXManager>();
     }
 
     private void Start() {
@@ -199,6 +201,7 @@ public class CameraControl : MonoBehaviour {
 
     private IEnumerator ActiveRuinsRock() {
         cinematicRuinsRocks.SetActive(true);
+        sfxManager.PlayBrokenRockSfx();
         foreach (Transform eachRock in cinematicRuinsRocks.transform)
             eachRock.GetComponent<Rigidbody>().AddTorque(new Vector3(Random.Range(3000, 15000), Random.Range(3000, 20000), Random.Range(3300, 10000)), ForceMode.Impulse);
         yield return new WaitForSeconds(5f);

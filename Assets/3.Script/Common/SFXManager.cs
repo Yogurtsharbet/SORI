@@ -37,4 +37,9 @@ public class SFXManager : MonoBehaviour {
     private void PlayEnv(int num) {
         sources[num].Play();
     }
+
+    public void PlayBrokenRockSfx() {
+        sources[2].time = 0.5f;
+        sources[2].Play();
+    }
 }

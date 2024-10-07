@@ -4,11 +4,13 @@ using UnityEngine;
 public class NextSceneTrigger : MonoBehaviour {
     private MainLoading mainLoading;
     [SerializeField] private int sceneIndex;
+    private GameObject gameCanvas;
 
     private bool isVisited = false;
 
     private void Awake() {
         mainLoading = FindObjectOfType<MainLoading>();
+        gameCanvas = FindObjectOfType<PauseContainer>().gameObject.GetComponentInParent<Canvas>().gameObject;
     }
 
     void OnTriggerEnter(Collider other) {
@@ -33,6 +35,7 @@ public class NextSceneTrigger : MonoBehaviour {
     private void LoadNextScene() {
         if (sceneIndex == 1 && !isVisited) {
             mainLoading.StartLoading(sceneIndex + 1);
+            gameCanvas.SetActive(false);
             return;
         }
         //TODO: 모든 씬 예외처리 필요
