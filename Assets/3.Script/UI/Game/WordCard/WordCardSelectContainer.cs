@@ -7,7 +7,7 @@ public class WordCardSelectContainer : MonoBehaviour {
     private int[] localPosiont = new int[3] { 0, -350, -620 };
 
     public GameObject LastSelected { get; set; }
-    public int LastSelectedIndex {  get; set; }
+    public int LastSelectedIndex { get; set; }
 
     private int num = 0;
     public int Num => num;
@@ -50,7 +50,7 @@ public class WordCardSelectContainer : MonoBehaviour {
 
     private void ActiveCardObject(int num) {
         for (int i = 0; i < num; i++) {
-                newWordCardControllers[i].gameObject.SetActive(true);
+            newWordCardControllers[i].gameObject.SetActive(true);
             if (num == 3) {
                 Vector3 newPos = new Vector3(localPosiont[2] - (i * localPosiont[2]), -70f, 0f);
                 newWordCardControllers[i].SetCardPositionSetting(newPos);
@@ -77,7 +77,7 @@ public class WordCardSelectContainer : MonoBehaviour {
 
         if (num == 1) {
             Word[] newWord = new Word[1];
-            newWord[0] = WordData.Search("MOVE");
+            newWord[0] = Word.GetWord(WordData.Search("MOVE").Key);
             GetWordCard(newWord);
         }
     }

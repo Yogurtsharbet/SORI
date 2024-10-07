@@ -8,6 +8,8 @@ using static CameraControl;
 public class GameManager : MonoBehaviour {
     public static GameManager Instance;
     private PlayerInputActions inputAction;
+    private WordCardSelectContainer wordCardContainer;
+    private QuestController questController;
 
     public StarCoinManager starCoinManager { get; private set; }
     public SelectControl selectControl { get; private set; }
@@ -33,6 +35,9 @@ public class GameManager : MonoBehaviour {
 
         InitializeGameManager();
         InitializeInputAction();
+
+        wordCardContainer = FindObjectOfType<WordCardSelectContainer>();
+        questController = FindObjectOfType<QuestController>();
     }
 
     private void Start() {
@@ -107,11 +112,12 @@ public class GameManager : MonoBehaviour {
     }
 
     private IEnumerator WaitRockCinematicEnd() {
-        WordCardSelectContainer wordCardContainer = FindObjectOfType<WordCardSelectContainer>();
         yield return new WaitUntil(() => CameraControl.Instance.cameraStatus == CameraStatus.TopView);
 
+        questController.SetQuestText("카드를 조합해서 돌을 치우세요!");
+
         Word[] newWord = new Word[1];
-        newWord[0] = WordData.Search("ROCK");
-        wordCardContainer.GetWordCard(2);
+        newWord[0] = Word.GetWord(WordData.Search("ROCK").Key);
+        wordCardContainer.GetWordCard(newWord);
     }
 }
