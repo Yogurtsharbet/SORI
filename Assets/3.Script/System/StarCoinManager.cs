@@ -27,7 +27,7 @@ public class StarCoinManager : MonoBehaviour {
         }
     }
 
-    private void SpawnCoin(Vector3 spawnPosition) {
+    public void SpawnCoin(Vector3 spawnPosition) {
         int spawnCount = Random.Range(minSpawnCount, maxSpawnCount);
         Vector3 explosionPosition = spawnPosition;
         explosionPosition.y -= 1f;

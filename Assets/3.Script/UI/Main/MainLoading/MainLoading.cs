@@ -41,7 +41,6 @@ public class MainLoading : MonoBehaviour {
 
     private IEnumerator LoadSceneCoroutine(int index) {
         AsyncOperation asyncOperation = SceneManager.LoadSceneAsync(sceneName[index]);
-
         asyncOperation.allowSceneActivation = false;
 
         while (!asyncOperation.isDone) {
@@ -49,9 +48,13 @@ public class MainLoading : MonoBehaviour {
                 yield return new WaitForSeconds(1f);
                 asyncOperation.allowSceneActivation = true;
             }
-
             yield return null;
         }
+        Destroy(GameManager.Instance.GetComponentInChildren<CameraControl>().gameObject);
+        Destroy(GameManager.Instance.GetComponentInChildren<PlayerBehavior>().gameObject);
+        GameManager.Instance.GetComponentInChildren<IndicatorControl>().SetPlayerTransform();
+        Debug.Log(":WW");
+        Destroy(gameObject);
     }
 
     public void StartLoading(int index) {
