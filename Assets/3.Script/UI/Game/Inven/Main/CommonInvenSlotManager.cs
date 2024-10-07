@@ -40,7 +40,8 @@ public class CommonInvenSlotManager : MonoBehaviour {
 
     public void ResetSelectInvens() {
         for (int i = 0; i < invenSelectControllers.Length; i++) {
-            invenSelectControllers[i].DisEnable();
+            if (invenSelectControllers != null)
+                invenSelectControllers[i].DisEnable();
         }
         selectInvens.RemoveRange(0, selectInvens.Count);
     }

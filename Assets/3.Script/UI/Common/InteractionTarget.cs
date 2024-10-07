@@ -17,7 +17,6 @@ public class InteractionTarget : MonoBehaviour {
 
     private void OnTriggerStay(Collider other) {
         if (other.CompareTag("Player")) {
-            Debug.Log("CHECK");
             if (!isTargetBound && !interactUI.IsOpenSquare) {
                 isTargetBound = true;
                 interactUI.ShowSqure(GetTargetPosition(), type);

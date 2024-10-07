@@ -93,11 +93,12 @@ public class HalfInvenManager : CommonInvenSlotManager {
     }
 
     public void SelectItemSell() {
-        for(int i = 0; i<selectInvens.Count; i++) {
-            playerInvenController.RemoveItemIndex(selectInvens[i]);
+        if(selectInvens.Count != 0) {
+            for(int i = 0; i < selectInvens.Count; i++) {
+                playerInvenController.RemoveItemIndex(selectInvens[i]);
+            }
+            ResetSelectInvens();
         }
-        ResetSelectInvens();
-
     }
 
     public void UpdateRecipt() {
