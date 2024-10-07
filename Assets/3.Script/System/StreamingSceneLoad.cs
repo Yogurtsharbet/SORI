@@ -18,8 +18,6 @@ public class StreamingSceneLoad : MonoBehaviour {
                 
                 sceneManager.LoadScene();
 
-                FindObjectOfType<StarCoinManager>().SpawnCoin(other.transform.position + other.transform.forward * 5f);
-                
             }
         }
     }

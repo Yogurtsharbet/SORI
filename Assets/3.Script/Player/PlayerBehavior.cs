@@ -124,7 +124,8 @@ public class PlayerBehavior : MonoBehaviour {
         }
     }
 
-    public void EarnStarCoin(int coins = 1) {
+    public void EarnStarCoin(int coins = -1) {
+        if(coins == -1) coins = UnityEngine.Random.Range(15, 70);
         starCoin += coins;
         starCoinManager.UpdateCoinText(starCoin);
     }

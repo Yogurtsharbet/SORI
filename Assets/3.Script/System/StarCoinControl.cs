@@ -55,7 +55,7 @@ public class StarCoinControl : MonoBehaviour {
             existedTime = 0f;
             starCoinRigid.velocity = Vector3.zero;
         }
-
+        if (playerPosition == null) Destroy(gameObject);
         playerPosition = player.transform.position;
         playerPosition.y += 2f;
         starCoinRigid.MovePosition(Vector3.Slerp(transform.position, playerPosition, Mathf.Pow(existedTime / 3f, 2)));

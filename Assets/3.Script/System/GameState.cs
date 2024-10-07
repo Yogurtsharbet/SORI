@@ -51,6 +51,9 @@ public class State_Combine : IGameState {
     }
 
     public void OnStateChanged() {
+        if( playerAnimator == null) 
+            playerAnimator = GameObject.FindGameObjectWithTag("Player").GetComponent<Animator>();
+
         CameraControl.Instance.SetCamera(CameraControl.CameraStatus.CombineView);
         combineContainer.OpenCombineField();
         playerAnimator.SetBool("isCombineMode", true);

@@ -76,10 +76,13 @@ public class CameraControl : MonoBehaviour {
     }
 
     private void Start() {
-        if (GameManager.Instance.isCompleteTutorial) {
-            GameManager.Instance.AfterCompleteStage();
-            return;
+        if (GameManager.Instance.currentScene == "Map") {
+            if (GameManager.Instance.isCompleteTutorial) {
+                GameManager.Instance.AfterCompleteStage();
+                return;
+            }
         }
+
         SetCamera(cameraTopView);
         if (isDebugging) return;
 
@@ -99,6 +102,7 @@ public class CameraControl : MonoBehaviour {
     public void SetCamera(string camera) {
         if (camera == "Forest") SetCamera(cinematicForest);
         else if (camera == "Ruins") SetCamera(cinematicRuins);
+        else if (camera == "Home") SetCamera(cinematicHome);
     }
 
     public void SetCamera(CinemachineVirtualCameraBase camera) {
@@ -106,7 +110,7 @@ public class CameraControl : MonoBehaviour {
         cameraStatus = (CameraStatus)allCamera.IndexOf(camera);
         playerMove.enabled = camera == cameraTopView;
         playerMove.ClearCurretSpeed();
-        if(camera == cameraTopView)
+        if (camera == cameraTopView)
             gameCanvas.gameObject.SetActive(true);
 
         foreach (var eachCamera in allCamera) {
@@ -132,6 +136,10 @@ public class CameraControl : MonoBehaviour {
                     else if (camera == cinematicRuins) {
                         gameCanvas.gameObject.SetActive(false);
                         CinematicRuinsProcess();
+                    }
+                    else if (camera == cinematicHome) {
+                        gameCanvas.gameObject.SetActive(false);
+                        CinematicHomeProcess();
                     }
                 }
             }
@@ -182,6 +190,8 @@ public class CameraControl : MonoBehaviour {
     private void CinematicForestProcess() {
         StartCoroutine(RotateDolly());
         playerAnimator.SetFloat("MoveSpeed", 7f);
+        playerAnimator.SetBool("isJump", false);
+
         butterflyAnimator.SetTrigger("cinematicForest");
 
         Sequence sequence = DOTween.Sequence();
@@ -195,6 +205,7 @@ public class CameraControl : MonoBehaviour {
 
     private void CinematicRuinsProcess() {
         playerAnimator.SetFloat("MoveSpeed", 7f);
+        playerAnimator.SetBool("isJump", false);
 
         Sequence sequence = DOTween.Sequence();
         sequence
@@ -240,7 +251,11 @@ public class CameraControl : MonoBehaviour {
         GameManager.Instance.CompleteTutorial();
     }
 
-   
+    private void CinematicHomeProcess() {
+        playerAnimator.SetFloat("MoveSpeed", 0f);
+        playerAnimator.SetBool("isJump", false);
+
+    }
 }
 
 //TODO: SELECT VIEW 좌우 움직임 방지를 recentering 시간을 짧게하는 방식 말고, 직접 각도 지정으로 변경할 것. (어지러움)

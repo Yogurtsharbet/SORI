@@ -30,6 +30,7 @@ public class SelectControl : MonoBehaviour {
     private Renderer nowObject;
 
     private Transform Indicator;
+    public IndicatorControl IndicatorControl { get; private set; }
 
     private Vector3 mousePosition;
     private RaycastHit rayHit;
@@ -43,7 +44,8 @@ public class SelectControl : MonoBehaviour {
 
     private void Awake() {
         cameraBrain = FindObjectOfType<CinemachineBrain>();
-        Indicator = GetComponentInChildren<IndicatorControl>().transform;
+        IndicatorControl = GetComponentInChildren<IndicatorControl>();
+        Indicator = IndicatorControl.transform;
 
         inputAction = new DefaultInputActions();
         inputAction.UI.Point.performed += value => OnPoint(value.ReadValue<Vector2>());

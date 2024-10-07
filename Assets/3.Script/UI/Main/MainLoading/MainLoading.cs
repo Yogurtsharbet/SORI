@@ -50,10 +50,12 @@ public class MainLoading : MonoBehaviour {
             }
             yield return null;
         }
+
+        //Map 에서 Stage 로 넘어올때는 실행되지 않음. Stage 에서 Map 으로 넘어갈때만 실행됨.
         Destroy(GameManager.Instance.GetComponentInChildren<CameraControl>().gameObject);
         Destroy(GameManager.Instance.GetComponentInChildren<PlayerBehavior>().gameObject);
-        GameManager.Instance.GetComponentInChildren<IndicatorControl>().SetPlayerTransform();
-        Debug.Log(":WW");
+        Destroy(GameManager.Instance.transform.GetChild(0).gameObject);
+        GameManager.Instance.selectControl.IndicatorControl.SetPlayerTransform();
         Destroy(gameObject);
     }
 

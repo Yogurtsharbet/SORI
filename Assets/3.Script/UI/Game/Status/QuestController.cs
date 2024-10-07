@@ -11,7 +11,8 @@ public class QuestController : MonoBehaviour {
     }
 
     private void Start() {
-        ResetQuestText();
+        if (GameManager.Instance.currentScene != "Map")
+            ResetQuestText();
     }
 
     public  void SetQuestText(string contents) {

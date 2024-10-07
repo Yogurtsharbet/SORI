@@ -8,7 +8,7 @@ using static CameraControl;
 public class GameManager : MonoBehaviour {
     public static GameManager Instance;
     private PlayerInputActions inputAction;
-    private WordCardSelectContainer wordCardContainer;
+    public WordCardSelectContainer wordCardContainer { get; private set; }
     private QuestController questController;
     [SerializeField] private Material nightSkybox;
 
@@ -22,6 +22,7 @@ public class GameManager : MonoBehaviour {
     public StageLoadManager stageLoadManager { get; private set; }
 
     public bool isCompleteTutorial;
+    public string currentScene { get { return SceneManager.GetActiveScene().name; } }
 
     public IGameState gameState { get; private set; }
     private Dictionary<GameState, IGameState> State;
@@ -65,7 +66,7 @@ public class GameManager : MonoBehaviour {
     }
 
     private void InitializeGameManager() {
-        starCoinManager = GetComponent<StarCoinManager>();
+        starCoinManager = FindObjectOfType<StarCoinManager>();
         selectControl = GetComponent<SelectControl>();
         cursorControl = GetComponent<CursorControl>();
         wordData = GetComponent<WordData>();
@@ -122,7 +123,7 @@ public class GameManager : MonoBehaviour {
     private IEnumerator WaitRockCinematicEnd() {
         yield return new WaitUntil(() => CameraControl.Instance.cameraStatus == CameraStatus.TopView);
 
-        questController.SetQuestText("ī�带 �����ؼ� ���� ġ�켼��!");
+        questController.SetQuestText("문장을 구성해서 돌을 치우세요!\n [Enter : 실행]");
 
         Word[] newWord = new Word[1];
         newWord[0] = Word.GetWord(WordData.Search("ROCK").Key);
@@ -130,6 +131,7 @@ public class GameManager : MonoBehaviour {
     }
 
     public void AfterCompleteStage() {
+        Start();
         var directionalLight = FindObjectOfType<CommonManager>().GetComponentInChildren<Light>();
         directionalLight.color = new Color(0.5f, 0.2f, 0f);
         RenderSettings.ambientLight = new Color(0.3f, 0.3f, 0.3f);
@@ -148,6 +150,7 @@ public class GameManager : MonoBehaviour {
     }
 
     private IEnumerator DoorAnimation(Transform target) {
+        yield return new WaitForSeconds(2f);
         var targetAngle = Quaternion.Euler(0, -108, 0);
         while (target.eulerAngles.y > -108) {
             target.rotation = Quaternion.Slerp(target.rotation, targetAngle, Time.deltaTime);

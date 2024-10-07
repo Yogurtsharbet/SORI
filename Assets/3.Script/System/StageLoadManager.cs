@@ -14,17 +14,23 @@ public class StageLoadManager : MonoBehaviour {
     }
 
     public void LoadScene() {
-        if (stageCount > clearCount) 
+        if (stageCount > clearCount)
             FindObjectOfType<MainLoading>().StartLoading(1);
-        else
+        else {
+            var playerPosition = FindObjectOfType<PlayerBehavior>().transform.position;
+            FindObjectOfType<StarCoinManager>().SpawnCoin(playerPosition + Vector3.up * 5f);
+            GameManager.Instance.wordCardContainer.GetWordCard(Random.Range(1, 4));
             StartCoroutine(Load());
+        }
     }
 
     private IEnumerator Load() {
         stageCount++;
         var op = SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Additive);
-        while (!op.isDone)
+        while (!op.isDone) {
+            Debug.Log(op.progress);
             yield return null;
+        }
 
         var scene = SceneManager.GetSceneAt(SceneManager.sceneCount - 1);
         var rootObjects = scene.GetRootGameObjects();

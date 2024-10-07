@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class WordCardSelectContainer : MonoBehaviour {
     private NewWordCardController[] newWordCardControllers;
@@ -8,9 +9,7 @@ public class WordCardSelectContainer : MonoBehaviour {
 
     public GameObject LastSelected { get; set; }
     public int LastSelectedIndex { get; set; }
-
-    private int num = 0;
-    public int Num => num;
+    public float randomRate = 30;
 
     private void Awake() {
         newWordCardControllers = GetComponentsInChildren<NewWordCardController>();
@@ -22,6 +21,11 @@ public class WordCardSelectContainer : MonoBehaviour {
             newWordCardControllers[i].gameObject.SetActive(false);
         }
         gameObject.SetActive(false);
+
+        if(GameManager.Instance.currentScene != "Map") {
+            randomRate = 90f;
+            GetWordCard(3);
+        }
     }
 
     public void OpenWordCardSelect() {
@@ -66,6 +70,7 @@ public class WordCardSelectContainer : MonoBehaviour {
         }
     }
 
+    private bool mapFlag;
     public void SelectNewWord(Word word) {
         //TODO: 인벤 다 차있을때 예외처리 -> 이미 있는 단어 삭제 혹은 가져갈 수 없음~~
         playerInvenController.AddNewItem(word);
@@ -73,12 +78,19 @@ public class WordCardSelectContainer : MonoBehaviour {
             newWordCardControllers[i].gameObject.SetActive(false);
         }
         gameObject.SetActive(false);
-        num++;
 
-        if (num == 1) {
-            Word[] newWord = new Word[1];
+        if (SceneManager.GetActiveScene().name == "Map" && !mapFlag) {
+            mapFlag = true;
+            Word[] newWord = new Word[2];
             newWord[0] = Word.GetWord(WordData.Search("MOVE").Key);
+            newWord[1] = Word.GetWord(WordData.Search("DISAPPEAR").Key);
             GetWordCard(newWord);
+        }
+        else {
+            if(Random.Range(0f, 100f) < randomRate) {
+                randomRate *= 0.12f;
+                GetWordCard(Random.Range(1, 4));
+            }
         }
     }
 }

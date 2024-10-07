@@ -32,7 +32,7 @@ public class ActiveStatusController : MonoBehaviour, IPointerEnterHandler, IPoin
 
     public void ActiveCountUpdate(int num) {
         activeCount = num;
-        activeCountTxt.text = "x"+num;
+        activeCountTxt.text = "x" + num;
     }
 
     public void OnPointerEnter(PointerEventData eventData) {
@@ -76,11 +76,13 @@ public class ActiveStatusController : MonoBehaviour, IPointerEnterHandler, IPoin
     }
 
     private IEnumerator MoveObject(Vector3 targetPosition) {
+        if (sentenceManager == null) sentenceManager = FindObjectOfType<FrameListContainer>();
+
         while (Vector3.Distance(sentenceManager.gameObject.transform.localPosition, targetPosition) > 0.01f) {
             sentenceManager.gameObject.transform.localPosition = Vector3.Lerp(sentenceManager.gameObject.transform.localPosition, targetPosition, moveSpeed * Time.deltaTime);
             yield return null;
         }
-        sentenceManager.gameObject.transform.localPosition = targetPosition;  
+        sentenceManager.gameObject.transform.localPosition = targetPosition;
         moveCoroutine = null;
     }
 }
