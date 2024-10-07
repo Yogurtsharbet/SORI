@@ -15,8 +15,9 @@ public class NextSceneTrigger : MonoBehaviour {
 
     void OnTriggerEnter(Collider other) {
         if (other.CompareTag("Player")) {
-            StartCoroutine(WaitForFade());
-            
+            if (!GameManager.Instance.isEndAdv)
+                StartCoroutine(WaitForFade());
+
         }
     }
 
@@ -24,9 +25,9 @@ public class NextSceneTrigger : MonoBehaviour {
         var fadeControl = FindObjectOfType<FadeControl>();
 
         fadeControl.FadeOut();
-        while (fadeControl.screenColor.a < 1) 
-            yield return null; 
-        
+        while (fadeControl.screenColor.a < 1)
+            yield return null;
+
         Destroy(FindObjectOfType<GameManager>().gameObject);
         Destroy(FindObjectOfType<CameraControl>().gameObject);
         LoadNextScene();

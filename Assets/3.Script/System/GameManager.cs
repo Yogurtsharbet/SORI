@@ -22,6 +22,7 @@ public class GameManager : MonoBehaviour {
     public StageLoadManager stageLoadManager { get; private set; }
 
     public bool isCompleteTutorial;
+    public bool isEndAdv = false;
 
     public IGameState gameState { get; private set; }
     private Dictionary<GameState, IGameState> State;
@@ -130,12 +131,15 @@ public class GameManager : MonoBehaviour {
     }
 
     public void AfterCompleteStage() {
+        isEndAdv = true;
         var directionalLight = FindObjectOfType<CommonManager>().GetComponentInChildren<Light>();
         directionalLight.color = new Color(0.5f, 0.2f, 0f);
         RenderSettings.ambientLight = new Color(0.3f, 0.3f, 0.3f);
         RenderSettings.skybox = nightSkybox;
         var playerTransform = FindObjectOfType<PlayerBehavior>().transform;
         playerTransform.position = CameraControl.Instance.RuinsPosition.position;
+
+        questController.SetQuestText("모험을 마쳤습니다. 집으로 다시 돌아갈까요?");
 
         var doors = GameObject.FindGameObjectsWithTag("DOOR");
         foreach (var door in doors) {
