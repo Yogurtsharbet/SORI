@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class SceneLoadManager : MonoBehaviour {
+public class StageLoadManager : MonoBehaviour {
     private string sceneName = "StageBase";
     private int clearCount = 1;
     private int stageCount;
@@ -14,7 +14,7 @@ public class SceneLoadManager : MonoBehaviour {
     }
 
     public void LoadScene() {
-        if (stageCount > clearCount)
+        if (stageCount > clearCount) 
             FindObjectOfType<MainLoading>().StartLoading(1);
         else
             StartCoroutine(Load());
