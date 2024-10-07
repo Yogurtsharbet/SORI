@@ -105,7 +105,7 @@ public class MainDetailManager : MonoBehaviour {
     private void optionMenuMove(Vector2 pos) {
         int key = selectOptionKey;
         if ((pos.y < 0 && pos.x == 0) || (pos.x > 0 && pos.y == 0)) {
-            if (key == 2) {
+            if (key == 1) {
                 selectOptionKey = 0;
             }
             else {
@@ -114,7 +114,7 @@ public class MainDetailManager : MonoBehaviour {
         }
         else if ((pos.y > 0 && pos.x == 0) || (pos.x < 0 && pos.y == 0)) {
             if (key == 0) {
-                selectOptionKey = 2;
+                selectOptionKey = 1;
             }
             else {
                 selectOptionKey = key - 1;
