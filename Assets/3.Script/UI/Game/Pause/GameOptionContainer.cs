@@ -4,7 +4,7 @@ using UnityEngine.InputSystem;
 public class GameOptionContainer : MonoBehaviour {
     private PauseContainer pauseContainer;
     private GameOptionController[] optionControllers;
-    private GameObject[] options = new GameObject[4];
+    private GameObject[] options = new GameObject[3];
 
     private DefaultInputActions action;
 
@@ -14,7 +14,7 @@ public class GameOptionContainer : MonoBehaviour {
     private void Awake() {
         pauseContainer = FindObjectOfType<PauseContainer>();
         optionControllers = GetComponentsInChildren<GameOptionController>();
-        for (int i = 0; i < 4; i++) {
+        for (int i = 0; i < 3; i++) {
             options[i] = transform.GetChild(i).gameObject;
         }
         action = new DefaultInputActions();
@@ -42,7 +42,7 @@ public class GameOptionContainer : MonoBehaviour {
     }
 
     public void OpenMainOption() {
-        for (int i = 0; i < 4; i++) {
+        for (int i = 0; i < 3; i++) {
             if (i == 0) {
                 options[i].SetActive(true);
             }
@@ -73,7 +73,7 @@ public class GameOptionContainer : MonoBehaviour {
     private void menuMove(Vector2 pos) {
         int key = selectOptionIndex;
         if ((pos.y < 0 && pos.x == 0) || (pos.x > 0 && pos.y == 0)) {
-            if (key == 2) {
+            if (key == 1) {
                 key = 0;
             }
             else {
@@ -82,7 +82,7 @@ public class GameOptionContainer : MonoBehaviour {
         }
         else if ((pos.y > 0 && pos.x == 0) || (pos.x < 0 && pos.y == 0)) {
             if (key == 0) {
-                key = 2;
+                key = 1;
             }
             else {
                 key = key - 1;

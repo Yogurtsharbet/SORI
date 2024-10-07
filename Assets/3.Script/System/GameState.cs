@@ -105,6 +105,9 @@ public class State_Select : IGameState {
             GameManager.Instance.ChangeState(GameState.Normal);
             selectControl.ActivateSelected();
             playerAnimator.SetBool("isCombineMode", false);
+            if (combineManager.TempFrame !=null) {
+                combineManager.TempFrameResetWordUse();
+            }
         }
     }
 

@@ -15,8 +15,9 @@ public class NextSceneTrigger : MonoBehaviour {
 
     void OnTriggerEnter(Collider other) {
         if (other.CompareTag("Player")) {
-            StartCoroutine(WaitForFade());
-            
+            if (!GameManager.Instance.isEndAdv)
+                StartCoroutine(WaitForFade());
+
         }
     }
 

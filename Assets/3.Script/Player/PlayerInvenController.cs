@@ -19,8 +19,8 @@ public class PlayerInvenController : MonoBehaviour {
         initInven();
     }
 
-    private void Start() {
-        // testData();
+    private void OnEnable() {
+        UpdateInvenInvoke();        
     }
 
     private void testData() {

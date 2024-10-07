@@ -338,6 +338,25 @@ public class CombineManager : MonoBehaviour {
         frameListManager.AddFrame(baseFrame);
     }
 
+    public void TempFrameResetWordUse() {
+        for (int i = 0; i < tempFrame.CountOfFrame(); i++) {
+            if (tempFrame.GetFrame(i) != null) {
+                Frame frame = tempFrame.GetFrame(i);
+                for (int j = 0; j < frame.CountOfFrame(); j++) {
+                    frame.SetWord(i, null);
+                }
+                frameListManager.AddFrame(frame);
+                tempFrame.SetFrame(i, null);
+            }
+            if (tempFrame.GetWord(i) != null) {
+                tempFrame.SetWord(i, null);
+            }
+        }
+        tempFrame.SetActive(false);
+        tempFrame.SetBase(false);
+        frameListManager.AddFrame(tempFrame);
+    }
+
     private void slotAllClose() {
         for (int i = 0; i < combineSlotControllers.Count; i++) {
             combineSlotControllers[i].Item2.CloseAllSlot();

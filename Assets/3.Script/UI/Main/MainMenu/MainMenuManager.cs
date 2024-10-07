@@ -26,6 +26,7 @@ public class MainMenuManager : MonoBehaviour {
 
     private void Start() {
         MenuSelectCheck(selectMenuKey);
+        buttonControllers[0].gameObject.SetActive(false);
     }
 
     private void OnDisable() {
@@ -60,14 +61,14 @@ public class MainMenuManager : MonoBehaviour {
         int key = selectMenuKey;
         if ((pos.y < 0 && pos.x == 0) || (pos.x > 0 && pos.y == 0)) {
             if (key == 3) {
-                selectMenuKey = 0;
+                selectMenuKey = 1;
             }
             else {
                 selectMenuKey = key + 1;
             }
         }
         else if ((pos.y > 0 && pos.x == 0) || (pos.x < 0 && pos.y == 0)) {
-            if (key == 0) {
+            if (key == 1) {
                 selectMenuKey = 3;
             }
             else {
