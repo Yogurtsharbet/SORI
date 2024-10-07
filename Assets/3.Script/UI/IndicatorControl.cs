@@ -53,9 +53,12 @@ public class IndicatorControl : MonoBehaviour {
         }
         else {
             CalcArrowAngle();
-
             CalcIndicatePosition();
         }
+    }
+
+    public void SetPlayerTransform() {
+        playerTransform = FindObjectOfType<PlayerBehavior>().transform;
     }
 
     public void SetInstantitate(Transform original) {

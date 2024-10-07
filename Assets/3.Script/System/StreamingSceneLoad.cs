@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class StreamingSceneLoad : MonoBehaviour {
-    private SceneLoadManager sceneManager;
+    private StageLoadManager sceneManager;
     private bool isLoaded;
 
     private void Awake() {
-        sceneManager = GameManager.Instance.sceneLoadManager;
+        sceneManager = GameManager.Instance.stageLoadManager;
     }
 
     private void OnTriggerExit(Collider other) {
@@ -17,6 +17,9 @@ public class StreamingSceneLoad : MonoBehaviour {
                 isLoaded = true;
                 
                 sceneManager.LoadScene();
+
+                FindObjectOfType<StarCoinManager>().SpawnCoin(other.transform.position + other.transform.forward * 5f);
+                
             }
         }
     }

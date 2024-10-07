@@ -24,6 +24,7 @@ public class CameraControl : MonoBehaviour {
     private CinemachineBlendListCamera cinematicIntro;
     private CinemachineBlendListCamera cinematicForest;
     private CinemachineBlendListCamera cinematicRuins;
+    private CinemachineBlendListCamera cinematicHome;
 
     public CinemachineVirtualCameraBase currentCamera { get; private set; }
 
@@ -38,6 +39,8 @@ public class CameraControl : MonoBehaviour {
 
     [SerializeField] private Canvas gameCanvas;
     private QuestController questController;
+
+    public Transform RuinsPosition => cinematicRuinsPosition;
 
     private void Awake() {
         Instance = this;
@@ -55,6 +58,7 @@ public class CameraControl : MonoBehaviour {
         cinematicIntro = cinematics[0];
         cinematicForest = cinematics[1];
         cinematicRuins = cinematics[2];
+        cinematicHome = cinematics[3];
 
         allCamera.Add(cameraTopView);
         allCamera.Add(cameraCombineView);
@@ -63,12 +67,17 @@ public class CameraControl : MonoBehaviour {
         allCamera.Add(cinematicIntro);
         allCamera.Add(cinematicForest);
         allCamera.Add(cinematicRuins);
+        allCamera.Add(cinematicHome);
 
         butterflyAnimator = GameObject.FindGameObjectWithTag("Butterfly")?.GetComponent<Animator>();
         questController = gameCanvas.GetComponentInChildren<QuestController>();
     }
 
     private void Start() {
+        if (GameManager.Instance.isCompleteTutorial) {
+            GameManager.Instance.AfterCompleteStage();
+            return;
+        }
         SetCamera(cameraTopView);
         if (isDebugging) return;
 

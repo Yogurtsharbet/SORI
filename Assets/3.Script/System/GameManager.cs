@@ -8,6 +8,7 @@ using static CameraControl;
 public class GameManager : MonoBehaviour {
     public static GameManager Instance;
     private PlayerInputActions inputAction;
+    [SerializeField] private Material nightSkybox;
 
     public StarCoinManager starCoinManager { get; private set; }
     public SelectControl selectControl { get; private set; }
@@ -16,7 +17,7 @@ public class GameManager : MonoBehaviour {
     public FrameActivate frameActivate { get; private set; }
     public FrameValidity frameValidity { get; private set; }
     public WordFunction wordFunction { get; private set; }
-    public SceneLoadManager sceneLoadManager { get; private set; }
+    public StageLoadManager stageLoadManager { get; private set; }
 
     public bool isCompleteTutorial;
 
@@ -38,9 +39,16 @@ public class GameManager : MonoBehaviour {
     private void Start() {
         InitializeGameState();
         ChangeState(State[GameState.Normal]);
-        if (SceneManager.GetActiveScene().name == "Map")
-            isCompleteTutorial = false;
-        else isCompleteTutorial = true;
+        if (SceneManager.GetActiveScene().name == "Map") {
+            var lights = FindObjectsOfType<Light>();
+            foreach (var light in lights) {
+                if (light.transform.parent.name.Contains("Lantern"))
+                    light.enabled = isCompleteTutorial;
+            }
+        }
+        else {
+            isCompleteTutorial = true;
+        }
     }
 
     private void OnDisable() {
@@ -59,7 +67,7 @@ public class GameManager : MonoBehaviour {
         frameActivate = GetComponent<FrameActivate>();
         frameValidity = GetComponent<FrameValidity>();
         wordFunction = GetComponent<WordFunction>();
-        sceneLoadManager = GetComponent<SceneLoadManager>();
+        stageLoadManager = GetComponent<StageLoadManager>();
     }
 
     private void InitializeInputAction() {
@@ -113,5 +121,33 @@ public class GameManager : MonoBehaviour {
         Word[] newWord = new Word[1];
         newWord[0] = WordData.Search("ROCK");
         wordCardContainer.GetWordCard(2);
+    }
+
+    public void AfterCompleteStage() {
+        var directionalLight = FindObjectOfType<CommonManager>().GetComponentInChildren<Light>();
+        directionalLight.color = new Color(0.5f, 0.2f, 0f);
+        RenderSettings.ambientLight = new Color(0.3f, 0.3f, 0.3f);
+        RenderSettings.skybox = nightSkybox;
+        var playerTransform = FindObjectOfType<PlayerBehavior>().transform;
+        playerTransform.position = CameraControl.Instance.RuinsPosition.position;
+
+        var doors = GameObject.FindGameObjectsWithTag("DOOR");
+        foreach (var door in doors) {
+            if (door.transform.parent.name == "DoorOpen") {
+                var target = door.transform.parent;
+                StartCoroutine(DoorAnimation(target));
+                break;
+            }
+        }
+    }
+
+    private IEnumerator DoorAnimation(Transform target) {
+        var targetAngle = Quaternion.Euler(0, -108, 0);
+        while (target.eulerAngles.y > -108) {
+            target.rotation = Quaternion.Slerp(target.rotation, targetAngle, Time.deltaTime);
+            if (Quaternion.Angle(target.rotation, targetAngle) < 0.1f)
+                target.rotation = targetAngle;
+            yield return null;
+        }
     }
 }

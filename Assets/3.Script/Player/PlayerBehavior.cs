@@ -31,7 +31,7 @@ public class PlayerBehavior : MonoBehaviour {
         starCoinManager = GameManager.Instance.starCoinManager;
         playerInputAction = new PlayerInputActions();
         playerAnimator = GetComponent<Animator>();
-        
+
         butterflyAnimator = GameObject.FindGameObjectWithTag("Butterfly")?.GetComponent<Animator>();
     }
 
@@ -42,6 +42,11 @@ public class PlayerBehavior : MonoBehaviour {
         starCoin = 0;
         starCoinManager.UpdateCoinText(starCoin);
         isWatchedCinematic[(int)CinematicType.Intro] = true;
+
+        if (GameManager.Instance.isCompleteTutorial) {
+            for (int i = 0; i < isWatchedCinematic.Length; i++)
+                isWatchedCinematic[i] = true;
+        }
     }
 
     private void OnEnable() {
@@ -142,15 +147,18 @@ public class PlayerBehavior : MonoBehaviour {
                 isWatchedCinematic[(int)CinematicType.Ruins] = true;
                 CameraControl.Instance.SetCamera("Ruins");
             }
-            else if( zone.name== "ButterflyZone01" && !isWatchedCinematic[(int)CinematicType.Butterfly01]) {
+            else if (zone.name == "Home" && GameManager.Instance.isCompleteTutorial) {
+                CameraControl.Instance.SetCamera("Home");
+            }
+            else if (zone.name == "ButterflyZone01" && !isWatchedCinematic[(int)CinematicType.Butterfly01]) {
                 isWatchedCinematic[(int)CinematicType.Butterfly01] = true;
                 butterflyAnimator.Play("ButterFlyZone01");
             }
-            else if(zone.name== "ButterflyZone02" && !isWatchedCinematic[(int)CinematicType.Butterfly02]) {
+            else if (zone.name == "ButterflyZone02" && !isWatchedCinematic[(int)CinematicType.Butterfly02]) {
                 isWatchedCinematic[(int)CinematicType.Butterfly02] = true;
                 butterflyAnimator.Play("ButterFlyZone02");
             }
-            else if(zone.name== "ButterflyZone03" && !isWatchedCinematic[(int)CinematicType.Butterfly03]) {
+            else if (zone.name == "ButterflyZone03" && !isWatchedCinematic[(int)CinematicType.Butterfly03]) {
                 isWatchedCinematic[(int)CinematicType.Butterfly03] = true;
                 butterflyAnimator.Play("ButterFlyZone03");
             }
