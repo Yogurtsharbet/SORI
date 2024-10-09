@@ -23,7 +23,7 @@ public class WordCardSelectContainer : MonoBehaviour {
         gameObject.SetActive(false);
 
         if(GameManager.Instance.currentScene != "Map") {
-            randomRate = 90f;
+            randomRate = 99f;
             GetWordCard(3);
         }
     }
@@ -88,7 +88,7 @@ public class WordCardSelectContainer : MonoBehaviour {
         }
         else {
             if(Random.Range(0f, 100f) < randomRate) {
-                randomRate *= 0.12f;
+                randomRate *= 0.72f;
                 GetWordCard(Random.Range(1, 4));
             }
         }

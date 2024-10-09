@@ -254,7 +254,16 @@ public class CameraControl : MonoBehaviour {
     private void CinematicHomeProcess() {
         playerAnimator.SetFloat("MoveSpeed", 0f);
         playerAnimator.SetBool("isJump", false);
+        StartCoroutine(GameEnd());
+    }
 
+    private IEnumerator GameEnd() {
+        yield return new WaitForSeconds(3f);
+        FindObjectOfType<MainLoading>().StartLoading(0);
+
+        yield return new WaitForSeconds(1.5f);
+        Destroy(GameManager.Instance.gameObject);
+        Destroy(gameObject);
     }
 }
 

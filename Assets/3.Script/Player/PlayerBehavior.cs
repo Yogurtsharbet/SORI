@@ -116,7 +116,7 @@ public class PlayerBehavior : MonoBehaviour {
     private void OnTriggerEnter(Collider other) {
         CheckEarningCoins(other);
         CheckCinematicZone(other);
-
+        CheckWater(other);
     }
     private void CheckEarningCoins(Collider coin) {
         if (coin.gameObject.layer == LayerMask.NameToLayer("Coin")) {
@@ -164,5 +164,9 @@ public class PlayerBehavior : MonoBehaviour {
                 butterflyAnimator.Play("ButterFlyZone03");
             }
         }
+    }
+    private void CheckWater(Collider water) {
+        if (water.gameObject.layer == LayerMask.NameToLayer("Water"))
+            transform.position = new Vector3(475f, 0f, 378f);
     }
 }

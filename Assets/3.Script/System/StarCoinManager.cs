@@ -18,6 +18,7 @@ public class StarCoinManager : MonoBehaviour {
 
     private void Awake() {
         starCoinPool = new List<GameObject>();
+        UpdateCoinText(FindObjectOfType<PlayerBehavior>().StarCoin);
     }
 
     private void Update() {
