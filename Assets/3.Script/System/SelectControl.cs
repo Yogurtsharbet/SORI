@@ -76,6 +76,8 @@ public class SelectControl : MonoBehaviour {
         if (cameraStatus == CameraControl.CameraStatus.SelectView ||
             cameraStatus == CameraControl.CameraStatus.SelectTopView) {
             FindObject();
+            
+            
         }
         else {
             Unselect();

@@ -16,7 +16,7 @@ public class State_Normal : IGameState {
     private InteractionController interactionController;
 
     public State_Normal() {
-        interactionController = GameObject.FindObjectOfType <InteractionController>();
+        interactionController = GameObject.FindObjectOfType<InteractionController>();
     }
 
     public void OnStateChanged() {
@@ -51,7 +51,7 @@ public class State_Combine : IGameState {
     }
 
     public void OnStateChanged() {
-        if( playerAnimator == null) 
+        if (playerAnimator == null)
             playerAnimator = GameObject.FindGameObjectWithTag("Player").GetComponent<Animator>();
 
         CameraControl.Instance.SetCamera(CameraControl.CameraStatus.CombineView);
@@ -89,11 +89,13 @@ public class State_Select : IGameState {
     private SelectControl selectControl;
     private Animator playerAnimator;
     private CombineManager combineManager;
+    private GameObject CinematicRocks;
 
     public State_Select() {
         selectControl = GameManager.Instance.selectControl;
         playerAnimator = GameObject.FindGameObjectWithTag("Player").GetComponent<Animator>();
         combineManager = GameObject.FindObjectOfType<CombineManager>();
+        CinematicRocks = GameObject.Find("CinematicRocks");
     }
 
     public void OnStateChanged() {
@@ -105,8 +107,14 @@ public class State_Select : IGameState {
             GameManager.Instance.ChangeState(GameState.Normal);
             selectControl.ActivateSelected();
             playerAnimator.SetBool("isCombineMode", false);
-            if (combineManager.TempFrame !=null) {
+            if (combineManager.TempFrame != null) {
                 combineManager.TempFrameResetWordUse();
+            }
+            if (GameManager.Instance.currentScene == "Map" &&
+                CinematicRocks != null) {
+                var colliders = CinematicRocks.GetComponents<Collider>();
+                foreach (Collider collider in colliders)
+                    collider.enabled = false;
             }
         }
     }

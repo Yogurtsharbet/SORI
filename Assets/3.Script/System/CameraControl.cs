@@ -118,6 +118,8 @@ public class CameraControl : MonoBehaviour {
                 eachCamera.Priority = 1;
                 currentCamera = camera;
 
+
+
                 if (camera is CinemachineBlendListCamera) {
                     StartCoroutine(WaitForCinematicEnd(camera as CinemachineBlendListCamera));
                     CursorControl.SetCursor(CursorType.Loading);
@@ -142,10 +144,16 @@ public class CameraControl : MonoBehaviour {
                         CinematicHomeProcess();
                     }
                 }
+                else if (camera == cameraSelectView) {
+                    if (GameManager.Instance.currentScene == "Map" &&
+                        !RenderSettings.skybox.name.Contains("Night"))
+                        questController.SetQuestText("돌을 선택하고 [Enter] 를 눌러\n돌을 치우세요");
+                }
             }
             else
                 eachCamera.Priority = 0;
         }
+
     }
 
     private IEnumerator WaitForCinematicEnd(CinemachineBlendListCamera camera) {

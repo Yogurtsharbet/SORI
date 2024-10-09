@@ -124,7 +124,7 @@ public class GameManager : MonoBehaviour {
     private IEnumerator WaitRockCinematicEnd() {
         yield return new WaitUntil(() => CameraControl.Instance.cameraStatus == CameraStatus.TopView);
 
-        questController.SetQuestText("문장을 구성해서 돌을 치우세요!\n [Enter : 실행]");
+        questController.SetQuestText("[Tab]을 눌러 문장을 조합해 \n돌을 치우세요!");
 
         Word[] newWord = new Word[1];
         newWord[0] = Word.GetWord(WordData.Search("ROCK").Key);
