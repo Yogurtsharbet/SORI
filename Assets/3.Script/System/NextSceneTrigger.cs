@@ -35,6 +35,7 @@ public class NextSceneTrigger : MonoBehaviour {
 
     private void LoadNextScene() {
         if (sceneIndex == 1 && !isVisited) {
+            isVisited = true;
             mainLoading.StartLoading(sceneIndex + 1);
             gameCanvas.SetActive(false);
             return;
