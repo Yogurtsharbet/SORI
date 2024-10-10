@@ -132,6 +132,7 @@ public class PauseContainer : MonoBehaviour {
     public void GoMain() {
         //TODO: 저장하고 메인 씬으로 이동
         SceneManager.LoadSceneAsync("Main");
+        Destroy(GameManager.Instance.gameObject);
     }
 
     public void ClickExitButton() {
