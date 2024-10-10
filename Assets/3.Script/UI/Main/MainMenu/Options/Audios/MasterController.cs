@@ -17,6 +17,9 @@ public class MasterController : MonoBehaviour {
     }
 
     private void Start() {
+        float volume = PlayerPrefs.GetFloat("MasterValue", 1.0f);
+        optionDataManager.OptionData.SetSfxAudionValue(volume);
+
         slider.onValueChanged.AddListener(delegate {
             setVolume(slider.value);
         });
@@ -34,9 +37,13 @@ public class MasterController : MonoBehaviour {
     private void setVolume(float volume) {
         if (volume <= 0) {
             optionDataManager.OptionData.SetMasetAudionValue(0);
+            PlayerPrefs.SetFloat("MasterValue", 0);
+            PlayerPrefs.Save();
         }
         else {
             optionDataManager.OptionData.SetMasetAudionValue(volume);
+            PlayerPrefs.SetFloat("MasterValue", volume);
+            PlayerPrefs.Save();
         }
         checkVolume(volume);
     }

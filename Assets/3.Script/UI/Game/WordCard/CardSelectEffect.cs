@@ -20,7 +20,7 @@ public class CardSelectEffect : MonoBehaviour, IPointerEnterHandler, IPointerExi
 
     public void SetSelectInit(Vector3 pos) {
         startPos = pos;
-        startScale = transform.localScale;
+        startScale = new Vector3(1f, 1f, 1f);
     }
 
     private IEnumerator MoveCardCo(Vector3 targetPos, Vector3 targetScale) {
@@ -63,7 +63,7 @@ public class CardSelectEffect : MonoBehaviour, IPointerEnterHandler, IPointerExi
     }
 
     public void ResetCard() {
-        gameObject.transform.localScale = startScale;
+        gameObject.transform.localScale = new Vector3(1f, 1f, 1f);
         gameObject.transform.localPosition = startPos;
     }
 }

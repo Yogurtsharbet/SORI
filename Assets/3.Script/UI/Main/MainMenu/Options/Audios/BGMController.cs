@@ -16,13 +16,17 @@ public class BGMController : MonoBehaviour {
         slider.value = optionDataManager.OptionData.BgmAudioValue;
         checkVolume(optionDataManager.OptionData.BgmAudioValue);
     }
+
     private void Start() {
+        float volume = PlayerPrefs.GetFloat("BGMValue", 1.0f);
+        optionDataManager.OptionData.SetBgmAudioValue(volume);
+
         slider.onValueChanged.AddListener(delegate {
             setVolume(slider.value);
         });
     }
 
-    private  void checkVolume(float volume) {
+    private void checkVolume(float volume) {
         if (volume <= 0) {
             audioMixer.SetFloat("BGM", -80);
         }
@@ -34,9 +38,13 @@ public class BGMController : MonoBehaviour {
     private void setVolume(float volume) {
         if (volume <= 0) {
             optionDataManager.OptionData.SetBgmAudioValue(0);
+            PlayerPrefs.SetFloat("BGMValue", 0);
+            PlayerPrefs.Save();
         }
         else {
             optionDataManager.OptionData.SetBgmAudioValue(volume);
+            PlayerPrefs.SetFloat("BGMValue", volume);
+            PlayerPrefs.Save();
         }
         checkVolume(volume);
     }

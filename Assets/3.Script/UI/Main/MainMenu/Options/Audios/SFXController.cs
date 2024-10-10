@@ -18,6 +18,9 @@ public class SFXController : MonoBehaviour {
     }
 
     private void Start() {
+        float volume = PlayerPrefs.GetFloat("SFXValue", 1.0f);
+        optionDataManager.OptionData.SetSfxAudionValue(volume);
+
         slider.onValueChanged.AddListener(delegate {
             setVolume(slider.value);
         });
@@ -35,9 +38,13 @@ public class SFXController : MonoBehaviour {
     private void setVolume(float volume) {
         if (volume <= 0) {
             optionDataManager.OptionData.SetSfxAudionValue(0);
+            PlayerPrefs.SetFloat("SFXValue", 0);
+            PlayerPrefs.Save();
         }
         else {
             optionDataManager.OptionData.SetSfxAudionValue(volume);
+            PlayerPrefs.SetFloat("SFXValue", volume);
+            PlayerPrefs.Save();
         }
         checkVolume(volume);
     }
