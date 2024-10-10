@@ -37,6 +37,7 @@ public class CameraControl : MonoBehaviour {
     [SerializeField] private GameObject cinematicRuinsRocks;
     [SerializeField] private GameObject cinematicRuinsBarrier;
 
+    [SerializeField] private Material daySkybox;
     [SerializeField] private Canvas gameCanvas;
     private QuestController questController;
     private SFXManager sfxManager;
@@ -118,6 +119,8 @@ public class CameraControl : MonoBehaviour {
                 eachCamera.Priority = 1;
                 currentCamera = camera;
 
+
+
                 if (camera is CinemachineBlendListCamera) {
                     StartCoroutine(WaitForCinematicEnd(camera as CinemachineBlendListCamera));
                     CursorControl.SetCursor(CursorType.Loading);
@@ -142,10 +145,16 @@ public class CameraControl : MonoBehaviour {
                         CinematicHomeProcess();
                     }
                 }
+                else if (camera == cameraSelectView) {
+                    if (GameManager.Instance.currentScene == "Map" &&
+                        !RenderSettings.skybox.name.Contains("Night"))
+                        questController.SetQuestText("돌을 선택하고 [Enter] 를 눌러\n돌을 치우세요");
+                }
             }
             else
                 eachCamera.Priority = 0;
         }
+
     }
 
     private IEnumerator WaitForCinematicEnd(CinemachineBlendListCamera camera) {
@@ -262,6 +271,12 @@ public class CameraControl : MonoBehaviour {
         FindObjectOfType<MainLoading>().StartLoading(0);
 
         yield return new WaitForSeconds(1.5f);
+
+        var directionalLight = FindObjectOfType<CommonManager>().GetComponentInChildren<Light>();
+        directionalLight.color = new Color(1f, 0.956f, 0.839f);
+        RenderSettings.ambientLight = new Color(0.90f, 0.76f, 0.63f);
+        RenderSettings.skybox = daySkybox;
+
         Destroy(GameManager.Instance.gameObject);
         Destroy(gameObject);
     }

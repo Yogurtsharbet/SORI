@@ -124,7 +124,7 @@ public class GameManager : MonoBehaviour {
     private IEnumerator WaitRockCinematicEnd() {
         yield return new WaitUntil(() => CameraControl.Instance.cameraStatus == CameraStatus.TopView);
 
-        questController.SetQuestText("문장을 구성해서 돌을 치우세요!\n [Enter : 실행]");
+        questController.SetQuestText("[Tab]을 눌러 문장을 조합해 \n돌을 치우세요!");
 
         Word[] newWord = new Word[1];
         newWord[0] = Word.GetWord(WordData.Search("ROCK").Key);
@@ -141,7 +141,11 @@ public class GameManager : MonoBehaviour {
         var playerTransform = FindObjectOfType<PlayerBehavior>().transform;
         playerTransform.position = CameraControl.Instance.RuinsPosition.position;
 
-        questController.SetQuestText("모험을 마쳤습니다. 집으로 다시 돌아갈까요?");
+        var bgm = GetComponentInChildren<BGMManager>();
+        bgm.UpdateBGM(3);        bgm.StopBGM();
+        bgm.PlayBGM();
+        var sfx = FindObjectOfType<SFXManager>();
+        sfx.StopBirdSfx();
 
         var doors = GameObject.FindGameObjectsWithTag("DOOR");
         foreach (var door in doors) {
