@@ -25,7 +25,7 @@ public class OptionData : ScriptableObject {
 
     [Space]
     [Header("UI")]
-    [SerializeField] private int screenMode = 0;
+    [SerializeField] private int screenMode = 1;
     public int ScreenMode => screenMode;
     public void SetIsFullScreen(int num) {
         screenMode = num;
