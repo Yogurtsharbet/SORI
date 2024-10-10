@@ -21,6 +21,7 @@ public class State_Normal : IGameState {
 
     public void OnStateChanged() {
         CameraControl.Instance.SetCamera(CameraControl.CameraStatus.TopView);
+        GameManager.Instance.selectControl.UnselectAll();
     }
 
     public void OnEnter() {
