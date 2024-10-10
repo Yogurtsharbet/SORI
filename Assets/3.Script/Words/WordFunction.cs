@@ -64,7 +64,7 @@ public class WordFunction : MonoBehaviour {
         if (function.target.CompareTag("Player")) targetTransform = targetTransform.parent;
         if (function.target.TryGetComponent(out RustKeyMovement rustKey)) rustKey.isFloating = false;
 
-        Collider collider = targetTransform.GetComponent<Collider>();
+        Collider collider = targetTransform.GetComponentInChildren<Collider>();
         Rigidbody rigid = targetTransform.GetComponent<Rigidbody>();
         if (rigid == null) {
             rigid = targetTransform.gameObject.AddComponent<Rigidbody>();
@@ -155,6 +155,8 @@ public class WordFunction : MonoBehaviour {
 
     private void Change() {
         function.target.SetActive(false);
+        var changeTarget = GameObject.FindGameObjectWithTag(function.word.Tag);
+        Instantiate(changeTarget, function.target.transform.position, changeTarget.transform.rotation);
         //TODO: 바꾸기 애초에 Actiavte에서 clicked 를 여러개 들고와야함; word를 GameObject로 바꿀수없음
     }
 }
