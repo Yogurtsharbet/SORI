@@ -45,6 +45,10 @@ public class SFXManager : MonoBehaviour {
         sources[num].Play();
     }
 
+    public void StopBirdSfx() {
+        sources[0].Stop();
+    }
+
     public void PlayBrokenRockSfx() {
         sources[2].time = 0.5f;
         sources[2].Play();
@@ -70,16 +74,17 @@ public class SFXManager : MonoBehaviour {
         float minDistance;
         while (true) {
             yield return null;
+            if (GameManager.Instance.currentScene == "Map") {
+                minDistance = Mathf.Infinity;
+                foreach (var pos in waterPositions) {
+                    float distance = Vector3.Distance(transform.parent.position, pos);
+                    if (distance < minDistance)
+                        minDistance = distance;
+                }
 
-            minDistance = Mathf.Infinity;
-            foreach (var pos in waterPositions) {
-                float distance = Vector3.Distance(transform.parent.position, pos);
-                if (distance < minDistance) 
-                    minDistance = distance;
+                float volume = Mathf.Clamp01((100f - minDistance) / 80f);
+                sources[1].volume = volume;
             }
-
-            float volume = Mathf.Clamp01((100f - minDistance) / 80f);
-            sources[1].volume = volume;
         }
     }
 }

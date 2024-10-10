@@ -37,6 +37,7 @@ public class CameraControl : MonoBehaviour {
     [SerializeField] private GameObject cinematicRuinsRocks;
     [SerializeField] private GameObject cinematicRuinsBarrier;
 
+    [SerializeField] private Material daySkybox;
     [SerializeField] private Canvas gameCanvas;
     private QuestController questController;
     private SFXManager sfxManager;
@@ -270,6 +271,12 @@ public class CameraControl : MonoBehaviour {
         FindObjectOfType<MainLoading>().StartLoading(0);
 
         yield return new WaitForSeconds(1.5f);
+
+        var directionalLight = FindObjectOfType<CommonManager>().GetComponentInChildren<Light>();
+        directionalLight.color = new Color(1f, 0.956f, 0.839f);
+        RenderSettings.ambientLight = new Color(0.90f, 0.76f, 0.63f);
+        RenderSettings.skybox = daySkybox;
+
         Destroy(GameManager.Instance.gameObject);
         Destroy(gameObject);
     }

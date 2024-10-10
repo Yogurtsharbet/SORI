@@ -13,6 +13,10 @@ public class BGMManager : MonoBehaviour {
         bgmSource.Stop();
     }
 
+    public void PlayBGM() {
+        bgmSource.Play();
+    }
+
     public void UpdateBGM(int index) {
         bgmSource.clip = bgmClips[index];
     }

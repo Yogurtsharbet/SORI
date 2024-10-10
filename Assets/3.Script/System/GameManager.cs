@@ -141,7 +141,11 @@ public class GameManager : MonoBehaviour {
         var playerTransform = FindObjectOfType<PlayerBehavior>().transform;
         playerTransform.position = CameraControl.Instance.RuinsPosition.position;
 
-        questController.SetQuestText("모험을 마쳤습니다. 집으로 다시 돌아갈까요?");
+        var bgm = GetComponentInChildren<BGMManager>();
+        bgm.UpdateBGM(3);        bgm.StopBGM();
+        bgm.PlayBGM();
+        var sfx = FindObjectOfType<SFXManager>();
+        sfx.StopBirdSfx();
 
         var doors = GameObject.FindGameObjectsWithTag("DOOR");
         foreach (var door in doors) {

@@ -207,7 +207,6 @@ public class State_Pause : IGameState {
     }
 
     public void OnStateChanged() {
-        CameraControl.Instance.SetCamera(CameraControl.CameraStatus.CombineView);
         pauseContainer.OpenPause();
     }
 

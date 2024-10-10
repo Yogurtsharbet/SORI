@@ -13,9 +13,11 @@ public class QuestController : MonoBehaviour {
     private void Start() {
         if (GameManager.Instance.currentScene != "Map")
             ResetQuestText();
+        else if (GameManager.Instance.isCompleteTutorial)
+            SetQuestText("모험을 마쳤습니다. 집으로 다시 돌아갈까요?");
     }
 
-    public  void SetQuestText(string contents) {
+    public void SetQuestText(string contents) {
         icon.enabled = true;
         questText.text = contents;
     }

@@ -166,7 +166,9 @@ public class PlayerBehavior : MonoBehaviour {
         }
     }
     private void CheckWater(Collider water) {
-        if (water.gameObject.layer == LayerMask.NameToLayer("Water"))
+        if (water.gameObject.layer == LayerMask.NameToLayer("Water")) {
             transform.position = new Vector3(475f, 6f, 378f);
+            TakeDamage(18f);
+        }
     }
 }
