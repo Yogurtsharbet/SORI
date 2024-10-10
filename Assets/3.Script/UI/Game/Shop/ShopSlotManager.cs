@@ -93,7 +93,9 @@ public class ShopSlotManager : MonoBehaviour {
         List<Word> buyWords = new List<Word>();
         for (int i = 0; i < selectShopIndex.Count; i++) {
             buyWords.Add(shopWords[selectShopIndex[i]]);
-            shopWords.RemoveAt(selectShopIndex[i]);
+        }
+        for (int i = 0; i < selectShopIndex.Count; i++) {
+            shopWords.Remove(buyWords[i]);
         }
         resetShopSelects();
         CheckProduct();

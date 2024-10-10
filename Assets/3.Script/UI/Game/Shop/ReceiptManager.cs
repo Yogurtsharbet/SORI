@@ -87,7 +87,11 @@ public class ReceiptManager : MonoBehaviour {
 
     //구매 확정버튼 클릭
     public void ShopConfirm() {
-        if (buyPrice <= sellPrice + current) {
+        if (current <= 0) {
+            string contents = "가지고 있는 별이 부족합니다.";
+            DialogManager.Instance.OpenDefaultDialog(contents, DialogType.FAIL);
+        }
+        else if (buyPrice <= sellPrice + current) {
             if ((playerInvenController.ExistInvenCount() - sellCount + buyCount) <= playerInvenController.InvenOpenCount) {
                 playerBehavior.EarnStarCoin(sellPrice);
                 playerBehavior.UseStarCoin(buyPrice);
