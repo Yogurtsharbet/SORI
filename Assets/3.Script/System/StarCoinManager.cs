@@ -38,7 +38,7 @@ public class StarCoinManager : MonoBehaviour {
                 eachCoin.transform.position = spawnPosition;
                 eachCoin.transform.rotation = Random.rotation;
                 eachCoin.SetActive(true);
-                eachCoin.GetComponent<Rigidbody>().AddForce(Vector3.up, ForceMode.Impulse);
+                eachCoin.GetComponent<Rigidbody>().AddForce(Vector3.up * 1.5f, ForceMode.Impulse);
                 eachCoin.GetComponent<ParticleSystem>().Play();
                 spawnCount--;
                 if (spawnCount == 0) break;

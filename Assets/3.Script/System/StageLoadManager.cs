@@ -28,7 +28,6 @@ public class StageLoadManager : MonoBehaviour {
         stageCount++;
         var op = SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Additive);
         while (!op.isDone) {
-            Debug.Log(op.progress);
             yield return null;
         }
 

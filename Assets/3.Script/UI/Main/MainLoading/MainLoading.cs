@@ -46,6 +46,7 @@ public class MainLoading : MonoBehaviour {
         while (!asyncOperation.isDone) {
             if (asyncOperation.progress >= 0.9f) {
                 yield return new WaitForSeconds(1f);
+                FindObjectOfType<DebugControl>()?.SetText("LoadComplte");
                 asyncOperation.allowSceneActivation = true;
             }
             yield return null;
