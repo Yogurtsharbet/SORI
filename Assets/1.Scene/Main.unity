@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.42221767, g: 0.6431584, b: 0.793694, a: 1}
+  m_IndirectSpecularColor: {r: 0.42227417, g: 0.6437038, b: 0.7936718, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -46131,7 +46131,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 522486570}
         m_TargetAssemblyTypeName: WindowController, Assembly-CSharp
-        m_MethodName: ChangeWindowMode
+        m_MethodName: ChangeLeft
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -53856,7 +53856,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1943344681}
-  m_LocalRotation: {x: 0.17972773, y: -0.23386598, z: 0.04403595, w: 0.9544975}
+  m_LocalRotation: {x: 0.17972778, y: -0.23386599, z: 0.04403596, w: 0.9544975}
   m_LocalPosition: {x: -14.372826, y: 26.687658, z: -97.533806}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -54102,7 +54102,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 522486570}
         m_TargetAssemblyTypeName: WindowController, Assembly-CSharp
-        m_MethodName: ChangeWindowMode
+        m_MethodName: ChangeRight
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

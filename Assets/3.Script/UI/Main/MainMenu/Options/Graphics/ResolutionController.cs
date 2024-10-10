@@ -28,10 +28,17 @@ public class ResolutionController : MonoBehaviour {
     private void CheckResolution() {
         (int, int) thisResolution = Resolutions.GetResolutionByNum(resolKey);
         text.text = $" {thisResolution.Item1} x {thisResolution.Item2}";
-        //#if UNITY_EDITOR
-        //        UnityEditor.SceneView.lastActiveSceneView.position = new Rect(0, 0, thisResolution.Item1, thisResolution.Item2);
-        //#endif
         changeCanvasResolution(thisResolution);
+        int screenMode = optionDataManager.OptionData.ScreenMode;
+        if (screenMode == 0) {
+            Screen.SetResolution(thisResolution.Item1, thisResolution.Item2, FullScreenMode.ExclusiveFullScreen);
+        }
+        else if (screenMode == 1) {
+            Screen.SetResolution(thisResolution.Item1, thisResolution.Item2, FullScreenMode.FullScreenWindow);
+        }
+        else {
+            Screen.SetResolution(thisResolution.Item1, thisResolution.Item2, FullScreenMode.Windowed);
+        }
     }
 
     public void ChangeRight() {

@@ -25,10 +25,10 @@ public class OptionData : ScriptableObject {
 
     [Space]
     [Header("UI")]
-    [SerializeField] private bool isFullScreen = true;
-    public bool IsFullScreen => isFullScreen;
-    public void SetIsFullScreen(bool yn) {
-        isFullScreen = yn;
+    [SerializeField] private int screenMode = 0;
+    public int ScreenMode => screenMode;
+    public void SetIsFullScreen(int num) {
+        screenMode = num;
     }
 
     [SerializeField] private ResolutionType resolutionType = ResolutionType.FullHD;

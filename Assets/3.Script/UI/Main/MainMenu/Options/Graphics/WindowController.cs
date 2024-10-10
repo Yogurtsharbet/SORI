@@ -5,7 +5,7 @@ using UnityEngine.UI;
 public class WindowController : MonoBehaviour {
     private OptionDataManager optionDataManager;
     private Text text;
-    private bool isFullscreen = false;
+    private int _screenMode = 0;
 
     private void Awake() {
         optionDataManager = FindObjectOfType<OptionDataManager>();
@@ -18,31 +18,45 @@ public class WindowController : MonoBehaviour {
     }
 
     private void OnEnable() {
-        isFullscreen = optionDataManager.OptionData.IsFullScreen;
+        _screenMode = optionDataManager.OptionData.ScreenMode;
         CheckWindowMode();
     }
 
     private void CheckWindowMode() {
         (int, int) thisResolution = Resolutions.GetResolutionByNum((int)optionDataManager.OptionData.ResolutionType);
-        if (isFullscreen) {
+        if (_screenMode == 0) {
             text.text = "전체화면";
-            Screen.SetResolution(thisResolution.Item1, thisResolution.Item2, true);
+            Screen.SetResolution(thisResolution.Item1, thisResolution.Item2, FullScreenMode.ExclusiveFullScreen);
+        }
+        else if (_screenMode == 1) {
+            text.text = "전체 창모드";
+            Screen.SetResolution(thisResolution.Item1, thisResolution.Item2, FullScreenMode.FullScreenWindow);
         }
         else {
             text.text = "창모드";
-            Screen.SetResolution(thisResolution.Item1, thisResolution.Item2, false);
+            Screen.SetResolution(thisResolution.Item1, thisResolution.Item2, FullScreenMode.Windowed);
         }
     }
 
-    public void ChangeWindowMode() {
-        if (!isFullscreen) {
-            isFullscreen = true;
-            optionDataManager.OptionData.SetIsFullScreen(isFullscreen);
+    public void ChangeLeft() {
+        if (_screenMode == 0) {
+            _screenMode = 2;
         }
         else {
-            isFullscreen = false;
-            optionDataManager.OptionData.SetIsFullScreen(isFullscreen);
+            _screenMode--;
         }
+        optionDataManager.OptionData.SetIsFullScreen(_screenMode);
+        CheckWindowMode();
+    }
+
+    public void ChangeRight() {
+        if (_screenMode == 2) {
+            _screenMode = 0;
+        }
+        else {
+            _screenMode++;
+        }
+        optionDataManager.OptionData.SetIsFullScreen(_screenMode);
         CheckWindowMode();
     }
 }
