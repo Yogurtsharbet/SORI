@@ -132,6 +132,9 @@ public class GameManager : MonoBehaviour {
     }
 
     public void AfterCompleteStage() {
+        InitializeGameManager();
+        InitializeInputAction();
+
         Start();
         isEndAdv = true;
         var directionalLight = FindObjectOfType<CommonManager>().GetComponentInChildren<Light>();

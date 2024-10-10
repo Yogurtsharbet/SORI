@@ -108,6 +108,7 @@ public class CameraControl : MonoBehaviour {
     public void SetCamera(CinemachineVirtualCameraBase camera) {
         Debug.Log($"Set to {camera.name}");
         cameraStatus = (CameraStatus)allCamera.IndexOf(camera);
+        if(playerMove==null) playerMove = FindObjectOfType<PlayerMove>();
         playerMove.enabled = camera == cameraTopView;
         playerMove.ClearCurretSpeed();
         if (camera == cameraTopView)

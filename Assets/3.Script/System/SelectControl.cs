@@ -129,6 +129,13 @@ public class SelectControl : MonoBehaviour {
         prevObject = null;
     }
 
+    public void UnselectAll() {
+        Unselect();
+        foreach(var each in clickedObject) 
+            RemoveMaterial(each, clickedShader);
+        clickedObject.Clear();   
+    }
+    
     private void RepositionAtScreenOut() {
         Vector3 screenPos = currentCamera.WorldToScreenPoint(Indicator.position);
 

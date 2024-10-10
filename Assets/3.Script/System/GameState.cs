@@ -171,14 +171,17 @@ public class State_Inven : IGameState {
 }
 public class State_Shop : IGameState {
     private ShopContainer shopContainer;
+    private Animator playerAnimator;
 
     public State_Shop() {
         shopContainer = GameObject.FindObjectOfType<ShopContainer>();
+        playerAnimator = GameObject.FindObjectOfType<PlayerBehavior>().GetComponent<Animator>();
     }
 
     public void OnStateChanged() {
         CameraControl.Instance.SetCamera(CameraControl.CameraStatus.CombineView);
         shopContainer.OpenShopContainer();
+        playerAnimator.SetFloat("MoveSpeed", 0);
     }
 
     public void OnCancel() {
