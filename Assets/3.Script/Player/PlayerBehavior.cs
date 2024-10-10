@@ -39,7 +39,7 @@ public class PlayerBehavior : MonoBehaviour {
         //TODO: Save 구현시 연동
         playerMaxHP = 100f;
         playerHP = playerMaxHP;
-        starCoin = PlayerPrefs.GetInt("StarCoin");
+        starCoin = GameManager.Instance.isCompleteTutorial ? PlayerPrefs.GetInt("StarCoin") : 0;
         starCoinManager.UpdateCoinText(starCoin);
         isWatchedCinematic[(int)CinematicType.Intro] = true;
 
@@ -132,7 +132,7 @@ public class PlayerBehavior : MonoBehaviour {
     }
 
     public void EarnStarCoin(int coins = -1) {
-        if (coins == -1) coins = UnityEngine.Random.Range(5, 40);
+        if (coins == -1) coins = UnityEngine.Random.Range(2, 30);
         starCoin += coins;
         starCoinManager.UpdateCoinText(starCoin);
     }
