@@ -33,7 +33,7 @@ public class StarCoinControl : MonoBehaviour {
     private void Update() {
         PickCoin();
 
-        debugControl.SetText(transform.position + " / " + starCoinCollider.isTrigger);
+        debugControl?.SetText(transform.position + " / " + starCoinCollider.isTrigger);
     }
 
     private IEnumerator DelayedPickCoin() {

@@ -38,8 +38,16 @@ public class StarCoinManager : MonoBehaviour {
                 eachCoin.transform.position = spawnPosition;
                 eachCoin.transform.rotation = Random.rotation;
                 eachCoin.SetActive(true);
-                eachCoin.GetComponent<Rigidbody>().AddForce(Vector3.up * 1.5f, ForceMode.Impulse);
+
+                Rigidbody rigid = eachCoin.GetComponent<Rigidbody>();
+                rigid.AddForce(Vector3.up * 3f, ForceMode.Impulse);
+                rigid.AddForce(new Vector3(Random.Range(-3f, 3f), 3f, Random.Range(-3f, 3f)), ForceMode.Impulse);
+
+                Collider collider = eachCoin.GetComponent<Collider>();
+                collider.isTrigger = false;
+
                 eachCoin.GetComponent<ParticleSystem>().Play();
+
                 spawnCount--;
                 if (spawnCount == 0) break;
             }

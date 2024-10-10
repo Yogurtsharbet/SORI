@@ -12,10 +12,10 @@ GameObject:
   - component: {fileID: 1327589410989899650}
   - component: {fileID: 3857470249138883400}
   - component: {fileID: 8731169314943559955}
-  - component: {fileID: 4503669414680652836}
   - component: {fileID: 1737457658336982876}
   - component: {fileID: 1522503070418689245}
   - component: {fileID: 3934079205804548601}
+  - component: {fileID: -2017256152973286783}
   m_Layer: 30
   m_Name: StarCoin
   m_TagString: Untagged
@@ -102,20 +102,6 @@ Rigidbody:
   m_Interpolate: 2
   m_Constraints: 0
   m_CollisionDetection: 1
---- !u!64 &4503669414680652836
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3353071419421371037}
-  m_Material: {fileID: 13400000, guid: 1e6505fe649eb47449baa6756a01f7af, type: 2}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 4
-  m_Convex: 1
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 4300000, guid: 350445949995dcd4ba84201e1776cf8f, type: 2}
 --- !u!198 &1737457658336982876
 ParticleSystem:
   m_ObjectHideFlags: 0
@@ -4958,3 +4944,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 80865976d2d40e448aa35eb7a26266f1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!65 &-2017256152973286783
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3353071419421371037}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1.7, y: 0.5, z: 1.7}
+  m_Center: {x: -0.00000017881393, y: -0.0004177655, z: 0.11784129}

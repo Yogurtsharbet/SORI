@@ -138,8 +138,6 @@ public class GameManager : MonoBehaviour {
         directionalLight.color = new Color(0.5f, 0.2f, 0f);
         RenderSettings.ambientLight = new Color(0.3f, 0.3f, 0.3f);
         RenderSettings.skybox = nightSkybox;
-        var playerTransform = FindObjectOfType<PlayerBehavior>().transform;
-        playerTransform.position = CameraControl.Instance.RuinsPosition.position;
 
         var bgm = GetComponentInChildren<BGMManager>();
         bgm.UpdateBGM(3);        bgm.StopBGM();

@@ -38,7 +38,7 @@ public class PlayerBehavior : MonoBehaviour {
     private void Start() {
         //TODO: Save 구현시 연동
         playerMaxHP = 100f;
-        playerHP = playerMaxHP;
+        playerHP = GameManager.Instance.isCompleteTutorial ? PlayerPrefs.GetFloat("PlayerHP") : playerMaxHP;
         starCoin = GameManager.Instance.isCompleteTutorial ? PlayerPrefs.GetInt("StarCoin") : 0;
         starCoinManager.UpdateCoinText(starCoin);
         isWatchedCinematic[(int)CinematicType.Intro] = true;
@@ -46,8 +46,10 @@ public class PlayerBehavior : MonoBehaviour {
         if (GameManager.Instance.isCompleteTutorial) {
             for (int i = 0; i < isWatchedCinematic.Length; i++)
                 isWatchedCinematic[i] = true;
-            if (GameManager.Instance.currentScene == "Map") 
+            if (GameManager.Instance.currentScene == "Map") {
+                transform.position = CameraControl.Instance.RuinsPosition.position;
                 GameManager.Instance.AfterCompleteStage();
+            }
         }
 
     }
@@ -64,6 +66,7 @@ public class PlayerBehavior : MonoBehaviour {
 
     private void OnDestroy() {
         PlayerPrefs.SetInt("StarCoin", starCoin);
+        PlayerPrefs.SetFloat("PlayerHP", playerHP);
     }
 
     // GameState 구현에 따른 삭제. 240927.
@@ -132,7 +135,7 @@ public class PlayerBehavior : MonoBehaviour {
     }
 
     public void EarnStarCoin(int coins = -1) {
-        if (coins == -1) coins = UnityEngine.Random.Range(2, 30);
+        if (coins == -1) coins = UnityEngine.Random.Range(10, 50);
         starCoin += coins;
         starCoinManager.UpdateCoinText(starCoin);
     }
