@@ -46,7 +46,10 @@ public class PlayerBehavior : MonoBehaviour {
         if (GameManager.Instance.isCompleteTutorial) {
             for (int i = 0; i < isWatchedCinematic.Length; i++)
                 isWatchedCinematic[i] = true;
+            if (GameManager.Instance.currentScene == "Map") 
+                GameManager.Instance.AfterCompleteStage();
         }
+
     }
 
     private void OnEnable() {
@@ -129,7 +132,7 @@ public class PlayerBehavior : MonoBehaviour {
     }
 
     public void EarnStarCoin(int coins = -1) {
-        if(coins == -1) coins = UnityEngine.Random.Range(5, 40);
+        if (coins == -1) coins = UnityEngine.Random.Range(5, 40);
         starCoin += coins;
         starCoinManager.UpdateCoinText(starCoin);
     }

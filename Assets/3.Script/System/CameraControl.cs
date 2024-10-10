@@ -77,14 +77,13 @@ public class CameraControl : MonoBehaviour {
     }
 
     private void Start() {
+        SetCamera(cameraTopView);
         if (GameManager.Instance.currentScene == "Map") {
             if (GameManager.Instance.isCompleteTutorial) {
-                GameManager.Instance.AfterCompleteStage();
                 return;
             }
         }
 
-        SetCamera(cameraTopView);
         if (isDebugging) return;
 
         FadeControl.Instance.FadeIn();
