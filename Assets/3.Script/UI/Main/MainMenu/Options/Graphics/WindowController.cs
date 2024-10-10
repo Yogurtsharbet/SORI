@@ -43,5 +43,6 @@ public class WindowController : MonoBehaviour {
             isFullscreen = false;
             optionDataManager.OptionData.SetIsFullScreen(isFullscreen);
         }
+        CheckWindowMode();
     }
 }

@@ -31,7 +31,7 @@ public class InterfaceController : MonoBehaviour {
     private void CheckUIScale(float scaleFactor) {
         if (canvasScaler[0].uiScaleMode == CanvasScaler.ScaleMode.ScaleWithScreenSize) {
             for (int i = 0; i < canvasScaler.Length; i++) {
-                canvasScaler[i].matchWidthOrHeight = scaleFactor;
+                canvasScaler[i].scaleFactor = scaleFactor;
             }
         }
     }

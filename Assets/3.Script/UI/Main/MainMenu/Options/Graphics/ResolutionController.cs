@@ -59,9 +59,9 @@ public class ResolutionController : MonoBehaviour {
     }
 
     private void changeCanvasResolution((int, int) changeResolution) {
-        if (canvasScaler[0].uiScaleMode == CanvasScaler.ScaleMode.ScaleWithScreenSize) {
-            for (int i = 0; i < canvasScaler.Length; i++) {
-                canvasScaler[i].referenceResolution = new Vector2(changeResolution.Item1, changeResolution.Item2);
+        foreach (CanvasScaler scaler in canvasScaler) {
+            if (scaler.uiScaleMode == CanvasScaler.ScaleMode.ScaleWithScreenSize) {
+                scaler.referenceResolution = new Vector2(changeResolution.Item1, changeResolution.Item2);
             }
         }
     }

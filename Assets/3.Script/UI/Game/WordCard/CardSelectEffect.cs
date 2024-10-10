@@ -61,4 +61,9 @@ public class CardSelectEffect : MonoBehaviour, IPointerEnterHandler, IPointerExi
     public void OnDeselect(BaseEventData eventData) {
         StartCoroutine(MoveCardCo(startPos, startScale));
     }
+
+    public void ResetCard() {
+        gameObject.transform.localScale = startScale;
+        gameObject.transform.localPosition = startPos;
+    }
 }

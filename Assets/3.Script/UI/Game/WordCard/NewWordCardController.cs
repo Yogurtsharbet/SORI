@@ -90,4 +90,8 @@ public class NewWordCardController : MonoBehaviour, IPointerClickHandler {
     public void OnPointerClick(PointerEventData eventData) {
         wordCardSelectContainer.SelectNewWord(thisWord);
     }
+
+    public void ResetCardUI() {
+        cardSelectEffect.ResetCard();
+    }
 }

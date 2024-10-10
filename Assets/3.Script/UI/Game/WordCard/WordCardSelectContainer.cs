@@ -75,6 +75,7 @@ public class WordCardSelectContainer : MonoBehaviour {
         //TODO: 인벤 다 차있을때 예외처리 -> 이미 있는 단어 삭제 혹은 가져갈 수 없음~~
         playerInvenController.AddNewItem(word);
         for (int i = 0; i < 3; i++) {
+            newWordCardControllers[i].ResetCardUI();
             newWordCardControllers[i].gameObject.SetActive(false);
         }
         gameObject.SetActive(false);
