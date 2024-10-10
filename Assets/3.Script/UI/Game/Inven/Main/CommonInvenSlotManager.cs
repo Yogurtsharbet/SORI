@@ -3,7 +3,6 @@ using UnityEngine;
 
 // [UI] 인벤토리 - 슬롯 목록 관리 공통 매니저
 public class CommonInvenSlotManager : MonoBehaviour {
-
     [SerializeField] protected GameObject invenSlotPrefab;
 
     protected List<GameObject> slotList = new List<GameObject>();
@@ -24,7 +23,7 @@ public class CommonInvenSlotManager : MonoBehaviour {
         for (int i = 0; i < selectInvens.Count; i++) {
             if (selectInvens[i] == num) {
                 isExist = true;
-                if (invenSelectControllers != null)
+                if (!GameManager.Instance.CompareState(GameState.Combine))
                     invenSelectControllers[num].DisEnable();
                 selectInvens.RemoveAt(i);
                 break;
@@ -32,7 +31,7 @@ public class CommonInvenSlotManager : MonoBehaviour {
         }
 
         if (!isExist) {
-            if (invenSelectControllers != null)
+            if (!GameManager.Instance.CompareState(GameState.Combine))
                 invenSelectControllers[num].Enable();
             selectInvens.Add(num);
         }

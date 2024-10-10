@@ -7,8 +7,7 @@ public class InteractionTarget : MonoBehaviour {
     [SerializeField] private InteractType type;
     [SerializeField, TextArea(3, 10)] private string content;
 
-    private bool isTargetBound = false;
-    public bool IsTargetBound => isTargetBound;
+    public bool isTargetBound = false;
 
     private void Awake() {
         interactUI = FindObjectOfType<InteractionController>();
@@ -17,9 +16,9 @@ public class InteractionTarget : MonoBehaviour {
 
     private void OnTriggerStay(Collider other) {
         if (other.CompareTag("Player")) {
-            if (!isTargetBound && !interactUI.IsOpenSquare) {
-                isTargetBound = true;
+            if (!isTargetBound && !interactUI.IsOpenSquare && !GameManager.Instance.CompareState(GameState.Shop)) {
                 interactUI.ShowSqure(GetTargetPosition(), type);
+                isTargetBound = true;
             }
 
             if (isTargetBound && interactUI.IsOpenSquare) {

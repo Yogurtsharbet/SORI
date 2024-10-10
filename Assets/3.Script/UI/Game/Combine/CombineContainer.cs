@@ -33,7 +33,7 @@ public class CombineContainer : MonoBehaviour {
         if (backToTopview)
             FindObjectOfType<GameManager>().gameState.OnCancel();
         else {
-            combineManager.CloseCombineSlot();
+            //combineManager.CloseCombineSlot();
             FunctionMove(gameObject.transform, closePos);
             halfInvenManager.SetCombineMode(false);
             halfInvenManager.CloseInven();

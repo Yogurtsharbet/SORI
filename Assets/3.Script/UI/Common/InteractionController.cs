@@ -63,6 +63,9 @@ public class InteractionController : MonoBehaviour {
     }
 
     private void OpenShop() {
+        InteractionTarget[] interactionTargets = FindObjectsOfType<InteractionTarget>();
+        for (int i = 0; i < interactionTargets.Length; i++)
+            interactionTargets[i].isTargetBound = false;
         gameManager.ChangeState(GameState.Shop);
     }
 

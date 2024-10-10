@@ -102,12 +102,12 @@ public class State_Select : IGameState {
 
     public void OnEnter() {
         if (selectControl.IsSelectComplete) {
-            GameManager.Instance.ChangeState(GameState.Normal);
             selectControl.ActivateSelected();
             playerAnimator.SetBool("isCombineMode", false);
             if (combineManager.TempFrame !=null) {
                 combineManager.TempFrameResetWordUse();
             }
+            GameManager.Instance.ChangeState(GameState.Normal);
         }
     }
 

@@ -16,7 +16,7 @@ public class PlayerBehavior : MonoBehaviour {
 
     private float playerMaxHP;
     private float playerHP;
-    private int starCoin;
+    [SerializeField] private int starCoin;
     private bool isCombineMode;
 
     [SerializeField] private Image playerHPSlider;

@@ -226,9 +226,8 @@ public class CombineManager : MonoBehaviour {
                 baseFrame.SetWord(i, null);
             }
         }
-        frameListManager.AddFrame(tempFrame);
+        FrameToList(tempFrame);
         tempFrame = null;
-        frameListManager.UpdateSlotData(frameListManager.PreviousValue);
     }
 
     #endregion
@@ -338,6 +337,7 @@ public class CombineManager : MonoBehaviour {
         frameListManager.AddFrame(baseFrame);
     }
 
+    //프레임 조합 -> 사용처리
     public void TempFrameResetWordUse() {
         for (int i = 0; i < tempFrame.CountOfFrame(); i++) {
             if (tempFrame.GetFrame(i) != null) {
@@ -354,7 +354,8 @@ public class CombineManager : MonoBehaviour {
         }
         tempFrame.SetActive(false);
         tempFrame.SetBase(false);
-        frameListManager.AddFrame(tempFrame);
+        FrameToList(tempFrame);
+        tempFrame = null;
     }
 
     private void slotAllClose() {
