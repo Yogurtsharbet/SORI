@@ -36,6 +36,7 @@ public class FlowerColor : MonoBehaviour {
     private void OnTriggerEnter(Collider other) {
         if (other.CompareTag("Player") && !starCoinFlag) {
             starCoinFlag = true;
+            if (starCoinManager == null) starCoinManager = GameManager.Instance.starCoinManager;
             starCoinManager.SpawnCoin(transform.position + Vector3.up);
         }
     }

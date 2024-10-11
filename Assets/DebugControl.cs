@@ -11,6 +11,6 @@ public class DebugControl : MonoBehaviour
     }
 
     public void SetText(string t) {
-        text.text = t;
+        text.text += "\n" + t;
     }
 }

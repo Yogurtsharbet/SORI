@@ -146,9 +146,6 @@ public class PlayerBehavior : MonoBehaviour {
     }
 
     private void CheckCinematicZone(Collider zone) {
-        if (CameraControl.Instance.isDebugging) return;
-        //TODO: REMOVE THIS LINE WHEN RELEASE
-
         if (zone.gameObject.layer == LayerMask.NameToLayer("CinematicZone")) {
             if (zone.name == "ForestEntrance" && !isWatchedCinematic[(int)CinematicType.Forest]) {
                 isWatchedCinematic[(int)CinematicType.Forest] = true;
@@ -159,6 +156,7 @@ public class PlayerBehavior : MonoBehaviour {
                 CameraControl.Instance.SetCamera("Ruins");
             }
             else if (zone.name == "Home" && GameManager.Instance.isCompleteTutorial) {
+                Debug.Log("[DEBUG] :: Player call OnTriggerEnter and zone is Home");
                 CameraControl.Instance.SetCamera("Home");
             }
             else if (zone.name == "ButterflyZone01" && !isWatchedCinematic[(int)CinematicType.Butterfly01]) {

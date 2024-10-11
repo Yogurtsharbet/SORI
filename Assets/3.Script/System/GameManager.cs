@@ -12,7 +12,15 @@ public class GameManager : MonoBehaviour {
     private QuestController questController;
     [SerializeField] private Material nightSkybox;
 
-    public StarCoinManager starCoinManager { get; private set; }
+    private StarCoinManager _starCoinManager;
+    public StarCoinManager starCoinManager {
+        get {
+            if (_starCoinManager == null)
+                _starCoinManager = FindObjectOfType<StarCoinManager>();
+            return _starCoinManager;
+        }
+
+    }
     public SelectControl selectControl { get; private set; }
     public CursorControl cursorControl { get; private set; }
     public WordData wordData { get; private set; }
@@ -67,7 +75,6 @@ public class GameManager : MonoBehaviour {
     }
 
     private void InitializeGameManager() {
-        starCoinManager = FindObjectOfType<StarCoinManager>();
         selectControl = GetComponent<SelectControl>();
         cursorControl = GetComponent<CursorControl>();
         wordData = GetComponent<WordData>();
@@ -78,12 +85,18 @@ public class GameManager : MonoBehaviour {
     }
 
     private void InitializeInputAction() {
-        inputAction = new PlayerInputActions();
-        inputAction.UI.Cancel.performed += value => gameState.OnCancel();
-        inputAction.UI.Enter.performed += value => gameState.OnEnter();
-        inputAction.UI.Tab.performed += value => gameState.OnTab();
-        inputAction.UI.Inventory.performed += value => gameState.OnInven();
-        inputAction.Enable();
+        try {
+            inputAction = new PlayerInputActions();
+            inputAction.UI.Cancel.performed += value => gameState.OnCancel();
+            inputAction.UI.Enter.performed += value => gameState.OnEnter();
+            inputAction.UI.Tab.performed += value => gameState.OnTab();
+            inputAction.UI.Inventory.performed += value => gameState.OnInven();
+            inputAction.Enable();
+        }
+        catch {
+            OnDisable();
+            InitializeInputAction();
+        }
     }
 
     private void InitializeGameState() {
@@ -133,7 +146,6 @@ public class GameManager : MonoBehaviour {
 
     public void AfterCompleteStage() {
         InitializeGameManager();
-        InitializeInputAction();
 
         Start();
         isEndAdv = true;
@@ -143,7 +155,7 @@ public class GameManager : MonoBehaviour {
         RenderSettings.skybox = nightSkybox;
 
         var bgm = GetComponentInChildren<BGMManager>();
-        bgm.UpdateBGM(3);        bgm.StopBGM();
+        bgm.UpdateBGM(3); bgm.StopBGM();
         bgm.PlayBGM();
         var sfx = FindObjectOfType<SFXManager>();
         sfx.StopBirdSfx();

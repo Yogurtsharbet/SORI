@@ -18,8 +18,6 @@ public class StarCoinControl : MonoBehaviour {
         starCoinCollider = GetComponent<Collider>();
         starCoinRigid = GetComponent<Rigidbody>();
         player = GameObject.FindGameObjectWithTag("Player");
-
-        debugControl = FindObjectOfType<DebugControl>();
     }
 
     private void OnEnable() {
@@ -29,11 +27,8 @@ public class StarCoinControl : MonoBehaviour {
         StartCoroutine(DelayedPickCoin());
     }
 
-    private DebugControl debugControl;
     private void Update() {
         PickCoin();
-
-        debugControl?.SetText(transform.position + " / " + starCoinCollider.isTrigger);
     }
 
     private IEnumerator DelayedPickCoin() {

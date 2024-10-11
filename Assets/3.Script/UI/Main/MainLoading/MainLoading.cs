@@ -37,6 +37,7 @@ public class MainLoading : MonoBehaviour {
         }
         text.enabled = true;
         StartCoroutine(LoadSceneCoroutine(index));
+        Debug.Log("[DEBUG] :: MainLoading component call LoadScene to " + index);
     }
 
     private IEnumerator LoadSceneCoroutine(int index) {
@@ -46,7 +47,6 @@ public class MainLoading : MonoBehaviour {
         while (!asyncOperation.isDone) {
             if (asyncOperation.progress >= 0.9f) {
                 yield return new WaitForSeconds(1f);
-                FindObjectOfType<DebugControl>()?.SetText("LoadComplte");
                 asyncOperation.allowSceneActivation = true;
             }
             yield return null;
@@ -64,10 +64,13 @@ public class MainLoading : MonoBehaviour {
         gameObject.SetActive(true);
         FadeControl.Instance.FadeOut();
         StartCoroutine(NewGameDelayedCo(index));
+        Debug.Log("[DEBUG] :: StartLoading() is completed");
     }
 
     IEnumerator NewGameDelayedCo(int index) {
         yield return new WaitForSeconds(1.5f);
         LoadSceneAsync(index);
+        Debug.Log("[DEBUG] :: StartLoading() FadeOut Coroutine is completed");
+
     }
 }

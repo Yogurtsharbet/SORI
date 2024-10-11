@@ -141,6 +141,7 @@ public class CameraControl : MonoBehaviour {
                         CinematicRuinsProcess();
                     }
                     else if (camera == cinematicHome) {
+                        Debug.Log("[DEBUG] :: Camera is CinematicHome");
                         gameCanvas.gameObject.SetActive(false);
                         CinematicHomeProcess();
                     }
@@ -261,6 +262,8 @@ public class CameraControl : MonoBehaviour {
     }
 
     private void CinematicHomeProcess() {
+        Debug.Log("[DEBUG] :: CinematicHomeProcess() is Ongoing");
+        if (playerAnimator == null) playerAnimator = FindObjectOfType<PlayerBehavior>().GetComponent<Animator>();
         playerAnimator.SetFloat("MoveSpeed", 0f);
         playerAnimator.SetBool("isJump", false);
         StartCoroutine(GameEnd());
@@ -269,13 +272,16 @@ public class CameraControl : MonoBehaviour {
     private IEnumerator GameEnd() {
         yield return new WaitForSeconds(3f);
         FindObjectOfType<MainLoading>().StartLoading(0);
-
+        Debug.Log("[DEBUG] :: GameEnd() Coroutine proceed StartLoading()");
         yield return new WaitForSeconds(1.5f);
+        Debug.Log("[DEBUG] :: GameEnd() Coroutine proceed WaitForSecs");
+
 
         var directionalLight = FindObjectOfType<CommonManager>().GetComponentInChildren<Light>();
         directionalLight.color = new Color(1f, 0.956f, 0.839f);
         RenderSettings.ambientLight = new Color(0.90f, 0.76f, 0.63f);
         RenderSettings.skybox = daySkybox;
+        Debug.Log("[DEBUG] :: GameEnd() Coroutine proceed RenderSettings");
 
         Destroy(GameManager.Instance.gameObject);
         Destroy(gameObject);

@@ -33,6 +33,9 @@ public class StarCoinManager : MonoBehaviour {
         Vector3 explosionPosition = spawnPosition;
         explosionPosition.y -= 1f;
 
+        if (starCoinPool.Count > 0)
+            if(starCoinPool[0] == null) starCoinPool.Clear();
+
         foreach(var eachCoin in starCoinPool) {
             if(!eachCoin.activeSelf) {
                 eachCoin.transform.position = spawnPosition;
@@ -63,6 +66,8 @@ public class StarCoinManager : MonoBehaviour {
     }
 
     public void UpdateCoinText(int coin) {
+        if (starCoinUI == null)
+            starCoinUI = GameManager.Instance.starCoinManager.GetComponentInChildren<Text>();
         starCoinUI.text = coin.ToString();
     }
 

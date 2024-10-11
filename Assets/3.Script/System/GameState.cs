@@ -16,10 +16,15 @@ public class State_Normal : IGameState {
     private InteractionController interactionController;
 
     public State_Normal() {
+        InitState();
+    }
+
+    private void InitState() {
         interactionController = GameObject.FindObjectOfType<InteractionController>();
     }
 
     public void OnStateChanged() {
+        if (interactionController == null) InitState();
         CameraControl.Instance.SetCamera(CameraControl.CameraStatus.TopView);
         GameManager.Instance.selectControl.UnselectAll();
     }
@@ -47,14 +52,15 @@ public class State_Combine : IGameState {
     private Animator playerAnimator;
 
     public State_Combine() {
+        InitState();
+    }
+    private void InitState() {
         combineContainer = GameObject.FindObjectOfType<CombineContainer>();
         playerAnimator = GameObject.FindGameObjectWithTag("Player").GetComponent<Animator>();
     }
 
     public void OnStateChanged() {
-        if (playerAnimator == null)
-            playerAnimator = GameObject.FindGameObjectWithTag("Player").GetComponent<Animator>();
-
+        if (playerAnimator == null) InitState();
         CameraControl.Instance.SetCamera(CameraControl.CameraStatus.CombineView);
         combineContainer.OpenCombineField();
         playerAnimator.SetBool("isCombineMode", true);
@@ -93,6 +99,10 @@ public class State_Select : IGameState {
     private GameObject CinematicRocks;
 
     public State_Select() {
+        InitState();
+    }
+
+    private void InitState() {
         selectControl = GameManager.Instance.selectControl;
         playerAnimator = GameObject.FindGameObjectWithTag("Player").GetComponent<Animator>();
         combineManager = GameObject.FindObjectOfType<CombineManager>();
@@ -100,6 +110,7 @@ public class State_Select : IGameState {
     }
 
     public void OnStateChanged() {
+        if (playerAnimator == null) InitState();
         CameraControl.Instance.SetCamera(CameraControl.CameraStatus.SelectView);
     }
 
@@ -142,10 +153,15 @@ public class State_Inven : IGameState {
     private InvenContainer invenContainer;
 
     public State_Inven() {
+        InitState();
+    }
+
+    private void InitState() {
         invenContainer = GameObject.FindObjectOfType<InvenContainer>();
     }
 
     public void OnStateChanged() {
+        if (invenContainer == null) InitState();
         CameraControl.Instance.SetCamera(CameraControl.CameraStatus.TopView);
         invenContainer.OpenInventory();
     }
@@ -175,11 +191,15 @@ public class State_Shop : IGameState {
     private Animator playerAnimator;
 
     public State_Shop() {
+        InitState();
+    }
+    private void InitState() {
         shopContainer = GameObject.FindObjectOfType<ShopContainer>();
         playerAnimator = GameObject.FindObjectOfType<PlayerBehavior>().GetComponent<Animator>();
     }
 
     public void OnStateChanged() {
+        if (playerAnimator == null) InitState();
         CameraControl.Instance.SetCamera(CameraControl.CameraStatus.CombineView);
         shopContainer.OpenShopContainer();
         playerAnimator.SetFloat("MoveSpeed", 0);
@@ -207,10 +227,15 @@ public class State_Pause : IGameState {
     private PauseContainer pauseContainer;
 
     public State_Pause() {
+        InitState();
+    }
+
+    private void InitState() { 
         pauseContainer = GameObject.FindObjectOfType<PauseContainer>();
     }
 
     public void OnStateChanged() {
+        if (pauseContainer == null) InitState();
         pauseContainer.OpenPause();
     }
 
