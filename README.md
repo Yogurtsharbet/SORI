@@ -80,24 +80,24 @@
 ## System
 
 - Player
-  : New Input System
-  : Particle System
+    - New Input System
+    - Particle System
 - Word Combine Logic
-  : Frame Validity Logic
-  : Frame Activate Logic
-  : Indicator Logic
+    - Frame Validity Logic
+    - Frame Activate Logic
+    - Indicator Logic
 - Game State 
-  : State Pattern
+    - State Pattern
 - Inventory
-  : Observer Pattern
+    - Observer Pattern
 - Streaming Level
-  : Asnyc Scene Loading
+    - Asnyc Scene Loading
 - Cinemachine
-  : Ingame Cinematic
-  : DollyTrack Camera
+    - Ingame Cinematic
+    - DollyTrack Camera
 - Shader | Post Processing
-  : URP Renderer Feature
-  : Outline | Toon Shader
+    - URP Renderer Feature
+    - Outline | Toon Shader
 - Custom Window Editor
 
 ## UI
