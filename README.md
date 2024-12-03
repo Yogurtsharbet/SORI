@@ -1,6 +1,6 @@
 <div align="center">
-
-![image](https://github.com/user-attachments/assets/d04e45e3-a7a7-4bf0-ae68-711ab50fa8a5)
+    
+![그림1](https://github.com/user-attachments/assets/6aa323ba-095e-42de-a81c-27a2f3066287)
 </div>
 
 <p align="center" style="font-size:300%; font-weight:bold">SORI</p>
