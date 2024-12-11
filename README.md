@@ -1,9 +1,10 @@
 <div align="center">
     
 ![그림1](https://github.com/user-attachments/assets/6aa323ba-095e-42de-a81c-27a2f3066287)
+
+# SORI
 </div>
 
-<p align="center" style="font-size:300%; font-weight:bold">SORI</p>
 <h3 align="center">- 소리의 모험 -</h3>
 <br/>
 <br/>
