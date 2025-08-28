@@ -15,8 +15,8 @@
 - 게임 장르 : 퍼즐 / 어드벤처
 - 개발 환경 : Unity 2020.3.36 LTS | URP | 3D
 - 프로젝트 기간 : 2024. 08. 28 ~ 2024. 10. 04 ( 3 주 )
-- [👉 Notion](https://east-wrinkle-9ca.notion.site/SORI-1903aa91e2794f73b17aff5105dcccb4)
-- [👉 게임 기획서](http://east-wrinkle-9ca.notion.site/84107f5de0c546e386631f198e28d9ce?pvs=23)
+- [👉 Notion](https://brindle-amusement-a7d.notion.site/SORI-1585ab79c4d9804789b9c69735ab2913?pvs=74)
+- [👉 게임 컨셉 기획서](https://brindle-amusement-a7d.notion.site/1585ab79c4d9812aa810d8a48980bc48)
 <br/>
 
 # 2. Team Members / 팀원 소개
