@@ -12,9 +12,14 @@
 # 1. Project Overview / 프로젝트 개요
 <h3> Unity 3D Team Project </h3>
 
+
+<div align="center">
+    
 [![image](https://github.com/user-attachments/assets/0480b487-d902-43e0-ac67-218f4389afe3)](https://www.youtube.com/watch?v=GxtldlEV7vo)
 
 👀 Watch in Youtube!
+</div>
+
 
 - 게임 장르 : 퍼즐 / 어드벤처
 - 개발 환경 : Unity 2020.3.36 LTS | URP | 3D
