@@ -63,8 +63,8 @@
             <tr>
                 <td>김수진</td>
                 <td>
-                    <a href="https://github.com/Nuuuing">
-                        <img src="https://avatars.githubusercontent.com/u/76237796?v=4" alt="전홍현" width="150">
+                    <a href="https://github.com/SujinN">
+                        <img src="https://avatars.githubusercontent.com/u/76237796?v=4" alt="김수진" width="150">
                     </a>
                 </td>
                 <td style="text-align:left;">
